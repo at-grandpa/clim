@@ -1,1 +1,6 @@
 language: crystal
+crystal:
+  - latest
+  - nightly
+script:
+  - crystal spec

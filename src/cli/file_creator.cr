@@ -7,23 +7,24 @@ class Cli
       "src_file.ecr" => SrcFileTemplate,
     }
 
-    def self.create(create_file_path, ecr_name, ecr_args = Hash(String, String).new)
+    def self.create(create_file_path, ecr_name, ecr_args = Hash(String, String).new, silent = false)
       raise "No such ecr_name. [#{ecr_name}]" unless ECR_TABLE.keys.includes?(ecr_name)
       View.clear
       View.register(ECR_TABLE[ecr_name])
       config = Config.new
       config.args = ecr_args
       config.create_file_path = create_file_path
+      config.silent = silent
       InitProject.new(config).run
     end
 
     class Config
-      property args : NamedTuple(cmd_name: String, opt_codes: Array(String))
+      property args : NamedTuple(cmd_name: String, opt_codes: Array(String), code: String)
       property create_file_path : String
       property silent : Bool
 
       def initialize(
-                     @args = {cmd_name: "", opt_codes: [] of String},
+                     @args = {cmd_name: "", opt_codes: [] of String, code: ""},
                      @create_file_path = "none",
                      @silent = false)
       end

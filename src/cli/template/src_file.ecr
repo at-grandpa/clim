@@ -11,8 +11,7 @@ module <%= config.args[:cmd_name].camelcase %>
     <%= opt_code %>
     <%- end -%>
     run do |opts, args|
-      # Put your code here.
-      puts opts.help
+      <%= config.args[:code] %>
     end
 
   end
