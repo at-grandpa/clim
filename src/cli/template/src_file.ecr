@@ -1,0 +1,21 @@
+require "./<%= config.args[:cmd_name].underscore %>/*"
+require "clim"
+
+module <%= config.args[:cmd_name].camelcase %>
+  class Cli < Clim
+
+    main_command
+    desc "Command Line Interface."
+    usage "<%= config.args[:cmd_name].underscore %> [options] [arguments]"
+    <%- config.args[:opt_codes].each do |opt_code| -%>
+    <%= opt_code %>
+    <%- end -%>
+    run do |opts, args|
+      # Put your code here.
+      puts opts.help
+    end
+
+  end
+end
+
+<%= config.args["cmd_name"].camelcase %>::Cli.start(ARGV)
