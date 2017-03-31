@@ -1,12 +1,12 @@
+require "./command"
+
 class Clim
   @@main : Command = Command.new("main_command")
   @@defining : Command = @@main
   @@scope_stack : Array(Command) = [] of Command
 
   module Dsl
-    alias Types = String | Bool | Array(String)
-    alias OptionsType = Option(String) | Option(Bool) | Option(Array(String))
-    alias RunProc = Proc(Options::Values, Array(String), Void)
+    alias RunProc = Proc(Options::Values, Array(String), Nil)
 
     def main_command
       raise "Main command is already defined." unless @@scope_stack.empty?

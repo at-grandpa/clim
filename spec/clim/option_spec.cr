@@ -11,6 +11,19 @@ describe Clim::Option do
       opt.desc.should eq("description for spec.  [default:default value]  [required]")
     end
   end
+  describe "#extract_name" do
+    it "extract opt name." do
+      opt = Option(String).new("", "", "", false, "", "")
+      opt.extract_name("-a").should eq("a")
+      opt.extract_name("-a VALUE").should eq("a")
+      opt.extract_name("-a=VALUE").should eq("a")
+      opt.extract_name("--array").should eq("array")
+      opt.extract_name("--array VALUE").should eq("array")
+      opt.extract_name("--array=VALUE").should eq("array")
+      opt.extract_name("--dry-run").should eq("dry-run")
+      opt.extract_name("--dry_run").should eq("dry_run")
+    end
+  end
   describe "#set_value" do
     context "if type is String " do
       it "set exist and value." do

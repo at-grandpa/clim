@@ -22,17 +22,33 @@ describe Clim::Options do
       opts.values.array.should eq(expect_values.array)
     end
   end
-  describe "#extract_opt_name" do
-    it "extract opt name." do
+  describe "#exists_required!" do
+    it "returns self when there is no required options." do
       opts = Options.new
-      opts.extract_opt_name("-a").should eq("a")
-      opts.extract_opt_name("-a VALUE").should eq("a")
-      opts.extract_opt_name("-a=VALUE").should eq("a")
-      opts.extract_opt_name("--array").should eq("array")
-      opts.extract_opt_name("--array VALUE").should eq("array")
-      opts.extract_opt_name("--array=VALUE").should eq("array")
-      opts.extract_opt_name("--dry-run").should eq("dry-run")
-      opts.extract_opt_name("--dry_run").should eq("dry_run")
+      opt1 = Option(String).new("-a", "", "", false, "", "")
+      opt1.set_value = "foo"
+      opts.add opt1
+      opt2 = Option(String).new("-b", "", "", false, "", "")
+      opt2.set_value = "bar"
+      opts.add opt2
+      opts.exists_required!.should eq(nil)
+    end
+    it "raises an Exception when there is required option." do
+      opts = Options.new
+      opt1 = Option(String).new("-a", "", "", false, "", "")
+      opt1.set_value = "foo"
+      opts.add opt1
+      opt2 = Option(String).new("-b", "", "", true, "", "")
+      opts.add opt2
+      expect_raises(Exception, "Required options. \"-b\"") { opts.exists_required! }
+    end
+    it "raises an Exception when there are required options." do
+      opts = Options.new
+      opt1 = Option(String).new("-a", "", "", true, "", "")
+      opts.add opt1
+      opt2 = Option(String).new("-b", "", "", true, "", "")
+      opts.add opt2
+      expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.exists_required! }
     end
   end
 end
