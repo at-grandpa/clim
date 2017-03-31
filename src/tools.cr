@@ -1,6 +1,6 @@
 require "./clim"
 
-class Cli < Clim
+class Tools < Clim
   main_command
   desc "Clim command line interface tools."
   usage "clim [sub-command] [options] ..."
@@ -33,7 +33,7 @@ class Cli < Clim
     run do |opts, args|
       if opts.b["clim"]
         raise "Wrong number of arguments for 'clim direct command-name' (given #{args.size}, expected 1)" unless args.size == 1
-        args[0] = args[0] + "_tmp"
+        args[0] = args[0] + "_directly_build_tmp"
         Init.run(opts, args, silent: true)
         Direct.run_with_clim(opts, args)
       else
@@ -43,7 +43,7 @@ class Cli < Clim
   end
 end
 
-require "./cli/init"
-require "./cli/direct"
+require "./tools/init"
+require "./tools/direct"
 
-Cli.start(ARGV)
+Tools.start(ARGV)

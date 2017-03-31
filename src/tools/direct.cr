@@ -2,7 +2,7 @@ require "tempfile"
 require "file_utils"
 require "./path"
 
-class Cli
+class Tools
   class Direct
     def self.run(opts, args)
       tempfile = Tempfile.open("direct_crystal_build") do |file|

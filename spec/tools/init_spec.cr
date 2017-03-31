@@ -1,6 +1,6 @@
 require "./../spec_helper"
 
-describe Cli::Init do
+describe Tools::Init do
   describe "#valid_name?" do
     it "returns true if the name is valid." do
       Init.valid_name?("foo").should be_true

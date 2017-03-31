@@ -2,7 +2,7 @@ require "yaml"
 require "./file_creator"
 require "./path"
 
-class Cli
+class Tools
   class Init
     def self.run(opts, args, silent = false)
       raise "CLI tool name is necessary." if args.empty?
@@ -79,7 +79,7 @@ class Cli
         {
           cmd_name:  name,
           opt_codes: opt_codes,
-          code: code,
+          code:      code,
         },
         silent
       )

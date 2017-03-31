@@ -1,4 +1,4 @@
-class Cli
+class Tools
   module Path
     def self.pwd : String
       pwd = `pwd`

@@ -89,7 +89,7 @@ end
 Hello::Cli.start(ARGV)
 ```
 
-See also [src/cli.cr](https://github.com/at-grandpa/clim/blob/master/src/cli.cr)
+See also [src/tools.cr](https://github.com/at-grandpa/clim/blob/master/src/tools.cr)
 
 ## Usage
 
@@ -166,7 +166,7 @@ Clim also has a cli tools.
 ### Build
 
 ```
-$ crystal build src/cli.cr -o clim --release
+$ crystal build src/tools.cr -o clim --release
 $ ./clim
 
   Clim command line interface tools.

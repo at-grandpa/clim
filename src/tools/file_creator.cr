@@ -1,7 +1,7 @@
 require "ecr/macros"
 require "colorize"
 
-class Cli
+class Tools
   class FileCreator
     ECR_TABLE = {
       "src_file.ecr" => SrcFileTemplate,
