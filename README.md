@@ -110,7 +110,7 @@ require "clim"
 #### usage
 
 ```crystal
-  usage  "mycli [sub-command] [options] ..."  # Command description.
+  usage  "mycli [sub-command] [options] ..."  # Command usage.
 ```
 
 #### string
