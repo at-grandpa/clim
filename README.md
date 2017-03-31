@@ -54,7 +54,7 @@ module Hello
 
     main_command
     #
-    # Put main command options here.
+    # Put main command informations & options here.
     #
     run do |opts, args|
       # Put main command code here.
@@ -63,7 +63,7 @@ module Hello
     sub do
       command "sub_command"
       #
-      # Put sub command options here.
+      # Put sub command informations & options here.
       #
       run do |opts, args|
         # Put sub command code here.
@@ -72,7 +72,7 @@ module Hello
       sub do
         command "sub_sub_command"
         #
-        # Put sub sub command options here.
+        # Put sub sub command informations & options here.
         #
         run do |opts, args|
           # Put sub sub command code here.
@@ -99,7 +99,7 @@ See also [src/tools.cr](https://github.com/at-grandpa/clim/blob/master/src/tools
 require "clim"
 ```
 
-### Options
+### Command Informations
 
 #### desc
 
@@ -112,6 +112,8 @@ require "clim"
 ```crystal
   usage  "mycli [sub-command] [options] ..."  # Command usage.
 ```
+
+### Command Options
 
 #### string
 
