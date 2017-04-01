@@ -1,14 +1,12 @@
 class Clim
   class Option(T)
-    @short : String
-    @long : String
-    @default : T
-    @required : Bool
-    @desc : String
-    @value : T
-    @exist : Bool
-
-    getter short, long, default, required, desc, value, exist
+    property short : String
+    property long : String
+    property default : T
+    property required : Bool
+    property desc : String
+    property value : T
+    property exist : Bool
 
     def initialize(@short, @long, @default, @required, @desc, @value, @exist = false)
     end
