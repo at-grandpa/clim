@@ -9,9 +9,9 @@ class Clim
     property help : String = ""
 
     def add(opt)
-      raise ClimException.new "Empty short option." if opt.short.empty?
-      raise ClimException.new "Duplicate option. \"#{opt.short}\"" if opts.map(&.short).includes?(opt.short)
-      raise ClimException.new "Duplicate option. \"#{opt.long}\"" if opts.map(&.long).reject(&.empty?).includes?(opt.long)
+      raise ClimException.new "Empty short option." if opt.short_name.empty?
+      raise ClimException.new "Duplicate option. \"-#{opt.short_name}\"" if opts.map(&.short_name).includes?(opt.short_name)
+      raise ClimException.new "Duplicate option. \"--#{opt.long_name}\"" if opts.map(&.long_name).reject(&.empty?).includes?(opt.long_name)
       opts << opt
     end
 

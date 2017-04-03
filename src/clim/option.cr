@@ -11,8 +11,16 @@ class Clim
     def initialize(@short, @long, @default, @required, @desc, @value, @exist = false)
     end
 
+    def short_name
+      extract_name(short)
+    end
+
+    def long_name
+      extract_name(long)
+    end
+
     def name
-      extract_name(long.empty? ? short : long)
+      long.empty? ? short_name : long_name
     end
 
     def extract_name(name)
