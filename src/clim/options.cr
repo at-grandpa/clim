@@ -16,18 +16,18 @@ class Clim
     end
 
     def check_short_option_empty!(opt)
-      raise "Empty short option." if opt.short.empty?
+      raise ClimException.new "Empty short option." if opt.short.empty?
     end
 
     def check_short_option_duplication!(opt)
       if opts.map(&.short).includes?(opt.short)
-        raise "Duplicate option. \"#{opt.short}\""
+        raise ClimException.new "Duplicate option. \"#{opt.short}\""
       end
     end
 
     def check_long_option_duplication!(opt)
       if opts.map(&.long).reject(&.empty?).includes?(opt.long)
-        raise "Duplicate option. \"#{opt.long}\""
+        raise ClimException.new "Duplicate option. \"#{opt.long}\""
       end
     end
 
@@ -48,7 +48,7 @@ class Clim
           # define #merge!
           def merge!(hash : Hash(String, {{type.id}}))
             {{property_name.id}}.merge!(hash) do |key, _, _|
-              raise "Duplicate {{property_name.id}} option. \"#{key}\""
+              raise ClimException.new "Duplicate {{property_name.id}} option. \"#{key}\""
             end
           end
         {% end %}

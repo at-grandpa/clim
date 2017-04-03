@@ -4,11 +4,11 @@ require "option_parser"
 class Clim
   class Command
     property name : String = ""
-    property desc : String = ""
-    property usage : String = ""
+    property desc : String = "Command Line Interface Tool."
+    property usage : String = "{command} [options] [arguments]"
     property opts : Options = Options.new
     property args : Array(String) = [] of String
-    property run_proc : Dsl::RunProc = Dsl::RunProc.new { }
+    property run_proc : RunProc = RunProc.new { {% if flag?(:spec) %}  {opts: Options::Values.new, args: [] of String} {% end %} }
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(self) = [] of self
     property display_help_flag : Bool = false
@@ -19,9 +19,9 @@ class Clim
     end
 
     def initialize_parser
-      parser.on("-h", "--help", "Show this help.") { self.display_help_flag = true }
-      parser.invalid_option { |opt_name| raise "Undefined option. \"#{opt_name}\"" }
-      parser.missing_option { |opt_name| raise "Option that requires an argument. \"#{opt_name}\"" }
+      parser.on("-h", "--help", "Show this help.") { @display_help_flag = true }
+      parser.invalid_option { |opt_name| raise ClimException.new "Undefined option. \"#{opt_name}\"" }
+      parser.missing_option { |opt_name| raise ClimException.new "Option that requires an argument. \"#{opt_name}\"" }
       parser.unknown_args { |unknown_args| self.args = unknown_args }
     end
 
@@ -66,12 +66,11 @@ class Clim
 
     def run(argv)
       run_cmd = parse(argv)
-      proc = run_cmd.display_help_flag ? run_cmd.help_proc : run_cmd.run_proc
-      proc.call(run_cmd.opts.values, run_cmd.args)
+      run_cmd.run_proc.call(run_cmd.opts.values, run_cmd.args)
     end
 
     def help_proc
-      Dsl::RunProc.new { puts help }
+      RunProc.new { {% if flag?(:spec) %} {opts: opts.values, args: args} {% else %} puts help {% end %} }
     end
 
     def parse(argv)
@@ -82,10 +81,17 @@ class Clim
       sub_cmds.first.parse(argv[1..-1])
     end
 
-    def parse_by_parser(argv)
+    def prepare_parse
       opts.reset
+      @display_help_flag = false
+      @args = [] of String
+    end
+
+    def parse_by_parser(argv)
+      prepare_parse
       parser.parse(argv)
-      opts.exists_required! unless display_help_flag
+      opts.exists_required! unless @display_help_flag
+      @run_proc = help_proc if @display_help_flag
       opts.help = help
       self
     end
