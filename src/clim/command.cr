@@ -22,11 +22,15 @@ class Clim
       parser.on("-h", "--help", "Show this help.") { @display_help_flag = true }
       parser.invalid_option { |opt_name| raise ClimException.new "Undefined option. \"#{opt_name}\"" }
       parser.missing_option { |opt_name| raise ClimException.new "Option that requires an argument. \"#{opt_name}\"" }
-      parser.unknown_args { |unknown_args| self.args = unknown_args }
+      parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
     def help
-      base_help = <<-HELP_MESSAGE
+      sub_cmds.empty? ? base_help : base_help + sub_cmds_help
+    end
+
+    def base_help
+      <<-HELP_MESSAGE
 
         #{desc}
 
@@ -40,37 +44,35 @@ class Clim
 
 
       HELP_MESSAGE
-
-      sub_cmds.empty? ? base_help : base_help + sub_cmds_help
     end
 
     def sub_cmds_help
-      sub_cmds_help = [] of String
-      sub_cmds.map do |cmd|
-        name = cmd.name + "#{" " * (max_name_length - cmd.name.size)}"
-        sub_cmds_help << "    #{name}   #{cmd.desc}"
-      end
       <<-HELP_MESSAGE
         Sub Commands:
 
-      #{sub_cmds_help.join("\n")}
+      #{sub_cmds_help_lines.join("\n")}
 
 
       HELP_MESSAGE
     end
 
+    def sub_cmds_help_lines
+      sub_cmds.map do |cmd|
+        name = cmd.name + "#{" " * (max_name_length - cmd.name.size)}"
+        "    #{name}   #{cmd.desc}"
+      end
+    end
+
     def max_name_length
-      return 0 if sub_cmds.empty?
-      sub_cmds.map(&.name.size).max
+      sub_cmds.empty? ? 0 : sub_cmds.map(&.name.size).max
     end
 
-    def run(argv)
-      run_cmd = parse(argv)
-      run_cmd.run_proc.call(run_cmd.opts.values, run_cmd.args)
+    def parse_and_run(argv)
+      parse(argv).run
     end
 
-    def help_proc
-      RunProc.new { {% if flag?(:spec) %} {opts: opts.values, args: args} {% else %} puts help {% end %} }
+    def run
+      run_proc.call(opts.values, args)
     end
 
     def parse(argv)
@@ -81,12 +83,6 @@ class Clim
       sub_cmds.first.parse(argv[1..-1])
     end
 
-    def prepare_parse
-      opts.reset
-      @display_help_flag = false
-      @args = [] of String
-    end
-
     def parse_by_parser(argv)
       prepare_parse
       parser.parse(argv)
@@ -94,6 +90,16 @@ class Clim
       @run_proc = help_proc if @display_help_flag
       opts.help = help
       self
+    end
+
+    def prepare_parse
+      opts.reset
+      @display_help_flag = false
+      @args = [] of String
+    end
+
+    def help_proc
+      RunProc.new { {% if flag?(:spec) %} {opts: opts.values, args: args} {% else %} puts help {% end %} }
     end
 
     def find_sub_cmds_by(name)

@@ -44,5 +44,9 @@ class Clim
       @exist = false
       @value = @default.dup
     end
+
+    def invalid_required?
+      required && !exist
+    end
   end
 end

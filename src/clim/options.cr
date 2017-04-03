@@ -9,26 +9,10 @@ class Clim
     property help : String = ""
 
     def add(opt)
-      check_short_option_empty!(opt)
-      check_short_option_duplication!(opt)
-      check_long_option_duplication!(opt)
-      opts << opt
-    end
-
-    def check_short_option_empty!(opt)
       raise ClimException.new "Empty short option." if opt.short.empty?
-    end
-
-    def check_short_option_duplication!(opt)
-      if opts.map(&.short).includes?(opt.short)
-        raise ClimException.new "Duplicate option. \"#{opt.short}\""
-      end
-    end
-
-    def check_long_option_duplication!(opt)
-      if opts.map(&.long).reject(&.empty?).includes?(opt.long)
-        raise ClimException.new "Duplicate option. \"#{opt.long}\""
-      end
+      raise ClimException.new "Duplicate option. \"#{opt.short}\"" if opts.map(&.short).includes?(opt.short)
+      raise ClimException.new "Duplicate option. \"#{opt.long}\"" if opts.map(&.long).reject(&.empty?).includes?(opt.long)
+      opts << opt
     end
 
     class Values
@@ -41,7 +25,7 @@ class Clim
           property {{property_name.id}} : Hash(String, {{type.id}}) = {} of String => {{type.id}}
 
           def {{property_name.split("").first.id}}
-              {{property_name.id}}
+            {{property_name.id}}
           end
 
           def merge!(hash : Hash(String, {{type.id}}))
@@ -69,11 +53,13 @@ class Clim
     end
 
     def exists_required!
-      invalid_names = [] of String
-      opts.each do |opt|
-        invalid_names << opt.short if opt.required && !opt.exist
-      end
-      raise "Required options. \"#{invalid_names.join("\", \"")}\"" unless invalid_names.empty?
+      raise "Required options. \"#{invalid_required_names.join("\", \"")}\"" unless invalid_required_names.empty?
+    end
+
+    def invalid_required_names
+      opts.map do |opt|
+        opt.invalid_required? ? opt.short : nil
+      end.compact
     end
   end
 end

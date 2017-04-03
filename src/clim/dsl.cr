@@ -70,7 +70,7 @@ class Clim
     end
 
     def start_main(argv)
-      @@main.run(argv)
+      @@main.parse_and_run(argv)
     end
 
     def start(argv)

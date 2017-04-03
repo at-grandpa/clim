@@ -32,60 +32,6 @@ describe Clim::Options do
       end
     end
   end
-  describe "#check_short_option_empty!" do
-    it "raises an Exception when short option name is empty." do
-      opts = Options.new
-      expect_raises(Exception, "Empty short option.") do
-        opts.check_short_option_empty!(Option(String).new("", "", "", false, "", ""))
-      end
-    end
-    it "not raises an Exception when short option name is not empty." do
-      opts = Options.new
-      opts.check_short_option_empty!(Option(String).new("-a", "", "", false, "", ""))
-      (true).should be_true
-    end
-  end
-  describe "#check_short_option_duplication!" do
-    it "raises an Exception when short option name is duplicated." do
-      opts = Options.new
-      opts.add Option(String).new("-a", "--array", "", false, "", "")
-      expect_raises(Exception, "Duplicate option. \"-a\"") do
-        opts.check_short_option_duplication!(Option(String).new("-a", "--array", "", false, "", ""))
-      end
-    end
-    it "not raises an Exception when short option name is not duplicated." do
-      opts = Options.new
-      opts.add Option(String).new("-a", "", "", false, "", "")
-      opts.check_short_option_duplication!(Option(String).new("-b", "--array", "", false, "", ""))
-      (true).should be_true
-    end
-  end
-  describe "#check_long_option_duplication!" do
-    it "raises an Exception when long option name is duplicated." do
-      opts = Options.new
-      opts.add Option(String).new("-a", "--array", "", false, "", "")
-      expect_raises(Exception, "Duplicate option. \"--array\"") do
-        opts.check_long_option_duplication!(Option(String).new("-b", "--array", "", false, "", ""))
-      end
-    end
-    it "raises an Exception when long option name other than empty is duplicated." do
-      opts = Options.new
-      opts.add Option(String).new("-a", "", "", false, "", "")
-      opts.add Option(String).new("-b", "", "", false, "", "")
-      opts.add Option(String).new("-c", "--array", "", false, "", "")
-      expect_raises(Exception, "Duplicate option. \"--array\"") do
-        opts.check_long_option_duplication!(Option(String).new("-d", "--array", "", false, "", ""))
-      end
-    end
-    it "not raises an Exception when long option name other than empty is not duplicated." do
-      opts = Options.new
-      opts.add Option(String).new("-a", "", "", false, "", "")
-      opts.add Option(String).new("-b", "", "", false, "", "")
-      opts.add Option(String).new("-c", "--array", "", false, "", "")
-      opts.check_long_option_duplication!(Option(String).new("-d", "--bool", "", false, "", ""))
-      (true).should be_true
-    end
-  end
   describe Options::Values do
     describe "short name method." do
       describe "String" do
