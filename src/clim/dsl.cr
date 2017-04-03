@@ -69,18 +69,14 @@ class Clim
       @@scope_stack.pop
     end
 
-    def start(argv)
-      start_main(argv)
-    rescue ex
-      puts ex.message
-    end
-
     def start_main(argv)
       @@main.run(argv)
     end
 
-    def main
-      @@main
+    def start(argv)
+      start_main(argv)
+    rescue ex
+      puts ex.message
     end
   end
 end

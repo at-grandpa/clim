@@ -37,15 +37,13 @@ class Clim
       macro define_methods(*types)
         {% for type in types %}
           {% property_name = type.stringify.split("(").first.downcase %}
-          # define property
+
           property {{property_name.id}} : Hash(String, {{type.id}}) = {} of String => {{type.id}}
 
-          # define short name method
           def {{property_name.split("").first.id}}
               {{property_name.id}}
           end
 
-          # define #merge!
           def merge!(hash : Hash(String, {{type.id}}))
             {{property_name.id}}.merge!(hash) do |key, _, _|
               raise ClimException.new "Duplicate {{property_name.id}} option. \"#{key}\""

@@ -1,6 +1,6 @@
 # clim
 
-"clim" is slim CLI builder and tools by Crystal.
+"clim" is slim command line interface builder by Crystal.
 
 *"clim" = "cli" + "slim"*
 
@@ -92,8 +92,6 @@ end
 Hello::Cli.start(ARGV)
 ```
 
-See also [src/tools.cr](https://github.com/at-grandpa/clim/blob/master/src/tools.cr)
-
 ## Usage
 
 ### require
@@ -163,130 +161,17 @@ require "clim"
     puts opts.help      # Get help string.
   end
 ```
+## Development
+
+Spec.
+
+```
+$ make spec
+```
 
 ## Tools
 
-Clim also has a cli tools.
-
-### Build
-
-```
-$ crystal build src/tools.cr -o clim --release
-$ ./clim
-
-  Clim command line interface tools.
-
-  Usage:
-
-    clim [sub-command] [options] ...
-
-  Options:
-
-    -h, --help                       Show this help.
-
-  Sub Commands:
-
-    init     Creates CLI tool skeleton.
-    direct   Directly build the crystal code.
-
-```
-
-### Sub commands
-
-#### init
-
-Creates CLI tool skeleton.
-
-```
-$ ./clim init -h
-
-  Creates CLI tool skeleton.
-
-  Usage:
-
-    clim init command-name [options] ...
-
-  Options:
-
-    -h, --help                       Show this help.
-    -e CODE, --eval=CODE             Code to insert into the run block.  [default:puts opts.help]
-    -s NAME:DESC, --string=NAME:DESC Add "string" option.  [default:[]]
-    -b NAME:DESC, --bool=NAME:DESC   Add "bool"   option.  [default:[]]
-    -a NAME:DESC, --array=NAME:DESC  Add "array"  option.  [default:[]]
-
-$ ./clim init hello -a name:'Target name.' -s greeting:'Words of greetings.' -e 'puts "#{opts.s["greeting"]},\n#{opts.a["name"].join(", ")}!"'
-
-...
-
-$ cd hello
-$ crystal dep
-$ crystal build src/hello.cr
-$ ./hello -h
-
-  Command Line Interface.
-
-  Usage:
-
-    hello [options] [arguments]
-
-  Options:
-
-    -h, --help                       Show this help.
-    -g VALUE, --greeting=VALUE       Words of greetings.
-    -n VALUE, --name=VALUE           Target name.  [default:[]]
-
-```
-
-#### direct
-
-Directly build the crystal code.
-
-```
-$ ./clim direct -h
-
-  Directly build the crystal code.
-
-  Usage:
-
-    clim direct [command-name] [options] ...
-
-  Options:
-
-    -h, --help                       Show this help.
-    -o FILE, --output=FILE           Output filename.  [default:/tmp/crystal.out]
-    -e CODE, --eval=CODE             Crystal code to evaluation.  [default:puts "Hello, world!!"]
-    -r, --release                    Compile in release mode.  [default:false]
-    -c, --clim                       Use clim library.  [default:false]
-    -s NAME:DESC, --string=NAME:DESC Add "string" option. (with "-c")  [default:[]]
-    -b NAME:DESC, --bool=NAME:DESC   Add "bool"   option. (with "-c")  [default:[]]
-    -a NAME:DESC, --array=NAME:DESC  Add "array"  option. (with "-c")  [default:[]]
-
-$ ./clim direct -o ./fib -e 'def fib(n); return n if n < 2; fib(n - 2) + fib(n - 1); end; puts fib(ARGV[0].to_i32)'
-./fib
-$ ./fib 10
-55
-```
-
-Use clim library. `-c` or `--clim`
-```
-$ ./clim direct hello -a name:'Target name.' -s greeting:'Words of greetings.' -e 'puts "#{opts.s["greeting"]},\n#{opts.a["name"].join(", ")}!"' -o ./hello -c
-
-./hello
-$ ./hello -h
-
-  Command Line Interface.
-
-  Usage:
-
-    hello_tmp [options] [arguments]
-
-  Options:
-
-    -h, --help                       Show this help.
-    -g VALUE, --greeting=VALUE       Words of greetings.
-    -n VALUE, --name=VALUE           Target name.  [default:[]]
-
-```
+[clim-tools](https://github.com/at-grandpa/clim-tools)
 
 ## Contributing
 
