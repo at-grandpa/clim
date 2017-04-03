@@ -1,48 +1,42 @@
 require "./dsl"
+require "option_parser"
 
 class Clim
   class Command
-    @name : String = ""
-    @desc : String = ""
-    @usage : String = ""
-    @opts : Options = Options.new
-    @args : Array(String) = [] of String
-    @run_proc : Dsl::RunProc = Dsl::RunProc.new { }
-    @parser : OptionParser = OptionParser.new
-    @sub_cmds : Array(self) = [] of self
-    @display_help_flag : Bool = false
-
-    property name, desc, usage, opts, args, run_proc, parser, sub_cmds, display_help_flag
+    property name : String = ""
+    property desc : String = "Command Line Interface Tool."
+    property usage : String = "{command} [options] [arguments]"
+    property opts : Options = Options.new
+    property args : Array(String) = [] of String
+    property run_proc : RunProc = RunProc.new { {% if flag?(:spec) %}  {opts: Options::Values.new, args: [] of String} {% end %} }
+    property parser : OptionParser = OptionParser.new
+    property sub_cmds : Array(self) = [] of self
+    property display_help_flag : Bool = false
 
     def initialize(@name)
-      @usage = "#{@name} [options] [arguments]"
-      @parser = OptionParser.new
-      @parser.on("-h", "--help", "Show this help.") { self.display_help_flag = true }
-      @parser.invalid_option { |name| raise "Undefined option. \"#{name}\"" }
-      @parser.missing_option { |name| raise "Option that requires an argument. \"#{name}\"" }
-      @parser.unknown_args { |unknown_args| self.args = unknown_args }
+      @usage = "#{name} [options] [arguments]"
+      initialize_parser
     end
 
-    def check_required
-      required_names = [] of String
-      @opts.all.each do |opt|
-        required_names << opt.short if opt.required && !opt.exist
-      end
-      raise "Required options. \"#{required_names.join("\", \"")}\"" unless required_names.empty?
+    def initialize_parser
+      parser.on("-h", "--help", "Show this help.") { @display_help_flag = true }
+      parser.invalid_option { |opt_name| raise ClimException.new "Undefined option. \"#{opt_name}\"" }
+      parser.missing_option { |opt_name| raise ClimException.new "Option that requires an argument. \"#{opt_name}\"" }
+      parser.unknown_args { |unknown_args| self.args = unknown_args }
     end
 
     def help
       base_help = <<-HELP_MESSAGE
 
-        #{@desc}
+        #{desc}
 
         Usage:
 
-          #{@usage}
+          #{usage}
 
         Options:
 
-      #{@parser}
+      #{parser}
 
 
       HELP_MESSAGE
@@ -71,35 +65,39 @@ class Clim
     end
 
     def run(argv)
-      cmd = parse(argv)
-      proc = cmd.display_help_flag ? cmd.help_proc : cmd.run_proc
-      cmd.opts.set_help(cmd.help)
-      proc.call(cmd.opts.values, cmd.args)
+      run_cmd = parse(argv)
+      run_cmd.run_proc.call(run_cmd.opts.values, run_cmd.args)
     end
 
     def help_proc
-      Dsl::RunProc.new { puts help }
+      RunProc.new { {% if flag?(:spec) %} {opts: opts.values, args: args} {% else %} puts help {% end %} }
     end
 
     def parse(argv)
       return parse_by_parser(argv) if argv.empty?
-      cmds = find_sub_cmds_by(argv.first)
-      return parse_by_parser(argv) if cmds.empty?
-      raise "There are duplicate registered commands. [#{argv.first}]" if cmds.size > 1
-      cmds.first.parse(argv[1..-1])
+      sub_cmds = find_sub_cmds_by(argv.first)
+      return parse_by_parser(argv) if sub_cmds.empty?
+      raise "There are duplicate registered commands. [#{argv.first}]" if sub_cmds.size > 1
+      sub_cmds.first.parse(argv[1..-1])
+    end
+
+    def prepare_parse
+      opts.reset
+      @display_help_flag = false
+      @args = [] of String
     end
 
     def parse_by_parser(argv)
-      opts.reset
+      prepare_parse
       parser.parse(argv)
-      check_required unless display_help_flag
+      opts.exists_required! unless @display_help_flag
+      @run_proc = help_proc if @display_help_flag
+      opts.help = help
       self
     end
 
     def find_sub_cmds_by(name)
-      sub_cmds.select do |sub_cmd|
-        sub_cmd.name == name
-      end
+      sub_cmds.select(&.name.==(name))
     end
   end
 end

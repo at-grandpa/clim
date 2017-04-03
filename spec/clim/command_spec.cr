@@ -11,50 +11,6 @@ describe Clim::Command do
       cmd.parser.to_s.should eq("    -h, --help                       Show this help.")
     end
   end
-  describe "#check_required" do
-    it "returns self when there is no required options." do
-      cmd = Command.new("spec_command")
-      opts = Options.new
-
-      opt1 = Option(String).new("-a", "", "", false, "", "")
-      opt1.set_value = "foo"
-      opts.add opt1
-
-      opt2 = Option(String).new("-b", "", "", false, "", "")
-      opt2.set_value = "bar"
-      opts.add opt2
-
-      cmd.opts = opts
-      cmd.check_required.should eq(nil)
-    end
-    it "raises an Exception when there is required option." do
-      cmd = Command.new("spec_command")
-      opts = Options.new
-
-      opt1 = Option(String).new("-a", "", "", false, "", "")
-      opt1.set_value = "foo"
-      opts.add opt1
-
-      opt2 = Option(String).new("-b", "", "", true, "", "")
-      opts.add opt2
-
-      cmd.opts = opts
-      expect_raises(Exception, "Required options. \"-b\"") { cmd.check_required }
-    end
-    it "raises an Exception when there are required options." do
-      cmd = Command.new("spec_command")
-      opts = Options.new
-
-      opt1 = Option(String).new("-a", "", "", true, "", "")
-      opts.add opt1
-
-      opt2 = Option(String).new("-b", "", "", true, "", "")
-      opts.add opt2
-
-      cmd.opts = opts
-      expect_raises(Exception, "Required options. \"-a\", \"-b\"") { cmd.check_required }
-    end
-  end
   describe "#help" do
     it "returns help message when there is no sub_commands." do
       cmd = Command.new("spec_command")

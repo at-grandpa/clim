@@ -1,16 +1,26 @@
 class Clim
   class Option(T)
-    @short : String
-    @long : String
-    @default : T
-    @required : Bool
-    @desc : String
-    @value : T
-    @exist : Bool
-
-    getter short, long, default, required, desc, value, exist
+    property short : String
+    property long : String
+    property default : T
+    property required : Bool
+    property desc : String
+    property value : T
+    property exist : Bool
 
     def initialize(@short, @long, @default, @required, @desc, @value, @exist = false)
+    end
+
+    def name
+      extract_name(long.empty? ? short : long)
+    end
+
+    def extract_name(name)
+      name.split(/(\s|=)/).first.gsub(/^-*/, "")
+    end
+
+    def to_h
+      {name => value}
     end
 
     def desc

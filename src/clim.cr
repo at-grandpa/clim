@@ -1,6 +1,7 @@
+require "./clim/exception"
 require "./clim/option"
 require "./clim/options"
-require "./clim/command.cr"
+require "./clim/command"
 require "./clim/dsl"
 require "./clim/*"
 require "option_parser"
