@@ -3,4 +3,4 @@ crystal:
   - latest
   - nightly
 script:
-  - crystal spec
+  - make spec
