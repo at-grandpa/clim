@@ -1,6 +1,6 @@
 # clim
 
-"clim" is slim command line interface builder by Crystal.
+"clim" is slim command line interface builder for Crystal.
 
 *"clim" = "cli" + "slim"*
 
