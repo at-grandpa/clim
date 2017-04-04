@@ -4,6 +4,8 @@
 
 *"clim" = "cli" + "slim"*
 
+[![Build Status](https://travis-ci.org/at-grandpa/clim.svg?branch=master)](https://travis-ci.org/at-grandpa/clim)
+
 ## Installation
 
 Add this to your application's `shard.yml`:
