@@ -13,6 +13,7 @@ dependencies:
   clim:
     github: at-grandpa/clim
 ```
+
 ## Sample Code
 
 ```crystal
@@ -39,6 +40,20 @@ Hello::Cli.start(ARGV)
 
 ```
 $ crystal build src/hello.cr
+$ ./hello -h
+
+  Hello CLI tool.
+
+  Usage:
+
+    hello [options] [arguments] ...
+
+  Options:
+
+    -h, --help                       Show this help.
+    -n NAME, --name=NAME             Target name.  [default:[]]
+    -g WORDS, --greeting=WORDS       Words of greetings.  [default:Hello]
+
 $ ./hello -n Taro -n Miko -g 'Good night'
 Good night,
 Taro, Miko!
