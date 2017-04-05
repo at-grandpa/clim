@@ -1000,11 +1000,11 @@ describe "main command with string required false only." do
     [
       {
         argv:              %w(),
-        exception_message: "Please specified default value. \"-s ARG\"",
+        exception_message: "Please specified default value or required true. \"-s ARG\"",
       },
       {
         argv:              %w(arg1),
-        exception_message: "Please specified default value. \"-s ARG\"",
+        exception_message: "Please specified default value or required true. \"-s ARG\"",
       },
       {
         argv:              %w(-s),
