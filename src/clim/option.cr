@@ -6,9 +6,9 @@ class Clim
     property required : Bool
     property desc : String
     property value : T
-    property exist : Bool
+    property set_value_flag : Bool
 
-    def initialize(@short, @long, @default, @required, @desc, @value, @exist = false)
+    def initialize(@short, @long, @default, @required, @desc, @value, @set_value_flag = false)
     end
 
     def short_name
@@ -38,10 +38,10 @@ class Clim
       desc
     end
 
-    def set_string(@value, @exist = true)
+    def set_string(@value, @set_value_flag = true)
     end
 
-    def set_bool(arg, @exist = true)
+    def set_bool(arg, @set_value_flag = true)
       if arg.empty?
         @value = true
       else
@@ -50,16 +50,20 @@ class Clim
       end
     end
 
-    def add_to_array(arg, @exist = true)
+    def add_to_array(arg, @set_value_flag = true)
       @value << arg
     end
 
-    def reset(@exist = false)
+    def reset(@set_value_flag = false)
       @value = @default.dup
     end
 
+    def set_value?
+      @set_value_flag
+    end
+
     def invalid_required?
-      required && !exist
+      required && !set_value?
     end
   end
 end
