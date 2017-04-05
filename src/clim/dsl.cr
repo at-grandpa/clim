@@ -48,15 +48,9 @@ class Clim
       end
     end
 
-    difine_opts(type: String, default: "") { |arg| opt.set_value = arg }
-    difine_opts(type: Bool, default: false) { |arg| opt.set_value = set_bool_by(arg) }
-    difine_opts(type: Array(String), default: [] of String) { |arg| opt.add_value(arg) }
-
-    def set_bool_by(arg)
-      return true if arg.empty?
-      raise ClimException.new "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]" unless arg === "true" || arg == "false"
-      arg === "true"
-    end
+    difine_opts(type: String, default: "") { |arg| opt.set_string(arg) }
+    difine_opts(type: Bool, default: false) { |arg| opt.set_bool(arg) }
+    difine_opts(type: Array(String), default: [] of String) { |arg| opt.add_to_array(arg) }
 
     def run(&block : RunProc)
       @@defining.run_proc = block

@@ -168,17 +168,17 @@ describe Clim::Options do
     it "returns self when there is no required options." do
       opts = Options.new
       opt1 = Option(String).new("-a", "", "", false, "", "")
-      opt1.set_value = "foo"
+      opt1.set_string("foo")
       opts.add opt1
       opt2 = Option(String).new("-b", "", "", false, "", "")
-      opt2.set_value = "bar"
+      opt2.set_string("bar")
       opts.add opt2
       opts.exists_required!.should eq(nil)
     end
     it "raises an Exception when there is required option." do
       opts = Options.new
       opt1 = Option(String).new("-a", "", "", false, "", "")
-      opt1.set_value = "foo"
+      opt1.set_string("foo")
       opts.add opt1
       opt2 = Option(String).new("-b", "", "", true, "", "")
       opts.add opt2

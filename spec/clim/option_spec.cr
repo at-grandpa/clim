@@ -48,11 +48,11 @@ describe Clim::Option do
       opt.to_h.should eq({"long-name" => ["a", "b"]})
     end
   end
-  describe "#set_value" do
+  describe "#set_string" do
     context "if type is String " do
       it "set exist and value." do
         opt = Option(String).new("", "", "", false, "", "")
-        opt.set_value = "set value"
+        opt.set_string("set value")
         opt.exist.should be_true
         opt.value.should eq("set value")
       end
@@ -60,16 +60,16 @@ describe Clim::Option do
     context "if type is Bool " do
       it "set exist and value." do
         opt = Option(Bool).new("", "", false, false, "", false)
-        opt.set_value = true
+        opt.set_bool("true")
         opt.exist.should be_true
         opt.value.should eq(true)
       end
     end
   end
-  describe "#add_value" do
+  describe "#add_to_array" do
     it "set exist and value." do
       opt = Option(Array(String)).new("", "", [] of String, false, "", [] of String)
-      opt.add_value("set value")
+      opt.add_to_array("set value")
       opt.exist.should be_true
       opt.value.should eq(["set value"])
     end
