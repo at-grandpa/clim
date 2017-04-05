@@ -164,7 +164,7 @@ describe Clim::Options do
       opts.values.array.should eq(expect_values.array)
     end
   end
-  describe "#exists_required!" do
+  describe "#validate!" do
     it "returns self when there is no required options." do
       opts = Options.new
       opt1 = Option(String).new("-a", "", "", false, "", "")
@@ -173,7 +173,7 @@ describe Clim::Options do
       opt2 = Option(String).new("-b", "", "", false, "", "")
       opt2.set_string("bar")
       opts.add opt2
-      opts.exists_required!.should eq(nil)
+      opts.validate!.should eq(nil)
     end
     it "raises an Exception when there is required option." do
       opts = Options.new
@@ -182,7 +182,7 @@ describe Clim::Options do
       opts.add opt1
       opt2 = Option(String).new("-b", "", "", true, "", "")
       opts.add opt2
-      expect_raises(Exception, "Required options. \"-b\"") { opts.exists_required! }
+      expect_raises(Exception, "Required options. \"-b\"") { opts.validate! }
     end
     it "raises an Exception when there are required options." do
       opts = Options.new
@@ -190,7 +190,7 @@ describe Clim::Options do
       opts.add opt1
       opt2 = Option(String).new("-b", "", "", true, "", "")
       opts.add opt2
-      expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.exists_required! }
+      expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.validate! }
     end
   end
 end

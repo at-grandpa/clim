@@ -35,14 +35,26 @@ class Clim
     macro difine_opts(type, default, &proc)
       {% method_name = type.stringify.split("(").first.downcase.id %}
 
-      def {{method_name}}(short, long, default : {{type}} = {{default}}, required = false, desc = "Option description.")
-        opt = Option({{type}}).new(short, long, default, required, desc, default)
+      def {{method_name}}(short, long, default : {{type}} | Nil = nil, required = false, desc = "Option description.")
+        if default.nil?
+          opt = Option({{type}}).new(short, long, {{default}}, required, desc, {{default}})
+          {% if type.id == Bool.id %} opt.set_default_flag = true {% end %}
+        else
+          opt = Option({{type}}).new(short, long, default, required, desc, default)
+          opt.set_default_flag = true
+        end
         @@defining.parser.on(opt.short, opt.long, opt.desc) {{proc.id}}
         @@defining.opts.add(opt)
       end
 
       def {{method_name}}(short, default : {{type}} = {{default}}, required = false, desc = "Option description.")
-        opt = Option({{type}}).new(short, "", default, required, desc, default)
+        if default.nil?
+          opt = Option({{type}}).new(short, "", {{default}}, required, desc, {{default}})
+          {% if type.id == Bool.id %} opt.set_default_flag = true {% end %}
+        else
+          opt = Option({{type}}).new(short, "", default, required, desc, default)
+          opt.set_default_flag = true
+        end
         @@defining.parser.on(opt.short, opt.desc) {{proc.id}}
         @@defining.opts.add(opt)
       end

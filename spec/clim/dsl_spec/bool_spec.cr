@@ -243,7 +243,7 @@ class SpecMainCommandWithBoolArguments < Clim
   end
 end
 
-describe "main command with bool." do
+describe "main command with bool arguments." do
   describe "returns help." do
     [
       {

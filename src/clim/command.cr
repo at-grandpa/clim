@@ -1,4 +1,6 @@
 require "./dsl"
+require "./options"
+require "./exception"
 require "option_parser"
 
 class Clim
@@ -86,7 +88,7 @@ class Clim
     def parse_by_parser(argv)
       prepare_parse
       parser.parse(argv)
-      opts.exists_required! unless @display_help_flag
+      opts.validate! unless @display_help_flag
       @run_proc = help_proc if @display_help_flag
       opts.help = help
       self
