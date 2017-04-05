@@ -768,3 +768,435 @@ describe "main command with bool required." do
     end
   end
 end
+
+# =====================================================================
+
+class SpecMainCommandWithBoolRequiredTrueAndDefaultExists < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  bool "-b", "--bool", desc: "Bool option description.", required: true, default: false
+  run do |opts, args|
+    {opts: opts, args: args} # return values for spec.
+  end
+end
+
+describe "main command with bool required true and default exists." do
+  describe "returns help." do
+    [
+      {
+        argv: %w(-h),
+      },
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(-h ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg -h),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        args_of_run_block = SpecMainCommandWithBoolRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
+        args_of_run_block[:opts].help.should eq(
+          <<-HELP_MESSAGE
+
+            Main command with desc.
+
+            Usage:
+
+              main_command with usage [options] [arguments]
+
+            Options:
+
+              -h, --help                       Show this help.
+              -b, --bool                       Bool option description.  [default:false]  [required]
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns opts and args when passing argv." do
+    [
+      {
+        argv:        %w(-b),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(--bool),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(-b arg1),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(arg1 -b),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(--bool arg1),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(arg1 --bool),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        args_of_run_block = SpecMainCommandWithBoolRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
+        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
+        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
+        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:args].should eq(spec_case[:expect_args])
+      end
+    end
+  end
+  describe "raises Exception when passing invalid argv." do
+    [
+      {
+        argv:              %w(),
+        exception_message: "Required options. \"-b\"",
+      },
+      {
+        argv:              %w(arg1),
+        exception_message: "Required options. \"-b\"",
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        expect_raises(Exception, spec_case[:exception_message]) do
+          SpecMainCommandWithBoolRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
+        end
+      end
+    end
+  end
+end
+
+class SpecMainCommandWithBoolRequiredTrueOnly < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  bool "-b", "--bool", desc: "Bool option description.", required: true
+  run do |opts, args|
+    {opts: opts, args: args} # return values for spec.
+  end
+end
+
+describe "main command with bool required true only." do
+  describe "returns help." do
+    [
+      {
+        argv: %w(-h),
+      },
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(-h ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg -h),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        args_of_run_block = SpecMainCommandWithBoolRequiredTrueOnly.start_main(spec_case[:argv])
+        args_of_run_block[:opts].help.should eq(
+          <<-HELP_MESSAGE
+
+            Main command with desc.
+
+            Usage:
+
+              main_command with usage [options] [arguments]
+
+            Options:
+
+              -h, --help                       Show this help.
+              -b, --bool                       Bool option description.  [default:false]  [required]
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns opts and args when passing argv." do
+    [
+      {
+        argv:        %w(-b),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(--bool),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(-b arg1),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(arg1 -b),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(--bool arg1),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(arg1 --bool),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        args_of_run_block = SpecMainCommandWithBoolRequiredTrueOnly.start_main(spec_case[:argv])
+        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
+        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
+        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:args].should eq(spec_case[:expect_args])
+      end
+    end
+  end
+  describe "raises Exception when passing invalid argv." do
+    [
+      {
+        argv:              %w(),
+        exception_message: "Required options. \"-b\"",
+      },
+      {
+        argv:              %w(arg1),
+        exception_message: "Required options. \"-b\"",
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        expect_raises(Exception, spec_case[:exception_message]) do
+          SpecMainCommandWithBoolRequiredTrueOnly.start_main(spec_case[:argv])
+        end
+      end
+    end
+  end
+end
+
+class SpecMainCommandWithBoolRequiredFalseAndDefaultExists < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  bool "-b", "--bool", desc: "Bool option description.", required: false, default: false
+  run do |opts, args|
+    {opts: opts, args: args} # return values for spec.
+  end
+end
+
+describe "main command with bool required false and default exists." do
+  describe "returns help." do
+    [
+      {
+        argv: %w(-h),
+      },
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(-h ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg -h),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        args_of_run_block = SpecMainCommandWithBoolRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
+        args_of_run_block[:opts].help.should eq(
+          <<-HELP_MESSAGE
+
+            Main command with desc.
+
+            Usage:
+
+              main_command with usage [options] [arguments]
+
+            Options:
+
+              -h, --help                       Show this help.
+              -b, --bool                       Bool option description.  [default:false]
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns opts and args when passing argv." do
+    [
+      {
+        argv:        %w(),
+        expect_opts: create_values(bool: {"bool" => false}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values(bool: {"bool" => false}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(-b),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(--bool),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(-b arg1),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(arg1 -b),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(--bool arg1),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(arg1 --bool),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        args_of_run_block = SpecMainCommandWithBoolRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
+        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
+        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
+        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:args].should eq(spec_case[:expect_args])
+      end
+    end
+  end
+  describe "raises Exception when passing invalid argv." do
+    # no spec.
+  end
+end
+
+class SpecMainCommandWithBoolRequiredFalseOnly < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  bool "-b", "--bool", desc: "Bool option description.", required: false
+  run do |opts, args|
+    {opts: opts, args: args} # return values for spec.
+  end
+end
+
+describe "main command with bool required false only." do
+  describe "returns help." do
+    [
+      {
+        argv: %w(-h),
+      },
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(-h ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg -h),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        args_of_run_block = SpecMainCommandWithBoolRequiredFalseOnly.start_main(spec_case[:argv])
+        args_of_run_block[:opts].help.should eq(
+          <<-HELP_MESSAGE
+
+            Main command with desc.
+
+            Usage:
+
+              main_command with usage [options] [arguments]
+
+            Options:
+
+              -h, --help                       Show this help.
+              -b, --bool                       Bool option description.  [default:false]
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns opts and args when passing argv." do
+    [
+      {
+        argv:        %w(),
+        expect_opts: create_values(bool: {"bool" => false}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values(bool: {"bool" => false}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(-b),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(--bool),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(-b arg1),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(arg1 -b),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(--bool arg1),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+      {
+        argv:        %w(arg1 --bool),
+        expect_opts: create_values(bool: {"bool" => true}),
+        expect_args: ["arg1"] of String,
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        args_of_run_block = SpecMainCommandWithBoolRequiredFalseOnly.start_main(spec_case[:argv])
+        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
+        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
+        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:args].should eq(spec_case[:expect_args])
+      end
+    end
+  end
+  describe "raises Exception when passing invalid argv." do
+    # no spec.
+  end
+end
