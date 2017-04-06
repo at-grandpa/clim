@@ -6,9 +6,10 @@ class Clim
     property required : Bool
     property desc : String
     property value : T
-    property exist : Bool
+    property set_value_flag : Bool
+    property set_default_flag : Bool
 
-    def initialize(@short, @long, @default, @required, @desc, @value, @exist = false)
+    def initialize(@short, @long, @default, @required, @desc, @value, @set_value_flag = false, @set_default_flag = false)
     end
 
     def short_name
@@ -38,28 +39,45 @@ class Clim
       desc
     end
 
-    def set_string(@value, @exist = true)
+    def set_string(@value, @set_value_flag = true)
     end
 
-    def set_bool(arg, @exist = true)
+    def set_bool(arg, @set_value_flag = true)
       if arg.empty?
         @value = true
       else
-        raise ClimException.new "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]" unless arg === "true" || arg == "false"
+        exception_msg = "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]"
+        raise ClimException.new exception_msg unless arg === "true" || arg == "false"
         @value = arg === "true"
       end
     end
 
-    def add_to_array(arg, @exist = true)
+    def add_to_array(arg, @set_value_flag = true)
       @value << arg
     end
 
-    def reset(@exist = false)
+    def reset(@set_value_flag = false)
       @value = @default.dup
     end
 
-    def invalid_required?
-      required && !exist
+    def required?
+      @required
+    end
+
+    def set_value?
+      @set_value_flag
+    end
+
+    def set_default?
+      @set_default_flag
+    end
+
+    def no_required_option?
+      required? && !set_value?
+    end
+
+    def no_value?
+      !required? && !set_default? && !set_value?
     end
   end
 end

@@ -50,27 +50,27 @@ describe Clim::Option do
   end
   describe "#set_string" do
     context "if type is String " do
-      it "set exist and value." do
+      it "set value." do
         opt = Option(String).new("", "", "", false, "", "")
         opt.set_string("set value")
-        opt.exist.should be_true
+        opt.set_value?.should be_true
         opt.value.should eq("set value")
       end
     end
     context "if type is Bool " do
-      it "set exist and value." do
+      it "set value." do
         opt = Option(Bool).new("", "", false, false, "", false)
         opt.set_bool("true")
-        opt.exist.should be_true
+        opt.set_value?.should be_true
         opt.value.should eq(true)
       end
     end
   end
   describe "#add_to_array" do
-    it "set exist and value." do
+    it "set value." do
       opt = Option(Array(String)).new("", "", [] of String, false, "", [] of String)
       opt.add_to_array("set value")
-      opt.exist.should be_true
+      opt.set_value?.should be_true
       opt.value.should eq(["set value"])
     end
   end

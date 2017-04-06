@@ -1,4 +1,6 @@
 require "./dsl"
+require "./options"
+require "./exception"
 require "option_parser"
 
 class Clim
@@ -86,7 +88,7 @@ class Clim
     def parse_by_parser(argv)
       prepare_parse
       parser.parse(argv)
-      opts.exists_required! unless @display_help_flag
+      opts.validate! unless @display_help_flag
       @run_proc = help_proc if @display_help_flag
       opts.help = help
       self
@@ -105,5 +107,25 @@ class Clim
     def find_sub_cmds_by(name)
       sub_cmds.select(&.name.==(name))
     end
+
+    macro define_add_opt(type, &proc)
+      def add_opt(short, long, default : {{type}}, required, desc, value : {{type}}, set_default_flag = false)
+        opt = Option({{type}}).new(short, long, default, required, desc, value)
+        opt.set_default_flag = {% if type.id == Bool.id %} true {% else %} set_default_flag {% end %}
+        @parser.on(opt.short, opt.long, opt.desc) {{proc.id}}
+        @opts.add(opt)
+      end
+
+      def add_opt(short, default : {{type}}, required, desc, value : {{type}}, set_default_flag = false)
+        opt = Option({{type}}).new(short, "", default, required, desc, value)
+        opt.set_default_flag = {% if type.id == Bool.id %} true {% else %} set_default_flag {% end %}
+        @parser.on(opt.short, opt.desc) {{proc.id}}
+        @opts.add(opt)
+      end
+    end
+
+    define_add_opt(type: String) { |arg| opt.set_string(arg) }
+    define_add_opt(type: Bool) { |arg| opt.set_bool(arg) }
+    define_add_opt(type: Array(String)) { |arg| opt.add_to_array(arg) }
   end
 end

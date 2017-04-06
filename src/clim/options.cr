@@ -52,13 +52,20 @@ class Clim
       opts.each(&.reset)
     end
 
-    def exists_required!
-      raise "Required options. \"#{invalid_required_names.join("\", \"")}\"" unless invalid_required_names.empty?
+    def validate!
+      raise "Please specify default value or required true. \"#{no_value_names.join("\", \"")}\"" unless no_value_names.empty?
+      raise "Required options. \"#{no_required_option_names.join("\", \"")}\"" unless no_required_option_names.empty?
     end
 
-    def invalid_required_names
+    def no_value_names
       opts.map do |opt|
-        opt.invalid_required? ? opt.short : nil
+        opt.no_value? ? opt.short : nil
+      end.compact
+    end
+
+    def no_required_option_names
+      opts.map do |opt|
+        opt.no_required_option? ? opt.short : nil
       end.compact
     end
   end

@@ -32,25 +32,29 @@ class Clim
       @@defining.usage = usage
     end
 
-    macro difine_opts(type, default, &proc)
+    macro difine_opts(type, base_default)
       {% method_name = type.stringify.split("(").first.downcase.id %}
 
-      def {{method_name}}(short, long, default : {{type}} = {{default}}, required = false, desc = "Option description.")
-        opt = Option({{type}}).new(short, long, default, required, desc, default)
-        @@defining.parser.on(opt.short, opt.long, opt.desc) {{proc.id}}
-        @@defining.opts.add(opt)
+      def {{method_name}}(short, long, default : {{type}} | Nil = nil, required = false, desc = "Option description.")
+        if default.nil?
+          @@defining.add_opt(short, long, {{base_default}}, required, desc, {{base_default}}, set_default_flag: false)
+        else
+          @@defining.add_opt(short, long, default, required, desc, default, set_default_flag: true)
+        end
       end
 
-      def {{method_name}}(short, default : {{type}} = {{default}}, required = false, desc = "Option description.")
-        opt = Option({{type}}).new(short, "", default, required, desc, default)
-        @@defining.parser.on(opt.short, opt.desc) {{proc.id}}
-        @@defining.opts.add(opt)
+      def {{method_name}}(short, default : {{type}} | Nil = nil, required = false, desc = "Option description.")
+        if default.nil?
+          @@defining.add_opt(short, {{base_default}}, required, desc, {{base_default}}, set_default_flag: false)
+        else
+          @@defining.add_opt(short, default, required, desc, default, set_default_flag: true)
+        end
       end
     end
 
-    difine_opts(type: String, default: "") { |arg| opt.set_string(arg) }
-    difine_opts(type: Bool, default: false) { |arg| opt.set_bool(arg) }
-    difine_opts(type: Array(String), default: [] of String) { |arg| opt.add_to_array(arg) }
+    difine_opts(type: String, base_default: "")
+    difine_opts(type: Bool, base_default: false)
+    difine_opts(type: Array(String), base_default: [] of String)
 
     def run(&block : RunProc)
       @@defining.run_proc = block
