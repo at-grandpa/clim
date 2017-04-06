@@ -32,29 +32,29 @@ class Clim
       @@defining.usage = usage
     end
 
-    macro difine_opts(type, default)
+    macro difine_opts(type, base_default)
       {% method_name = type.stringify.split("(").first.downcase.id %}
 
       def {{method_name}}(short, long, default : {{type}} | Nil = nil, required = false, desc = "Option description.")
         if default.nil?
-          @@defining.add_opt(short, long, {{default}}, required, desc, {{default}}, set_default_flag: false)
+          @@defining.add_opt(short, long, {{base_default}}, required, desc, {{base_default}}, set_default_flag: false)
         else
           @@defining.add_opt(short, long, default, required, desc, default, set_default_flag: true)
         end
       end
 
-      def {{method_name}}(short, default : {{type}} = {{default}}, required = false, desc = "Option description.")
+      def {{method_name}}(short, default : {{type}} | Nil = nil, required = false, desc = "Option description.")
         if default.nil?
-          @@defining.add_opt(short, {{default}}, required, desc, {{default}}, set_default_flag: false)
+          @@defining.add_opt(short, {{base_default}}, required, desc, {{base_default}}, set_default_flag: false)
         else
           @@defining.add_opt(short, default, required, desc, default, set_default_flag: true)
         end
       end
     end
 
-    difine_opts(type: String, default: "")
-    difine_opts(type: Bool, default: false)
-    difine_opts(type: Array(String), default: [] of String)
+    difine_opts(type: String, base_default: "")
+    difine_opts(type: Bool, base_default: false)
+    difine_opts(type: Array(String), base_default: [] of String)
 
     def run(&block : RunProc)
       @@defining.run_proc = block
