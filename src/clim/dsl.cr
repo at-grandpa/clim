@@ -36,10 +36,16 @@ class Clim
       {% method_name = type.stringify.split("(").first.downcase.id %}
       {% for long_arg in ["long,", ""] %}
         def {{method_name}}(short, {{long_arg.id}} default : {{type}} | Nil = nil, required = false, desc = "Option description.")
-          opt_default = default.nil? ? {{base_default}} : default
-          opt = Option({{type}}).new(short, {% if long_arg.empty? %} "", {% else %}{{long_arg.id}} {% end %} opt_default, required, desc, opt_default)
-          opt.set_default_flag = {% if type.id == Bool.id %} true {% else %} !default.nil? {% end %}
-          @@defining.parser.on(opt.short, {% if long_arg.empty? %} {% else %} opt.long, {% end %} opt.desc) {{proc.id}}
+          opt = Option({{type}}).new(
+                                      short:            short,
+                                      long:             {% if long_arg.empty? %} "", {% else %} {{long_arg.id}} {% end %}
+                                      default:          default.nil? ? {{base_default}} : default,
+                                      required:         required,
+                                      desc:             desc,
+                                      value:            default.nil? ? {{base_default}} : default,
+                                      set_default_flag: {% if type.id == Bool.id %} true {% else %} !default.nil? {% end %}
+                                    )
+          @@defining.parser.on(opt.short, {% unless long_arg.empty? %} opt.long, {% end %} opt.desc) {{proc.id}}
           @@defining.opts.add(opt)
         end
       {% end %}
