@@ -19,13 +19,13 @@ class Clim
       property help : String = ""
 
       macro define_methods(property_name, type)
-        property {{property_name.id}} : Hash(String, {{type.id}}) = {} of String => {{type.id}}
+        property {{property_name.id}} : Hash(String, {{type}}) = {} of String => {{type}}
 
         def {{property_name.split("").first.id}}
           {{property_name.id}}
         end
 
-        def merge!(hash : Hash(String, {{type.id}}))
+        def merge!(hash : Hash(String, {{type}}))
           {{property_name.id}}.merge!(hash) do |key, _, _|
             raise ClimException.new "Duplicate {{property_name.id}} option. \"#{key}\""
           end
