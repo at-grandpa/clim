@@ -32,29 +32,28 @@ class Clim
       @@defining.usage = usage
     end
 
-    macro difine_opts(type, base_default)
+    macro difine_opts(type, base_default, &proc)
       {% method_name = type.stringify.split("(").first.downcase.id %}
-
-      def {{method_name}}(short, long, default : {{type}} | Nil = nil, required = false, desc = "Option description.")
-        if default.nil?
-          @@defining.add_opt(short, long, {{base_default}}, required, desc, {{base_default}}, set_default_flag: false)
-        else
-          @@defining.add_opt(short, long, default, required, desc, default, set_default_flag: true)
+      {% for long_arg in ["long,", ""] %}
+        def {{method_name}}(short, {{long_arg.id}} default : {{type}} | Nil = nil, required = false, desc = "Option description.")
+          opt = Option({{type}}).new(
+                                      short:            short,
+                                      long:             {% if long_arg.empty? %} "", {% else %} {{long_arg.id}} {% end %}
+                                      default:          default.nil? ? {{base_default}} : default,
+                                      required:         required,
+                                      desc:             desc,
+                                      value:            default.nil? ? {{base_default}} : default,
+                                      set_default_flag: {% if type.id == Bool.id %} true {% else %} !default.nil? {% end %}
+                                    )
+          @@defining.parser.on(opt.short, {% unless long_arg.empty? %} opt.long, {% end %} opt.desc) {{proc.id}}
+          @@defining.opts.add(opt)
         end
-      end
-
-      def {{method_name}}(short, default : {{type}} | Nil = nil, required = false, desc = "Option description.")
-        if default.nil?
-          @@defining.add_opt(short, {{base_default}}, required, desc, {{base_default}}, set_default_flag: false)
-        else
-          @@defining.add_opt(short, default, required, desc, default, set_default_flag: true)
-        end
-      end
+      {% end %}
     end
 
-    difine_opts(type: String, base_default: "")
-    difine_opts(type: Bool, base_default: false)
-    difine_opts(type: Array(String), base_default: [] of String)
+    difine_opts(type: String, base_default: "") { |arg| opt.set_string(arg) }
+    difine_opts(type: Bool, base_default: false) { |arg| opt.set_bool(arg) }
+    difine_opts(type: Array(String), base_default: [] of String) { |arg| opt.add_to_array(arg) }
 
     def run(&block : RunProc)
       @@defining.run_proc = block
