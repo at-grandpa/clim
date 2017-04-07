@@ -32,10 +32,9 @@ class Clim
       @@defining.usage = usage
     end
 
-    macro difine_opts(type, base_default, &proc)
-      {% method_name = type.stringify.split("(").first.downcase.id %}
+    macro difine_opts(method_name, type, base_default, &proc)
       {% for long_arg in ["long,", ""] %}
-        def {{method_name}}(short, {{long_arg.id}} default : {{type}} | Nil = nil, required = false, desc = "Option description.")
+        def {{method_name.id}}(short, {{long_arg.id}} default : {{type}} | Nil = nil, required = false, desc = "Option description.")
           opt = Option({{type}}).new(
                                       short:            short,
                                       long:             {% if long_arg.empty? %} "", {% else %} {{long_arg.id}} {% end %}
@@ -51,9 +50,9 @@ class Clim
       {% end %}
     end
 
-    difine_opts(type: String, base_default: "") { |arg| opt.set_string(arg) }
-    difine_opts(type: Bool, base_default: false) { |arg| opt.set_bool(arg) }
-    difine_opts(type: Array(String), base_default: [] of String) { |arg| opt.add_to_array(arg) }
+    difine_opts(method_name: "string", type: String, base_default: "") { |arg| opt.set_string(arg) }
+    difine_opts(method_name: "bool", type: Bool, base_default: false) { |arg| opt.set_bool(arg) }
+    difine_opts(method_name: "array", type: Array(String), base_default: [] of String) { |arg| opt.add_to_array(arg) }
 
     def run(&block : RunProc)
       @@defining.run_proc = block
