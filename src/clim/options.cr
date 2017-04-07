@@ -18,25 +18,23 @@ class Clim
     class Values
       property help : String = ""
 
-      macro define_methods(*types)
-        {% for type in types %}
-          {% property_name = type.stringify.split("(").first.downcase %}
+      macro define_methods(property_name, type)
+        property {{property_name.id}} : Hash(String, {{type.id}}) = {} of String => {{type.id}}
 
-          property {{property_name.id}} : Hash(String, {{type.id}}) = {} of String => {{type.id}}
+        def {{property_name.split("").first.id}}
+          {{property_name.id}}
+        end
 
-          def {{property_name.split("").first.id}}
-            {{property_name.id}}
+        def merge!(hash : Hash(String, {{type.id}}))
+          {{property_name.id}}.merge!(hash) do |key, _, _|
+            raise ClimException.new "Duplicate {{property_name.id}} option. \"#{key}\""
           end
-
-          def merge!(hash : Hash(String, {{type.id}}))
-            {{property_name.id}}.merge!(hash) do |key, _, _|
-              raise ClimException.new "Duplicate {{property_name.id}} option. \"#{key}\""
-            end
-          end
-        {% end %}
+        end
       end
 
-      define_methods String, Bool, Array(String)
+      define_methods(property_name: "string", type: String)
+      define_methods(property_name: "bool", type: Bool)
+      define_methods(property_name: "array", type: Array(String))
     end
 
     def values
