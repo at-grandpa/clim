@@ -53,7 +53,10 @@ class Clim
     end
 
     def add_to_array(arg, @set_value_flag = true)
-      @value << arg
+      iv_value = @value
+      value_tmp = iv_value.nil? ? [] of String : iv_value
+      value_tmp << arg
+      @value = value_tmp
     end
 
     def reset(@set_value_flag = false)

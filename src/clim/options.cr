@@ -3,7 +3,7 @@ require "./option"
 
 class Clim
   class Options
-    alias OptionsType = Option(String) | Option(Bool) | Option(Array(String))
+    alias OptionsType = Option(String | Nil) | Option(Bool | Nil) | Option(Array(String) | Nil)
 
     property opts : Array(OptionsType) = [] of OptionsType
     property help : String = ""
@@ -32,9 +32,9 @@ class Clim
         end
       end
 
-      define_methods(property_name: "string", type: String)
-      define_methods(property_name: "bool", type: Bool)
-      define_methods(property_name: "array", type: Array(String))
+      define_methods(property_name: "string", type: String | Nil)
+      define_methods(property_name: "bool", type: Bool | Nil)
+      define_methods(property_name: "array", type: Array(String) | Nil)
     end
 
     def values

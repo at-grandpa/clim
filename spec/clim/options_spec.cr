@@ -5,30 +5,30 @@ describe Clim::Options do
     it "raises an Exception when short option name is empty." do
       opts = Options.new
       expect_raises(Exception, "Empty short option.") do
-        opts.add Option(String).new("", "", "", false, "", "")
+        opts.add Option(String | Nil).new("", "", "", false, "", "")
       end
     end
     it "raises an Exception when short option name is duplicated." do
       opts = Options.new
-      opts.add Option(String).new("-a", "--array", "", false, "", "")
+      opts.add Option(String | Nil).new("-a", "--array", "", false, "", "")
       expect_raises(Exception, "Duplicate option. \"-a\"") do
-        opts.add Option(String).new("-a", "--array", "", false, "", "")
+        opts.add Option(String | Nil).new("-a", "--array", "", false, "", "")
       end
     end
     it "raises an Exception when long option name is duplicated." do
       opts = Options.new
-      opts.add Option(String).new("-a", "--array", "", false, "", "")
+      opts.add Option(String | Nil).new("-a", "--array", "", false, "", "")
       expect_raises(Exception, "Duplicate option. \"--array\"") do
-        opts.add Option(String).new("-b", "--array", "", false, "", "")
+        opts.add Option(String | Nil).new("-b", "--array", "", false, "", "")
       end
     end
     it "raises an Exception when long option name other than empty is duplicated." do
       opts = Options.new
-      opts.add Option(String).new("-a", "", "", false, "", "")
-      opts.add Option(String).new("-b", "", "", false, "", "")
-      opts.add Option(String).new("-c", "--array", "", false, "", "")
+      opts.add Option(String | Nil).new("-a", "", "", false, "", "")
+      opts.add Option(String | Nil).new("-b", "", "", false, "", "")
+      opts.add Option(String | Nil).new("-c", "--array", "", false, "", "")
       expect_raises(Exception, "Duplicate option. \"--array\"") do
-        opts.add Option(String).new("-d", "--array", "", false, "", "")
+        opts.add Option(String | Nil).new("-d", "--array", "", false, "", "")
       end
     end
   end
@@ -37,21 +37,21 @@ describe Clim::Options do
       describe "String" do
         it "defineded short name method and returns value same as long name method." do
           values = Options::Values.new
-          values.string = {"key" => "value"}
+          values.string.merge!({"key" => "value"})
           values.s.should eq(values.string)
         end
       end
       describe "Bool" do
         it "defineded short name method and returns value same as long name method." do
           values = Options::Values.new
-          values.bool = {"key" => true}
+          values.bool.merge!({"key" => true})
           values.b.should eq(values.bool)
         end
       end
       describe "Array(String)" do
         it "defineded short name method and returns value same as long name method." do
           values = Options::Values.new
-          values.array = {"key" => ["a", "b"]}
+          values.array.merge!({"key" => ["a", "b"]})
           values.a.should eq(values.array)
         end
       end
@@ -60,9 +60,9 @@ describe Clim::Options do
       describe "String" do
         it "merged only hash of String." do
           values = Options::Values.new
-          values.string = {"string_key" => "string value"}
-          values.bool = {"bool_key" => true}
-          values.array = {"array_key" => ["array", "value"]}
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
 
           values.merge!({"merge_string_key" => "merge string value"})
 
@@ -75,9 +75,9 @@ describe Clim::Options do
         end
         it "raises an Exception when option name of String is duplicated." do
           values = Options::Values.new
-          values.string = {"string_key" => "string value"}
-          values.bool = {"bool_key" => true}
-          values.array = {"array_key" => ["array", "value"]}
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
 
           expect_raises(Exception, "Duplicate string option. \"string_key\"") do
             values.merge!({"string_key" => "merge string value"}) # duplicated
@@ -89,9 +89,9 @@ describe Clim::Options do
       describe "Bool" do
         it "merged only hash of Bool." do
           values = Options::Values.new
-          values.string = {"string_key" => "string value"}
-          values.bool = {"bool_key" => true}
-          values.array = {"array_key" => ["array", "value"]}
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
 
           values.merge!({"merge_bool_key" => false})
 
@@ -101,9 +101,9 @@ describe Clim::Options do
         end
         it "raises an Exception when option name of Bool is duplicated." do
           values = Options::Values.new
-          values.string = {"string_key" => "string value"}
-          values.bool = {"bool_key" => true}
-          values.array = {"array_key" => ["array", "value"]}
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
 
           values.merge!({"other_key" => "merge string value"}) # not raises Exception
           expect_raises(Exception, "Duplicate bool option. \"bool_key\"") do
@@ -115,9 +115,9 @@ describe Clim::Options do
       describe "Array(String)" do
         it "merged only hash of Array(String)." do
           values = Options::Values.new
-          values.string = {"string_key" => "string value"}
-          values.bool = {"bool_key" => true}
-          values.array = {"array_key" => ["array", "value"]}
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
 
           values.merge!({"merge_bool_key" => ["merge", "array", "value"]})
 
@@ -130,9 +130,9 @@ describe Clim::Options do
         end
         it "raises an Exception when option name of Array(String )is duplicated." do
           values = Options::Values.new
-          values.string = {"string_key" => "string value"}
-          values.bool = {"bool_key" => true}
-          values.array = {"array_key" => ["array", "value"]}
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
 
           values.merge!({"other_key" => "merge string value"}) # not raises Exception
           values.merge!({"other_key" => false})                # not raises Exception
@@ -146,11 +146,11 @@ describe Clim::Options do
   describe "#values" do
     it "returns hash when options are set." do
       opts = Options.new
-      opts.add Option(String).new("-f", "--foo", "", false, "", "value foo")
-      opts.add Option(String).new("-b", "--bar", "", false, "", "value bar")
-      opts.add Option(String).new("-z VALUE", "--zoo=VALUE", "", false, "", "value zoo")
-      opts.add Option(Bool).new("-v", "", false, false, "", true)
-      opts.add Option(Array(String)).new("-a", "--array", [] of String, false, "", ["a", "b"])
+      opts.add Option(String | Nil).new("-f", "--foo", "", false, "", "value foo")
+      opts.add Option(String | Nil).new("-b", "--bar", "", false, "", "value bar")
+      opts.add Option(String | Nil).new("-z VALUE", "--zoo=VALUE", "", false, "", "value zoo")
+      opts.add Option(Bool | Nil).new("-v", "", false, false, "", true)
+      opts.add Option(Array(String) | Nil).new("-a", "--array", [] of String, false, "", ["a", "b"])
 
       expect_values = Options::Values.new
       expect_values.merge!({"foo" => "value foo"})
@@ -167,28 +167,28 @@ describe Clim::Options do
   describe "#validate!" do
     it "returns self when there is no required options." do
       opts = Options.new
-      opt1 = Option(String).new("-a", "", "", false, "", "")
+      opt1 = Option(String | Nil).new("-a", "", "", false, "", "")
       opt1.set_string("foo")
       opts.add opt1
-      opt2 = Option(String).new("-b", "", "", false, "", "")
+      opt2 = Option(String | Nil).new("-b", "", "", false, "", "")
       opt2.set_string("bar")
       opts.add opt2
       opts.validate!.should eq(nil)
     end
     it "raises an Exception when there is required option." do
       opts = Options.new
-      opt1 = Option(String).new("-a", "", "", false, "", "")
+      opt1 = Option(String | Nil).new("-a", "", "", false, "", "")
       opt1.set_string("foo")
       opts.add opt1
-      opt2 = Option(String).new("-b", "", "", true, "", "")
+      opt2 = Option(String | Nil).new("-b", "", "", true, "", "")
       opts.add opt2
       expect_raises(Exception, "Required options. \"-b\"") { opts.validate! }
     end
     it "raises an Exception when there are required options." do
       opts = Options.new
-      opt1 = Option(String).new("-a", "", "", true, "", "")
+      opt1 = Option(String | Nil).new("-a", "", "", true, "", "")
       opts.add opt1
-      opt2 = Option(String).new("-b", "", "", true, "", "")
+      opt2 = Option(String | Nil).new("-b", "", "", true, "", "")
       opts.add opt2
       expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.validate! }
     end
