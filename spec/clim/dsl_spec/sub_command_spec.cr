@@ -102,17 +102,17 @@ describe "sub command only." do
       {
         argv:        %w(sub_command arg1),
         expect_opts: create_values,
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(sub_command arg1 arg2),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2"] of String,
+        expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(sub_command arg1 arg2 arg3),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2", "arg3"] of String,
+        expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -390,17 +390,17 @@ describe "sub sub command." do
       {
         argv:        %w(sub_command sub_sub_command arg1),
         expect_opts: create_values,
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(sub_command sub_sub_command arg1 arg2),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2"] of String,
+        expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(sub_command sub_sub_command arg1 arg2 arg3),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2", "arg3"] of String,
+        expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -482,7 +482,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
     run do |opts, args|
       {opts: opts, args: args} # return values for spec.
     end
-
   end
 end
 
@@ -574,17 +573,17 @@ describe "sub command jump over sub sub command." do
       {
         argv:        %w(jump_over_sub_sub_command arg1),
         expect_opts: create_values,
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(jump_over_sub_sub_command arg1 arg2),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2"] of String,
+        expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(jump_over_sub_sub_command arg1 arg2 arg3),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2", "arg3"] of String,
+        expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do

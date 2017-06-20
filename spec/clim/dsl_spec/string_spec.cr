@@ -83,12 +83,12 @@ describe "main command with string." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -211,12 +211,12 @@ describe "main command with string only short option." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"s" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(string: {"s" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -382,7 +382,7 @@ describe "main command with string default." do
       {
         argv:        %w(arg1),
         expect_opts: create_values(string: {"string" => "default value"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
@@ -407,12 +407,12 @@ describe "main command with string default." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -535,14 +535,14 @@ describe "main command with string required true and default exists." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(
           string: {"string" => "string1"},
         ),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -677,14 +677,14 @@ describe "main command with string required only." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(
           string: {"string" => "string1"},
         ),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -804,7 +804,7 @@ describe "main command with string required false and default exists." do
       {
         argv:        %w(arg1),
         expect_opts: create_values(string: {"string" => "default value"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
@@ -829,14 +829,14 @@ describe "main command with string required false and default exists." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(
           string: {"string" => "string1"},
         ),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -973,14 +973,14 @@ describe "main command with string required false only." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(
           string: {"string" => "string1"},
         ),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.

@@ -83,12 +83,12 @@ describe "main command with array." do
       {
         argv:        %w(-a array1 arg1),
         expect_opts: create_values(array: {"array" => ["array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
         expect_opts: create_values(array: {"array" => ["array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
@@ -211,12 +211,12 @@ describe "main command with array only short option." do
       {
         argv:        %w(-a array1 arg1),
         expect_opts: create_values(array: {"a" => ["array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
         expect_opts: create_values(array: {"a" => ["array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
@@ -382,7 +382,7 @@ describe "main command with array default." do
       {
         argv:        %w(arg1),
         expect_opts: create_values(array: {"array" => ["default value"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
@@ -407,12 +407,12 @@ describe "main command with array default." do
       {
         argv:        %w(-a array1 arg1),
         expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
         expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
@@ -535,12 +535,12 @@ describe "main command with array required true and default exists." do
       {
         argv:        %w(-a array1 arg1),
         expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
         expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
@@ -671,12 +671,12 @@ describe "main command with array required true only." do
       {
         argv:        %w(-a array1 arg1),
         expect_opts: create_values(array: {"array" => ["array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
         expect_opts: create_values(array: {"array" => ["array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
@@ -792,7 +792,7 @@ describe "main command with array required false and default exists." do
       {
         argv:        %w(arg1),
         expect_opts: create_values(array: {"array" => ["default value"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
@@ -817,12 +817,12 @@ describe "main command with array required false and default exists." do
       {
         argv:        %w(-a array1 arg1),
         expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
         expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
@@ -955,12 +955,12 @@ describe "main command with array required false only." do
       {
         argv:        %w(-a array1 arg1),
         expect_opts: create_values(array: {"array" => ["array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
         expect_opts: create_values(array: {"array" => ["array1"]}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
