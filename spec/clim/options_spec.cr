@@ -71,115 +71,115 @@ describe Clim::Options do
           values.bool.should eq({"bool_key" => true})
           values.array.should eq({"array_key" => ["array", "value"]})
         end
-        #      it "raises an Exception when option name of String is duplicated." do
-        #        values = Options::Values.new
-        #        values.string.merge!({"string_key" => "string value"})
-        #        values.bool.merge!({"bool_key" => true})
-        #        values.array.merge!({"array_key" => ["array", "value"]})
-        #        expect_raises(Exception, "Duplicate string option. \"string_key\"") do
-        #          values.merge!({"string_key" => "merge string value"}) # duplicated
-        #        end
-        #        values.merge!({"other_key" => false})      # not raises Exception
-        #        values.merge!({"other_key" => ["a", "b"]}) # not raises Exception
-        #      end
+        it "raises an Exception when option name of String is duplicated." do
+          values = Options::Values.new
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
+          expect_raises(Exception, "Duplicate string option. \"string_key\"") do
+            values.merge!({"string_key" => "merge string value"}) # duplicated
+          end
+          values.merge!({"other_key" => false})      # not raises Exception
+          values.merge!({"other_key" => ["a", "b"]}) # not raises Exception
+        end
       end
-      #    describe "Bool" do
-      #      it "merged only hash of Bool." do
-      #        values = Options::Values.new
-      #        values.string.merge!({"string_key" => "string value"})
-      #        values.bool.merge!({"bool_key" => true})
-      #        values.array.merge!({"array_key" => ["array", "value"]})
-      #        values.merge!({"merge_bool_key" => false})
-      #        values.string.should eq({"string_key" => "string value"})
-      #        values.bool.should eq({"bool_key" => true, "merge_bool_key" => false})
-      #        values.array.should eq({"array_key" => ["array", "value"]})
-      #      end
-      #      it "raises an Exception when option name of Bool is duplicated." do
-      #        values = Options::Values.new
-      #        values.string.merge!({"string_key" => "string value"})
-      #        values.bool.merge!({"bool_key" => true})
-      #        values.array.merge!({"array_key" => ["array", "value"]})
-      #        values.merge!({"other_key" => "merge string value"}) # not raises Exception
-      #        expect_raises(Exception, "Duplicate bool option. \"bool_key\"") do
-      #          values.merge!({"bool_key" => false}) # duplicated
-      #        end
-      #        values.merge!({"other_key" => ["a", "b"]}) # not raises Exception
-      #      end
-      #    end
-      #    describe "Array(String)" do
-      #      it "merged only hash of Array(String)." do
-      #        values = Options::Values.new
-      #        values.string.merge!({"string_key" => "string value"})
-      #        values.bool.merge!({"bool_key" => true})
-      #        values.array.merge!({"array_key" => ["array", "value"]})
-      #        values.merge!({"merge_bool_key" => ["merge", "array", "value"]})
-      #        values.string.should eq({"string_key" => "string value"})
-      #        values.bool.should eq({"bool_key" => true})
-      #        values.array.should eq({
-      #          "array_key"      => ["array", "value"],
-      #          "merge_bool_key" => ["merge", "array", "value"],
-      #        })
-      #      end
-      #      it "raises an Exception when option name of Array(String )is duplicated." do
-      #        values = Options::Values.new
-      #        values.string.merge!({"string_key" => "string value"})
-      #        values.bool.merge!({"bool_key" => true})
-      #        values.array.merge!({"array_key" => ["array", "value"]})
-      #        values.merge!({"other_key" => "merge string value"}) # not raises Exception
-      #        values.merge!({"other_key" => false})                # not raises Exception
-      #        expect_raises(Exception, "Duplicate array option. \"array_key\"") do
-      #          values.merge!({"array_key" => ["a", "b"]}) # duplicated
-      #        end
-      #      end
-      #    end
+      describe "Bool" do
+        it "merged only hash of Bool." do
+          values = Options::Values.new
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
+          values.merge!({"merge_bool_key" => false})
+          values.string.should eq({"string_key" => "string value"})
+          values.bool.should eq({"bool_key" => true, "merge_bool_key" => false})
+          values.array.should eq({"array_key" => ["array", "value"]})
+        end
+        it "raises an Exception when option name of Bool is duplicated." do
+          values = Options::Values.new
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
+          values.merge!({"other_key" => "merge string value"}) # not raises Exception
+          expect_raises(Exception, "Duplicate bool option. \"bool_key\"") do
+            values.merge!({"bool_key" => false}) # duplicated
+          end
+          values.merge!({"other_key" => ["a", "b"]}) # not raises Exception
+        end
+      end
+      describe "Array(String)" do
+        it "merged only hash of Array(String)." do
+          values = Options::Values.new
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
+          values.merge!({"merge_bool_key" => ["merge", "array", "value"]})
+          values.string.should eq({"string_key" => "string value"})
+          values.bool.should eq({"bool_key" => true})
+          values.array.should eq({
+            "array_key"      => ["array", "value"],
+            "merge_bool_key" => ["merge", "array", "value"],
+          })
+        end
+        it "raises an Exception when option name of Array(String )is duplicated." do
+          values = Options::Values.new
+          values.string.merge!({"string_key" => "string value"})
+          values.bool.merge!({"bool_key" => true})
+          values.array.merge!({"array_key" => ["array", "value"]})
+          values.merge!({"other_key" => "merge string value"}) # not raises Exception
+          values.merge!({"other_key" => false})                # not raises Exception
+          expect_raises(Exception, "Duplicate array option. \"array_key\"") do
+            values.merge!({"array_key" => ["a", "b"]}) # duplicated
+          end
+        end
+      end
     end
   end
-  # describe "#values" do
-  #  it "returns hash when options are set." do
-  #    opts = Options.new
-  #    opts.add Option(String | Nil).new("-f", "--foo", "", false, "", "value foo")
-  #    opts.add Option(String | Nil).new("-b", "--bar", "", false, "", "value bar")
-  #    opts.add Option(String | Nil).new("-z VALUE", "--zoo=VALUE", "", false, "", "value zoo")
-  #    opts.add Option(Bool | Nil).new("-v", "", false, false, "", true)
-  #    opts.add Option(Array(String) | Nil).new("-a", "--array", [] of String, false, "", ["a", "b"])
-  #    expect_values = Options::Values.new
-  #    expect_values.merge!({"foo" => "value foo"})
-  #    expect_values.merge!({"bar" => "value bar"})
-  #    expect_values.merge!({"zoo" => "value zoo"})
-  #    expect_values.merge!({"v" => true})
-  #    expect_values.merge!({"array" => ["a", "b"]})
-  #    opts.values.string.should eq(expect_values.string)
-  #    opts.values.bool.should eq(expect_values.bool)
-  #    opts.values.array.should eq(expect_values.array)
-  #  end
-  # end
-  # describe "#validate!" do
-  #  it "returns self when there is no required options." do
-  #    opts = Options.new
-  #    opt1 = Option(String | Nil).new("-a", "", "", false, "", "")
-  #    opt1.set_string("foo")
-  #    opts.add opt1
-  #    opt2 = Option(String | Nil).new("-b", "", "", false, "", "")
-  #    opt2.set_string("bar")
-  #    opts.add opt2
-  #    opts.validate!.should eq(nil)
-  #  end
-  #  it "raises an Exception when there is required option." do
-  #    opts = Options.new
-  #    opt1 = Option(String | Nil).new("-a", "", "", false, "", "")
-  #    opt1.set_string("foo")
-  #    opts.add opt1
-  #    opt2 = Option(String | Nil).new("-b", "", "", true, "", "")
-  #    opts.add opt2
-  #    expect_raises(Exception, "Required options. \"-b\"") { opts.validate! }
-  #  end
-  #  it "raises an Exception when there are required options." do
-  #    opts = Options.new
-  #    opt1 = Option(String | Nil).new("-a", "", "", true, "", "")
-  #    opts.add opt1
-  #    opt2 = Option(String | Nil).new("-b", "", "", true, "", "")
-  #    opts.add opt2
-  #    expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.validate! }
-  #  end
-  # end
+  describe "#values" do
+    it "returns hash when options are set." do
+      opts = Options.new
+      opts.add Option(String | Nil).new("-f", "--foo", "", false, "", "value foo")
+      opts.add Option(String | Nil).new("-b", "--bar", "", false, "", "value bar")
+      opts.add Option(String | Nil).new("-z VALUE", "--zoo=VALUE", "", false, "", "value zoo")
+      opts.add Option(Bool | Nil).new("-v", "", false, false, "", true)
+      opts.add Option(Array(String) | Nil).new("-a", "--array", [] of String, false, "", ["a", "b"])
+      expect_values = Options::Values.new
+      expect_values.merge!({"foo" => "value foo"})
+      expect_values.merge!({"bar" => "value bar"})
+      expect_values.merge!({"zoo" => "value zoo"})
+      expect_values.merge!({"v" => true})
+      expect_values.merge!({"array" => ["a", "b"]})
+      opts.values.string.should eq(expect_values.string)
+      opts.values.bool.should eq(expect_values.bool)
+      opts.values.array.should eq(expect_values.array)
+    end
+  end
+  describe "#validate!" do
+    it "returns self when there is no required options." do
+      opts = Options.new
+      opt1 = Option(String | Nil).new("-a", "", "", false, "", "")
+      opt1.set_string("foo")
+      opts.add opt1
+      opt2 = Option(String | Nil).new("-b", "", "", false, "", "")
+      opt2.set_string("bar")
+      opts.add opt2
+      opts.validate!.should eq(nil)
+    end
+    it "raises an Exception when there is required option." do
+      opts = Options.new
+      opt1 = Option(String | Nil).new("-a", "", "", false, "", "")
+      opt1.set_string("foo")
+      opts.add opt1
+      opt2 = Option(String | Nil).new("-b", "", "", true, "", "")
+      opts.add opt2
+      expect_raises(Exception, "Required options. \"-b\"") { opts.validate! }
+    end
+    it "raises an Exception when there are required options." do
+      opts = Options.new
+      opt1 = Option(String | Nil).new("-a", "", "", true, "", "")
+      opts.add opt1
+      opt2 = Option(String | Nil).new("-b", "", "", true, "", "")
+      opts.add opt2
+      expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.validate! }
+    end
+  end
 end
