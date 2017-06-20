@@ -40,7 +40,7 @@ describe "main command with bool." do
             Options:
 
               -h, --help                       Show this help.
-              -b, --bool                       Option description.  [default:false]
+              -b, --bool                       Option description.
 
 
           HELP_MESSAGE
@@ -52,12 +52,12 @@ describe "main command with bool." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: ["arg1"] of String,
       },
       {
@@ -160,7 +160,7 @@ describe "main command with bool only short option." do
             Options:
 
               -h, --help                       Show this help.
-              -b                               Option description.  [default:false]
+              -b                               Option description.
 
 
           HELP_MESSAGE
@@ -172,12 +172,12 @@ describe "main command with bool only short option." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"b" => false} of String => Bool),
+        expect_opts: create_values(bool: {"b" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"b" => false}),
+        expect_opts: create_values(bool: {"b" => nil}),
         expect_args: ["arg1"] of String,
       },
       {
@@ -273,7 +273,7 @@ describe "main command with bool arguments." do
             Options:
 
               -h, --help                       Show this help.
-              -b ARG, --bool=ARG               Option description.  [default:false]
+              -b ARG, --bool=ARG               Option description.
 
 
           HELP_MESSAGE
@@ -285,12 +285,12 @@ describe "main command with bool arguments." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"bool" => false} of String => Bool),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: ["arg1"] of String,
       },
       {
@@ -407,7 +407,7 @@ describe "main command with bool." do
             Options:
 
               -h, --help                       Show this help.
-              -b ARG                           Option description.  [default:false]
+              -b ARG                           Option description.
 
 
           HELP_MESSAGE
@@ -419,12 +419,12 @@ describe "main command with bool." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"b" => false} of String => Bool),
+        expect_opts: create_values(bool: {"b" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"b" => false}),
+        expect_opts: create_values(bool: {"b" => nil}),
         expect_args: ["arg1"] of String,
       },
       {
@@ -539,7 +539,7 @@ describe "main command with bool desc." do
             Options:
 
               -h, --help                       Show this help.
-              -b, --bool                       Bool option description.  [default:false]
+              -b, --bool                       Bool option description.
 
 
           HELP_MESSAGE
@@ -981,7 +981,7 @@ describe "main command with bool required true only." do
             Options:
 
               -h, --help                       Show this help.
-              -b, --bool                       Bool option description.  [default:false]  [required]
+              -b, --bool                       Bool option description.  [required]
 
 
           HELP_MESSAGE
@@ -1091,7 +1091,7 @@ describe "main command with bool arguments required true only." do
             Options:
 
               -h, --help                       Show this help.
-              -b ARG, --bool=ARG               Bool option description.  [default:false]  [required]
+              -b ARG, --bool=ARG               Bool option description.  [required]
 
 
           HELP_MESSAGE
@@ -1542,7 +1542,7 @@ describe "main command with bool required false only." do
             Options:
 
               -h, --help                       Show this help.
-              -b, --bool                       Bool option description.  [default:false]
+              -b, --bool                       Bool option description.
 
 
           HELP_MESSAGE
@@ -1554,12 +1554,12 @@ describe "main command with bool required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: ["arg1"] of String,
       },
       {
@@ -1647,7 +1647,7 @@ describe "main command with bool arguments required false only." do
             Options:
 
               -h, --help                       Show this help.
-              -b ARG, --bool=ARG               Bool option description.  [default:false]
+              -b ARG, --bool=ARG               Bool option description.
 
 
           HELP_MESSAGE
@@ -1659,12 +1659,12 @@ describe "main command with bool arguments required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: ["arg1"] of String,
       },
       {

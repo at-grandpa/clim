@@ -55,7 +55,6 @@ class Clim
     end
 
     def validate!
-      raise "Please specify default value or required true. \"#{no_value_names.join("\", \"")}\"" unless no_value_names.empty?
       raise "Required options. \"#{no_required_option_names.join("\", \"")}\"" unless no_required_option_names.empty?
     end
 

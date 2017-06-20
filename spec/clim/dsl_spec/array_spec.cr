@@ -40,7 +40,7 @@ describe "main command with array." do
             Options:
 
               -h, --help                       Show this help.
-              -a ARG, --array=ARG              Option description.  [default:[]]
+              -a ARG, --array=ARG              Option description.
 
 
           HELP_MESSAGE
@@ -50,6 +50,16 @@ describe "main command with array." do
   end
   describe "returns opts and args when passing argv." do
     [
+      {
+        argv:        %w(),
+        expect_opts: create_values(array: {"array" => nil}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values(array: {"array" => nil}),
+        expect_args: ["arg1"],
+      },
       {
         argv:        %w(-a array1),
         expect_opts: create_values(array: {"array" => ["array1"]}),
@@ -102,14 +112,6 @@ describe "main command with array." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Please specify default value or required true. \"-a ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Please specify default value or required true. \"-a ARG\"",
-      },
       {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",
@@ -176,7 +178,7 @@ describe "main command with array only short option." do
             Options:
 
               -h, --help                       Show this help.
-              -a ARG                           Option description.  [default:[]]
+              -a ARG                           Option description.
 
 
           HELP_MESSAGE
@@ -186,6 +188,16 @@ describe "main command with array only short option." do
   end
   describe "returns opts and args when passing argv." do
     [
+      {
+        argv:        %w(),
+        expect_opts: create_values(array: {"a" => nil}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values(array: {"a" => nil}),
+        expect_args: ["arg1"],
+      },
       {
         argv:        %w(-a array1),
         expect_opts: create_values(array: {"a" => ["array1"]}),
@@ -228,14 +240,6 @@ describe "main command with array only short option." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Please specify default value or required true. \"-a ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Please specify default value or required true. \"-a ARG\"",
-      },
       {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",
@@ -310,7 +314,7 @@ describe "main command with array desc." do
             Options:
 
               -h, --help                       Show this help.
-              -a ARG, --array=ARG              Array option description.  [default:[]]
+              -a ARG, --array=ARG              Array option description.
 
 
           HELP_MESSAGE
@@ -634,7 +638,7 @@ describe "main command with array required true only." do
             Options:
 
               -h, --help                       Show this help.
-              -a ARG, --array=ARG              Array option description.  [default:[]]  [required]
+              -a ARG, --array=ARG              Array option description.  [required]
 
 
           HELP_MESSAGE
@@ -908,7 +912,7 @@ describe "main command with array required false only." do
             Options:
 
               -h, --help                       Show this help.
-              -a ARG, --array=ARG              Array option description.  [default:[]]
+              -a ARG, --array=ARG              Array option description.
 
 
           HELP_MESSAGE
@@ -918,6 +922,16 @@ describe "main command with array required false only." do
   end
   describe "returns opts and args when passing argv." do
     [
+      {
+        argv:        %w(),
+        expect_opts: create_values(array: {"array" => nil}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values(array: {"array" => nil}),
+        expect_args: ["arg1"],
+      },
       {
         argv:        %w(-a array1),
         expect_opts: create_values(array: {"array" => ["array1"]}),
@@ -970,14 +984,6 @@ describe "main command with array required false only." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Please specify default value or required true. \"-a ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Please specify default value or required true. \"-a ARG\"",
-      },
       {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",

@@ -7,9 +7,8 @@ class Clim
     property desc : String
     property value : T
     property set_value_flag : Bool
-    property set_default_flag : Bool
 
-    def initialize(@short, @long, @default, @required, @desc, @value, @set_value_flag = false, @set_default_flag = false)
+    def initialize(@short, @long, @default, @required, @desc, @value, @set_value_flag = false)
     end
 
     def short_name
@@ -87,16 +86,8 @@ class Clim
       @set_value_flag
     end
 
-    def set_default?
-      @set_default_flag
-    end
-
     def no_required_option?
       required? && !set_value?
-    end
-
-    def no_value?
-      !required? && !set_default? && !set_value?
     end
   end
 end

@@ -32,27 +32,26 @@ class Clim
       @@defining.usage = usage
     end
 
-    macro difine_opts(method_name, type, base_default, &proc)
-      {% for long_arg in ["long,", ""] %}
-        def {{method_name.id}}(short, {{long_arg.id}} default : {{type}} = nil, required = false, desc = "Option description.")
+    macro difine_opts(method_name, type, &proc)
+      {% for long? in [true, false] %}
+        def {{method_name.id}}(short, {% if long? %} long, {% end %} default : {{type}} = nil, required = false, desc = "Option description.")
           opt = Option({{type}}).new(
-                                      short:            short,
-                                      long:             {% if long_arg.empty? %} "", {% else %} {{long_arg.id}} {% end %}
-                                      default:          default.nil? ? {{base_default}} : default,
-                                      required:         required,
-                                      desc:             desc,
-                                      value:            default.nil? ? {{base_default}} : default,
-                                      set_default_flag: {% if type.id == Bool.id %} true {% else %} !default.nil? {% end %}
+                                      short:    short,
+                                      long:     {% if long? %} long, {% else %} "", {% end %}
+                                      default:  default,
+                                      required: required,
+                                      desc:     desc,
+                                      value:    default
                                     )
-          @@defining.parser.on(opt.short, {% unless long_arg.empty? %} opt.long, {% end %} opt.desc) {{proc.id}}
+          @@defining.parser.on(opt.short, {% if long? %} opt.long, {% end %} opt.desc) {{proc.id}}
           @@defining.opts.add(opt)
         end
       {% end %}
     end
 
-    difine_opts(method_name: "string", type: String | Nil, base_default: nil) { |arg| opt.set_string(arg) }
-    difine_opts(method_name: "bool", type: Bool | Nil, base_default: nil) { |arg| opt.set_bool(arg) }
-    difine_opts(method_name: "array", type: Array(String) | Nil, base_default: nil) { |arg| opt.add_to_array(arg) }
+    difine_opts(method_name: "string", type: String | Nil) { |arg| opt.set_string(arg) }
+    difine_opts(method_name: "bool", type: Bool | Nil) { |arg| opt.set_bool(arg) }
+    difine_opts(method_name: "array", type: Array(String) | Nil) { |arg| opt.add_to_array(arg) }
 
     def run(&block : RunProc)
       @@defining.run_proc = block
