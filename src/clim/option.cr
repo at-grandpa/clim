@@ -7,9 +7,8 @@ class Clim
     property desc : String
     property value : T
     property set_value_flag : Bool
-    property set_default_flag : Bool
 
-    def initialize(@short, @long, @default, @required, @desc, @value, @set_value_flag = false, @set_default_flag = false)
+    def initialize(@short, @long, @default, @required, @desc, @value, @set_value_flag = false)
     end
 
     def short_name
@@ -34,9 +33,25 @@ class Clim
 
     def desc
       desc = @desc
-      desc = desc + "  [default:#{default}]" unless default.to_s.empty?
+      desc = desc + "  [default:#{display_default}]" unless default.nil?
       desc = desc + "  [required]" if required
       desc
+    end
+
+    def display_default
+      default_value = default
+      case default_value
+      when String
+        default_value.empty? ? "\"\"" : default
+      when Bool
+        default_value
+      when Array(String)
+        default_value.empty? ? "[] of String" : default
+      when Nil
+        "nil"
+      else
+        raise ClimException.new "'default' type is not supported. default type is [#{typeof(default)}]"
+      end
     end
 
     def set_string(@value, @set_value_flag = true)
@@ -53,7 +68,10 @@ class Clim
     end
 
     def add_to_array(arg, @set_value_flag = true)
-      @value << arg
+      iv_value = @value
+      value_tmp = iv_value.nil? ? [] of String : iv_value
+      value_tmp << arg
+      @value = value_tmp
     end
 
     def reset(@set_value_flag = false)
@@ -68,16 +86,8 @@ class Clim
       @set_value_flag
     end
 
-    def set_default?
-      @set_default_flag
-    end
-
     def no_required_option?
       required? && !set_value?
-    end
-
-    def no_value?
-      !required? && !set_default? && !set_value?
     end
   end
 end

@@ -51,6 +51,16 @@ describe "main command with string." do
   describe "returns opts and args when passing argv." do
     [
       {
+        argv:        %w(),
+        expect_opts: create_values(string: {"string" => nil}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values(string: {"string" => nil}),
+        expect_args: ["arg1"],
+      },
+      {
         argv:        %w(-s string1),
         expect_opts: create_values(string: {"string" => "string1"}),
         expect_args: [] of String,
@@ -73,12 +83,12 @@ describe "main command with string." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -102,14 +112,6 @@ describe "main command with string." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Please specify default value or required true. \"-s ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Please specify default value or required true. \"-s ARG\"",
-      },
       {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",
@@ -187,6 +189,16 @@ describe "main command with string only short option." do
   describe "returns opts and args when passing argv." do
     [
       {
+        argv:        %w(),
+        expect_opts: create_values(string: {"s" => nil}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values(string: {"s" => nil}),
+        expect_args: ["arg1"],
+      },
+      {
         argv:        %w(-s string1),
         expect_opts: create_values(string: {"s" => "string1"}),
         expect_args: [] of String,
@@ -199,12 +211,12 @@ describe "main command with string only short option." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"s" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(string: {"s" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -228,14 +240,6 @@ describe "main command with string only short option." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Please specify default value or required true. \"-s ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Please specify default value or required true. \"-s ARG\"",
-      },
       {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",
@@ -378,7 +382,7 @@ describe "main command with string default." do
       {
         argv:        %w(arg1),
         expect_opts: create_values(string: {"string" => "default value"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
@@ -403,12 +407,12 @@ describe "main command with string default." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -531,14 +535,14 @@ describe "main command with string required true and default exists." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(
           string: {"string" => "string1"},
         ),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -673,14 +677,14 @@ describe "main command with string required only." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(
           string: {"string" => "string1"},
         ),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -800,7 +804,7 @@ describe "main command with string required false and default exists." do
       {
         argv:        %w(arg1),
         expect_opts: create_values(string: {"string" => "default value"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
@@ -825,14 +829,14 @@ describe "main command with string required false and default exists." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(
           string: {"string" => "string1"},
         ),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -937,6 +941,16 @@ describe "main command with string required false only." do
   describe "returns opts and args when passing argv." do
     [
       {
+        argv:        %w(),
+        expect_opts: create_values(string: {"string" => nil}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values(string: {"string" => nil}),
+        expect_args: ["arg1"],
+      },
+      {
         argv:        %w(-s string1),
         expect_opts: create_values(string: {"string" => "string1"}),
         expect_args: [] of String,
@@ -959,14 +973,14 @@ describe "main command with string required false only." do
       {
         argv:        %w(-s string1 arg1),
         expect_opts: create_values(string: {"string" => "string1"}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
         expect_opts: create_values(
           string: {"string" => "string1"},
         ),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
@@ -994,14 +1008,6 @@ describe "main command with string required false only." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Please specify default value or required true. \"-s ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Please specify default value or required true. \"-s ARG\"",
-      },
       {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",

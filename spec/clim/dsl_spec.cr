@@ -1,13 +1,12 @@
 require "./../spec_helper"
 
 def create_values(
-                  string = {} of String => String,
-                  bool = {} of String => Bool,
-                  array = {} of String => Array(String))
+                  string : Hash(String, String | Nil) = {} of String => String | Nil,
+                  bool : Hash(String, Bool | Nil) = {} of String => Bool | Nil,
+                  array : Hash(String, Array(String) | Nil) = {} of String => Array(String) | Nil)
   values = Options::Values.new
-  values.string = string
-  values.bool = bool
-  values.array = array
+  values.string.merge!(string)
+  values.bool.merge!(bool)
+  values.array.merge!(array)
   values
 end
-

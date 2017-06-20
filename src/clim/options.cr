@@ -3,7 +3,7 @@ require "./option"
 
 class Clim
   class Options
-    alias OptionsType = Option(String) | Option(Bool) | Option(Array(String))
+    alias OptionsType = Option(String | Nil) | Option(Bool | Nil) | Option(Array(String) | Nil)
 
     property opts : Array(OptionsType) = [] of OptionsType
     property help : String = ""
@@ -25,16 +25,20 @@ class Clim
           {{property_name.id}}
         end
 
-        def merge!(hash : Hash(String, {{type}}))
-          {{property_name.id}}.merge!(hash) do |key, _, _|
-            raise ClimException.new "Duplicate {{property_name.id}} option. \"#{key}\""
+        def merge!(other : Hash(String, {{type}}))
+          other.each do |k, v|
+            if {{property_name.id}}.has_key?(k)
+              raise ClimException.new "Duplicate {{property_name.id}} option. \"#{k}\""
+            else
+              {{property_name.id}}.merge!(other)
+            end
           end
         end
       end
 
-      define_methods(property_name: "string", type: String)
-      define_methods(property_name: "bool", type: Bool)
-      define_methods(property_name: "array", type: Array(String))
+      define_methods(property_name: "string", type: String | Nil)
+      define_methods(property_name: "bool", type: Bool | Nil)
+      define_methods(property_name: "array", type: Array(String) | Nil)
     end
 
     def values
@@ -51,7 +55,6 @@ class Clim
     end
 
     def validate!
-      raise "Please specify default value or required true. \"#{no_value_names.join("\", \"")}\"" unless no_value_names.empty?
       raise "Required options. \"#{no_required_option_names.join("\", \"")}\"" unless no_required_option_names.empty?
     end
 

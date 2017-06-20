@@ -54,17 +54,17 @@ describe "main command only." do
       {
         argv:        %w(arg1),
         expect_opts: create_values,
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 arg2),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2"] of String,
+        expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(arg1 arg2 arg3),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2", "arg3"] of String,
+        expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -167,17 +167,17 @@ describe "main command with desc." do
       {
         argv:        %w(arg1),
         expect_opts: create_values,
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 arg2),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2"] of String,
+        expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(arg1 arg2 arg3),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2", "arg3"] of String,
+        expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -281,17 +281,17 @@ describe "main command with usage." do
       {
         argv:        %w(arg1),
         expect_opts: create_values,
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 arg2),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2"] of String,
+        expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(arg1 arg2 arg3),
         expect_opts: create_values,
-        expect_args: ["arg1", "arg2", "arg3"] of String,
+        expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do

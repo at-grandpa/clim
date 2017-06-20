@@ -40,7 +40,7 @@ describe "main command with bool." do
             Options:
 
               -h, --help                       Show this help.
-              -b, --bool                       Option description.  [default:false]
+              -b, --bool                       Option description.
 
 
           HELP_MESSAGE
@@ -52,13 +52,13 @@ describe "main command with bool." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_opts: create_values(bool: {"bool" => nil}),
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
@@ -73,22 +73,22 @@ describe "main command with bool." do
       {
         argv:        %w(-b arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -160,7 +160,7 @@ describe "main command with bool only short option." do
             Options:
 
               -h, --help                       Show this help.
-              -b                               Option description.  [default:false]
+              -b                               Option description.
 
 
           HELP_MESSAGE
@@ -172,13 +172,13 @@ describe "main command with bool only short option." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"b" => false} of String => Bool),
+        expect_opts: create_values(bool: {"b" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"b" => false}),
-        expect_args: ["arg1"] of String,
+        expect_opts: create_values(bool: {"b" => nil}),
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
@@ -188,12 +188,12 @@ describe "main command with bool only short option." do
       {
         argv:        %w(-b arg1),
         expect_opts: create_values(bool: {"b" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
         expect_opts: create_values(bool: {"b" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -273,7 +273,7 @@ describe "main command with bool arguments." do
             Options:
 
               -h, --help                       Show this help.
-              -b ARG, --bool=ARG               Option description.  [default:false]
+              -b ARG, --bool=ARG               Option description.
 
 
           HELP_MESSAGE
@@ -285,13 +285,13 @@ describe "main command with bool arguments." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"bool" => false} of String => Bool),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_opts: create_values(bool: {"bool" => nil}),
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
@@ -407,7 +407,7 @@ describe "main command with bool." do
             Options:
 
               -h, --help                       Show this help.
-              -b ARG                           Option description.  [default:false]
+              -b ARG                           Option description.
 
 
           HELP_MESSAGE
@@ -419,13 +419,13 @@ describe "main command with bool." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"b" => false} of String => Bool),
+        expect_opts: create_values(bool: {"b" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"b" => false}),
-        expect_args: ["arg1"] of String,
+        expect_opts: create_values(bool: {"b" => nil}),
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
@@ -539,7 +539,7 @@ describe "main command with bool desc." do
             Options:
 
               -h, --help                       Show this help.
-              -b, --bool                       Bool option description.  [default:false]
+              -b, --bool                       Bool option description.
 
 
           HELP_MESSAGE
@@ -607,7 +607,7 @@ describe "main command with bool default." do
       {
         argv:        %w(arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
@@ -622,12 +622,12 @@ describe "main command with bool default." do
       {
         argv:        %w(-b arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -722,22 +722,22 @@ describe "main command with bool required true and default exists." do
       {
         argv:        %w(-b arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -827,12 +827,12 @@ describe "main command with bool arguments required true and default exists." do
       {
         argv:        %w(-b true arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b true),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b false),
@@ -842,12 +842,12 @@ describe "main command with bool arguments required true and default exists." do
       {
         argv:        %w(-b false arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b false),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool true),
@@ -857,12 +857,12 @@ describe "main command with bool arguments required true and default exists." do
       {
         argv:        %w(--bool true arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool true),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool false),
@@ -872,12 +872,12 @@ describe "main command with bool arguments required true and default exists." do
       {
         argv:        %w(--bool false arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool false),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -981,7 +981,7 @@ describe "main command with bool required true only." do
             Options:
 
               -h, --help                       Show this help.
-              -b, --bool                       Bool option description.  [default:false]  [required]
+              -b, --bool                       Bool option description.  [required]
 
 
           HELP_MESSAGE
@@ -1004,22 +1004,22 @@ describe "main command with bool required true only." do
       {
         argv:        %w(-b arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1091,7 +1091,7 @@ describe "main command with bool arguments required true only." do
             Options:
 
               -h, --help                       Show this help.
-              -b ARG, --bool=ARG               Bool option description.  [default:false]  [required]
+              -b ARG, --bool=ARG               Bool option description.  [required]
 
 
           HELP_MESSAGE
@@ -1109,12 +1109,12 @@ describe "main command with bool arguments required true only." do
       {
         argv:        %w(-b true arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b true),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b false),
@@ -1124,12 +1124,12 @@ describe "main command with bool arguments required true only." do
       {
         argv:        %w(-b false arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b false),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool true),
@@ -1139,12 +1139,12 @@ describe "main command with bool arguments required true only." do
       {
         argv:        %w(--bool true arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool true),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool false),
@@ -1154,12 +1154,12 @@ describe "main command with bool arguments required true only." do
       {
         argv:        %w(--bool false arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool false),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1281,7 +1281,7 @@ describe "main command with bool required false and default exists." do
       {
         argv:        %w(arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
@@ -1296,22 +1296,22 @@ describe "main command with bool required false and default exists." do
       {
         argv:        %w(-b arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1386,7 +1386,7 @@ describe "main command with bool arguments required false and default exists." d
       {
         argv:        %w(arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
@@ -1396,12 +1396,12 @@ describe "main command with bool arguments required false and default exists." d
       {
         argv:        %w(-b true arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b true),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b false),
@@ -1411,12 +1411,12 @@ describe "main command with bool arguments required false and default exists." d
       {
         argv:        %w(-b false arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b false),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool true),
@@ -1426,12 +1426,12 @@ describe "main command with bool arguments required false and default exists." d
       {
         argv:        %w(--bool true arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool true),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool false),
@@ -1441,12 +1441,12 @@ describe "main command with bool arguments required false and default exists." d
       {
         argv:        %w(--bool false arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool false),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1542,7 +1542,7 @@ describe "main command with bool required false only." do
             Options:
 
               -h, --help                       Show this help.
-              -b, --bool                       Bool option description.  [default:false]
+              -b, --bool                       Bool option description.
 
 
           HELP_MESSAGE
@@ -1554,13 +1554,13 @@ describe "main command with bool required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_opts: create_values(bool: {"bool" => nil}),
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
@@ -1575,22 +1575,22 @@ describe "main command with bool required false only." do
       {
         argv:        %w(-b arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1647,7 +1647,7 @@ describe "main command with bool arguments required false only." do
             Options:
 
               -h, --help                       Show this help.
-              -b ARG, --bool=ARG               Bool option description.  [default:false]
+              -b ARG, --bool=ARG               Bool option description.
 
 
           HELP_MESSAGE
@@ -1659,13 +1659,13 @@ describe "main command with bool arguments required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(bool: {"bool" => false}),
+        expect_opts: create_values(bool: {"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_opts: create_values(bool: {"bool" => nil}),
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
@@ -1675,12 +1675,12 @@ describe "main command with bool arguments required false only." do
       {
         argv:        %w(-b true arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b true),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(-b false),
@@ -1690,12 +1690,12 @@ describe "main command with bool arguments required false only." do
       {
         argv:        %w(-b false arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b false),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool true),
@@ -1705,12 +1705,12 @@ describe "main command with bool arguments required false only." do
       {
         argv:        %w(--bool true arg1),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool true),
         expect_opts: create_values(bool: {"bool" => true}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool false),
@@ -1720,12 +1720,12 @@ describe "main command with bool arguments required false only." do
       {
         argv:        %w(--bool false arg1),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool false),
         expect_opts: create_values(bool: {"bool" => false}),
-        expect_args: ["arg1"] of String,
+        expect_args: ["arg1"],
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
