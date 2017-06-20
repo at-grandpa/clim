@@ -25,9 +25,13 @@ class Clim
           {{property_name.id}}
         end
 
-        def merge!(hash : Hash(String, {{type}}))
-          {{property_name.id}}.merge!(hash) do |key, _, _|
-            raise ClimException.new "Duplicate {{property_name.id}} option. \"#{key}\""
+        def merge!(other : Hash(String, {{type}}))
+          other.each do |k, v|
+            if {{property_name.id}}.has_key?(k)
+              raise ClimException.new "Duplicate {{property_name.id}} option. \"#{k}\""
+            else
+              {{property_name.id}}.merge!(other)
+            end
           end
         end
       end
