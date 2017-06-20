@@ -14,7 +14,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.1.1
+    version: 0.1.2
 ```
 
 ## Sample Code
@@ -99,7 +99,7 @@ module Hello
         # ...
 
       end
-      
+
       # ...
 
     end
