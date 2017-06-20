@@ -34,9 +34,25 @@ class Clim
 
     def desc
       desc = @desc
-      desc = desc + "  [default:#{default}]" unless default.to_s.empty?
+      desc = desc + "  [default:#{display_default}]" unless default.nil?
       desc = desc + "  [required]" if required
       desc
+    end
+
+    def display_default
+      default_value = default
+      case default_value
+      when String
+        default_value.empty? ? "\"\"" : default
+      when Bool
+        default_value
+      when Array(String)
+        default_value.empty? ? "[] of String" : default
+      when Nil
+        "nil"
+      else
+        raise ClimException.new "'default' type is not supported. default type is [#{typeof(default)}]"
+      end
     end
 
     def set_string(@value, @set_value_flag = true)

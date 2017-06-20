@@ -6,6 +6,22 @@ describe Clim::Option do
       opt = Option(String).new("", "", "default value", false, "description for spec.", "")
       opt.desc.should eq("description for spec.  [default:default value]")
     end
+    it "returns appropriate desc when default is String type and empty." do
+      opt = Option(String | Nil).new("", "", "", false, "description for spec.", "")
+      opt.desc.should eq("description for spec.  [default:\"\"]")
+    end
+    it "returns appropriate desc when default is Bool type and false." do
+      opt = Option(Bool | Nil).new("", "", false, false, "description for spec.", false)
+      opt.desc.should eq("description for spec.  [default:false]")
+    end
+    it "returns appropriate desc when default is Array(String) type and empty." do
+      opt = Option(Array(String) | Nil).new("", "", [] of String, false, "description for spec.", ["a", "b"])
+      opt.desc.should eq("description for spec.  [default:[] of String]")
+    end
+    it "returns appropriate desc when default is nil." do
+      opt = Option(String | Nil).new("", "", nil, false, "description for spec.", nil)
+      opt.desc.should eq("description for spec.")
+    end
     it "returns desc with default and required when default set and required is true." do
       opt = Option(String).new("", "", "default value", true, "description for spec.", "")
       opt.desc.should eq("description for spec.  [default:default value]  [required]")
