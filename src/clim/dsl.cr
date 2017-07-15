@@ -2,10 +2,10 @@ require "./command"
 
 class Clim
   {% if flag?(:spec) %}
-    alias ReturnTypeOfRunBlock = NamedTuple(opts: Options::Values, args: Array(String))
-    alias RunProc = Proc(Options::Values, Array(String), ReturnTypeOfRunBlock)
+    alias ReturnTypeOfRunBlock = NamedTuple(opts: Hash(String, String | Bool | Array(String) | Nil), args: Array(String))
+    alias RunProc = Proc(Hash(String, String | Bool | Array(String) | Nil), Array(String), ReturnTypeOfRunBlock)
   {% else %}
-    alias RunProc = Proc(Options::Values, Array(String), Nil)
+    alias RunProc = Proc(Hash(String, String | Bool | Array(String) | Nil), Array(String), Nil)
   {% end %}
 
   @@main : Command = Command.new("main_command")

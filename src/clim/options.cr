@@ -17,37 +17,26 @@ class Clim
 
     class Values
       property help : String = ""
+      property hash : Hash(String, String | Bool | Array(String) | Nil) = {} of String => String | Bool | Array(String) | Nil
 
-      macro define_methods(property_name, type)
-        property {{property_name.id}} : Hash(String, {{type}}) = {} of String => {{type}}
-
-        def {{property_name.split("").first.id}}
-          {{property_name.id}}
-        end
-
-        def merge!(other : Hash(String, {{type}}))
-          other.each do |k, v|
-            if {{property_name.id}}.has_key?(k)
-              raise ClimException.new "Duplicate {{property_name.id}} option. \"#{k}\""
-            else
-              {{property_name.id}}.merge!(other)
-            end
+      def merge!(other : Hash(String, String | Bool | Array(String) | Nil))
+        other.each do |k, v|
+          if hash.has_key?(k)
+            raise ClimException.new "Duplicate option. \"#{k}\""
+          else
+            hash.merge!(other)
           end
         end
       end
-
-      define_methods(property_name: "string", type: String | Nil)
-      define_methods(property_name: "bool", type: Bool | Nil)
-      define_methods(property_name: "array", type: Array(String) | Nil)
     end
 
-    def values
+    def values : Hash(String, String | Bool | Array(String) | Nil)
       values = Values.new
-      values.help = help
+      values.merge!({"help" => help})
       opts.each do |opt|
         values.merge!(opt.to_h)
       end
-      values
+      values.hash
     end
 
     def reset
