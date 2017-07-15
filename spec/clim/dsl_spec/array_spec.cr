@@ -1,4 +1,5 @@
 require "./../../spec_helper"
+require "./../dsl_spec"
 
 class SpecMainCommandWithArray < Clim
   main_command
@@ -28,7 +29,7 @@ describe "main command with array." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArray.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -52,60 +53,59 @@ describe "main command with array." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(array: {"array" => nil}),
+        expect_opts: create_values({"array" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(array: {"array" => nil}),
+        expect_opts: create_values({"array" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["rray"]}),
+        expect_opts: create_values({"array" => ["rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["=array1"]}),
+        expect_opts: create_values({"array" => ["=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArray.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -166,7 +166,7 @@ describe "main command with array only short option." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -190,50 +190,49 @@ describe "main command with array only short option." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(array: {"a" => nil}),
+        expect_opts: create_values({"a" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(array: {"a" => nil}),
+        expect_opts: create_values({"a" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values(array: {"a" => ["array1"]}),
+        expect_opts: create_values({"a" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values(array: {"a" => ["array1"]}),
+        expect_opts: create_values({"a" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values(array: {"a" => ["array1"]}),
+        expect_opts: create_values({"a" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values(array: {"a" => ["array1"]}),
+        expect_opts: create_values({"a" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values(array: {"a" => ["rray"]}),
+        expect_opts: create_values({"a" => ["rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values(array: {"a" => ["=array1"]}),
+        expect_opts: create_values({"a" => ["=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -302,7 +301,7 @@ describe "main command with array desc." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -352,7 +351,7 @@ describe "main command with array default." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -376,60 +375,59 @@ describe "main command with array default." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(array: {"array" => ["default value"]}),
+        expect_opts: create_values({"array" => ["default value"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(array: {"array" => ["default value"]}),
+        expect_opts: create_values({"array" => ["default value"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["default value", "rray"]}),
+        expect_opts: create_values({"array" => ["default value", "rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["default value", "=array1"]}),
+        expect_opts: create_values({"array" => ["default value", "=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -490,7 +488,7 @@ describe "main command with array required true and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -514,50 +512,49 @@ describe "main command with array required true and default exists." do
     [
       {
         argv:        %w(-a array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["default value", "rray"]}),
+        expect_opts: create_values({"array" => ["default value", "rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["default value", "=array1"]}),
+        expect_opts: create_values({"array" => ["default value", "=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -626,7 +623,7 @@ describe "main command with array required true only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -650,50 +647,49 @@ describe "main command with array required true only." do
     [
       {
         argv:        %w(-a array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["rray"]}),
+        expect_opts: create_values({"array" => ["rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["=array1"]}),
+        expect_opts: create_values({"array" => ["=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -762,7 +758,7 @@ describe "main command with array required false and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -786,60 +782,59 @@ describe "main command with array required false and default exists." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(array: {"array" => ["default value"]}),
+        expect_opts: create_values({"array" => ["default value"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(array: {"array" => ["default value"]}),
+        expect_opts: create_values({"array" => ["default value"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values(array: {"array" => ["default value", "array1"]}),
+        expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["default value", "rray"]}),
+        expect_opts: create_values({"array" => ["default value", "rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["default value", "=array1"]}),
+        expect_opts: create_values({"array" => ["default value", "=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -900,7 +895,7 @@ describe "main command with array required false only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -924,60 +919,59 @@ describe "main command with array required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(array: {"array" => nil}),
+        expect_opts: create_values({"array" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(array: {"array" => nil}),
+        expect_opts: create_values({"array" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values(array: {"array" => ["array1"]}),
+        expect_opts: create_values({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["rray"]}),
+        expect_opts: create_values({"array" => ["rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values(array: {"array" => ["=array1"]}),
+        expect_opts: create_values({"array" => ["=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end

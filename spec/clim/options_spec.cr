@@ -33,103 +33,27 @@ describe Clim::Options do
     end
   end
   describe Options::Values do
-    describe "short name method." do
-      describe "String" do
-        it "defineded short name method and returns value same as long name method." do
-          values = Options::Values.new
-          values.string.merge!({"key" => "value"})
-          values.s.should eq(values.string)
-        end
-      end
-      describe "Bool" do
-        it "defineded short name method and returns value same as long name method." do
-          values = Options::Values.new
-          values.bool.merge!({"key" => true})
-          values.b.should eq(values.bool)
-        end
-      end
-      describe "Array(String)" do
-        it "defineded short name method and returns value same as long name method." do
-          values = Options::Values.new
-          values.array.merge!({"key" => ["a", "b"]})
-          values.a.should eq(values.array)
-        end
-      end
-    end
     describe "#merge!" do
-      describe "String" do
-        it "merged only hash of String." do
-          values = Options::Values.new
-          values.string.merge!({"string_key" => "string value"})
-          values.bool.merge!({"bool_key" => true})
-          values.array.merge!({"array_key" => ["array", "value"]})
-          values.merge!({"merge_string_key" => "merge string value"})
-          values.string.should eq({
-            "string_key"       => "string value",
-            "merge_string_key" => "merge string value",
-          })
-          values.bool.should eq({"bool_key" => true})
-          values.array.should eq({"array_key" => ["array", "value"]})
-        end
-        it "raises an Exception when option name of String is duplicated." do
-          values = Options::Values.new
-          values.string.merge!({"string_key" => "string value"})
-          values.bool.merge!({"bool_key" => true})
-          values.array.merge!({"array_key" => ["array", "value"]})
-          expect_raises(Exception, "Duplicate string option. \"string_key\"") do
-            values.merge!({"string_key" => "merge string value"}) # duplicated
-          end
-          values.merge!({"other_key" => false})      # not raises Exception
-          values.merge!({"other_key" => ["a", "b"]}) # not raises Exception
-        end
+      it "merged hash." do
+        values = Options::Values.new
+        values.merge!({"string_key" => "string value"})
+        values.merge!({"bool_key" => true})
+        values.merge!({"array_key" => ["array", "value"]})
+        values.merge!({"merge_string_key" => "merge string value"})
+        values.hash.should eq({
+          "string_key"       => "string value",
+          "merge_string_key" => "merge string value",
+          "bool_key"         => true,
+          "array_key"        => ["array", "value"],
+        })
       end
-      describe "Bool" do
-        it "merged only hash of Bool." do
-          values = Options::Values.new
-          values.string.merge!({"string_key" => "string value"})
-          values.bool.merge!({"bool_key" => true})
-          values.array.merge!({"array_key" => ["array", "value"]})
-          values.merge!({"merge_bool_key" => false})
-          values.string.should eq({"string_key" => "string value"})
-          values.bool.should eq({"bool_key" => true, "merge_bool_key" => false})
-          values.array.should eq({"array_key" => ["array", "value"]})
-        end
-        it "raises an Exception when option name of Bool is duplicated." do
-          values = Options::Values.new
-          values.string.merge!({"string_key" => "string value"})
-          values.bool.merge!({"bool_key" => true})
-          values.array.merge!({"array_key" => ["array", "value"]})
-          values.merge!({"other_key" => "merge string value"}) # not raises Exception
-          expect_raises(Exception, "Duplicate bool option. \"bool_key\"") do
-            values.merge!({"bool_key" => false}) # duplicated
-          end
-          values.merge!({"other_key" => ["a", "b"]}) # not raises Exception
-        end
-      end
-      describe "Array(String)" do
-        it "merged only hash of Array(String)." do
-          values = Options::Values.new
-          values.string.merge!({"string_key" => "string value"})
-          values.bool.merge!({"bool_key" => true})
-          values.array.merge!({"array_key" => ["array", "value"]})
-          values.merge!({"merge_bool_key" => ["merge", "array", "value"]})
-          values.string.should eq({"string_key" => "string value"})
-          values.bool.should eq({"bool_key" => true})
-          values.array.should eq({
-            "array_key"      => ["array", "value"],
-            "merge_bool_key" => ["merge", "array", "value"],
-          })
-        end
-        it "raises an Exception when option name of Array(String )is duplicated." do
-          values = Options::Values.new
-          values.string.merge!({"string_key" => "string value"})
-          values.bool.merge!({"bool_key" => true})
-          values.array.merge!({"array_key" => ["array", "value"]})
-          values.merge!({"other_key" => "merge string value"}) # not raises Exception
-          values.merge!({"other_key" => false})                # not raises Exception
-          expect_raises(Exception, "Duplicate array option. \"array_key\"") do
-            values.merge!({"array_key" => ["a", "b"]}) # duplicated
-          end
+      it "raises an Exception when option name is duplicated." do
+        values = Options::Values.new
+        values.merge!({"string_key" => "string value"})
+        values.merge!({"bool_key" => true})
+        values.merge!({"array_key" => ["array", "value"]})
+        expect_raises(Exception, "Duplicate option. \"string_key\"") do
+          values.merge!({"string_key" => "merge string value"}) # duplicated
         end
       end
     end
@@ -143,14 +67,13 @@ describe Clim::Options do
       opts.add Option(Bool | Nil).new("-v", "", false, false, "", true)
       opts.add Option(Array(String) | Nil).new("-a", "--array", [] of String, false, "", ["a", "b"])
       expect_values = Options::Values.new
+      expect_values.merge!({"help" => ""})
       expect_values.merge!({"foo" => "value foo"})
       expect_values.merge!({"bar" => "value bar"})
       expect_values.merge!({"zoo" => "value zoo"})
       expect_values.merge!({"v" => true})
       expect_values.merge!({"array" => ["a", "b"]})
-      opts.values.string.should eq(expect_values.string)
-      opts.values.bool.should eq(expect_values.bool)
-      opts.values.array.should eq(expect_values.array)
+      opts.values.should eq(expect_values.hash)
     end
   end
   describe "#validate!" do

@@ -28,7 +28,7 @@ describe "main command with string." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithString.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -52,60 +52,59 @@ describe "main command with string." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(string: {"string" => nil}),
+        expect_opts: create_values({"string" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(string: {"string" => nil}),
+        expect_opts: create_values({"string" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-sstring1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string=string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s string1 arg1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
-        expect_opts: create_values(string: {"string" => "tring"}),
+        expect_opts: create_values({"string" => "tring"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s=string1), # Unintended case.
-        expect_opts: create_values(string: {"string" => "=string1"}),
+        expect_opts: create_values({"string" => "=string1"}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithString.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -166,7 +165,7 @@ describe "main command with string only short option." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -190,50 +189,49 @@ describe "main command with string only short option." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(string: {"s" => nil}),
+        expect_opts: create_values({"s" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(string: {"s" => nil}),
+        expect_opts: create_values({"s" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
-        expect_opts: create_values(string: {"s" => "string1"}),
+        expect_opts: create_values({"s" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-sstring1),
-        expect_opts: create_values(string: {"s" => "string1"}),
+        expect_opts: create_values({"s" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s string1 arg1),
-        expect_opts: create_values(string: {"s" => "string1"}),
+        expect_opts: create_values({"s" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
-        expect_opts: create_values(string: {"s" => "string1"}),
+        expect_opts: create_values({"s" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
-        expect_opts: create_values(string: {"s" => "tring"}),
+        expect_opts: create_values({"s" => "tring"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s=string1), # Unintended case.
-        expect_opts: create_values(string: {"s" => "=string1"}),
+        expect_opts: create_values({"s" => "=string1"}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -302,7 +300,7 @@ describe "main command with string desc." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -352,7 +350,7 @@ describe "main command with string default." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -376,60 +374,59 @@ describe "main command with string default." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(string: {"string" => "default value"}),
+        expect_opts: create_values({"string" => "default value"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(string: {"string" => "default value"}),
+        expect_opts: create_values({"string" => "default value"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-sstring1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string=string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s string1 arg1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
-        expect_opts: create_values(string: {"string" => "tring"}),
+        expect_opts: create_values({"string" => "tring"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s=string1), # Unintended case.
-        expect_opts: create_values(string: {"string" => "=string1"}),
+        expect_opts: create_values({"string" => "=string1"}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -490,7 +487,7 @@ describe "main command with string required true and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -514,56 +511,49 @@ describe "main command with string required true and default exists." do
     [
       {
         argv:        %w(-s string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-sstring1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string=string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s string1 arg1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
-        expect_opts: create_values(
-          string: {"string" => "string1"},
-        ),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
-        expect_opts: create_values(
-          string: {"string" => "tring"},
-        ),
+        expect_opts: create_values({"string" => "tring"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s=string1), # Unintended case.
-        expect_opts: create_values(
-          string: {"string" => "=string1"},
-        ),
+        expect_opts: create_values({"string" => "=string1"}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -632,7 +622,7 @@ describe "main command with string required only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -656,56 +646,49 @@ describe "main command with string required only." do
     [
       {
         argv:        %w(-s string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-sstring1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string=string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s string1 arg1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
-        expect_opts: create_values(
-          string: {"string" => "string1"},
-        ),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
-        expect_opts: create_values(
-          string: {"string" => "tring"},
-        ),
+        expect_opts: create_values({"string" => "tring"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s=string1), # Unintended case.
-        expect_opts: create_values(
-          string: {"string" => "=string1"},
-        ),
+        expect_opts: create_values({"string" => "=string1"}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -774,7 +757,7 @@ describe "main command with string required false and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -798,66 +781,59 @@ describe "main command with string required false and default exists." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(string: {"string" => "default value"}),
+        expect_opts: create_values({"string" => "default value"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(string: {"string" => "default value"}),
+        expect_opts: create_values({"string" => "default value"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-sstring1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string=string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s string1 arg1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
-        expect_opts: create_values(
-          string: {"string" => "string1"},
-        ),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
-        expect_opts: create_values(
-          string: {"string" => "tring"},
-        ),
+        expect_opts: create_values({"string" => "tring"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s=string1), # Unintended case.
-        expect_opts: create_values(
-          string: {"string" => "=string1"},
-        ),
+        expect_opts: create_values({"string" => "=string1"}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -918,7 +894,7 @@ describe "main command with string required false only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -942,66 +918,59 @@ describe "main command with string required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values(string: {"string" => nil}),
+        expect_opts: create_values({"string" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values(string: {"string" => nil}),
+        expect_opts: create_values({"string" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-s string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-sstring1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--string=string1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s string1 arg1),
-        expect_opts: create_values(string: {"string" => "string1"}),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -s string1),
-        expect_opts: create_values(
-          string: {"string" => "string1"},
-        ),
+        expect_opts: create_values({"string" => "string1"}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-string), # Unintended case.
-        expect_opts: create_values(
-          string: {"string" => "tring"},
-        ),
+        expect_opts: create_values({"string" => "tring"}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-s=string1), # Unintended case.
-        expect_opts: create_values(
-          string: {"string" => "=string1"},
-        ),
+        expect_opts: create_values({"string" => "=string1"}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithStringRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
