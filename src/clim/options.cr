@@ -17,9 +17,9 @@ class Clim
 
     class Values
       property help : String = ""
-      property hash : Hash(String, String | Bool | Array(String) | Nil) = {} of String => String | Bool | Array(String) | Nil
+      property hash : ReturnOptsType = ReturnOptsType.new
 
-      def merge!(other : Hash(String, String | Bool | Array(String) | Nil))
+      def merge!(other : ReturnOptsType)
         other.each do |k, v|
           if hash.has_key?(k)
             raise ClimException.new "Duplicate option. \"#{k}\""
@@ -30,7 +30,7 @@ class Clim
       end
     end
 
-    def values : Hash(String, String | Bool | Array(String) | Nil)
+    def values : ReturnOptsType
       values = Values.new
       values.merge!({"help" => help})
       opts.each do |opt|
