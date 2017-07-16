@@ -89,18 +89,18 @@ describe Clim::Options do
     end
     it "raises an Exception when there is required option." do
       opts = Options.new
-      opt1 = Option(String | Nil).new("-a", "", "", false, "", "")
+      opt1 = Option(String | Nil).new("-a", "", nil, false, "", nil)
       opt1.set_string("foo")
       opts.add opt1
-      opt2 = Option(String | Nil).new("-b", "", "", true, "", "")
+      opt2 = Option(String | Nil).new("-b", "", nil, true, "", nil)
       opts.add opt2
       expect_raises(Exception, "Required options. \"-b\"") { opts.validate! }
     end
     it "raises an Exception when there are required options." do
       opts = Options.new
-      opt1 = Option(String | Nil).new("-a", "", "", true, "", "")
+      opt1 = Option(String | Nil).new("-a", "", nil, true, "", nil)
       opts.add opt1
-      opt2 = Option(String | Nil).new("-b", "", "", true, "", "")
+      opt2 = Option(String | Nil).new("-b", "", nil, true, "", nil)
       opts.add opt2
       expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.validate! }
     end

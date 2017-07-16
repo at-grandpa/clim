@@ -6,9 +6,12 @@ class Clim
     property required : Bool
     property desc : String
     property value : T
-    property set_value_flag : Bool
 
-    def initialize(@short, @long, @default, @required, @desc, @value, @set_value_flag = false)
+    def initialize(@short, @long, @default, @required, @desc, @value)
+    end
+
+    def name
+      long.empty? ? short_name : long_name
     end
 
     def short_name
@@ -17,10 +20,6 @@ class Clim
 
     def long_name
       extract_name(long)
-    end
-
-    def name
-      long.empty? ? short_name : long_name
     end
 
     def extract_name(name)
@@ -54,10 +53,10 @@ class Clim
       end
     end
 
-    def set_string(@value, @set_value_flag = true)
+    def set_string(@value)
     end
 
-    def set_bool(arg, @set_value_flag = true)
+    def set_bool(arg)
       if arg.empty?
         @value = true
       else
@@ -67,14 +66,14 @@ class Clim
       end
     end
 
-    def add_to_array(arg, @set_value_flag = true)
+    def add_to_array(arg)
       iv_value = @value
       value_tmp = iv_value.nil? ? [] of String : iv_value
       value_tmp << arg
       @value = value_tmp
     end
 
-    def reset(@set_value_flag = false)
+    def reset
       @value = @default.dup
     end
 
@@ -82,12 +81,8 @@ class Clim
       @required
     end
 
-    def set_value?
-      @set_value_flag
-    end
-
-    def no_required_option?
-      required? && !set_value?
+    def required_set?
+      required? && @value.nil?
     end
   end
 end

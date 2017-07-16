@@ -55,7 +55,7 @@ class Clim
 
     def no_required_option_names
       opts.map do |opt|
-        opt.no_required_option? ? opt.short : nil
+        opt.required_set? ? opt.short : nil
       end.compact
     end
   end

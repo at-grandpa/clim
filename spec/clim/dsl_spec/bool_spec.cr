@@ -705,6 +705,16 @@ describe "main command with bool required true and default exists." do
   describe "returns opts and args when passing argv." do
     [
       {
+        argv:        %w(),
+        expect_opts: create_values({"bool" => false}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values({"bool" => false}),
+        expect_args: ["arg1"],
+      },
+      {
         argv:        %w(-b),
         expect_opts: create_values({"bool" => true}),
         expect_args: [] of String,
@@ -740,24 +750,6 @@ describe "main command with bool required true and default exists." do
         args_of_run_block[:opts].delete("help")
         args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
-      end
-    end
-  end
-  describe "raises Exception when passing invalid argv." do
-    [
-      {
-        argv:              %w(),
-        exception_message: "Required options. \"-b\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Required options. \"-b\"",
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        end
       end
     end
   end
@@ -813,6 +805,16 @@ describe "main command with bool arguments required true and default exists." do
   end
   describe "returns opts and args when passing argv." do
     [
+      {
+        argv:        %w(),
+        expect_opts: create_values({"bool" => false}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values({"bool" => false}),
+        expect_args: ["arg1"],
+      },
       {
         argv:        %w(-b true),
         expect_opts: create_values({"bool" => true}),
@@ -884,14 +886,6 @@ describe "main command with bool arguments required true and default exists." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Required options. \"-b ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Required options. \"-b ARG\"",
-      },
       {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",

@@ -510,6 +510,16 @@ describe "main command with string required true and default exists." do
   describe "returns opts and args when passing argv." do
     [
       {
+        argv:        %w(),
+        expect_opts: create_values({"string" => "default value"}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values({"string" => "default value"}),
+        expect_args: ["arg1"],
+      },
+      {
         argv:        %w(-s string1),
         expect_opts: create_values({"string" => "string1"}),
         expect_args: [] of String,
@@ -560,14 +570,6 @@ describe "main command with string required true and default exists." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Required options. \"-s ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Required options. \"-s ARG\"",
-      },
       {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",

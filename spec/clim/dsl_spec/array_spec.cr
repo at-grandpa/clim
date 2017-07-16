@@ -511,6 +511,16 @@ describe "main command with array required true and default exists." do
   describe "returns opts and args when passing argv." do
     [
       {
+        argv:        %w(),
+        expect_opts: create_values({"array" => ["default value"]}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values({"array" => ["default value"]}),
+        expect_args: ["arg1"],
+      },
+      {
         argv:        %w(-a array1),
         expect_opts: create_values({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
@@ -561,14 +571,6 @@ describe "main command with array required true and default exists." do
   end
   describe "raises Exception when passing invalid argv." do
     [
-      {
-        argv:              %w(),
-        exception_message: "Required options. \"-a ARG\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Required options. \"-a ARG\"",
-      },
       {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",
