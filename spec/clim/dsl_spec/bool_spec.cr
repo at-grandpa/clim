@@ -25,6 +25,9 @@ describe "main command with bool." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithBool.start_main(spec_case[:argv])
@@ -144,6 +147,9 @@ describe "main command with bool only short option." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithBoolOnlyShortOption.start_main(spec_case[:argv])
@@ -255,6 +261,9 @@ describe "main command with bool arguments." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -389,6 +398,9 @@ describe "main command with bool." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithBoolArgumentsOnlyShortOption.start_main(spec_case[:argv])
@@ -520,6 +532,9 @@ describe "main command with bool desc." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithBoolDesc.start_main(spec_case[:argv])
@@ -569,6 +584,9 @@ describe "main command with bool default." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -679,6 +697,9 @@ describe "main command with bool required true and default exists." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithBoolRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
@@ -779,6 +800,9 @@ describe "main command with bool arguments required true and default exists." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -953,6 +977,9 @@ describe "main command with bool required true only." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithBoolRequiredTrueOnly.start_main(spec_case[:argv])
@@ -1061,6 +1088,9 @@ describe "main command with bool arguments required true only." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1233,6 +1263,9 @@ describe "main command with bool required false and default exists." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithBoolRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
@@ -1336,6 +1369,9 @@ describe "main command with bool arguments required false and default exists." d
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1510,6 +1546,9 @@ describe "main command with bool required false only." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithBoolRequiredFalseOnly.start_main(spec_case[:argv])
@@ -1613,6 +1652,9 @@ describe "main command with bool arguments required false only." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do

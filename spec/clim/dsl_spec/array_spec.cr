@@ -26,6 +26,9 @@ describe "main command with array." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArray.start_main(spec_case[:argv])
@@ -163,6 +166,9 @@ describe "main command with array only short option." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayOnlyShortOption.start_main(spec_case[:argv])
@@ -298,6 +304,9 @@ describe "main command with array desc." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayDesc.start_main(spec_case[:argv])
@@ -347,6 +356,9 @@ describe "main command with array default." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -485,6 +497,9 @@ describe "main command with array required true and default exists." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
@@ -622,6 +637,9 @@ describe "main command with array required true only." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithArrayRequiredTrueOnly.start_main(spec_case[:argv])
@@ -756,6 +774,9 @@ describe "main command with array required false and default exists." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -893,6 +914,9 @@ describe "main command with array required false only." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
