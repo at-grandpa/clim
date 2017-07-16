@@ -69,7 +69,6 @@ describe Clim::Option do
       it "set value." do
         opt = Option(String).new("", "", "", false, "", "")
         opt.set_string("set value")
-        opt.set_value?.should be_true
         opt.value.should eq("set value")
       end
     end
@@ -77,7 +76,6 @@ describe Clim::Option do
       it "set value." do
         opt = Option(Bool).new("", "", false, false, "", false)
         opt.set_bool("true")
-        opt.set_value?.should be_true
         opt.value.should eq(true)
       end
     end
@@ -86,7 +84,6 @@ describe Clim::Option do
     it "set value." do
       opt = Option(Array(String)).new("", "", [] of String, false, "", [] of String)
       opt.add_to_array("set value")
-      opt.set_value?.should be_true
       opt.value.should eq(["set value"])
     end
   end

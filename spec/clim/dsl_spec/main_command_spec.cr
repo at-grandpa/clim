@@ -25,7 +25,7 @@ describe "main command only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Command Line Interface Tool.
@@ -69,9 +69,8 @@ describe "main command only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -138,7 +137,7 @@ describe "main command with desc." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -182,9 +181,8 @@ describe "main command with desc." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
@@ -252,7 +250,7 @@ describe "main command with usage." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithUsage.start_main(spec_case[:argv])
-        args_of_run_block[:opts].help.should eq(
+        args_of_run_block[:opts]["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -296,9 +294,8 @@ describe "main command with usage." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandWithUsage.start_main(spec_case[:argv])
-        args_of_run_block[:opts].string.should eq(spec_case[:expect_opts].string)
-        args_of_run_block[:opts].bool.should eq(spec_case[:expect_opts].bool)
-        args_of_run_block[:opts].array.should eq(spec_case[:expect_opts].array)
+        args_of_run_block[:opts].delete("help")
+        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
         args_of_run_block[:args].should eq(spec_case[:expect_args])
       end
     end
