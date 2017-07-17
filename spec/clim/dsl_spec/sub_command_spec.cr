@@ -30,6 +30,9 @@ describe "sub command only." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecSubCommandOnly.start_main(spec_case[:argv])
@@ -69,6 +72,9 @@ describe "sub command only." do
       },
       {
         argv: %w(sub_command ignore-arg -h),
+      },
+      {
+        argv: %w(sub_command -ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -145,10 +151,6 @@ describe "sub command only." do
         argv:              %w(sub_command -m -d),
         exception_message: "Undefined option. \"-m\"",
       },
-      {
-        argv:              %w(sub_command -m -h),
-        exception_message: "Undefined option. \"-m\"",
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
@@ -190,6 +192,9 @@ describe "sub command with desc." do
       },
       {
         argv: %w(sub_command ignore-arg -h),
+      },
+      {
+        argv: %w(sub_command -ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -248,6 +253,9 @@ describe "sub command with usage." do
       },
       {
         argv: %w(sub_command ignore-arg -h),
+      },
+      {
+        argv: %w(sub_command -ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -317,6 +325,9 @@ describe "sub sub command." do
       {
         argv: %w(sub_command sub_sub_command ignore-arg -h),
       },
+      {
+        argv: %w(sub_command sub_sub_command -ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecSubSubCommand.start_main(spec_case[:argv])
@@ -352,6 +363,9 @@ describe "sub sub command." do
       },
       {
         argv: %w(sub_command ignore-arg sub_sub_command -h),
+      },
+      {
+        argv: %w(sub_command -ignore-option sub_sub_command -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -432,10 +446,6 @@ describe "sub sub command." do
         argv:              %w(sub_command sub_sub_command -m -d),
         exception_message: "Undefined option. \"-m\"",
       },
-      {
-        argv:              %w(sub_command sub_sub_command -m -h),
-        exception_message: "Undefined option. \"-m\"",
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
@@ -498,6 +508,9 @@ describe "sub command jump over sub sub command." do
       {
         argv: %w(jump_over_sub_sub_command ignore-arg -h),
       },
+      {
+        argv: %w(jump_over_sub_sub_command -ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecSubCommandJumpOverSubSubCommand.start_main(spec_case[:argv])
@@ -533,6 +546,9 @@ describe "sub command jump over sub sub command." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -612,10 +628,6 @@ describe "sub command jump over sub sub command." do
       },
       {
         argv:              %w(jump_over_sub_sub_command -m -d),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(jump_over_sub_sub_command -m -h),
         exception_message: "Undefined option. \"-m\"",
       },
     ].each do |spec_case|

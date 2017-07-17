@@ -22,6 +22,9 @@ describe "main command only." do
       {
         argv: %w(ignore-arg -h),
       },
+      {
+        argv: %w(-ignore-option -h),
+      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         args_of_run_block = SpecMainCommandOnly.start_main(spec_case[:argv])
@@ -97,10 +100,6 @@ describe "main command only." do
         argv:              %w(-m -d),
         exception_message: "Undefined option. \"-m\"",
       },
-      {
-        argv:              %w(-m -h),
-        exception_message: "Undefined option. \"-m\"",
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
@@ -133,6 +132,9 @@ describe "main command with desc." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -209,10 +211,6 @@ describe "main command with desc." do
         argv:              %w(-m -d),
         exception_message: "Undefined option. \"-m\"",
       },
-      {
-        argv:              %w(-m -h),
-        exception_message: "Undefined option. \"-m\"",
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
@@ -246,6 +244,9 @@ describe "main command with usage." do
       },
       {
         argv: %w(ignore-arg -h),
+      },
+      {
+        argv: %w(-ignore-option -h),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -320,10 +321,6 @@ describe "main command with usage." do
       },
       {
         argv:              %w(-m -d),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(-m -h),
         exception_message: "Undefined option. \"-m\"",
       },
     ].each do |spec_case|

@@ -13,7 +13,6 @@ class Clim
     property run_proc : RunProc = RunProc.new { {% if flag?(:spec) %}  {opts: Hash(String, String | Bool | Array(String) | Nil).new, args: [] of String} {% end %} }
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(self) = [] of self
-    property display_help_flag : Bool = false
 
     def initialize(@name)
       @usage = "#{name} [options] [arguments]"
@@ -21,14 +20,27 @@ class Clim
     end
 
     def initialize_parser
-      parser.on("-h", "--help", "Show this help.") { @display_help_flag = true }
+      parser.on("-h", "--help", "Show this help.") { }
       parser.invalid_option { |opt_name| raise ClimException.new "Undefined option. \"#{opt_name}\"" }
       parser.missing_option { |opt_name| raise ClimException.new "Option that requires an argument. \"#{opt_name}\"" }
       parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
+    def add_opt(opt, &proc : String ->)
+      if opt.long.empty?
+        parser.on(opt.short, opt.desc, &proc)
+      else
+        parser.on(opt.short, opt.long, opt.desc, &proc)
+      end
+      opts.add(opt)
+    end
+
     def help
-      sub_cmds.empty? ? base_help : base_help + sub_cmds_help
+      if sub_cmds.empty?
+        base_help
+      else
+        base_help + sub_cmds_help
+      end
     end
 
     def base_help
@@ -87,17 +99,37 @@ class Clim
 
     def parse_by_parser(argv)
       prepare_parse
-      parser.parse(argv)
-      opts.validate! unless @display_help_flag
-      @run_proc = help_proc if @display_help_flag
+      help_arg_or_argv = select_help_arg_or_argv(argv)
+      parser.parse(help_arg_or_argv.dup)
+
+      if help_arg_only?(help_arg_or_argv)
+        @run_proc = help_proc
+      else
+        opts.validate!
+      end
+
       opts.help = help
       self
     end
 
     def prepare_parse
       opts.reset
-      @display_help_flag = false
       @args = [] of String
+    end
+
+    def select_help_arg_or_argv(argv)
+      help_arg = argv.select { |arg| arg == "-h" || arg == "--help" }
+      if help_arg.empty?
+        argv
+      else
+        help_arg
+      end
+    end
+
+    def help_arg_only?(argv)
+      return false if argv.empty?
+      other_arg = argv.reject { |arg| arg == "-h" || arg == "--help" }
+      other_arg.empty?
     end
 
     def help_proc
