@@ -26,6 +26,15 @@ class Clim
       parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
+    def add_opt(opt, &proc : String ->)
+      if opt.long.empty?
+        parser.on(opt.short, opt.desc, &proc)
+      else
+        parser.on(opt.short, opt.long, opt.desc, &proc)
+      end
+      opts.add(opt)
+    end
+
     def help
       if sub_cmds.empty?
         base_help
@@ -90,15 +99,25 @@ class Clim
 
     def parse_by_parser(argv)
       prepare_parse
-      argv = select_help_arg_only(argv)
-      parser.parse(argv.dup)
-      opts.validate! unless help_arg_only?(argv)
-      @run_proc = help_proc if help_arg_only?(argv)
+      help_arg_or_argv = select_help_arg_or_argv(argv)
+      parser.parse(help_arg_or_argv.dup)
+
+      if help_arg_only?(help_arg_or_argv)
+        @run_proc = help_proc
+      else
+        opts.validate!
+      end
+
       opts.help = help
       self
     end
 
-    def select_help_arg_only(argv)
+    def prepare_parse
+      opts.reset
+      @args = [] of String
+    end
+
+    def select_help_arg_or_argv(argv)
       help_arg = argv.select { |arg| arg == "-h" || arg == "--help" }
       if help_arg.empty?
         argv
@@ -111,11 +130,6 @@ class Clim
       return false if argv.empty?
       other_arg = argv.reject { |arg| arg == "-h" || arg == "--help" }
       other_arg.empty?
-    end
-
-    def prepare_parse
-      opts.reset
-      @args = [] of String
     end
 
     def help_proc
