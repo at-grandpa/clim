@@ -1,5 +1,6 @@
 require "./dsl"
 require "./options"
+require "./input_args"
 require "./exception"
 require "option_parser"
 
@@ -98,11 +99,12 @@ class Clim
     end
 
     def parse_by_parser(argv)
-      prepare_parse
-      help_arg_or_argv = select_help_arg_or_argv(argv)
-      parser.parse(help_arg_or_argv.dup)
+      input_args = InputArgs.new(argv)
 
-      if help_arg_only?(help_arg_or_argv)
+      prepare_parse
+      parser.parse(input_args.to_be_exec.dup)
+
+      if input_args.help_arg_only?
         @run_proc = help_proc
       else
         opts.validate!
@@ -115,21 +117,6 @@ class Clim
     def prepare_parse
       opts.reset
       @args = [] of String
-    end
-
-    def select_help_arg_or_argv(argv)
-      help_arg = argv.select { |arg| arg == "-h" || arg == "--help" }
-      if help_arg.empty?
-        argv
-      else
-        help_arg
-      end
-    end
-
-    def help_arg_only?(argv)
-      return false if argv.empty?
-      other_arg = argv.reject { |arg| arg == "-h" || arg == "--help" }
-      other_arg.empty?
     end
 
     def help_proc
