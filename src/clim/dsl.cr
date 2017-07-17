@@ -64,8 +64,15 @@ class Clim
       @@command_stack.pop
     end
 
+    def run_proc_arguments(argv)
+      execute_command = @@main.parse(argv)
+      run_proc_opts, run_proc_args = execute_command.run_proc_arguments
+      return run_proc_opts, run_proc_args
+    end
+
     def start_main(argv)
-      @@main.parse_and_run(argv)
+      run_proc_opts, run_proc_args = run_proc_arguments(argv)
+      @@main.parse(argv).run(run_proc_opts, run_proc_args)
     end
 
     def start(argv)

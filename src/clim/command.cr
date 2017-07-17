@@ -86,8 +86,12 @@ class Clim
       parse(argv).run
     end
 
-    def run
-      run_proc.call(opts.values, args)
+    def run(run_proc_opts, run_proc_args)
+      run_proc.call(run_proc_opts, run_proc_args)
+    end
+
+    def run_proc_arguments
+      return opts.values, args
     end
 
     def parse(argv)

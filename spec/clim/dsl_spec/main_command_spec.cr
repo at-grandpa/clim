@@ -27,8 +27,8 @@ describe "main command only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Command Line Interface Tool.
@@ -71,10 +71,10 @@ describe "main command only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -103,7 +103,7 @@ describe "main command only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandOnly.start_main(spec_case[:argv])
+          SpecMainCommandOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -138,8 +138,8 @@ describe "main command with desc." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithDesc.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -182,10 +182,10 @@ describe "main command with desc." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithDesc.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -214,7 +214,7 @@ describe "main command with desc." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithDesc.start_main(spec_case[:argv])
+          SpecMainCommandWithDesc.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -250,8 +250,8 @@ describe "main command with usage." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithUsage.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithUsage.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -294,10 +294,10 @@ describe "main command with usage." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithUsage.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithUsage.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -326,34 +326,7 @@ describe "main command with usage." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithUsage.start_main(spec_case[:argv])
-        end
-      end
-    end
-  end
-end
-
-class SpecMainCommandRaisesAnExceptionInRunBlock < Clim
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-    raise "Raises an Exception in run block."
-    {opts: opts, args: args}
-  end
-end
-
-describe "main command raises an Exception in run block." do
-  describe "raises an Exception when passing invalid argv." do
-    [
-      {
-        argv:              %w(arg1),
-        exception_message: "Raises an Exception in run block.",
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandRaisesAnExceptionInRunBlock.start_main(spec_case[:argv])
+          SpecMainCommandWithUsage.run_proc_arguments(spec_case[:argv])
         end
       end
     end

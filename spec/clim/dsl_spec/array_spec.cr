@@ -31,8 +31,8 @@ describe "main command with array." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArray.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithArray.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -106,10 +106,10 @@ describe "main command with array." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArray.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        arun_proc_opts, run_proc_args = SpecMainCommandWithArray.run_proc_arguments(spec_case[:argv])
+        arun_proc_opts.delete("help")
+        arun_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -134,7 +134,7 @@ describe "main command with array." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithArray.start_main(spec_case[:argv])
+          SpecMainCommandWithArray.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -171,8 +171,8 @@ describe "main command with array only short option." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayOnlyShortOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -236,10 +236,10 @@ describe "main command with array only short option." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayOnlyShortOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -272,7 +272,7 @@ describe "main command with array only short option." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithArrayOnlyShortOption.start_main(spec_case[:argv])
+          SpecMainCommandWithArrayOnlyShortOption.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -309,8 +309,8 @@ describe "main command with array desc." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayDesc.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -362,8 +362,8 @@ describe "main command with array default." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayDefault.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -437,10 +437,10 @@ describe "main command with array default." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayDefault.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -465,7 +465,7 @@ describe "main command with array default." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithArrayDefault.start_main(spec_case[:argv])
+          SpecMainCommandWithArrayDefault.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -502,8 +502,8 @@ describe "main command with array required true and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -577,10 +577,10 @@ describe "main command with array required true and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -605,7 +605,7 @@ describe "main command with array required true and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithArrayRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
+          SpecMainCommandWithArrayRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -642,8 +642,8 @@ describe "main command with array required true only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -707,10 +707,10 @@ describe "main command with array required true only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -743,7 +743,7 @@ describe "main command with array required true only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithArrayRequiredTrueOnly.start_main(spec_case[:argv])
+          SpecMainCommandWithArrayRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -780,8 +780,8 @@ describe "main command with array required false and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -855,10 +855,10 @@ describe "main command with array required false and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -883,7 +883,7 @@ describe "main command with array required false and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithArrayRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
+          SpecMainCommandWithArrayRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -920,8 +920,8 @@ describe "main command with array required false only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -995,10 +995,10 @@ describe "main command with array required false only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithArrayRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -1023,7 +1023,7 @@ describe "main command with array required false only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithArrayRequiredFalseOnly.start_main(spec_case[:argv])
+          SpecMainCommandWithArrayRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end

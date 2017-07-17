@@ -30,8 +30,8 @@ describe "main command with string." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithString.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithString.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -105,10 +105,10 @@ describe "main command with string." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithString.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithString.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -133,7 +133,7 @@ describe "main command with string." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithString.start_main(spec_case[:argv])
+          SpecMainCommandWithString.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -170,8 +170,8 @@ describe "main command with string only short option." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringOnlyShortOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -235,10 +235,10 @@ describe "main command with string only short option." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringOnlyShortOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -271,7 +271,7 @@ describe "main command with string only short option." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithStringOnlyShortOption.start_main(spec_case[:argv])
+          SpecMainCommandWithStringOnlyShortOption.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -308,8 +308,8 @@ describe "main command with string desc." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringDesc.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -361,8 +361,8 @@ describe "main command with string default." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringDefault.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -436,10 +436,10 @@ describe "main command with string default." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringDefault.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -464,7 +464,7 @@ describe "main command with string default." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithStringDefault.start_main(spec_case[:argv])
+          SpecMainCommandWithStringDefault.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -501,8 +501,8 @@ describe "main command with string required true and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -576,10 +576,10 @@ describe "main command with string required true and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -604,7 +604,7 @@ describe "main command with string required true and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithStringRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
+          SpecMainCommandWithStringRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -641,8 +641,8 @@ describe "main command with string required only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -706,10 +706,10 @@ describe "main command with string required only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -742,7 +742,7 @@ describe "main command with string required only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithStringRequiredTrueOnly.start_main(spec_case[:argv])
+          SpecMainCommandWithStringRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -779,8 +779,8 @@ describe "main command with string required false and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -854,10 +854,10 @@ describe "main command with string required false and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -882,7 +882,7 @@ describe "main command with string required false and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithStringRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
+          SpecMainCommandWithStringRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -919,8 +919,8 @@ describe "main command with string required false only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -994,10 +994,10 @@ describe "main command with string required false only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithStringRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -1022,7 +1022,7 @@ describe "main command with string required false only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithStringRequiredFalseOnly.start_main(spec_case[:argv])
+          SpecMainCommandWithStringRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end
