@@ -47,12 +47,6 @@ class Clim
       raise "Required options. \"#{no_required_option_names.join("\", \"")}\"" unless no_required_option_names.empty?
     end
 
-    def no_value_names
-      opts.map do |opt|
-        opt.no_value? ? opt.short : nil
-      end.compact
-    end
-
     def no_required_option_names
       opts.map do |opt|
         opt.required_set? ? opt.short : nil
