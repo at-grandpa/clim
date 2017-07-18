@@ -6,7 +6,6 @@ class SpecMainCommandWithString < Clim
   usage "main_command with usage [options] [arguments]"
   string "-s ARG", "--string=ARG"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -146,7 +145,6 @@ class SpecMainCommandWithStringOnlyShortOption < Clim
   usage "main_command with usage [options] [arguments]"
   string "-s ARG"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -284,7 +282,6 @@ class SpecMainCommandWithStringDesc < Clim
   usage "main_command with usage [options] [arguments]"
   string "-s ARG", "--string=ARG", desc: "String option description."
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -337,7 +334,6 @@ class SpecMainCommandWithStringDefault < Clim
   usage "main_command with usage [options] [arguments]"
   string "-s ARG", "--string=ARG", desc: "String option description.", default: "default value"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -477,7 +473,6 @@ class SpecMainCommandWithStringRequiredTrueAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   string "-s ARG", "--string=ARG", desc: "String option description.", required: true, default: "default value"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -617,7 +612,6 @@ class SpecMainCommandWithStringRequiredTrueOnly < Clim
   usage "main_command with usage [options] [arguments]"
   string "-s ARG", "--string=ARG", desc: "String option description.", required: true
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -755,7 +749,6 @@ class SpecMainCommandWithStringRequiredFalseAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   string "-s ARG", "--string=ARG", desc: "String option description.", required: false, default: "default value"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -895,7 +888,6 @@ class SpecMainCommandWithStringRequiredFalseOnly < Clim
   usage "main_command with usage [options] [arguments]"
   string "-s ARG", "--string=ARG", desc: "String option description.", required: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 

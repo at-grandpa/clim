@@ -7,7 +7,6 @@ class SpecMainCommandWithArray < Clim
   usage "main_command with usage [options] [arguments]"
   array "-a ARG", "--array=ARG"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -147,7 +146,6 @@ class SpecMainCommandWithArrayOnlyShortOption < Clim
   usage "main_command with usage [options] [arguments]"
   array "-a ARG"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -285,7 +283,6 @@ class SpecMainCommandWithArrayDesc < Clim
   usage "main_command with usage [options] [arguments]"
   array "-a ARG", "--array=ARG", desc: "Array option description."
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -338,7 +335,6 @@ class SpecMainCommandWithArrayDefault < Clim
   usage "main_command with usage [options] [arguments]"
   array "-a ARG", "--array=ARG", desc: "Array option description.", default: ["default value"]
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -478,7 +474,6 @@ class SpecMainCommandWithArrayRequiredTrueAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   array "-a ARG", "--array=ARG", desc: "Array option description.", required: true, default: ["default value"]
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -618,7 +613,6 @@ class SpecMainCommandWithArrayRequiredTrueOnly < Clim
   usage "main_command with usage [options] [arguments]"
   array "-a ARG", "--array=ARG", desc: "Array option description.", required: true
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -756,7 +750,6 @@ class SpecMainCommandWithArrayRequiredFalseAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   array "-a ARG", "--array=ARG", desc: "Array option description.", required: false, default: ["default value"]
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -896,7 +889,6 @@ class SpecMainCommandWithArrayRequiredFalseOnly < Clim
   usage "main_command with usage [options] [arguments]"
   array "-a ARG", "--array=ARG", desc: "Array option description.", required: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 

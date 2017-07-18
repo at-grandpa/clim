@@ -3,7 +3,6 @@ require "./../../spec_helper"
 class SpecMainCommandOnly < Clim
   main_command
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -114,7 +113,6 @@ class SpecMainCommandWithDesc < Clim
   main_command
   desc "Main command with desc."
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -226,7 +224,6 @@ class SpecMainCommandWithUsage < Clim
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -338,7 +335,6 @@ class SpecMainCommandWithEmptyShortOption < Clim
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
-    {opts: opts, args: args}
   end
 end
 
@@ -365,7 +361,6 @@ class SpecMainCommandWithDuplicateShortOptionStringAndArray < Clim
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
-    {opts: opts, args: args}
   end
 end
 
@@ -383,7 +378,6 @@ class SpecMainCommandWithDuplicateShortOptionStringAndBool < Clim
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
-    {opts: opts, args: args}
   end
 end
 
@@ -401,7 +395,6 @@ class SpecMainCommandWithDuplicateShortOptionArrayAndBool < Clim
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
-    {opts: opts, args: args}
   end
 end
 
@@ -419,7 +412,6 @@ class SpecMainCommandWithDuplicateLongOptionStringAndArray < Clim
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
-    {opts: opts, args: args}
   end
 end
 
@@ -437,7 +429,6 @@ class SpecMainCommandWithDuplicateLongOptionStringAndBool < Clim
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
-    {opts: opts, args: args}
   end
 end
 
@@ -455,7 +446,6 @@ class SpecMainCommandWithDuplicateLongOptionArrayAndBool < Clim
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
-    {opts: opts, args: args}
   end
 end
 

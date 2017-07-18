@@ -4,13 +4,11 @@ class SpecSubCommandOnly < Clim
   main_command
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
     command "sub_command"
     run do |opts, args|
-      {opts: opts, args: args} # return values for spec.
     end
   end
 end
@@ -166,14 +164,12 @@ class SpecSubCommandWithDesc < Clim
   desc "Main command description is not target for spec."
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
     command "sub_command"
     desc "Sub command with desc."
     run do |opts, args|
-      {opts: opts, args: args} # return values for spec.
     end
   end
 end
@@ -226,7 +222,6 @@ class SpecSubCommandWithUsage < Clim
   usage "Main command usage is not target for spec."
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
@@ -234,7 +229,6 @@ class SpecSubCommandWithUsage < Clim
     desc "Sub command with desc."
     usage "sub_command with usage [options] [arguments]"
     run do |opts, args|
-      {opts: opts, args: args} # return values for spec.
     end
   end
 end
@@ -287,7 +281,6 @@ class SpecSubSubCommand < Clim
   usage "Main command usage is not target for spec."
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
@@ -296,7 +289,6 @@ class SpecSubSubCommand < Clim
     usage "sub_command with usage [options] [arguments]"
     run do |opts, args|
       raise "Sub command is not target for spec."
-      {opts: opts, args: args}
     end
 
     sub do
@@ -304,7 +296,6 @@ class SpecSubSubCommand < Clim
       desc "Sub sub command with desc."
       usage "sub_sub_command with usage [options] [arguments]"
       run do |opts, args|
-        {opts: opts, args: args} # return values for spec.
       end
     end
   end
@@ -462,7 +453,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
@@ -471,7 +461,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
     usage "sub_command with usage [options] [arguments]"
     run do |opts, args|
       raise "Sub command is not target for spec."
-      {opts: opts, args: args}
     end
 
     sub do
@@ -480,7 +469,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
       usage "sub_sub_command with usage [options] [arguments]"
       run do |opts, args|
         raise "Sub sub command is not target for spec."
-        {opts: opts, args: args}
       end
     end
 
@@ -488,7 +476,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
     desc "Sub command jump over sub sub command."
     usage "jump_over_sub_sub_command with usage [options] [arguments]"
     run do |opts, args|
-      {opts: opts, args: args} # return values for spec.
     end
   end
 end

@@ -11,7 +11,7 @@ class Clim
     property usage : String = "{command} [options] [arguments]"
     property opts : Options = Options.new
     property args : Array(String) = [] of String
-    property run_proc : RunProc = RunProc.new { {% if flag?(:spec) %}  {opts: Hash(String, String | Bool | Array(String) | Nil).new, args: [] of String} {% end %} }
+    property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(self) = [] of self
 
@@ -124,7 +124,7 @@ class Clim
     end
 
     def help_proc
-      RunProc.new { {% if flag?(:spec) %} {opts: opts.values, args: args} {% else %} puts help {% end %} }
+      RunProc.new { puts help }
     end
 
     def find_sub_cmds_by(name)

@@ -6,7 +6,6 @@ class SpecMainCommandWithBool < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -128,7 +127,6 @@ class SpecMainCommandWithBoolOnlyShortOption < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -243,7 +241,6 @@ class SpecMainCommandWithBoolArguments < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -379,7 +376,6 @@ class SpecMainCommandWithBoolArgumentsOnlyShortOption < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -513,7 +509,6 @@ class SpecMainCommandWithBoolDesc < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description."
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -566,7 +561,6 @@ class SpecMainCommandWithBoolDefault < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -678,7 +672,6 @@ class SpecMainCommandWithBoolRequiredTrueAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", required: true, default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -782,7 +775,6 @@ class SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG", desc: "Bool option description.", required: true, default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -958,7 +950,6 @@ class SpecMainCommandWithBoolRequiredTrueOnly < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", required: true
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1070,7 +1061,6 @@ class SpecMainCommandWithBoolArgumentsRequiredTrueOnly < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG", desc: "Bool option description.", required: true
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1244,7 +1234,6 @@ class SpecMainCommandWithBoolRequiredFalseAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", required: false, default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1351,7 +1340,6 @@ class SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG", desc: "Bool option description.", required: false, default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1527,7 +1515,6 @@ class SpecMainCommandWithBoolRequiredFalseOnly < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", required: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1634,7 +1621,6 @@ class SpecMainCommandWithBoolArgumentsRequiredFalseOnly < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG", desc: "Bool option description.", required: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
