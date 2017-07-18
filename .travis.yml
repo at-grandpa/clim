@@ -4,4 +4,4 @@ crystal:
   - latest
 
 script:
-  - make spec
+  - crystal spec
