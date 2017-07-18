@@ -6,7 +6,6 @@ class SpecMainCommandWithBool < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -30,8 +29,8 @@ describe "main command with bool." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBool.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBool.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -95,10 +94,10 @@ describe "main command with bool." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBool.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBool.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -115,7 +114,7 @@ describe "main command with bool." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBool.start_main(spec_case[:argv])
+          SpecMainCommandWithBool.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -128,7 +127,6 @@ class SpecMainCommandWithBoolOnlyShortOption < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -152,8 +150,8 @@ describe "main command with bool only short option." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolOnlyShortOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -202,10 +200,10 @@ describe "main command with bool only short option." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolOnlyShortOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -230,7 +228,7 @@ describe "main command with bool only short option." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolOnlyShortOption.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolOnlyShortOption.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -243,7 +241,6 @@ class SpecMainCommandWithBoolArguments < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -267,8 +264,8 @@ describe "main command with bool arguments." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArguments.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArguments.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -322,10 +319,10 @@ describe "main command with bool arguments." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArguments.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArguments.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -366,7 +363,7 @@ describe "main command with bool arguments." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolArguments.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolArguments.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -379,7 +376,6 @@ class SpecMainCommandWithBoolArgumentsOnlyShortOption < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG"
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -403,8 +399,8 @@ describe "main command with bool." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsOnlyShortOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -448,10 +444,10 @@ describe "main command with bool." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsOnlyShortOption.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsOnlyShortOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -500,7 +496,7 @@ describe "main command with bool." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolArgumentsOnlyShortOption.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolArgumentsOnlyShortOption.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -513,7 +509,6 @@ class SpecMainCommandWithBoolDesc < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description."
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -537,8 +532,8 @@ describe "main command with bool desc." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolDesc.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -566,7 +561,6 @@ class SpecMainCommandWithBoolDefault < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -590,8 +584,8 @@ describe "main command with bool default." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolDefault.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -645,10 +639,10 @@ describe "main command with bool default." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolDefault.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolDefault.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -665,7 +659,7 @@ describe "main command with bool default." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolDefault.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolDefault.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -678,7 +672,6 @@ class SpecMainCommandWithBoolRequiredTrueAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", required: true, default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -702,8 +695,8 @@ describe "main command with bool required true and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -767,10 +760,10 @@ describe "main command with bool required true and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -782,7 +775,6 @@ class SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG", desc: "Bool option description.", required: true, default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -806,8 +798,8 @@ describe "main command with bool arguments required true and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -901,10 +893,10 @@ describe "main command with bool arguments required true and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -945,7 +937,7 @@ describe "main command with bool arguments required true and default exists." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -958,7 +950,6 @@ class SpecMainCommandWithBoolRequiredTrueOnly < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", required: true
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -982,8 +973,8 @@ describe "main command with bool required true only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -1037,10 +1028,10 @@ describe "main command with bool required true only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -1057,7 +1048,7 @@ describe "main command with bool required true only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolRequiredTrueOnly.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -1070,7 +1061,6 @@ class SpecMainCommandWithBoolArgumentsRequiredTrueOnly < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG", desc: "Bool option description.", required: true
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1094,8 +1084,8 @@ describe "main command with bool arguments required true only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -1179,10 +1169,10 @@ describe "main command with bool arguments required true only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsRequiredTrueOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -1231,7 +1221,7 @@ describe "main command with bool arguments required true only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolArgumentsRequiredTrueOnly.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolArgumentsRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -1244,7 +1234,6 @@ class SpecMainCommandWithBoolRequiredFalseAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", required: false, default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1268,8 +1257,8 @@ describe "main command with bool required false and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -1333,10 +1322,10 @@ describe "main command with bool required false and default exists." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -1351,7 +1340,6 @@ class SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG", desc: "Bool option description.", required: false, default: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1375,8 +1363,8 @@ describe "main command with bool arguments required false and default exists." d
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -1470,10 +1458,10 @@ describe "main command with bool arguments required false and default exists." d
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -1514,7 +1502,7 @@ describe "main command with bool arguments required false and default exists." d
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -1527,7 +1515,6 @@ class SpecMainCommandWithBoolRequiredFalseOnly < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b", "--bool", desc: "Bool option description.", required: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1551,8 +1538,8 @@ describe "main command with bool required false only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -1616,10 +1603,10 @@ describe "main command with bool required false only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -1634,7 +1621,6 @@ class SpecMainCommandWithBoolArgumentsRequiredFalseOnly < Clim
   usage "main_command with usage [options] [arguments]"
   bool "-b ARG", "--bool=ARG", desc: "Bool option description.", required: false
   run do |opts, args|
-    {opts: opts, args: args} # return values for spec.
   end
 end
 
@@ -1658,8 +1644,8 @@ describe "main command with bool arguments required false only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -1753,10 +1739,10 @@ describe "main command with bool arguments required false only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecMainCommandWithBoolArgumentsRequiredFalseOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -1797,7 +1783,7 @@ describe "main command with bool arguments required false only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithBoolArgumentsRequiredFalseOnly.start_main(spec_case[:argv])
+          SpecMainCommandWithBoolArgumentsRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end

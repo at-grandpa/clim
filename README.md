@@ -181,10 +181,8 @@ require "clim"
 ```
 ## Development
 
-Spec.
-
 ```
-$ make spec
+$ crystal spec
 ```
 
 ## Tools

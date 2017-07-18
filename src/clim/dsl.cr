@@ -2,12 +2,7 @@ require "./command"
 
 class Clim
   alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
-  {% if flag?(:spec) %}
-    alias ReturnTypeOfRunBlock = NamedTuple(opts: ReturnOptsType, args: Array(String))
-    alias RunProc = Proc(ReturnOptsType, Array(String), ReturnTypeOfRunBlock)
-  {% else %}
-    alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
-  {% end %}
+  alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
   @@main : Command = Command.new("main_command")
   @@defining_command : Command = @@main
@@ -64,8 +59,15 @@ class Clim
       @@command_stack.pop
     end
 
+    def run_proc_arguments(argv)
+      execute_command = @@main.parse(argv)
+      run_proc_opts, run_proc_args = execute_command.run_proc_arguments
+      return run_proc_opts, run_proc_args
+    end
+
     def start_main(argv)
-      @@main.parse_and_run(argv)
+      run_proc_opts, run_proc_args = run_proc_arguments(argv)
+      @@main.parse(argv).run(run_proc_opts, run_proc_args)
     end
 
     def start(argv)

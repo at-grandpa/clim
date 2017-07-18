@@ -4,13 +4,11 @@ class SpecSubCommandOnly < Clim
   main_command
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
     command "sub_command"
     run do |opts, args|
-      {opts: opts, args: args} # return values for spec.
     end
   end
 end
@@ -35,8 +33,8 @@ describe "sub command only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubCommandOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecSubCommandOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Command Line Interface Tool.
@@ -78,8 +76,8 @@ describe "sub command only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubCommandOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecSubCommandOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Command Line Interface Tool.
@@ -122,10 +120,10 @@ describe "sub command only." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubCommandOnly.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecSubCommandOnly.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -154,7 +152,7 @@ describe "sub command only." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecSubCommandOnly.start_main(spec_case[:argv])
+          SpecSubCommandOnly.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -166,14 +164,12 @@ class SpecSubCommandWithDesc < Clim
   desc "Main command description is not target for spec."
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
     command "sub_command"
     desc "Sub command with desc."
     run do |opts, args|
-      {opts: opts, args: args} # return values for spec.
     end
   end
 end
@@ -198,8 +194,8 @@ describe "sub command with desc." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubCommandWithDesc.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecSubCommandWithDesc.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Sub command with desc.
@@ -226,7 +222,6 @@ class SpecSubCommandWithUsage < Clim
   usage "Main command usage is not target for spec."
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
@@ -234,7 +229,6 @@ class SpecSubCommandWithUsage < Clim
     desc "Sub command with desc."
     usage "sub_command with usage [options] [arguments]"
     run do |opts, args|
-      {opts: opts, args: args} # return values for spec.
     end
   end
 end
@@ -259,8 +253,8 @@ describe "sub command with usage." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubCommandWithUsage.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecSubCommandWithUsage.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Sub command with desc.
@@ -287,7 +281,6 @@ class SpecSubSubCommand < Clim
   usage "Main command usage is not target for spec."
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
@@ -296,7 +289,6 @@ class SpecSubSubCommand < Clim
     usage "sub_command with usage [options] [arguments]"
     run do |opts, args|
       raise "Sub command is not target for spec."
-      {opts: opts, args: args}
     end
 
     sub do
@@ -304,7 +296,6 @@ class SpecSubSubCommand < Clim
       desc "Sub sub command with desc."
       usage "sub_sub_command with usage [options] [arguments]"
       run do |opts, args|
-        {opts: opts, args: args} # return values for spec.
       end
     end
   end
@@ -330,8 +321,8 @@ describe "sub sub command." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubSubCommand.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecSubSubCommand.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Sub sub command with desc.
@@ -369,8 +360,8 @@ describe "sub sub command." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubSubCommand.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecSubSubCommand.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Sub command with desc.
@@ -417,10 +408,10 @@ describe "sub sub command." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubSubCommand.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecSubSubCommand.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -449,7 +440,7 @@ describe "sub sub command." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecSubSubCommand.start_main(spec_case[:argv])
+          SpecSubSubCommand.run_proc_arguments(spec_case[:argv])
         end
       end
     end
@@ -462,7 +453,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
   usage "main_command with usage [options] [arguments]"
   run do |opts, args|
     raise "Main command is not target for spec."
-    {opts: opts, args: args}
   end
 
   sub do
@@ -471,7 +461,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
     usage "sub_command with usage [options] [arguments]"
     run do |opts, args|
       raise "Sub command is not target for spec."
-      {opts: opts, args: args}
     end
 
     sub do
@@ -480,7 +469,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
       usage "sub_sub_command with usage [options] [arguments]"
       run do |opts, args|
         raise "Sub sub command is not target for spec."
-        {opts: opts, args: args}
       end
     end
 
@@ -488,7 +476,6 @@ class SpecSubCommandJumpOverSubSubCommand < Clim
     desc "Sub command jump over sub sub command."
     usage "jump_over_sub_sub_command with usage [options] [arguments]"
     run do |opts, args|
-      {opts: opts, args: args} # return values for spec.
     end
   end
 end
@@ -513,8 +500,8 @@ describe "sub command jump over sub sub command." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubCommandJumpOverSubSubCommand.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecSubCommandJumpOverSubSubCommand.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Sub command jump over sub sub command.
@@ -552,8 +539,8 @@ describe "sub command jump over sub sub command." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubCommandJumpOverSubSubCommand.start_main(spec_case[:argv])
-        args_of_run_block[:opts]["help"].should eq(
+        run_proc_opts, run_proc_args = SpecSubCommandJumpOverSubSubCommand.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
           <<-HELP_MESSAGE
 
             Main command with desc.
@@ -601,10 +588,10 @@ describe "sub command jump over sub sub command." do
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
-        args_of_run_block = SpecSubCommandJumpOverSubSubCommand.start_main(spec_case[:argv])
-        args_of_run_block[:opts].delete("help")
-        args_of_run_block[:opts].should eq(spec_case[:expect_opts])
-        args_of_run_block[:args].should eq(spec_case[:expect_args])
+        run_proc_opts, run_proc_args = SpecSubCommandJumpOverSubSubCommand.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
       end
     end
   end
@@ -633,7 +620,7 @@ describe "sub command jump over sub sub command." do
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         expect_raises(Exception, spec_case[:exception_message]) do
-          SpecSubCommandJumpOverSubSubCommand.start_main(spec_case[:argv])
+          SpecSubCommandJumpOverSubSubCommand.run_proc_arguments(spec_case[:argv])
         end
       end
     end
