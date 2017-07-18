@@ -27,7 +27,7 @@ class Clim
       parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
-    def add_opt(opt, &proc : String ->)
+    def set_opt(opt, &proc : String ->)
       if opt.long.empty?
         parser.on(opt.short, opt.desc, &proc)
       else
@@ -82,10 +82,6 @@ class Clim
       sub_cmds.empty? ? 0 : sub_cmds.map(&.name.size).max
     end
 
-    def parse_and_run(argv)
-      parse(argv).run
-    end
-
     def run(run_proc_opts, run_proc_args)
       run_proc.call(run_proc_opts, run_proc_args)
     end
@@ -108,8 +104,8 @@ class Clim
       prepare_parse
       parser.parse(input_args.to_be_exec.dup)
 
-      if input_args.help_arg_only?
-        @run_proc = help_proc
+      if input_args.include_help_arg?
+        run_proc = RunProc.new { puts help }
       else
         opts.validate!
       end
@@ -120,11 +116,7 @@ class Clim
 
     def prepare_parse
       opts.reset
-      @args = [] of String
-    end
-
-    def help_proc
-      RunProc.new { puts help }
+      args = [] of String
     end
 
     def find_sub_cmds_by(name)

@@ -4,15 +4,15 @@ class Clim
   alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
-  @@main : Command = Command.new("main_command")
-  @@defining_command : Command = @@main
+  @@main_command : Command = Command.new("main_command")
+  @@defining_command : Command = @@main_command
   @@command_stack : Array(Command) = [] of Command
 
   module Dsl
     def main_command
       raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
-      @@main = Command.new("main_command")
-      @@defining_command = @@main
+      @@main_command = Command.new("main_command")
+      @@defining_command = @@main_command
     end
 
     def command(name)
@@ -31,15 +31,8 @@ class Clim
     macro difine_opts(method_name, type, &proc)
       {% for long? in [true, false] %}
         def {{method_name.id}}(short, {% if long? %} long, {% end %} default : {{type}} = nil, required = false, desc = "Option description.")
-          opt = Option({{type}}).new(
-                                      short:    short,
-                                      long:     {% if long? %} long, {% else %} "", {% end %}
-                                      default:  default,
-                                      required: required,
-                                      desc:     desc,
-                                      value:    default
-                                    )
-          @@defining_command.add_opt(opt) {{proc.id}}
+          opt = Option({{type}}).new(short, {% if long? %} long, {% else %} "", {% end %} default, required, desc, default)
+          @@defining_command.set_opt(opt) {{proc.id}}
         end
       {% end %}
     end
@@ -60,14 +53,12 @@ class Clim
     end
 
     def run_proc_arguments(argv)
-      execute_command = @@main.parse(argv)
-      run_proc_opts, run_proc_args = execute_command.run_proc_arguments
-      return run_proc_opts, run_proc_args
+      @@main_command.parse(argv).run_proc_arguments
     end
 
     def start_main(argv)
       run_proc_opts, run_proc_args = run_proc_arguments(argv)
-      @@main.parse(argv).run(run_proc_opts, run_proc_args)
+      @@main_command.parse(argv).run(run_proc_opts, run_proc_args)
     end
 
     def start(argv)
