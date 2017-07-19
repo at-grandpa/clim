@@ -13,19 +13,19 @@ describe "main command with bool." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -41,7 +41,7 @@ describe "main command with bool." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b, --bool                       Option description.
 
 
@@ -134,19 +134,19 @@ describe "main command with bool only short option." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -162,7 +162,7 @@ describe "main command with bool only short option." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b                               Option description.
 
 
@@ -248,19 +248,19 @@ describe "main command with bool arguments." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -276,7 +276,7 @@ describe "main command with bool arguments." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b ARG, --bool=ARG               Option description.
 
 
@@ -383,19 +383,19 @@ describe "main command with bool." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -411,7 +411,7 @@ describe "main command with bool." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b ARG                           Option description.
 
 
@@ -516,19 +516,19 @@ describe "main command with bool desc." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -544,7 +544,7 @@ describe "main command with bool desc." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b, --bool                       Bool option description.
 
 
@@ -568,19 +568,19 @@ describe "main command with bool default." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -596,7 +596,7 @@ describe "main command with bool default." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b, --bool                       Bool option description.  [default:false]
 
 
@@ -679,19 +679,19 @@ describe "main command with bool required true and default exists." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -707,7 +707,7 @@ describe "main command with bool required true and default exists." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b, --bool                       Bool option description.  [default:false]  [required]
 
 
@@ -782,19 +782,19 @@ describe "main command with bool arguments required true and default exists." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -810,7 +810,7 @@ describe "main command with bool arguments required true and default exists." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b ARG, --bool=ARG               Bool option description.  [default:false]  [required]
 
 
@@ -957,19 +957,19 @@ describe "main command with bool required true only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -985,7 +985,7 @@ describe "main command with bool required true only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b, --bool                       Bool option description.  [required]
 
 
@@ -1068,19 +1068,19 @@ describe "main command with bool arguments required true only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1096,7 +1096,7 @@ describe "main command with bool arguments required true only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b ARG, --bool=ARG               Bool option description.  [required]
 
 
@@ -1241,19 +1241,19 @@ describe "main command with bool required false and default exists." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1269,7 +1269,7 @@ describe "main command with bool required false and default exists." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b, --bool                       Bool option description.  [default:false]
 
 
@@ -1347,19 +1347,19 @@ describe "main command with bool arguments required false and default exists." d
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1375,7 +1375,7 @@ describe "main command with bool arguments required false and default exists." d
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b ARG, --bool=ARG               Bool option description.  [default:false]
 
 
@@ -1522,19 +1522,19 @@ describe "main command with bool required false only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1550,7 +1550,7 @@ describe "main command with bool required false only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b, --bool                       Bool option description.
 
 
@@ -1628,19 +1628,19 @@ describe "main command with bool arguments required false only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1656,7 +1656,7 @@ describe "main command with bool arguments required false only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -b ARG, --bool=ARG               Bool option description.
 
 

@@ -21,7 +21,7 @@ class Clim
     end
 
     def initialize_parser
-      parser.on("-h", "--help", "Show this help.") { }
+      parser.on("--help", "Show this help.") { }
       parser.invalid_option { |opt_name| raise ClimException.new "Undefined option. \"#{opt_name}\"" }
       parser.missing_option { |opt_name| raise ClimException.new "Option that requires an argument. \"#{opt_name}\"" }
       parser.unknown_args { |unknown_args| @args = unknown_args }

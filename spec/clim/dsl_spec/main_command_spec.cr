@@ -10,19 +10,19 @@ describe "main command only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -38,7 +38,7 @@ describe "main command only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
 
           HELP_MESSAGE
@@ -120,19 +120,19 @@ describe "main command with desc." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -148,7 +148,7 @@ describe "main command with desc." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
 
           HELP_MESSAGE
@@ -231,19 +231,19 @@ describe "main command with usage." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -259,7 +259,7 @@ describe "main command with usage." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
 
           HELP_MESSAGE

@@ -15,12 +15,12 @@ class Clim
     end
 
     def select_help_arg
-      argv.select { |arg| arg == "-h" || arg == "--help" }
+      argv.select { |arg| arg == "--help" }
     end
 
     def include_help_arg?
       return false if to_be_exec.empty?
-      other_arg = to_be_exec.reject { |arg| arg == "-h" || arg == "--help" }
+      other_arg = to_be_exec.reject { |arg| arg == "--help" }
       other_arg.empty?
     end
   end

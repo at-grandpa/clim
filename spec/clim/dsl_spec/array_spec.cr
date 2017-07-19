@@ -14,19 +14,19 @@ describe "main command with array." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -42,7 +42,7 @@ describe "main command with array." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -a ARG, --array=ARG              Option description.
 
 
@@ -153,19 +153,19 @@ describe "main command with array only short option." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -181,7 +181,7 @@ describe "main command with array only short option." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -a ARG                           Option description.
 
 
@@ -290,19 +290,19 @@ describe "main command with array desc." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -318,7 +318,7 @@ describe "main command with array desc." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -a ARG, --array=ARG              Array option description.
 
 
@@ -342,19 +342,19 @@ describe "main command with array default." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -370,7 +370,7 @@ describe "main command with array default." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -a ARG, --array=ARG              Array option description.  [default:["default value"]]
 
 
@@ -481,19 +481,19 @@ describe "main command with array required true and default exists." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -509,7 +509,7 @@ describe "main command with array required true and default exists." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -a ARG, --array=ARG              Array option description.  [default:["default value"]]  [required]
 
 
@@ -620,19 +620,19 @@ describe "main command with array required true only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -648,7 +648,7 @@ describe "main command with array required true only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -a ARG, --array=ARG              Array option description.  [required]
 
 
@@ -757,19 +757,19 @@ describe "main command with array required false and default exists." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -785,7 +785,7 @@ describe "main command with array required false and default exists." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -a ARG, --array=ARG              Array option description.  [default:["default value"]]
 
 
@@ -896,19 +896,19 @@ describe "main command with array required false only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -924,7 +924,7 @@ describe "main command with array required false only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -a ARG, --array=ARG              Array option description.
 
 

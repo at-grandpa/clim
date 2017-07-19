@@ -13,19 +13,19 @@ describe "main command with string." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -41,7 +41,7 @@ describe "main command with string." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -s ARG, --string=ARG             Option description.
 
 
@@ -152,19 +152,19 @@ describe "main command with string only short option." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -180,7 +180,7 @@ describe "main command with string only short option." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -s ARG                           Option description.
 
 
@@ -289,19 +289,19 @@ describe "main command with string desc." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -317,7 +317,7 @@ describe "main command with string desc." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -s ARG, --string=ARG             String option description.
 
 
@@ -341,19 +341,19 @@ describe "main command with string default." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -369,7 +369,7 @@ describe "main command with string default." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -s ARG, --string=ARG             String option description.  [default:default value]
 
 
@@ -480,19 +480,19 @@ describe "main command with string required true and default exists." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -508,7 +508,7 @@ describe "main command with string required true and default exists." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -s ARG, --string=ARG             String option description.  [default:default value]  [required]
 
 
@@ -619,19 +619,19 @@ describe "main command with string required only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -647,7 +647,7 @@ describe "main command with string required only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -s ARG, --string=ARG             String option description.  [required]
 
 
@@ -756,19 +756,19 @@ describe "main command with string required false and default exists." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -784,7 +784,7 @@ describe "main command with string required false and default exists." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -s ARG, --string=ARG             String option description.  [default:default value]
 
 
@@ -895,19 +895,19 @@ describe "main command with string required false only." do
   describe "returns help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -923,7 +923,7 @@ describe "main command with string required false only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
               -s ARG, --string=ARG             String option description.
 
 

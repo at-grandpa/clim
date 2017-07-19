@@ -17,19 +17,19 @@ describe "sub command only." do
   describe "returns main command help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -45,7 +45,7 @@ describe "sub command only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
             Sub Commands:
 
@@ -60,19 +60,19 @@ describe "sub command only." do
   describe "returns sub command help." do
     [
       {
-        argv: %w(sub_command -h),
-      },
-      {
         argv: %w(sub_command --help),
       },
       {
-        argv: %w(sub_command -h ignore-arg),
+        argv: %w(sub_command --help ignore-arg),
       },
       {
-        argv: %w(sub_command ignore-arg -h),
+        argv: %w(sub_command ignore-arg --help),
       },
       {
-        argv: %w(sub_command -ignore-option -h),
+        argv: %w(sub_command --help -ignore-option),
+      },
+      {
+        argv: %w(sub_command -ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -88,7 +88,7 @@ describe "sub command only." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
 
           HELP_MESSAGE
@@ -178,19 +178,19 @@ describe "sub command with desc." do
   describe "returns sub command help." do
     [
       {
-        argv: %w(sub_command -h),
-      },
-      {
         argv: %w(sub_command --help),
       },
       {
-        argv: %w(sub_command -h ignore-arg),
+        argv: %w(sub_command --help ignore-arg),
       },
       {
-        argv: %w(sub_command ignore-arg -h),
+        argv: %w(sub_command ignore-arg --help),
       },
       {
-        argv: %w(sub_command -ignore-option -h),
+        argv: %w(sub_command --help -ignore-option),
+      },
+      {
+        argv: %w(sub_command -ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -206,7 +206,7 @@ describe "sub command with desc." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
 
           HELP_MESSAGE
@@ -237,19 +237,19 @@ describe "sub command with usage." do
   describe "returns sub command help." do
     [
       {
-        argv: %w(sub_command -h),
-      },
-      {
         argv: %w(sub_command --help),
       },
       {
-        argv: %w(sub_command -h ignore-arg),
+        argv: %w(sub_command --help ignore-arg),
       },
       {
-        argv: %w(sub_command ignore-arg -h),
+        argv: %w(sub_command ignore-arg --help),
       },
       {
-        argv: %w(sub_command -ignore-option -h),
+        argv: %w(sub_command --help -ignore-option),
+      },
+      {
+        argv: %w(sub_command -ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -265,7 +265,7 @@ describe "sub command with usage." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
 
           HELP_MESSAGE
@@ -305,19 +305,19 @@ describe "sub sub command." do
   describe "returns sub sub command help." do
     [
       {
-        argv: %w(sub_command sub_sub_command -h),
-      },
-      {
         argv: %w(sub_command sub_sub_command --help),
       },
       {
-        argv: %w(sub_command sub_sub_command -h ignore-arg),
+        argv: %w(sub_command sub_sub_command --help ignore-arg),
       },
       {
-        argv: %w(sub_command sub_sub_command ignore-arg -h),
+        argv: %w(sub_command sub_sub_command ignore-arg --help),
       },
       {
-        argv: %w(sub_command sub_sub_command -ignore-option -h),
+        argv: %w(sub_command sub_sub_command --help -ignore-option),
+      },
+      {
+        argv: %w(sub_command sub_sub_command -ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -333,7 +333,7 @@ describe "sub sub command." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
 
           HELP_MESSAGE
@@ -344,19 +344,25 @@ describe "sub sub command." do
   describe "returns sub command help when there is no sub_sub_command next to sub_command." do
     [
       {
-        argv: %w(sub_command -h sub_sub_command),
-      },
-      {
         argv: %w(sub_command --help sub_sub_command),
       },
       {
-        argv: %w(sub_command -h ignore-arg sub_sub_command),
+        argv: %w(sub_command --help ignore-arg sub_sub_command),
       },
       {
-        argv: %w(sub_command ignore-arg sub_sub_command -h),
+        argv: %w(sub_command ignore-arg --help sub_sub_command),
       },
       {
-        argv: %w(sub_command -ignore-option sub_sub_command -h),
+        argv: %w(sub_command --help -ignore-option sub_sub_command),
+      },
+      {
+        argv: %w(sub_command -ignore-option --help sub_sub_command),
+      },
+      {
+        argv: %w(sub_command ignore-arg sub_sub_command --help),
+      },
+      {
+        argv: %w(sub_command -ignore-option sub_sub_command --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -372,7 +378,7 @@ describe "sub sub command." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
             Sub Commands:
 
@@ -484,19 +490,19 @@ describe "sub command jump over sub sub command." do
   describe "returns jump over sub sub command help." do
     [
       {
-        argv: %w(jump_over_sub_sub_command -h),
-      },
-      {
         argv: %w(jump_over_sub_sub_command --help),
       },
       {
-        argv: %w(jump_over_sub_sub_command -h ignore-arg),
+        argv: %w(jump_over_sub_sub_command --help ignore-arg),
       },
       {
-        argv: %w(jump_over_sub_sub_command ignore-arg -h),
+        argv: %w(jump_over_sub_sub_command ignore-arg --help),
       },
       {
-        argv: %w(jump_over_sub_sub_command -ignore-option -h),
+        argv: %w(jump_over_sub_sub_command --help -ignore-option),
+      },
+      {
+        argv: %w(jump_over_sub_sub_command -ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -512,7 +518,7 @@ describe "sub command jump over sub sub command." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
 
           HELP_MESSAGE
@@ -523,19 +529,19 @@ describe "sub command jump over sub sub command." do
   describe "returns main command help." do
     [
       {
-        argv: %w(-h),
-      },
-      {
         argv: %w(--help),
       },
       {
-        argv: %w(-h ignore-arg),
+        argv: %w(--help ignore-arg),
       },
       {
-        argv: %w(ignore-arg -h),
+        argv: %w(ignore-arg --help),
       },
       {
-        argv: %w(-ignore-option -h),
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -551,7 +557,7 @@ describe "sub command jump over sub sub command." do
 
             Options:
 
-              -h, --help                       Show this help.
+              --help                           Show this help.
 
             Sub Commands:
 

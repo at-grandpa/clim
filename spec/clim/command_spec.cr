@@ -8,7 +8,7 @@ describe Clim::Command do
     end
     it "sets default parser when initialized with name." do
       cmd = Command.new("spec_command")
-      cmd.parser.to_s.should eq("    -h, --help                       Show this help.")
+      cmd.parser.to_s.should eq("    --help                           Show this help.")
     end
   end
   describe "#help" do
@@ -27,7 +27,7 @@ describe Clim::Command do
 
           Options:
 
-            -h, --help                       Show this help.
+            --help                           Show this help.
 
 
         HELP_MESSAGE
@@ -59,7 +59,7 @@ describe Clim::Command do
 
           Options:
 
-            -h, --help                       Show this help.
+            --help                           Show this help.
 
           Sub Commands:
 
