@@ -104,6 +104,10 @@ describe "main command with bool." do
   describe "raises Exception when passing invalid argv." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(--b),
         exception_message: "Undefined option. \"--b\"",
       },
@@ -209,6 +213,10 @@ describe "main command with bool only short option." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(--bool),
         exception_message: "Undefined option. \"--bool\"",
@@ -328,6 +336,10 @@ describe "main command with bool arguments." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",
@@ -453,6 +465,10 @@ describe "main command with bool." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",
@@ -648,6 +664,10 @@ describe "main command with bool default." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(--b),
         exception_message: "Undefined option. \"--b\"",
@@ -903,6 +923,10 @@ describe "main command with bool arguments required true and default exists." do
   describe "raises Exception when passing invalid argv." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",
       },
@@ -1037,6 +1061,10 @@ describe "main command with bool required true only." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(),
         exception_message: "Required options. \"-b\"",
@@ -1181,6 +1209,10 @@ describe "main command with bool arguments required true only." do
       {
         argv:              %w(),
         exception_message: "Required options. \"-b ARG\"",
+      },
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
       },
       {
         argv:              %w(arg1),
@@ -1468,6 +1500,10 @@ describe "main command with bool arguments required false and default exists." d
   describe "raises Exception when passing invalid argv." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",
       },
@@ -1748,6 +1784,10 @@ describe "main command with bool arguments required false only." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",

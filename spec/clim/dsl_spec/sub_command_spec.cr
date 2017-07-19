@@ -130,6 +130,10 @@ describe "sub command only." do
   describe "raises Exception when passing invalid argv to main command." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(sub_command -m),
         exception_message: "Undefined option. \"-m\"",
       },
@@ -424,6 +428,10 @@ describe "sub sub command." do
   describe "raises Exception when passing invalid argv to main command." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(sub_command sub_sub_command -m),
         exception_message: "Undefined option. \"-m\"",
       },
@@ -603,6 +611,10 @@ describe "sub command jump over sub sub command." do
   end
   describe "raises Exception when passing invalid argv to main command." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(jump_over_sub_sub_command -m),
         exception_message: "Undefined option. \"-m\"",

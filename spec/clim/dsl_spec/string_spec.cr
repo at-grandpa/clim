@@ -114,6 +114,10 @@ describe "main command with string." do
   describe "raises Exception when passing invalid argv." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",
       },
@@ -242,6 +246,10 @@ describe "main command with string only short option." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",
@@ -442,6 +450,10 @@ describe "main command with string default." do
   describe "raises Exception when passing invalid argv." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",
       },
@@ -581,6 +593,10 @@ describe "main command with string required true and default exists." do
   describe "raises Exception when passing invalid argv." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",
       },
@@ -712,6 +728,10 @@ describe "main command with string required only." do
       {
         argv:              %w(),
         exception_message: "Required options. \"-s ARG\"",
+      },
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
       },
       {
         argv:              %w(arg1),
@@ -857,6 +877,10 @@ describe "main command with string required false and default exists." do
   describe "raises Exception when passing invalid argv." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",
       },
@@ -995,6 +1019,10 @@ describe "main command with string required false only." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(-s),
         exception_message: "Option that requires an argument. \"-s\"",

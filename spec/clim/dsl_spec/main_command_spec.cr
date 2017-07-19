@@ -80,6 +80,10 @@ describe "main command only." do
   describe "raises Exception when passing invalid argv." do
     [
       {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
         argv:              %w(-m),
         exception_message: "Undefined option. \"-m\"",
       },
@@ -189,6 +193,10 @@ describe "main command with desc." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(-m),
         exception_message: "Undefined option. \"-m\"",
@@ -300,6 +308,10 @@ describe "main command with usage." do
   end
   describe "raises Exception when passing invalid argv." do
     [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
       {
         argv:              %w(-m),
         exception_message: "Undefined option. \"-m\"",
