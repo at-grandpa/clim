@@ -6,6 +6,11 @@
 
 [![Build Status](https://travis-ci.org/at-grandpa/clim.svg?branch=master)](https://travis-ci.org/at-grandpa/clim)
 
+## Goals
+
+* Slim implementation.
+* Intuitive code.
+
 ## Installation
 
 Add this to your application's `shard.yml`:
@@ -14,10 +19,10 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.1.2
+    version: 0.1.3
 ```
 
-## Sample Code
+## Sample Code 1
 
 ```crystal
 require "clim"
@@ -31,8 +36,9 @@ module Hello
     array  "-n NAME",  "--name=NAME",      desc: "Target name.",        default: [] of String
     string "-g WORDS", "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
     run do |opts, args|
-      puts "#{opts.s["greeting"]},"
-      puts "#{opts.a["name"].join(", ")}!"
+      print "#{opts["greeting"]}, "
+      print "#{opts["name"].join(", ")}!"
+      print "\n"
     end
 
   end
@@ -62,53 +68,66 @@ Good night,
 Taro, Miko!
 ```
 
-## DSL
+## Sample Code 2
 
 ```crystal
 require "clim"
 
-module Hello
+module FakeGit
   class Cli < Clim
 
     main_command
-    #
-    # Put main command informations & options here.
-    #
+    desc  "Fake Git command."
+    usage "fgit [sub_command] [arguments]"
     run do |opts, args|
-      # Put main command code here.
+      puts opts["help"]
     end
 
     sub do
-      command "sub_command"
-      #
-      # Put sub command informations & options here.
-      #
+      command "branch"
+      desc  "List, create, or delete branches."
+      usage "fgit branch [arguments]"
       run do |opts, args|
-        # Put sub command code here.
+        puts "Fake Git branch!!"
+      end
+
+      command "log"
+      desc  "Show commit logs."
+      usage "fgit log [arguments]"
+      run do |opts, args|
+        puts "Fake Git log!!"
       end
 
       sub do
-        command "sub_sub_command"
-        #
-        # Put sub sub command informations & options here.
-        #
+        command "short"
+        desc  "Show commit short logs."
+        usage "fgit log short [arguments]"
         run do |opts, args|
-          # Put sub sub command code here.
+          puts "Fake Git short log!!"
         end
 
-        # ...
-
+        command "long"
+        desc  "Show commit long logs."
+        usage "fgit log long [arguments]"
+        run do |opts, args|
+          puts "Fake Git long log!!"
+        end
       end
-
-      # ...
 
     end
 
   end
 end
 
-Hello::Cli.start(ARGV)
+FakeGit::Cli.start(ARGV)
 ```
+
+```
+$ crystal build -o ./fgit src/fake_git.cr
+$ ./fgit
+
+```
+
 
 ## Usage
 
