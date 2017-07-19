@@ -31,13 +31,13 @@ module Hello
   class Cli < Clim
 
     main_command
-    desc   "Hello CLI tool."
-    usage  "hello [options] [arguments] ..."
+    desc "Hello CLI tool."
+    usage "hello [options] [arguments] ..."
     array  "-n NAME",  "--name=NAME",      desc: "Target name.",        default: [] of String
     string "-g WORDS", "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
     run do |opts, args|
-      print "#{opts["greeting"]}, "
-      print "#{opts["name"].join(", ")}!"
+      print "#{opts["greeting"].as(String)}, "
+      print "#{opts["name"].as(Array(String)).join(", ")}!"
       print "\n"
     end
 
@@ -49,7 +49,7 @@ Hello::Cli.start(ARGV)
 
 ```
 $ crystal build src/hello.cr
-$ ./hello -h
+$ ./hello --help
 
   Hello CLI tool.
 
@@ -59,13 +59,12 @@ $ ./hello -h
 
   Options:
 
-    -h, --help                       Show this help.
-    -n NAME, --name=NAME             Target name.  [default:[]]
+    --help                           Show this help.
+    -n NAME, --name=NAME             Target name.  [default:[] of String]
     -g WORDS, --greeting=WORDS       Words of greetings.  [default:Hello]
 
 $ ./hello -n Taro -n Miko -g 'Good night'
-Good night,
-Taro, Miko!
+Good night, Taro, Miko!
 ```
 
 ## Sample Code 2
@@ -126,6 +125,68 @@ FakeGit::Cli.start(ARGV)
 $ crystal build -o ./fgit src/fake_git.cr
 $ ./fgit
 
+  Fake Git command.
+
+  Usage:
+
+    fgit [sub_command] [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+  Sub Commands:
+
+    branch   List, create, or delete branches.
+    log      Show commit logs.
+
+
+$ ./fgit branch --help
+
+  List, create, or delete branches.
+
+  Usage:
+
+    fgit branch [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+
+$ ./fgit log --help
+
+  Show commit logs.
+
+  Usage:
+
+    fgit log [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+  Sub Commands:
+
+    short   Show commit short logs.
+    long    Show commit long logs.
+
+
+$ ./fgit log short --help
+
+  Show commit short logs.
+
+  Usage:
+
+    fgit log short [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+
+$ ./fgit log short
+Fake Git short log!!
 ```
 
 
@@ -158,8 +219,9 @@ require "clim"
 ```crystal
   string "-s ARG", "--string-long-name=ARG", desc: "Option description."  # String option
   run do |opts, args|
-    puts opts.string["string-long-name"]  # Get value.
-    puts opts.s["string-long-name"]       # Ditto.
+    puts opts["string-long-name"]                     # => print your option value.
+    puts typeof(opts["string-long-name"])             # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["string-long-name"].as(String))  # => String
   end
 ```
 
@@ -168,8 +230,9 @@ require "clim"
 ```crystal
   bool  "-b", "--bool-long-name", desc: "Option description."  # Bool option
   run do |opts, args|
-    puts opts.bool["bool-long-name"]  # Get value.
-    puts opts.b["bool-long-name"]     # Ditto.
+    puts opts["bool-long-name"]                   # => print your option value.
+    puts typeof(opts["bool-long-name"])           # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["bool-long-name"].as(Bool))  # => Bool
   end
 ```
 
@@ -178,8 +241,9 @@ require "clim"
 ```crystal
   array "-a ITEM", "--array-long-name=ITEM", desc: "Option description."  # Array option
   run do |opts, args|
-    puts opts.array["array-long-name"]  # Get value.
-    puts opts.a["array-long-name"]      # Ditto.
+    puts opts["array-long-name"]                            # => print your option value.
+    puts typeof(opts["array-long-name"])                    # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["array-long-name"].as(Array(String)))  # => Array(String)
   end
 ```
 
@@ -195,18 +259,15 @@ require "clim"
 
 ```crystal
   run do |opts, args|
-    puts opts.help      # Get help string.
+    puts opts["help"]  # Get help string.
   end
 ```
+
 ## Development
 
 ```
 $ crystal spec
 ```
-
-## Tools
-
-[clim-tools](https://github.com/at-grandpa/clim-tools)
 
 ## Contributing
 
