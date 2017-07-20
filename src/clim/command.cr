@@ -27,7 +27,7 @@ class Clim
       parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
-    def set_opt(opt, &proc : String ->)
+    def add_opt(opt, &proc : String ->)
       if opt.long.empty?
         parser.on(opt.short, opt.desc, &proc)
       else

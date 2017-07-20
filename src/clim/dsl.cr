@@ -32,7 +32,7 @@ class Clim
       {% for long? in [true, false] %}
         def {{method_name.id}}(short, {% if long? %} long, {% end %} default : {{type}} = nil, required = false, desc = "Option description.")
           opt = Option({{type}}).new(short, {% if long? %} long, {% else %} "", {% end %} default, required, desc, default)
-          @@defining_command.set_opt(opt) {{proc.id}}
+          @@defining_command.add_opt(opt) {{proc.id}}
         end
       {% end %}
     end
@@ -40,6 +40,18 @@ class Clim
     difine_opts(method_name: "string", type: String | Nil) { |arg| opt.set_string(arg) }
     difine_opts(method_name: "bool", type: Bool | Nil) { |arg| opt.set_bool(arg) }
     difine_opts(method_name: "array", type: Array(String) | Nil) { |arg| opt.add_to_array(arg) }
+
+    class Ttt < Opts
+      property(name : String | Nil = nil)
+      property(web : Bool | Nil = nil)
+      property(dogs : Array(String) | Nil = nil)
+    end
+
+    def self.ttt_define_opts
+      opts = Ttt.new
+    end
+
+    ttt_define_opts
 
     def run(&block : RunProc)
       @@defining_command.run_proc = block
