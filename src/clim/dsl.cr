@@ -48,7 +48,8 @@ class Clim
     end
 
     def self.ttt_define_opts
-      opts = Ttt.new
+    opt = Option({{type}}).new(short, {% if long? %} long, {% else %} "", {% end %} default, required, desc, default)
+    @@defining_command.add_opt(opt) {{proc.id}}
     end
 
     ttt_define_opts
