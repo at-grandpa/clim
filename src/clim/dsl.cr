@@ -128,11 +128,15 @@ class Clim
 
       def self.{{name.id}}_set_opts
         opts = {{name.camelcase.id}}.new
+        puts "-------------in dsl"
         puts typeof(opts)
         if @@defining_command.nil?
           raise "defining_command is nil."
         end
+        puts "-------------in dsl defining_command type"
+        puts typeof(@@defining_command)
         @@defining_command.try &.set_opts(opts)
+        puts typeof(@@defining_command.opts)
       end
       {{name.id}}_set_opts
 
