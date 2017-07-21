@@ -12,17 +12,23 @@ class Clim
   class Options
     macro string(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
-      property {{property_name.id}} : String | Nil = nil
+      def {{property_name.id}}
+        values.hash[{{property_name.stringify}}].as(String)
+      end
     end
 
     macro bool(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
-      property {{property_name.id}} : Bool | Nil = nil
+      def {{property_name.id}}
+        values.hash[{{property_name.stringify}}].as(Bool)
+      end
     end
 
     macro array(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
-      property {{property_name.id}} : Array(String) | Nil = nil
+      def {{property_name.id}}
+        values.hash[{{property_name.stringify}}].as(Array(String))
+      end
     end
   end
 
