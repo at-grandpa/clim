@@ -131,7 +131,7 @@ class Clim
         if @@defining_command.nil?
           raise "defining_command is nil."
         end
-        @@defining_command.try &.opts = opts
+        @@defining_command.try &.set_opts(opts)
       end
       {{name.id}}_set_opts
 
