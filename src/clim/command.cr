@@ -27,9 +27,9 @@ class Clim
       parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
-    def set_opts(opts)
+    def set_opts(optsss)
       puts "--------in set_opts opts type"
-      @opts = opts
+      @opts = optsss
       puts typeof(@opts)
     end
 
