@@ -9,7 +9,8 @@ class Clim
     property name : String = ""
     property desc : String = "Command Line Interface Tool."
     property usage : String = "{command} [options] [arguments]"
-    property opts : Options = Options.new
+    @opts : Options = Options.new
+    # property opts : Options = Options.new
     property args : Array(String) = [] of String
     property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
