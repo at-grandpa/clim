@@ -133,7 +133,7 @@ class Clim
     end
 
     def prepare_parse
-      opts.reset
+      @opts.reset
       args = [] of String
     end
 
