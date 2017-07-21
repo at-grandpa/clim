@@ -29,6 +29,7 @@ class Clim
 
     def set_opts(opts)
       @opts = opts
+      puts typeof(@opts)
     end
 
     def add_opt(opt, &proc : String ->)
@@ -91,6 +92,9 @@ class Clim
     end
 
     def run_proc_arguments
+      puts "--------search opts type"
+      puts typeof(@opts)
+      puts typeof(opts)
       return opts, args
       # return opts.values, args
     end
