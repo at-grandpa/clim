@@ -87,7 +87,8 @@ class Clim
     end
 
     def run_proc_arguments
-      return opts.values, args
+      return opts, args
+      # return opts.values, args
     end
 
     def parse(argv)

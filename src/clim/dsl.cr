@@ -2,7 +2,7 @@ require "./command"
 require "./options"
 
 class Clim
-  alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
+  alias ReturnOptsType = Clim::Options
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
   @@main_command : Command = Command.new("main_command")
