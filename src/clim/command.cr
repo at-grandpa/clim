@@ -28,6 +28,7 @@ class Clim
     end
 
     def set_opts(opts)
+      puts "--------in set_opts opts type"
       @opts = opts
       puts typeof(@opts)
     end
