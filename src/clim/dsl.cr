@@ -11,17 +11,17 @@ class Clim
 
   class Options
     macro string(short, long, default = nil, required = false, desc = "Option description.")
-      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       property {{property_name.id}} : String | Nil = nil
     end
 
     macro bool(short, long, default = nil, required = false, desc = "Option description.")
-      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       property {{property_name.id}} : Bool | Nil = nil
     end
 
     macro array(short, long, default = nil, required = false, desc = "Option description.")
-      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       property {{property_name.id}} : Array(String) | Nil = nil
     end
   end
@@ -62,7 +62,7 @@ class Clim
     #------------------
 
     macro string(short, long, default = nil, required = false, desc = "Option description.")
-      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(String | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
         @@defining_command.try &.add_opt(opt) { |arg| opt.set_string(arg) }
@@ -71,7 +71,7 @@ class Clim
     end
 
     macro string(short, default = nil, required = false, desc = "Option description.")
-      {% property_name = short.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(String | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
         @@defining_command.try &.add_opt(opt) { |arg| opt.set_string(arg) }
@@ -80,7 +80,7 @@ class Clim
     end
 
     macro bool(short, long, default = nil, required = false, desc = "Option description.")
-      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Bool | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
         @@defining_command.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
@@ -89,7 +89,7 @@ class Clim
     end
 
     macro bool(short, default = nil, required = false, desc = "Option description.")
-      {% property_name = short.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Bool | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
         @@defining_command.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
@@ -98,7 +98,7 @@ class Clim
     end
 
     macro array(short, long, default = nil, required = false, desc = "Option description.")
-      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Array(String) | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
         @@defining_command.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
@@ -107,7 +107,7 @@ class Clim
     end
 
     macro array(short, default = nil, required = false, desc = "Option description.")
-      {% property_name = short.gsub(/^-*/, "").gsub(/-/, "_") %}
+      {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Array(String) | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
         @@defining_command.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
@@ -133,10 +133,10 @@ class Clim
     end
 
     options(name: "ttt") do
-      string "-n", "--name"
+      string "-n NAME", "--name=NAME"
       bool "-w", "--web"
-      array "-d", "--dogs"
-      string "-s", "--stay-with-me"
+      array "-d DOGS", "--dogs=DOGS"
+      string "-s STAY", "--stay-with-me=STAY"
     end
     #------------------
 
