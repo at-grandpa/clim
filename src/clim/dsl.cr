@@ -136,6 +136,7 @@ class Clim
         puts "-------------in dsl defining_command type"
         puts typeof(@@defining_command)
         @@defining_command.try &.set_opts(opts)
+        puts "-------------in dsl after defining_command.opts type"
         puts typeof(@@defining_command.opts)
       end
       {{name.id}}_set_opts
