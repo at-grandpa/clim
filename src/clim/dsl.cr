@@ -132,12 +132,6 @@ class Clim
       {{yield}}
     end
 
-    options(name: "ttt") do
-      string "-n NAME", "--name=NAME"
-      bool "-w", "--web"
-      array "-d DOGS", "--dogs=DOGS"
-      string "-s STAY", "--stay-with-me=STAY"
-    end
     #------------------
 
     def run(&block : RunProc)
