@@ -145,6 +145,10 @@ class Clim
       {{yield}}
     end
 
+    # うへーーーー
+    # commandsも、定義別にやらねばならない
+    # OptionsのUnionを吸収できない
+    # もうなんか、定義毎に、まじで全部macroだな
     #------------------
 
     def run(&block : RunProc)
