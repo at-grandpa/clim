@@ -128,6 +128,7 @@ class Clim
 
       def self.{{name.id}}_set_opts
         opts = {{name.camelcase.id}}.new
+        puts typeof(opts)
         if @@defining_command.nil?
           raise "defining_command is nil."
         end
