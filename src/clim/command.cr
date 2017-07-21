@@ -36,13 +36,18 @@ class Clim
       puts typeof(@opts)
     end
 
+    def get_opts
+      @opts
+    end
+
+
     def add_opt(opt, &proc : String ->)
       if opt.long.empty?
         parser.on(opt.short, opt.desc, &proc)
       else
         parser.on(opt.short, opt.long, opt.desc, &proc)
       end
-      opts.add(opt)
+      @opts.add(opt)
     end
 
     def help
