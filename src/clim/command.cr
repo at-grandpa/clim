@@ -103,8 +103,7 @@ class Clim
     def run_proc_arguments
       puts "--------search opts type"
       puts typeof(@opts)
-      puts typeof(opts)
-      return opts, args
+      return @opts, args
       # return opts.values, args
     end
 
@@ -125,10 +124,10 @@ class Clim
       if input_args.include_help_arg?
         @run_proc = RunProc.new { puts help }
       else
-        opts.validate!
+        @opts.validate!
       end
 
-      opts.help = help
+      @opts.help = help
       self
     end
 
