@@ -24,16 +24,28 @@ module M
     macro string(short, long)
       {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
-        opt = Option(String).new(short, long, default, required, desc, default)
-        @@defining_command.add_opt(opt) { |arg| opt.set_string(arg) }
+        opt = Array(String).new
+        @@defining_command.gsub(/d/, "a")
       end
       {{property_name.id}}_define
     end
 
     macro bool(short, long)
+      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def self.{{property_name.id}}_define
+        opt = Array(Bool).new
+        @@defining_command.gsub(/d/, "a")
+      end
+      {{property_name.id}}_define
     end
 
     macro array(short, long)
+      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def self.{{property_name.id}}_define
+        opt = Array(Array(String)).new
+        @@defining_command.gsub(/d/, "a")
+      end
+      {{property_name.id}}_define
     end
 
     macro options(name)
@@ -43,7 +55,7 @@ module M
 
       def self.{{name.id}}_set_opts
         opts = {{name.camelcase.id}}.new
-        @@defining_command.opts = opts
+        @@defining_command.gsub(/d/, "a")
       end
       {{name.id}}_set_opts
 
@@ -69,6 +81,7 @@ module M
       string "-n", "--name"
       bool "-w", "--web"
       array "-d", "--dogs"
+      string "-s", "--stay-with-me"
     end
   end
 end

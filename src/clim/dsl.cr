@@ -1,4 +1,5 @@
 require "./command"
+require "./options"
 
 class Clim
   alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
@@ -7,6 +8,23 @@ class Clim
   @@main_command : Command = Command.new("main_command")
   @@defining_command : Command = @@main_command
   @@command_stack : Array(Command) = [] of Command
+
+  class Options
+    macro string(short, long, default = nil, required = false, desc = "Option description.")
+      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      property {{property_name.id}} : String | Nil = nil
+    end
+
+    macro bool(short, long, default = nil, required = false, desc = "Option description.")
+      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      property {{property_name.id}} : Bool | Nil = nil
+    end
+
+    macro array(short, long, default = nil, required = false, desc = "Option description.")
+      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      property {{property_name.id}} : Array(String) | Nil = nil
+    end
+  end
 
   module Dsl
     def main_command
@@ -41,18 +59,86 @@ class Clim
     difine_opts(method_name: "bool", type: Bool | Nil) { |arg| opt.set_bool(arg) }
     difine_opts(method_name: "array", type: Array(String) | Nil) { |arg| opt.add_to_array(arg) }
 
-    class Ttt < Opts
-      property(name : String | Nil = nil)
-      property(web : Bool | Nil = nil)
-      property(dogs : Array(String) | Nil = nil)
+    #------------------
+
+    macro string(short, long, default = nil, required = false, desc = "Option description.")
+      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def self.{{property_name.id}}_define
+        opt = Option(String | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
+        @@defining_command.try &.add_opt(opt) { |arg| opt.set_string(arg) }
+      end
+      {{property_name.id}}_define
     end
 
-    def self.ttt_define_opts
-    opt = Option({{type}}).new(short, {% if long? %} long, {% else %} "", {% end %} default, required, desc, default)
-    @@defining_command.add_opt(opt) {{proc.id}}
+    macro string(short, default = nil, required = false, desc = "Option description.")
+      {% property_name = short.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def self.{{property_name.id}}_define
+        opt = Option(String | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
+        @@defining_command.try &.add_opt(opt) { |arg| opt.set_string(arg) }
+      end
+      {{property_name.id}}_define
     end
 
-    ttt_define_opts
+    macro bool(short, long, default = nil, required = false, desc = "Option description.")
+      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def self.{{property_name.id}}_define
+        opt = Option(Bool | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
+        @@defining_command.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
+      end
+      {{property_name.id}}_define
+    end
+
+    macro bool(short, default = nil, required = false, desc = "Option description.")
+      {% property_name = short.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def self.{{property_name.id}}_define
+        opt = Option(Bool | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
+        @@defining_command.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
+      end
+      {{property_name.id}}_define
+    end
+
+    macro array(short, long, default = nil, required = false, desc = "Option description.")
+      {% property_name = long.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def self.{{property_name.id}}_define
+        opt = Option(Array(String) | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
+        @@defining_command.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
+      end
+      {{property_name.id}}_define
+    end
+
+    macro array(short, default = nil, required = false, desc = "Option description.")
+      {% property_name = short.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def self.{{property_name.id}}_define
+        opt = Option(Array(String) | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
+        @@defining_command.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
+      end
+      {{property_name.id}}_define
+    end
+
+    macro options(name)
+      class {{name.camelcase.id}} < Clim::Options
+        {{yield}}
+      end
+
+      def self.{{name.id}}_set_opts
+        opts = {{name.camelcase.id}}.new
+        if @@defining_command.nil?
+          raise "defining_command is nil."
+        end
+        @@defining_command.try &.opts = opts
+      end
+      {{name.id}}_set_opts
+
+      {{yield}}
+    end
+
+    options(name: "ttt") do
+      string "-n", "--name"
+      bool "-w", "--web"
+      array "-d", "--dogs"
+      string "-s", "--stay-with-me"
+    end
+    #------------------
 
     def run(&block : RunProc)
       @@defining_command.run_proc = block
