@@ -133,8 +133,9 @@ class Clim
         if @@defining_command.nil?
           raise "defining_command is nil."
         end
-        puts "-------------in dsl defining_command type"
+        puts "-------------in dsl defining_command type & opts arg type"
         puts typeof(@@defining_command)
+        puts typeof(opts)
         @@defining_command.try &.set_opts(opts)
         puts "-------------in dsl after defining_command.opts type"
         puts typeof(@@defining_command.opts)
