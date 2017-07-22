@@ -5,9 +5,6 @@ class Clim
   alias ReturnOptsType = Clim::Options
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
-  @@main_command : Command = Command.new("main_command")
-  @@defining_command : Command = @@main_command
-  @@command_stack : Array(Command) = [] of Command
 
   class Options
     macro string(short, long, default = nil, required = false, desc = "Option description.")
@@ -32,40 +29,58 @@ class Clim
     end
   end
 
+  class Command
+    macro desc(desc)
+      def desc
+        desc = {{desc.stringify}}
+      end
+    end
+  end
+
   module Dsl
-    def main_command
-      raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
-      @@main_command = Command.new("main_command")
-      @@defining_command = @@main_command
+
+    @@main_command : Command = Command.new("main_command")
+    @@defining_command : Command = @@main_command
+    @@command_stack : Array(Command) = [] of Command
+
+    macro main_command
+      class {{"main_command".camelcase.id}} < Clim::Command
+        {{yield}}
+      end
+
+      def self.{{"main_command".id}}_set_command
+        raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
+        @@main_command = {{"main_command".camelcase.id}}.new("main_command")
+        @@defining_command = @@main_command
+      end
+      {{"main_command".id}}_set_command
+
     end
 
-    def command(name)
-      raise ClimException.new "Main command is not defined." if @@command_stack.empty?
-      @@defining_command = Command.new(name)
+
+    macro command(name)
+      {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def command_{{normalize_name.id}}
+        raise ClimException.new "Main command is not defined." if @@command_stack.empty?
+        @@defining_command = Command.new({{normalize_name.stringify}})
+      end
+      command_{{normalize_name.id}}
     end
 
-    def desc(desc)
-      @@defining_command.desc = desc
+    macro desc(desc)
+      def desc_{{normalize_name.id}}
+        @@defining_command.desc = {{desc.stringify}}
+      end
+      desc_{{normalize_name.id}}
     end
 
-    def usage(usage)
-      @@defining_command.usage = usage
+    macro usage(usage)
+      {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def usage_{{normalize_name.id}}
+        @@defining_command.usage = {{usage.stringify}}
+      end
+      usage_{{normalize_name.id}}
     end
-
-    macro difine_opts(method_name, type, &proc)
-      {% for long? in [true, false] %}
-        def {{method_name.id}}(short, {% if long? %} long, {% end %} default : {{type}} = nil, required = false, desc = "Option description.")
-          opt = Option({{type}}).new(short, {% if long? %} long, {% else %} "", {% end %} default, required, desc, default)
-          @@defining_command.add_opt(opt) {{proc.id}}
-        end
-      {% end %}
-    end
-
-    difine_opts(method_name: "string", type: String | Nil) { |arg| opt.set_string(arg) }
-    difine_opts(method_name: "bool", type: Bool | Nil) { |arg| opt.set_bool(arg) }
-    difine_opts(method_name: "array", type: Array(String) | Nil) { |arg| opt.add_to_array(arg) }
-
-    #------------------
 
     macro string(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
@@ -128,32 +143,23 @@ class Clim
 
       def self.{{name.id}}_set_opts
         opts = {{name.camelcase.id}}.new
-        puts "-------------in dsl"
-        puts typeof(opts)
         if @@defining_command.nil?
           raise "defining_command is nil."
         end
-        puts "-------------in dsl defining_command type & opts arg type"
-        puts typeof(@@defining_command)
-        puts typeof(opts)
         @@defining_command.try &.set_opts(opts)
-        puts "-------------in dsl after defining_command.opts type"
-        puts typeof(@@defining_command.get_opts)
       end
       {{name.id}}_set_opts
 
       {{yield}}
     end
 
-    # うへーーーー
-    # commandsも、定義別にやらねばならない
-    # OptionsのUnionを吸収できない
-    # もうなんか、定義毎に、まじで全部macroだな
-    #------------------
-
-    def run(&block : RunProc)
-      @@defining_command.run_proc = block
-      @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
+    macro run(&block)
+      {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
+      def run_{{normalize_name.id}}(&block : RunProc)
+        @@defining_command.run_proc = block
+        @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
+      end
+      run_{{normalize_name.id}}
     end
 
     def sub(&block)
@@ -176,5 +182,26 @@ class Clim
     rescue ex
       puts ex.message
     end
+
+    # うへーーーー
+    # commandsも、定義別にやらねばならない
+    # OptionsのUnionを吸収できない
+    # もうなんか、定義毎に、まじで全部macroだな
+
+    main_command do
+      desc "test command"
+    end
+
+
+#      usage "test [options]"
+#      options do
+#        string "-n NAME", "--name=NAME"
+#        array "-d DOGS", "--dogs=DOGS"
+#      end
+#      run do |opts, args|
+#        puts "aaa"
+#      end
+    #------------------
+
   end
 end
