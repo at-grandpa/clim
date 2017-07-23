@@ -6,8 +6,8 @@ class Clim
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
 
-  # @@main_command : Command = Command.new("main_command")
-  # @@defining_command : Command = @@main_command
+  @@main_command : Command
+  @@defining_command : Command
   @@command_stack : Array(Command) = [] of Command
 
   class Options
