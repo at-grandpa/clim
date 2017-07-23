@@ -7,7 +7,7 @@ class Clim
 
 
   # @@main_command : Command = Command.new("main_command")
-  @@defining_command : Command = @@main_command
+  # @@defining_command : Command = @@main_command
   @@command_stack : Array(Command) = [] of Command
 
   class Options
