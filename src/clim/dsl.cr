@@ -59,7 +59,7 @@ class Clim
       @@defining_command : Command = @@main_command
       @@command_stack : Array(Command) = [] of Command
 
-      class {{"main_command".camelcase.id}} < Clim::Command
+      class {{"main_command".camelcase.id}} < Clim::Command(MainCommandOptions)
         {{yield}}
       end
 
