@@ -199,18 +199,18 @@ class Clim
     # OptionsのUnionを吸収できない
     # もうなんか、定義毎に、まじで全部macroだな
 
-    main_command do
-      desc "test command"
-      usage "command usage"
-      options(name: "eee") do
-        string "-n NAME", "--name=NAME"
-        bool "-w", "--web"
-        array "-d DOGS", "--dogs=DOGS"
-      end
-      run do |opts, args|
-        puts "aaa"
-      end
-    end
+#    main_command do
+#      desc "test command"
+#      usage "command usage"
+#      options(name: "eee") do
+#        string "-n NAME", "--name=NAME"
+#        bool "-w", "--web"
+#        array "-d DOGS", "--dogs=DOGS"
+#      end
+#      run do |opts, args|
+#        puts "aaa"
+#      end
+#    end
 
 
 #      usage "test [options]"
