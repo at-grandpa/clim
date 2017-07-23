@@ -5,7 +5,6 @@ class Clim
   alias ReturnOptsType = Clim::Options
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
-
   @@main_command : Command
   @@defining_command : Command
   @@command_stack : Array(Command) = [] of Command
