@@ -80,7 +80,7 @@ class Clim
     end
 
     # 全runコマンドで共通
-    def self.set_run_proc(&block : RunProc)
+    def set_run_proc(&block : RunProc)
       @@defining_command.run_proc = block
       @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
     end
