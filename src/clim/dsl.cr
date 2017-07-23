@@ -6,6 +6,10 @@ class Clim
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
 
+  @@main_command : Command = Command.new("main_command")
+  @@defining_command : Command = @@main_command
+  @@command_stack : Array(Command) = [] of Command
+
   class Options
     macro string(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
@@ -54,10 +58,6 @@ class Clim
   end
 
   module Dsl
-
-    @@main_command : Command = Command.new("main_command")
-    @@defining_command : Command = @@main_command
-    @@command_stack : Array(Command) = [] of Command
 
     macro main_command
       class {{"main_command".camelcase.id}} < Clim::Command
@@ -199,18 +199,18 @@ class Clim
     # OptionsのUnionを吸収できない
     # もうなんか、定義毎に、まじで全部macroだな
 
-#    main_command do
-#      desc "test command"
-#      usage "command usage"
-#      options(name: "eee") do
-#        string "-n NAME", "--name=NAME"
-#        bool "-w", "--web"
-#        array "-d DOGS", "--dogs=DOGS"
-#      end
-#      run do |opts, args|
-#        puts "aaa"
-#      end
-#    end
+    main_command do
+      desc "test command"
+      usage "command usage"
+      options(name: "eee") do
+        string "-n NAME", "--name=NAME"
+        bool "-w", "--web"
+        array "-d DOGS", "--dogs=DOGS"
+      end
+      run do |opts, args|
+        puts "aaa"
+      end
+    end
 
 
 #      usage "test [options]"
@@ -225,3 +225,4 @@ class Clim
 
   end
 end
+
