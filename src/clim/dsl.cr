@@ -54,8 +54,8 @@ class Clim
 
   module Dsl
 
-    @@main_command : Command
-    @@defining_command : Command
+    @@main_command : Command = Command.new
+    @@defining_command : Command = Command.new
     @@command_stack : Array(Command) = [] of Command
 
     macro main_command
