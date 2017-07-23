@@ -5,10 +5,6 @@ class Clim
   alias ReturnOptsType = Clim::Options
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
-  @@main_command : Command
-  @@defining_command : Command
-  @@command_stack : Array(Command) = [] of Command
-
   class Options
     macro string(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
@@ -57,6 +53,10 @@ class Clim
   end
 
   module Dsl
+
+    @@main_command : Command
+    @@defining_command : Command
+    @@command_stack : Array(Command) = [] of Command
 
     macro main_command
       class {{"main_command".camelcase.id}} < Clim::Command
