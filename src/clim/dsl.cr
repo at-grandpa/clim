@@ -63,7 +63,7 @@ class Clim
         {{yield}}
       end
 
-      def self.{{"main_command".id}}_set_command
+      def {{"main_command".id}}_set_command
         raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
         @@main_command = {{"main_command".camelcase.id}}.new("main_command")
         @@defining_command = @@main_command
