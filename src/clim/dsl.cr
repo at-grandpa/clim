@@ -32,9 +32,25 @@ class Clim
   class Command
     macro desc(desc)
       def desc
-        desc = {{desc.stringify}}
+        {{desc}}
       end
     end
+
+    macro usage(usage)
+      def usage
+        {{usage}}
+      end
+    end
+
+    macro options(name)
+    end
+
+    macro run(&block)
+      def set_run_proc(&block : RunProc)
+        @run_proc = block
+      end
+    end
+
   end
 
   module Dsl
@@ -55,8 +71,27 @@ class Clim
       end
       {{"main_command".id}}_set_command
 
+      {{yield}}
     end
 
+    macro desc(desc)
+    end
+
+    macro usage(usage)
+    end
+
+    # 全runコマンドで共通
+    def self.set_run_proc(&block : RunProc)
+      @@defining_command.run_proc = block
+      @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
+    end
+
+    macro run(&block)
+      # ここでは、共通のset_run_proc(&block)を呼ぶだけ
+      # 呼ぶ位置が重要
+      # 名前の識別は不要
+      set_run_proc {{block.id}}
+    end
 
     macro command(name)
       {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
@@ -65,21 +100,6 @@ class Clim
         @@defining_command = Command.new({{normalize_name.stringify}})
       end
       command_{{normalize_name.id}}
-    end
-
-    macro desc(desc)
-      def desc_{{normalize_name.id}}
-        @@defining_command.desc = {{desc.stringify}}
-      end
-      desc_{{normalize_name.id}}
-    end
-
-    macro usage(usage)
-      {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
-      def usage_{{normalize_name.id}}
-        @@defining_command.usage = {{usage.stringify}}
-      end
-      usage_{{normalize_name.id}}
     end
 
     macro string(short, long, default = nil, required = false, desc = "Option description.")
@@ -153,15 +173,6 @@ class Clim
       {{yield}}
     end
 
-    macro run(&block)
-      {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
-      def run_{{normalize_name.id}}(&block : RunProc)
-        @@defining_command.run_proc = block
-        @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
-      end
-      run_{{normalize_name.id}}
-    end
-
     def sub(&block)
       @@command_stack.push(@@defining_command)
       yield
@@ -190,6 +201,15 @@ class Clim
 
     main_command do
       desc "test command"
+      usage "command usage"
+      options(name: "eee") do
+        string "-n NAME", "--name=NAME"
+        bool "-w", "--web"
+        array "-d DOGS", "--dogs=DOGS"
+      end
+      run do |opts, args|
+        puts "aaa"
+      end
     end
 
 
