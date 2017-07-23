@@ -86,9 +86,6 @@ class Clim
     end
 
     macro run(&block)
-      # ここでは、共通のset_run_proc(&block)を呼ぶだけ
-      # 呼ぶ位置が重要
-      # 名前の識別は不要
       set_run_proc {{block.id}}
     end
 
