@@ -6,6 +6,12 @@ class Clim
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
   class Options
+    macro desc(desc)
+    end
+
+    macro usage(usage)
+    end
+
     macro string(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def {{property_name.id}}
@@ -26,6 +32,9 @@ class Clim
         values.hash[{{property_name.stringify}}].as(Array(String))
       end
     end
+
+    macro run(&proc)
+    end
   end
 
   class Command
@@ -41,7 +50,13 @@ class Clim
       end
     end
 
-    macro options(name)
+    macro string(short, long, default = nil, required = false, desc = "Option description.")
+    end
+
+    macro bool(short, long, default = nil, required = false, desc = "Option description.")
+    end
+
+    macro array(short, long, default = nil, required = false, desc = "Option description.")
     end
 
     macro run(&block)
@@ -49,30 +64,9 @@ class Clim
         @run_proc = block
       end
     end
-
   end
 
   module Dsl
-
-    macro main_command
-      @@main_command : Command = Command.new("main_command")
-      @@defining_command : Command = @@main_command
-      @@command_stack : Array(Command) = [] of Command
-
-      class {{"main_command".camelcase.id}} < Clim::Command(MainCommandOptions)
-        {{yield}}
-      end
-
-      def self.{{"main_command".id}}_set_command
-        raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
-        @@main_command = {{"main_command".camelcase.id}}(MainCommandOptions).new("main_command")
-        @@defining_command = @@main_command
-      end
-      {{"main_command".id}}_set_command
-
-      {{yield}}
-    end
-
     macro desc(desc)
     end
 
@@ -153,20 +147,6 @@ class Clim
     end
 
     macro options(name)
-      class {{name.camelcase.id}} < Clim::Options
-        {{yield}}
-      end
-
-      def self.{{name.id}}_set_opts
-        opts = {{name.camelcase.id}}.new
-        if @@defining_command.nil?
-          raise "defining_command is nil."
-        end
-        @@defining_command.try &.set_opts(opts)
-      end
-      {{name.id}}_set_opts
-
-      {{yield}}
     end
 
     def sub(&block)
@@ -195,30 +175,47 @@ class Clim
     # OptionsのUnionを吸収できない
     # もうなんか、定義毎に、まじで全部macroだな
 
-    # main_command do
-      # desc "test command"
-      # usage "command usage"
-      # options(name: "eee") do
-        # string "-n NAME", "--name=NAME"
-        # bool "-w", "--web"
-        # array "-d DOGS", "--dogs=DOGS"
-      # end
-      # run do |opts, args|
-        # puts "aaa"
-      # end
-    # end
+    macro main_command
+      {% name = "main_command" %}
+      @@main_command : Command = Command.new("main_command", {{name.camelcase.id}}Options.new)
+      @@defining_command : Command = @@main_command
+      @@command_stack : Array(Command) = [] of Command
 
+      class {{name.camelcase.id}}Options < Clim::Options
+        {{yield}}
+      end
 
-#      usage "test [options]"
-#      options do
-#        string "-n NAME", "--name=NAME"
-#        array "-d DOGS", "--dogs=DOGS"
-#      end
-#      run do |opts, args|
-#        puts "aaa"
-#      end
-    #------------------
+      def self.{{name.id}}_set_opts
+        opts = {{name.camelcase.id}}Options.new
+        if @@defining_command.nil?
+          raise "defining_command is nil."
+        end
+        @@defining_command.try &.set_opts(opts)
+      end
+      {{name.id}}_set_opts
+
+      class {{"main_command".camelcase.id}} < Clim::Command
+        {{yield}}
+      end
+
+      def self.{{"main_command".id}}_set_command
+        raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
+        @@main_command = {{"main_command".camelcase.id}}.new("main_command", {{name.camelcase.id}}Options.new)
+        @@defining_command = @@main_command
+      end
+      {{"main_command".id}}_set_command
+
+      {{yield}}
+    end
+    #      usage "test [options]"
+    #      options do
+    #        string "-n NAME", "--name=NAME"
+    #        array "-d DOGS", "--dogs=DOGS"
+    #      end
+    #      run do |opts, args|
+    #        puts "aaa"
+    #      end
+    # ------------------
 
   end
 end
-

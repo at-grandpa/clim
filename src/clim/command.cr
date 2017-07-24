@@ -5,18 +5,23 @@ require "./exception"
 require "option_parser"
 
 class Clim
-  class Command(T)
+  class Command
     property name : String = ""
     property desc : String = "Command Line Interface Tool."
     property usage : String = "{command} [options] [arguments]"
-    @opts : T = T.new
+    @opts : Options
     # property opts : Options = Options.new
     property args : Array(String) = [] of String
     property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
-    property sub_cmds : Array(self) = [] of self
+    property sub_cmds : Array(Command) = [] of Command
 
-    def initialize(@name)
+    def initialize(@name, @opts : Options)
+      @desc = "Command Line Interface Tool."
+      @args = [] of String
+      @run_proc = RunProc.new { }
+      @parser = OptionParser.new
+      @sub_cmds = [] of Command
       @usage = "#{name} [options] [arguments]"
       initialize_parser
     end
@@ -28,7 +33,7 @@ class Clim
       parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
-    def set_opts(optsss : T)
+    def set_opts(optsss)
       puts "--------in set_opts opts arg type"
       puts typeof(optsss)
       @opts = optsss
@@ -39,7 +44,6 @@ class Clim
     def get_opts
       @opts
     end
-
 
     def add_opt(opt, &proc : String ->)
       if opt.long.empty?
