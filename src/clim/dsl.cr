@@ -212,22 +212,22 @@ class Clim
         end
 
         # helpのRunProcをどうにか排除したい
-        #
-        # def parse_by_parser(argv)
-          # input_args = InputArgs.new(argv)
 
-          # prepare_parse
-          # parser.parse(input_args.to_be_exec.dup)
+        def parse_by_parser(argv)
+          input_args = InputArgs.new(argv)
 
-          # if input_args.include_help_arg?
-            # @run_proc = RunProc.new { puts help }
-          # else
-            # @opts.validate!
-          # end
+          prepare_parse
+          parser.parse(input_args.to_be_exec.dup)
 
-          # @opts.help = help
-          # self
-        # end
+          if input_args.include_help_arg?
+            @run_proc = RunProc.new { puts help }
+          else
+            @opts.validate!
+          end
+
+          @opts.help = help
+          self
+        end
 
         {{yield}}
       end

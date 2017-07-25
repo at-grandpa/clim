@@ -5,7 +5,7 @@ require "./exception"
 require "option_parser"
 
 class Clim
-  class Command
+  abstract class Command
     property name : String = ""
     property desc : String = "Command Line Interface Tool."
     property usage : String = "{command} [options] [arguments]"
@@ -120,21 +120,21 @@ class Clim
       sub_cmds.first.parse(argv[1..-1])
     end
 
-    def parse_by_parser(argv)
-      input_args = InputArgs.new(argv)
+    abstract def parse_by_parser(argv)
+      # input_args = InputArgs.new(argv)
 
-      prepare_parse
-      parser.parse(input_args.to_be_exec.dup)
+      # prepare_parse
+      # parser.parse(input_args.to_be_exec.dup)
 
-      if input_args.include_help_arg?
-        @run_proc = RunProc.new { puts help }
-      else
-        @opts.validate!
-      end
+      # if input_args.include_help_arg?
+        # @run_proc = RunProc.new { puts help }
+      # else
+        # @opts.validate!
+      # end
 
-      @opts.help = help
-      self
-    end
+      # @opts.help = help
+      # self
+    # end
 
     def prepare_parse
       @opts.reset

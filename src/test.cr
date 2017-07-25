@@ -9,6 +9,8 @@ module Hello
       string "-g WORDS", "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
       run do |opts, args|
         puts "aaa"
+        puts typeof(opts)
+        puts typeof(opts.name)
       end
     end
   end
