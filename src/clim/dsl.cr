@@ -16,21 +16,45 @@ class Clim
     macro string(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def {{property_name.id}}
-        values.hash[{{property_name.stringify}}].as(String)
+        values[{{property_name}}].as(String)
+      end
+      def {{property_name.id}}?
+        v = values[{{property_name}}]?
+        if v.nil?
+          nil
+        else
+          v.as(String)
+        end
       end
     end
 
     macro bool(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def {{property_name.id}}
-        values.hash[{{property_name.stringify}}].as(Bool)
+        values[{{property_name}}].as(Bool)
+      end
+      def {{property_name.id}}?
+        v = values[{{property_name}}]?
+        if v.nil?
+          nil
+        else
+          v.as(Bool)
+        end
       end
     end
 
     macro array(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def {{property_name.id}}
-        values.hash[{{property_name.stringify}}].as(Array(String))
+        values[{{property_name}}].as(Array(String))
+      end
+      def {{property_name.id}}?
+        v = values[{{property_name}}]?
+        if v.nil?
+          nil
+        else
+          v.as(Array(String))
+        end
       end
     end
 

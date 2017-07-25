@@ -4,6 +4,7 @@ require "./option"
 class Clim
   class Options
     alias OptionsType = Option(String | Nil) | Option(Bool | Nil) | Option(Array(String) | Nil)
+    alias ReturnOptsValueType = Hash(String, String | Bool | Array(String) | Nil)
 
     property opts : Array(OptionsType) = [] of OptionsType
     property help : String = ""
@@ -17,9 +18,9 @@ class Clim
 
     class Values
       property help : String = ""
-      property hash : ReturnOptsType = ReturnOptsType.new
+      property hash : ReturnOptsValueType = ReturnOptsValueType.new
 
-      def merge!(other : ReturnOptsType)
+      def merge!(other : ReturnOptsValueType)
         other.each do |k, v|
           if hash.has_key?(k)
             raise ClimException.new "Duplicate option. \"#{k}\""
@@ -30,7 +31,7 @@ class Clim
       end
     end
 
-    def values : ReturnOptsType
+    def values : ReturnOptsValueType
       values = Values.new
       values.merge!({"help" => help})
       opts.each do |opt|

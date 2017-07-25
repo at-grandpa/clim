@@ -7,10 +7,16 @@ module Hello
       usage "hello [options] [arguments] ..."
       array "-n NAME", "--name=NAME", desc: "Target name.", default: [] of String
       string "-g WORDS", "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
+      bool "-w", "--web", desc: "Web flag."
       run do |opts, args|
-        puts "aaa"
-        puts typeof(opts)
-        puts typeof(opts.name)
+        p "aaa"
+        p typeof(opts)
+        p typeof(opts.name)
+        p typeof(opts.greeting)
+        p typeof(opts.web?)
+        p opts.name
+        p opts.greeting
+        p opts.web?
       end
     end
   end
