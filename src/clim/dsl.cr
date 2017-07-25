@@ -98,16 +98,6 @@ class Clim
     macro usage(usage)
     end
 
-    # 全runコマンドで共通
-    # def set_run_proc(&block : RunProc)
-      # @@defining_command.run_proc = block
-      # @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
-    # end
-
-    # macro run(&block)
-      # set_run_proc {{block.id}}
-    # end
-
     macro command(name)
       {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def command_{{normalize_name.id}}
@@ -195,11 +185,6 @@ class Clim
       puts ex.message
     end
 
-    # うへーーーー
-    # commandsも、定義別にやらねばならない
-    # OptionsのUnionを吸収できない
-    # もうなんか、定義毎に、まじで全部macroだな
-
     macro main_command
       {% name = "main_command" %}
       class {{name.camelcase.id}}Options < Clim::Options
@@ -234,8 +219,6 @@ class Clim
         def run_proc=(proc : RunProc)
           @run_proc = proc
         end
-
-        # helpのRunProcをどうにか排除したい
 
         def parse_by_parser(argv)
           input_args = InputArgs.new(argv)
@@ -277,8 +260,5 @@ class Clim
       {{yield}}
     end
 
-    # macro run(&block)
-      # set_run_proc {{block.id}}
-    # end
   end
 end

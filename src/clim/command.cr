@@ -9,23 +9,9 @@ class Clim
     property name : String = ""
     property desc : String = "Command Line Interface Tool."
     property usage : String = "{command} [options] [arguments]"
-    # @opts : Options
-    # property opts : Options = Options.new
     property args : Array(String) = [] of String
-    # @run_proc : RunProc = RunProc.new { }
-    # property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(Command) = [] of Command
-
-    # def initialize(@name, @opts : Options)
-      # @desc = "Command Line Interface Tool."
-      # @args = [] of String
-      # @run_proc = RunProc.new { }
-      # @parser = OptionParser.new
-      # @sub_cmds = [] of Command
-      # @usage = "#{name} [options] [arguments]"
-      # initialize_parser
-    # end
 
     def initialize_parser
       parser.on("--help", "Show this help.") { }
@@ -35,11 +21,7 @@ class Clim
     end
 
     def set_opts(optsss)
-      puts "--------in set_opts opts arg type"
-      puts typeof(optsss)
       @opts = optsss
-      puts "--------in set_opts @opts type"
-      puts typeof(@opts)
     end
 
     def get_opts
@@ -106,10 +88,7 @@ class Clim
     end
 
     def run_proc_arguments
-      puts "--------search opts type"
-      puts typeof(@opts)
       return @opts, args
-      # return opts.values, args
     end
 
     def parse(argv)
@@ -121,20 +100,6 @@ class Clim
     end
 
     abstract def parse_by_parser(argv)
-      # input_args = InputArgs.new(argv)
-
-      # prepare_parse
-      # parser.parse(input_args.to_be_exec.dup)
-
-      # if input_args.include_help_arg?
-        # @run_proc = RunProc.new { puts help }
-      # else
-        # @opts.validate!
-      # end
-
-      # @opts.help = help
-      # self
-    # end
 
     def prepare_parse
       @opts.reset
