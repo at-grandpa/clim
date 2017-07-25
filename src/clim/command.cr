@@ -9,22 +9,23 @@ class Clim
     property name : String = ""
     property desc : String = "Command Line Interface Tool."
     property usage : String = "{command} [options] [arguments]"
-    @opts : Options
+    # @opts : Options
     # property opts : Options = Options.new
     property args : Array(String) = [] of String
-    property run_proc : RunProc = RunProc.new { }
+    # @run_proc : RunProc = RunProc.new { }
+    # property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(Command) = [] of Command
 
-    def initialize(@name, @opts : Options)
-      @desc = "Command Line Interface Tool."
-      @args = [] of String
-      @run_proc = RunProc.new { }
-      @parser = OptionParser.new
-      @sub_cmds = [] of Command
-      @usage = "#{name} [options] [arguments]"
-      initialize_parser
-    end
+    # def initialize(@name, @opts : Options)
+      # @desc = "Command Line Interface Tool."
+      # @args = [] of String
+      # @run_proc = RunProc.new { }
+      # @parser = OptionParser.new
+      # @sub_cmds = [] of Command
+      # @usage = "#{name} [options] [arguments]"
+      # initialize_parser
+    # end
 
     def initialize_parser
       parser.on("--help", "Show this help.") { }
@@ -101,7 +102,7 @@ class Clim
     end
 
     def run(run_proc_opts, run_proc_args)
-      run_proc.call(run_proc_opts, run_proc_args)
+      @run_proc.call(run_proc_opts, run_proc_args)
     end
 
     def run_proc_arguments

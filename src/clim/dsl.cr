@@ -2,7 +2,8 @@ require "./command"
 require "./options"
 
 class Clim
-  alias ReturnOptsType = Clim::Options
+
+  alias ReturnOptsType = Options
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
   class Options
@@ -74,14 +75,14 @@ class Clim
     end
 
     # 全runコマンドで共通
-    def set_run_proc(&block : RunProc)
-      @@defining_command.run_proc = block
-      @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
-    end
+    # def set_run_proc(&block : RunProc)
+      # @@defining_command.run_proc = block
+      # @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
+    # end
 
-    macro run(&block)
-      set_run_proc {{block.id}}
-    end
+    # macro run(&block)
+      # set_run_proc {{block.id}}
+    # end
 
     macro command(name)
       {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
@@ -177,10 +178,6 @@ class Clim
 
     macro main_command
       {% name = "main_command" %}
-      @@main_command : Command = Command.new("main_command", {{name.camelcase.id}}Options.new)
-      @@defining_command : Command = @@main_command
-      @@command_stack : Array(Command) = [] of Command
-
       class {{name.camelcase.id}}Options < Clim::Options
         {{yield}}
       end
@@ -192,30 +189,72 @@ class Clim
         end
         @@defining_command.try &.set_opts(opts)
       end
-      {{name.id}}_set_opts
 
-      class {{"main_command".camelcase.id}} < Clim::Command
+      class {{name.camelcase.id}} < Clim::Command
+        alias ReturnOptsType = {{name.camelcase.id}}Options
+        alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
+
+        @opts : {{name.camelcase.id}}Options
+        @run_proc : RunProc = RunProc.new { }
+
+        def initialize(@name, @opts : {{name.camelcase.id}}Options)
+          @desc = "Command Line Interface Tool."
+          @args = [] of String
+          @run_proc = RunProc.new { }
+          @parser = OptionParser.new
+          @sub_cmds = [] of Command
+          @usage = "#{name} [options] [arguments]"
+          initialize_parser
+        end
+
+        def run_proc=(proc : RunProc)
+          @run_proc = proc
+        end
+
+        # helpのRunProcをどうにか排除したい
+        #
+        # def parse_by_parser(argv)
+          # input_args = InputArgs.new(argv)
+
+          # prepare_parse
+          # parser.parse(input_args.to_be_exec.dup)
+
+          # if input_args.include_help_arg?
+            # @run_proc = RunProc.new { puts help }
+          # else
+            # @opts.validate!
+          # end
+
+          # @opts.help = help
+          # self
+        # end
+
         {{yield}}
       end
 
-      def self.{{"main_command".id}}_set_command
+      def self.{{name.id}}_set_command
         raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
-        @@main_command = {{"main_command".camelcase.id}}.new("main_command", {{name.camelcase.id}}Options.new)
+        @@main_command = {{name.camelcase.id}}.new("main_command", {{name.camelcase.id}}Options.new)
         @@defining_command = @@main_command
       end
-      {{"main_command".id}}_set_command
+
+      def self.run(&block : Proc({{name.camelcase.id}}Options, Array(String), Nil))
+        @@defining_command.run_proc = block
+        @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
+      end
+
+      @@main_command : {{name.camelcase.id}} = {{name.camelcase.id}}.new("main_command", {{name.camelcase.id}}Options.new)
+      @@defining_command : {{name.camelcase.id}} = @@main_command
+      @@command_stack : Array(Command) = [] of Command
+
+      {{name.id}}_set_opts
+      {{name.id}}_set_command
 
       {{yield}}
     end
-    #      usage "test [options]"
-    #      options do
-    #        string "-n NAME", "--name=NAME"
-    #        array "-d DOGS", "--dogs=DOGS"
-    #      end
-    #      run do |opts, args|
-    #        puts "aaa"
-    #      end
-    # ------------------
 
+    # macro run(&block)
+      # set_run_proc {{block.id}}
+    # end
   end
 end
