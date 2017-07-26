@@ -98,20 +98,11 @@ class Clim
     macro usage(usage)
     end
 
-    macro command(name)
-      {% normalize_name = name.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
-      def command_{{normalize_name.id}}
-        raise ClimException.new "Main command is not defined." if @@command_stack.empty?
-        @@defining_command = Command.new({{normalize_name.stringify}})
-      end
-      command_{{normalize_name.id}}
-    end
-
     macro string(short, long, default = nil, required = false, desc = "Option description.")
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(String | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.try &.add_opt(opt) { |arg| opt.set_string(arg) }
+        @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_string(arg) }
       end
       {{property_name.id}}_define
     end
@@ -120,7 +111,7 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(String | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.try &.add_opt(opt) { |arg| opt.set_string(arg) }
+        @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_string(arg) }
       end
       {{property_name.id}}_define
     end
@@ -129,7 +120,7 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Bool | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
+        @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
       end
       {{property_name.id}}_define
     end
@@ -138,7 +129,7 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Bool | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
+        @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
       end
       {{property_name.id}}_define
     end
@@ -147,7 +138,7 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Array(String) | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
+        @@defining_command.first.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
       end
       {{property_name.id}}_define
     end
@@ -156,7 +147,7 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Array(String) | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
+        @@defining_command.first.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
       end
       {{property_name.id}}_define
     end
@@ -164,9 +155,15 @@ class Clim
     macro options(name)
     end
 
-    def sub(&block)
+    # def sub(&block)
+      # @@command_stack.push(@@defining_command)
+      # yield
+      # @@command_stack.pop
+    # end
+
+    macro sub(&block)
       @@command_stack.push(@@defining_command)
-      yield
+      {{yield}}
       @@command_stack.pop
     end
 
@@ -193,10 +190,10 @@ class Clim
 
       def self.{{name.id}}_set_opts
         opts = {{name.camelcase.id}}Options.new
-        if @@defining_command.nil?
+        if @@defining_command.first.as({{name.camelcase.id}}).nil?
           raise "defining_command is nil."
         end
-        @@defining_command.try &.set_opts(opts)
+        @@defining_command.first.as({{name.camelcase.id}}).try &.set_opts(opts)
       end
 
       class {{name.camelcase.id}} < Clim::Command
@@ -242,16 +239,17 @@ class Clim
       def self.{{name.id}}_set_command
         raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
         @@main_command = {{name.camelcase.id}}.new("main_command", {{name.camelcase.id}}Options.new)
-        @@defining_command = @@main_command
+        @@defining_command << @@main_command
       end
 
       def self.run(&block : Proc({{name.camelcase.id}}Options, Array(String), Nil))
-        @@defining_command.run_proc = block
-        @@command_stack.last.sub_cmds << @@defining_command unless @@command_stack.empty?
+        @@defining_command.first.as({{name.camelcase.id}}).run_proc = block
+        @@command_stack.last.sub_cmds << @@defining_command.first unless @@command_stack.empty?
       end
 
       @@main_command : {{name.camelcase.id}} = {{name.camelcase.id}}.new("main_command", {{name.camelcase.id}}Options.new)
-      @@defining_command : {{name.camelcase.id}} = @@main_command
+      # @@defining_command : {{name.camelcase.id}} = @@main_command
+      @@defining_command : Array(Command) = [] of Command
       @@command_stack : Array(Command) = [] of Command
 
       {{name.id}}_set_opts
@@ -260,5 +258,74 @@ class Clim
       {{yield}}
     end
 
+    macro command(name)
+      class {{name.camelcase.id}}Options < Clim::Options
+        {{yield}}
+      end
+
+      def self.{{name.id}}_set_opts
+        opts = {{name.camelcase.id}}Options.new
+        if @@defining_command.first.as({{name.camelcase.id}}).nil?
+          raise "defining_command is nil."
+        end
+        @@defining_command.first.as({{name.camelcase.id}}).try &.set_opts(opts)
+      end
+
+      class {{name.camelcase.id}} < Clim::Command
+        alias ReturnOptsType = {{name.camelcase.id}}Options
+        alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
+
+        @opts : {{name.camelcase.id}}Options
+        @run_proc : RunProc = RunProc.new { }
+
+        def initialize(@name, @opts : {{name.camelcase.id}}Options)
+          @desc = "Command Line Interface Tool."
+          @args = [] of String
+          @run_proc = RunProc.new { }
+          @parser = OptionParser.new
+          @sub_cmds = [] of Command
+          @usage = "#{name} [options] [arguments]"
+          initialize_parser
+        end
+
+        def run_proc=(proc : RunProc)
+          @run_proc = proc
+        end
+
+        def parse_by_parser(argv)
+          input_args = InputArgs.new(argv)
+
+          prepare_parse
+          parser.parse(input_args.to_be_exec.dup)
+
+          if input_args.include_help_arg?
+            @run_proc = RunProc.new { puts help }
+          else
+            @opts.validate!
+          end
+
+          @opts.help = help
+          self
+        end
+
+        {{yield}}
+      end
+
+      def self.{{name.id}}_set_command
+        raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
+        @@defining_command.clear
+        @@defining_command << {{name.camelcase.id}}.new({{name}}, {{name.camelcase.id}}Options.new)
+      end
+
+      def self.run(&block : Proc({{name.camelcase.id}}Options, Array(String), Nil))
+        @@defining_command.first.as({{name.camelcase.id}}).run_proc = block
+        @@command_stack.last.sub_cmds << @@defining_command.first.as({{name.camelcase.id}}) unless @@command_stack.empty?
+      end
+
+      {{name.id}}_set_opts
+      {{name.id}}_set_command
+
+      {{yield}}
+    end
   end
 end
