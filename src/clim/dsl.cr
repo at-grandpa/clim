@@ -102,7 +102,8 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(String | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_string(arg) }
+        add_opt_to_defining_command(opt) { |arg| opt.set_string(arg) }
+        # @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_string(arg) }
       end
       {{property_name.id}}_define
     end
@@ -111,7 +112,8 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(String | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_string(arg) }
+        add_opt_to_defining_command(opt) { |arg| opt.set_string(arg) }
+        # @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_string(arg) }
       end
       {{property_name.id}}_define
     end
@@ -120,7 +122,8 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Bool | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
+        add_opt_to_defining_command(opt) { |arg| opt.set_bool(arg) }
+        # @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
       end
       {{property_name.id}}_define
     end
@@ -129,7 +132,8 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Bool | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
+        add_opt_to_defining_command(opt) { |arg| opt.set_bool(arg) }
+        # @@defining_command.first.try &.add_opt(opt) { |arg| opt.set_bool(arg) }
       end
       {{property_name.id}}_define
     end
@@ -138,7 +142,8 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Array(String) | Nil).new({{short}}, {{long}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.first.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
+        add_opt_to_defining_command(opt) { |arg| opt.add_to_array(arg) }
+        # @@defining_command.first.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
       end
       {{property_name.id}}_define
     end
@@ -147,7 +152,8 @@ class Clim
       {% property_name = long.split("=").first.split(" ").first.gsub(/^-*/, "").gsub(/-/, "_") %}
       def self.{{property_name.id}}_define
         opt = Option(Array(String) | Nil).new({{short}}, {{default}}, {{required}}, {{desc}}, {{default}})
-        @@defining_command.first.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
+        add_opt_to_defining_command(opt) { |arg| opt.add_to_array(arg) }
+        # @@defining_command.first.try &.add_opt(opt) { |arg| opt.add_to_array(arg) }
       end
       {{property_name.id}}_define
     end
@@ -161,27 +167,6 @@ class Clim
       # @@command_stack.pop
     # end
 
-    macro sub(&block)
-      @@command_stack.push(@@defining_command)
-      {{yield}}
-      @@command_stack.pop
-    end
-
-    def run_proc_arguments(argv)
-      @@main_command.parse(argv).run_proc_arguments
-    end
-
-    def start_main(argv)
-      run_proc_opts, run_proc_args = run_proc_arguments(argv)
-      @@main_command.parse(argv).run(run_proc_opts, run_proc_args)
-    end
-
-    def start(argv)
-      start_main(argv)
-    rescue ex
-      puts ex.message
-    end
-
     macro main_command
       {% name = "main_command" %}
       class {{name.camelcase.id}}Options < Clim::Options
@@ -194,6 +179,10 @@ class Clim
           raise "defining_command is nil."
         end
         @@defining_command.first.as({{name.camelcase.id}}).try &.set_opts(opts)
+      end
+
+      def self.add_opt_to_defining_command(opt, &proc : String -> )
+        @@defining_command.first.as({{name.camelcase.id}}).try &.add_opt(opt, &proc)
       end
 
       class {{name.camelcase.id}} < Clim::Command
@@ -217,7 +206,7 @@ class Clim
           @run_proc = proc
         end
 
-        def parse_by_parser(argv)
+        def parse_by_parser(argv) : {{name.camelcase.id}}
           input_args = InputArgs.new(argv)
 
           prepare_parse
@@ -263,6 +252,10 @@ class Clim
         {{yield}}
       end
 
+      def self.add_opt_to_defining_command(opt, &proc : String -> )
+        @@defining_command.first.as({{name.camelcase.id}}).try &.add_opt(opt, &proc)
+      end
+
       def self.{{name.id}}_set_opts
         opts = {{name.camelcase.id}}Options.new
         if @@defining_command.first.as({{name.camelcase.id}}).nil?
@@ -292,7 +285,7 @@ class Clim
           @run_proc = proc
         end
 
-        def parse_by_parser(argv)
+        def parse_by_parser(argv) : {{name.camelcase.id}}
           input_args = InputArgs.new(argv)
 
           prepare_parse
@@ -327,5 +320,30 @@ class Clim
 
       {{yield}}
     end
+
+
+
+
+    macro sub(&block)
+      @@command_stack.push(@@defining_command.first)
+      {{yield}}
+      @@command_stack.pop
+    end
+
+    def run_proc_arguments(argv)
+      @@main_command.parse(argv).run_proc_arguments
+    end
+
+    def start_main(argv)
+      run_proc_opts, run_proc_args = run_proc_arguments(argv)
+      @@main_command.parse(argv).run(run_proc_opts, run_proc_args)
+    end
+
+    def start(argv)
+      start_main(argv)
+    rescue ex
+      puts ex.message
+    end
+
   end
 end
