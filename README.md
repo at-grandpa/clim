@@ -6,6 +6,11 @@
 
 [![Build Status](https://travis-ci.org/at-grandpa/clim.svg?branch=master)](https://travis-ci.org/at-grandpa/clim)
 
+## Goals
+
+* Slim implementation.
+* Intuitive code.
+
 ## Installation
 
 Add this to your application's `shard.yml`:
@@ -14,10 +19,10 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.1.2
+    version: 0.1.3
 ```
 
-## Sample Code
+## Sample Code 1 (main_command)
 
 ```crystal
 require "clim"
@@ -25,14 +30,17 @@ require "clim"
 module Hello
   class Cli < Clim
 
+    # Following is difinition of main command.
+    #
     main_command
-    desc   "Hello CLI tool."
-    usage  "hello [options] [arguments] ..."
+    desc "Hello CLI tool."
+    usage "hello [options] [arguments] ..."
     array  "-n NAME",  "--name=NAME",      desc: "Target name.",        default: [] of String
     string "-g WORDS", "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
     run do |opts, args|
-      puts "#{opts.s["greeting"]},"
-      puts "#{opts.a["name"].join(", ")}!"
+      print "#{opts["greeting"].as(String)}, "
+      print "#{opts["name"].as(Array(String)).join(", ")}!"
+      print "\n"
     end
 
   end
@@ -43,7 +51,7 @@ Hello::Cli.start(ARGV)
 
 ```
 $ crystal build src/hello.cr
-$ ./hello -h
+$ ./hello --help
 
   Hello CLI tool.
 
@@ -53,62 +61,148 @@ $ ./hello -h
 
   Options:
 
-    -h, --help                       Show this help.
-    -n NAME, --name=NAME             Target name.  [default:[]]
+    --help                           Show this help.
+    -n NAME, --name=NAME             Target name.  [default:[] of String]
     -g WORDS, --greeting=WORDS       Words of greetings.  [default:Hello]
 
 $ ./hello -n Taro -n Miko -g 'Good night'
-Good night,
-Taro, Miko!
+Good night, Taro, Miko!
 ```
 
-## DSL
+## Sample Code 2
 
 ```crystal
 require "clim"
 
-module Hello
+module FakeGit
   class Cli < Clim
 
+    # Following is difinition of main command.
+    #
     main_command
-    #
-    # Put main command informations & options here.
-    #
+    desc  "Fake Git command."
+    usage "fgit [sub_command] [arguments]"
     run do |opts, args|
-      # Put main command code here.
+      puts opts["help"]
     end
 
+    # A block that defines a sub_command of the main command.
+    #
     sub do
-      command "sub_command"
+
+      # Following is difinition of command.
       #
-      # Put sub command informations & options here.
-      #
+      command "branch"
+      desc  "List, create, or delete branches."
+      usage "fgit branch [arguments]"
       run do |opts, args|
-        # Put sub command code here.
+        puts "Fake Git branch!!"
       end
 
+      command "log"
+      desc  "Show commit logs."
+      usage "fgit log [arguments]"
+      run do |opts, args|
+        puts "Fake Git log!!"
+      end
+
+      # A block that defines a sub command of command "log".
+      #
       sub do
-        command "sub_sub_command"
+
+        # Following is difinition of command.
         #
-        # Put sub sub command informations & options here.
-        #
+        command "short"
+        desc  "Show commit short logs."
+        usage "fgit log short [arguments]"
         run do |opts, args|
-          # Put sub sub command code here.
+          puts "Fake Git short log!!"
         end
 
-        # ...
-
+        command "long"
+        desc  "Show commit long logs."
+        usage "fgit log long [arguments]"
+        run do |opts, args|
+          puts "Fake Git long log!!"
+        end
       end
-
-      # ...
 
     end
 
   end
 end
 
-Hello::Cli.start(ARGV)
+FakeGit::Cli.start(ARGV)
 ```
+
+```
+$ crystal build -o ./fgit src/fake_git.cr
+$ ./fgit
+
+  Fake Git command.
+
+  Usage:
+
+    fgit [sub_command] [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+  Sub Commands:
+
+    branch   List, create, or delete branches.
+    log      Show commit logs.
+
+
+$ ./fgit branch --help
+
+  List, create, or delete branches.
+
+  Usage:
+
+    fgit branch [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+
+$ ./fgit log --help
+
+  Show commit logs.
+
+  Usage:
+
+    fgit log [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+  Sub Commands:
+
+    short   Show commit short logs.
+    long    Show commit long logs.
+
+
+$ ./fgit log short --help
+
+  Show commit short logs.
+
+  Usage:
+
+    fgit log short [arguments]
+
+  Options:
+
+    --help                           Show this help.
+
+
+$ ./fgit log short
+Fake Git short log!!
+```
+
 
 ## Usage
 
@@ -118,7 +212,7 @@ Hello::Cli.start(ARGV)
 require "clim"
 ```
 
-### Command Informations
+### Difinition of command
 
 #### desc
 
@@ -139,8 +233,9 @@ require "clim"
 ```crystal
   string "-s ARG", "--string-long-name=ARG", desc: "Option description."  # String option
   run do |opts, args|
-    puts opts.string["string-long-name"]  # Get value.
-    puts opts.s["string-long-name"]       # Ditto.
+    puts opts["string-long-name"]                     # => print your option value.
+    puts typeof(opts["string-long-name"])             # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["string-long-name"].as(String))  # => String
   end
 ```
 
@@ -149,8 +244,9 @@ require "clim"
 ```crystal
   bool  "-b", "--bool-long-name", desc: "Option description."  # Bool option
   run do |opts, args|
-    puts opts.bool["bool-long-name"]  # Get value.
-    puts opts.b["bool-long-name"]     # Ditto.
+    puts opts["bool-long-name"]                   # => print your option value.
+    puts typeof(opts["bool-long-name"])           # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["bool-long-name"].as(Bool))  # => Bool
   end
 ```
 
@@ -159,8 +255,9 @@ require "clim"
 ```crystal
   array "-a ITEM", "--array-long-name=ITEM", desc: "Option description."  # Array option
   run do |opts, args|
-    puts opts.array["array-long-name"]  # Get value.
-    puts opts.a["array-long-name"]      # Ditto.
+    puts opts["array-long-name"]                            # => print your option value.
+    puts typeof(opts["array-long-name"])                    # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["array-long-name"].as(Array(String)))  # => Array(String)
   end
 ```
 
@@ -176,18 +273,15 @@ require "clim"
 
 ```crystal
   run do |opts, args|
-    puts opts.help      # Get help string.
+    puts opts["help"].as(String)  # Get help string.
   end
 ```
+
 ## Development
 
 ```
 $ crystal spec
 ```
-
-## Tools
-
-[clim-tools](https://github.com/at-grandpa/clim-tools)
 
 ## Contributing
 
