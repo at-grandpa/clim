@@ -105,7 +105,7 @@ class Clim
       parser.parse(input_args.to_be_exec.dup)
 
       if input_args.include_help_arg?
-        run_proc = RunProc.new { puts help }
+        @run_proc = RunProc.new { puts help }
       else
         opts.validate!
       end
