@@ -24,6 +24,8 @@ dependencies:
 
 ## Sample Code 1 (main command)
 
+*src/hello.cr*
+
 ```crystal
 require "clim"
 
@@ -70,6 +72,8 @@ Good night, Taro, Miko!
 ```
 
 ## Sample Code 2 (sub commands)
+
+*src/fake_git.cr*
 
 ```crystal
 require "clim"
