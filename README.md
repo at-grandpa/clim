@@ -141,6 +141,7 @@ module FakeGit
         run do |opts, args|
           puts "Fake Git long log!!"
         end
+
       end
 
     end
