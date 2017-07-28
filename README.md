@@ -11,6 +11,18 @@
 * Slim implementation.
 * Intuitive code.
 
+## Support
+
+Clim supports the following.
+
+- [x] Option types
+  - [x] string
+  - [x] bool
+  - [x] array
+- [x] Nested sub commands
+- [x] `--help` option
+
+
 ## Installation
 
 Add this to your application's `shard.yml`:
