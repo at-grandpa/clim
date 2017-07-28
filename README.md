@@ -22,7 +22,7 @@ dependencies:
     version: 0.1.3
 ```
 
-## Sample Code 1 (main_command)
+## Sample Code 1 (main command)
 
 ```crystal
 require "clim"
@@ -33,8 +33,8 @@ module Hello
     # Following is difinition of main command.
     #
     main_command
-    desc "Hello CLI tool."
-    usage "hello [options] [arguments] ..."
+    desc   "Hello CLI tool."
+    usage  "hello [options] [arguments] ..."
     array  "-n NAME",  "--name=NAME",      desc: "Target name.",        default: [] of String
     string "-g WORDS", "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
     run do |opts, args|
@@ -69,7 +69,7 @@ $ ./hello -n Taro -n Miko -g 'Good night'
 Good night, Taro, Miko!
 ```
 
-## Sample Code 2
+## Sample Code 2 (sub commands)
 
 ```crystal
 require "clim"
@@ -86,7 +86,7 @@ module FakeGit
       puts opts["help"]
     end
 
-    # A block that defines a sub_command of the main command.
+    # A block that defines a sub command of the main command.
     #
     sub do
 
@@ -212,7 +212,7 @@ Fake Git short log!!
 require "clim"
 ```
 
-### Difinition of command
+### Command Informations
 
 #### desc
 
