@@ -284,6 +284,133 @@ describe "main command with string only short option." do
   end
 end
 
+class SpecMainCommandWithStringOnlyLongOption < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  string "--string=ARG"
+  run do |opts, args|
+  end
+end
+
+describe "main command with string only long option." do
+  describe "returns help." do
+    [
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(--help ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg --help),
+      },
+      {
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringOnlyLongOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
+          <<-HELP_MESSAGE
+
+            Main command with desc.
+
+            Usage:
+
+              main_command with usage [options] [arguments]
+
+            Options:
+
+              --help                           Show this help.
+              --string=ARG                     Option description.
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns opts and args when passing argv." do
+    [
+      {
+        argv:        %w(),
+        expect_opts: create_values({"string" => nil}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values({"string" => nil}),
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(--string=string1),
+        expect_opts: create_values({"string" => "string1"}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(--string string1),
+        expect_opts: create_values({"string" => "string1"}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(--string string1 arg1),
+        expect_opts: create_values({"string" => "string1"}),
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(arg1 --string string1),
+        expect_opts: create_values({"string" => "string1"}),
+        expect_args: ["arg1"],
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecMainCommandWithStringOnlyLongOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
+      end
+    end
+  end
+  describe "raises Exception when passing invalid argv." do
+    [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--string),
+        exception_message: "Option that requires an argument. \"--string\"",
+      },
+      {
+        argv:              %w(-s),
+        exception_message: "Undefined option. \"-s\"",
+      },
+      {
+        argv:              %w(-s string1),
+        exception_message: "Undefined option. \"-s\"",
+      },
+      {
+        argv:              %w(-s=string1),
+        exception_message: "Undefined option. \"-s=string1\"",
+      },
+      {
+        argv:              %w(arg1 --string),
+        exception_message: "Option that requires an argument. \"--string\"",
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        expect_raises(Exception, spec_case[:exception_message]) do
+          SpecMainCommandWithStringOnlyLongOption.run_proc_arguments(spec_case[:argv])
+        end
+      end
+    end
+  end
+end
+
 class SpecMainCommandWithStringDesc < Clim
   main_command
   desc "Main command with desc."

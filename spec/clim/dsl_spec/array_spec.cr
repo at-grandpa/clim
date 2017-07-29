@@ -285,6 +285,137 @@ describe "main command with array only short option." do
   end
 end
 
+class SpecMainCommandWithArrayOnlyLongOption < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  array "--array=ARG"
+  run do |opts, args|
+  end
+end
+
+describe "main command with array only long option." do
+  describe "returns help." do
+    [
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(--help ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg --help),
+      },
+      {
+        argv: %w(--help -ignore-option),
+      },
+      {
+        argv: %w(-ignore-option --help),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayOnlyLongOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
+          <<-HELP_MESSAGE
+
+            Main command with desc.
+
+            Usage:
+
+              main_command with usage [options] [arguments]
+
+            Options:
+
+              --help                           Show this help.
+              --array=ARG                      Option description.
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns opts and args when passing argv." do
+    [
+      {
+        argv:        %w(),
+        expect_opts: create_values({"array" => nil}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: create_values({"array" => nil}),
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(--array array1),
+        expect_opts: create_values({"array" => ["array1"]}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(--array=array1),
+        expect_opts: create_values({"array" => ["array1"]}),
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(--array array1 arg1),
+        expect_opts: create_values({"array" => ["array1"]}),
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(arg1 --array array1),
+        expect_opts: create_values({"array" => ["array1"]}),
+        expect_args: ["arg1"],
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecMainCommandWithArrayOnlyLongOption.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
+      end
+    end
+  end
+  describe "raises Exception when passing invalid argv." do
+    [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--array),
+        exception_message: "Option that requires an argument. \"--array\"",
+      },
+      {
+        argv:              %w(-a),
+        exception_message: "Undefined option. \"-a\"",
+      },
+      {
+        argv:              %w(-a attay1),
+        exception_message: "Undefined option. \"-a\"",
+      },
+      {
+        argv:              %w(-a=array1),
+        exception_message: "Undefined option. \"-a=array1\"",
+      },
+      {
+        argv:              %w(arg1 --array),
+        exception_message: "Option that requires an argument. \"--array\"",
+      },
+      {
+        argv:              %w(arg1 -a),
+        exception_message: "Undefined option. \"-a\"",
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        expect_raises(Exception, spec_case[:exception_message]) do
+          SpecMainCommandWithArrayOnlyLongOption.run_proc_arguments(spec_case[:argv])
+        end
+      end
+    end
+  end
+end
+
 class SpecMainCommandWithArrayDesc < Clim
   main_command
   desc "Main command with desc."
