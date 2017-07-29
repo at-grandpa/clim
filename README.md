@@ -314,6 +314,8 @@ see: [https://crystal-lang.org/api/0.23.0/OptionParser.html](https://crystal-lan
 
 #### Both
 
+If both are specified, the long name becomes the key.
+
 ```crystal
   string "-s ARG", "--string-long-name=ARG", desc: "Option description."  # String option
   run do |opts, args|
