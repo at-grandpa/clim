@@ -247,8 +247,6 @@ require "clim"
 
 #### string
 
-Short option and Long option.
-
 ```crystal
   string "-s ARG", "--string-long-name=ARG", desc: "Option description."  # String option
   run do |opts, args|
@@ -259,21 +257,7 @@ Short option and Long option.
   end
 ```
 
-Short option only.
-
-```crystal
-  string "-s ARG", desc: "Option description." # String option
-  run do |opts, args|
-    puts opts["s"]                    # => print your option value.
-    puts typeof(opts["s"])            # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["s"].as(String)) # => String
-    # puts opts["string-long-name"]   # => ERROR: Missing hash key: "string-long-name"
-  end
-```
-
 #### bool
-
-Short option and Long option.
 
 ```crystal
   bool  "-b", "--bool-long-name", desc: "Option description."  # Bool option
@@ -285,21 +269,7 @@ Short option and Long option.
   end
 ```
 
-Short option only.
-
-```crystal
-  bool  "-b", desc: "Option description."  # Bool option
-  run do |opts, args|
-    puts opts["b"]                   # => print your option value.
-    puts typeof(opts["b"])           # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["b"].as(Bool))  # => Bool
-    # puts opts["bool-long-name"]    # => ERROR: Missing hash key: "bool-long-name"
-  end
-```
-
 #### array
-
-Short option and Long option.
 
 ```crystal
   array "-a ITEM", "--array-long-name=ITEM", desc: "Option description."  # Array option
@@ -311,15 +281,46 @@ Short option and Long option.
   end
 ```
 
-Short option only.
+### Option name
+
+You can specify short name, long name or both.
+
+see: [https://crystal-lang.org/api/0.23.0/OptionParser.html](https://crystal-lang.org/api/0.23.0/OptionParser.html)
+
+#### Short name only
 
 ```crystal
-  array "-a ITEM", desc: "Option description."  # Array option
+  string "-s ARG", desc: "Option description." # String option
   run do |opts, args|
-    puts opts["a"]                            # => print your option value.
-    puts typeof(opts["a"])                    # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["a"].as(Array(String)))  # => Array(String)
-    # puts opts["array-long-name"]            # => ERROR: Missing hash key: "array-long-name"
+    puts opts["s"]                    # => print your option value.
+    puts typeof(opts["s"])            # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["s"].as(String)) # => String
+    # puts opts["string-long-name"]   # => ERROR: Missing hash key: "string-long-name"
+  end
+```
+
+#### Long name only
+
+```crystal
+  string "--string=ARG", desc: "Option description." # String option
+  run do |opts, args|
+    puts opts["string"]                    # => print your option value.
+    puts typeof(opts["string"])            # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["string"].as(String)) # => String
+    # puts opts["s"]                       # => ERROR: Missing hash key: "s"
+  end
+```
+
+
+#### Both
+
+```crystal
+  string "-s ARG", "--string-long-name=ARG", desc: "Option description."  # String option
+  run do |opts, args|
+    puts opts["string-long-name"]                     # => print your option value.
+    puts typeof(opts["string-long-name"])             # => (Array(String) | Bool | String | Nil)
+    puts typeof(opts["string-long-name"].as(String))  # => String
+    # puts opts["s"]                                  # => ERROR: Missing hash key: "s"
   end
 ```
 
