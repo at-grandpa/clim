@@ -29,12 +29,17 @@ class Clim
     end
 
     macro difine_opts(method_name, type, &proc)
-      {% for long? in [true, false] %}
-        def {{method_name.id}}(short, {% if long? %} long, {% end %} default : {{type}} = nil, required = false, desc = "Option description.")
-          opt = Option({{type}}).new(short, {% if long? %} long, {% else %} "", {% end %} default, required, desc, default)
-          @@defining_command.set_opt(opt) {{proc.id}}
-        end
-      {% end %}
+      # short name and long name
+      def {{method_name.id}}(short, long, default : {{type}} = nil, required = false, desc = "Option description.")
+        opt = Option({{type}}).new(short, long, default, required, desc, default)
+        @@defining_command.set_opt(opt) {{proc.id}}
+      end
+
+      # short name only
+      def {{method_name.id}}(short, default : {{type}} = nil, required = false, desc = "Option description.")
+        opt = Option({{type}}).new(short,  "", default, required, desc, default)
+        @@defining_command.set_opt(opt) {{proc.id}}
+      end
     end
 
     difine_opts(method_name: "string", type: String | Nil) { |arg| opt.set_string(arg) }
