@@ -385,7 +385,7 @@ end
 
 class SpecMainCommandWithDuplicateShortOptionStringAndArray < Clim
   # Default setting only.
-  # For the spec case, please see the block below.
+  # For the spec case, please see the "it" block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -410,7 +410,7 @@ end
 
 class SpecMainCommandWithDuplicateShortOptionStringAndBool < Clim
   # Default setting only.
-  # For the spec case, please see the block below.
+  # For the spec case, please see the "it" block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -435,7 +435,7 @@ end
 
 class SpecMainCommandWithDuplicateShortOptionArrayAndBool < Clim
   # Default setting only.
-  # For the spec case, please see the block below.
+  # For the spec case, please see the "it" block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -460,7 +460,7 @@ end
 
 class SpecMainCommandWithDuplicateLongOptionStringAndArray < Clim
   # Default setting only.
-  # For the spec case, please see the block below.
+  # For the spec case, please see the "it" block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -485,7 +485,7 @@ end
 
 class SpecMainCommandWithDuplicateLongOptionStringAndBool < Clim
   # Default setting only.
-  # For the spec case, please see the block below.
+  # For the spec case, please see the "it" block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -510,7 +510,7 @@ end
 
 class SpecMainCommandWithDuplicateLongOptionArrayAndBool < Clim
   # Default setting only.
-  # For the spec case, please see the block below.
+  # For the spec case, please see the "it"  block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -529,6 +529,87 @@ describe "main command with duplicate long option [array & bool]." do
       #
       SpecMainCommandWithDuplicateLongOptionArrayAndBool.array "-a A1", "--duplicate=A1"
       SpecMainCommandWithDuplicateLongOptionArrayAndBool.bool "-b", "--duplicate"
+    end
+  end
+end
+
+class SpecMainCommandWhenCallTheMainCommandTwice < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the main command twice." do
+  it "raises an Exception when Call the main command twice." do
+    expect_raises(Exception, "Main command is already defined.") do
+      #
+      # spec case:
+      #
+      #   class SpecClass
+      #     main_command
+      #     desc "Main command with desc."
+      #     usage "main_command with usage [options] [arguments]"
+      #     run do |opts, args|
+      #     end
+      #
+      #     main_command  # A second call.
+      #  end
+      #
+      SpecMainCommandWhenCallTheMainCommandTwice.main_command
+      SpecMainCommandWhenCallTheMainCommandTwice.desc "Main command with desc."
+      SpecMainCommandWhenCallTheMainCommandTwice.usage "main_command with usage [options] [arguments]"
+      SpecMainCommandWhenCallTheMainCommandTwice.run do |opts, args| end
+      SpecMainCommandWhenCallTheMainCommandTwice.main_command  # A second call.
+    end
+  end
+end
+
+class SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the main command twice." do
+  it "raises an Exception when Call the main command twice." do
+    expect_raises(Exception, "Main command is already defined.") do
+      #
+      # spec case:
+      #
+      #   class SpecClass
+      #     main_command
+      #     desc "Main command with desc."
+      #     usage "main_command with usage [options] [arguments]"
+      #     run do |opts, args|
+      #     end
+      #
+      #     sub do
+      #       main_command  # A second call.
+      #     end
+      #  end
+      #
+      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.main_command
+      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.desc "Main command with desc."
+      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.usage "main_command with usage [options] [arguments]"
+      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.run do |opts, args| end
+      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.sub do
+        SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.main_command  # A second call.
+      end
+    end
+  end
+end
+
+class SpecMainCommandWhenMainCommandIsNotDefined < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the main command twice." do
+  it "raises an Exception when call command method if main_command is not defined." do
+    expect_raises(Exception, "Main command is not defined.") do
+      #
+      # spec case:
+      #
+      #   class SpecClass
+      #     command "spec_case"
+      #  end
+      #
+      SpecMainCommandWhenMainCommandIsNotDefined.command "spec_case"
     end
   end
 end

@@ -7,12 +7,14 @@ class Clim
   @@main_command : Command = Command.new("main_command")
   @@defining_command : Command = @@main_command
   @@command_stack : Array(Command) = [] of Command
+  @@defined_main_block : Bool = false
 
   module Dsl
     def main_command
-      raise ClimException.new "Main command is already defined." unless @@command_stack.empty?
+      raise ClimException.new "Main command is already defined." if @@defined_main_block
       @@main_command = Command.new("main_command")
       @@defining_command = @@main_command
+      @@defined_main_block = true
     end
 
     def command(name)
