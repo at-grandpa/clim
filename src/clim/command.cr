@@ -28,12 +28,12 @@ class Clim
     end
 
     def set_opt(opt, &proc : String ->)
+      opts.add(opt)
       if opt.long.empty?
         parser.on(opt.short, opt.desc, &proc)
       else
         parser.on(opt.short, opt.long, opt.desc, &proc)
       end
-      opts.add(opt)
     end
 
     def help

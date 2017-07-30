@@ -350,25 +350,42 @@ class SpecMainCommandWithEmptyShortOption < Clim
   end
 end
 
-describe "main command with empty short option." do
-  it "raises an Exception when short option is empty. [string]" do
+describe "main command with empty option." do
+  it "raises an Exception when short option is empty if short & long option exists. [string]" do
     expect_raises(Exception, "Empty short option.") do
       SpecMainCommandWithEmptyShortOption.string "", "--s1=S1"
     end
   end
-  it "raises an Exception when short option is empty. [bool]" do
+  it "raises an Exception when short option is empty if short & long option exists. [bool]" do
     expect_raises(Exception, "Empty short option.") do
       SpecMainCommandWithEmptyShortOption.bool "", "--b1=B1"
     end
   end
-  it "raises an Exception when short option is empty. [array]" do
+  it "raises an Exception when short option is empty if short & long option exists. [array]" do
     expect_raises(Exception, "Empty short option.") do
       SpecMainCommandWithEmptyShortOption.array "", "--a1=A1"
+    end
+  end
+  it "raises an Exception when short option is empty if short option only. [string]" do
+    expect_raises(Exception, "Empty short option.") do
+      SpecMainCommandWithEmptyShortOption.string ""
+    end
+  end
+  it "raises an Exception when short option is empty if short option only. [bool]" do
+    expect_raises(Exception, "Empty short option.") do
+      SpecMainCommandWithEmptyShortOption.bool ""
+    end
+  end
+  it "raises an Exception when short option is empty if short option only. [array]" do
+    expect_raises(Exception, "Empty short option.") do
+      SpecMainCommandWithEmptyShortOption.array ""
     end
   end
 end
 
 class SpecMainCommandWithDuplicateShortOptionStringAndArray < Clim
+  # Default setting only.
+  # For the spec case, please see the block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -379,6 +396,12 @@ end
 describe "main command with duplicate short option [string & array]." do
   it "raises an Exception when there is duplicate short option." do
     expect_raises(Exception, "Duplicate option. \"-a\"") do
+      #
+      # spec case:
+      #
+      #   string "-a A1", "--a1=A1"
+      #   array "-a A2", "--a2=A2"
+      #
       SpecMainCommandWithDuplicateShortOptionStringAndArray.string "-a A1", "--a1=A1"
       SpecMainCommandWithDuplicateShortOptionStringAndArray.array "-a A2", "--a2=A2"
     end
@@ -386,6 +409,8 @@ describe "main command with duplicate short option [string & array]." do
 end
 
 class SpecMainCommandWithDuplicateShortOptionStringAndBool < Clim
+  # Default setting only.
+  # For the spec case, please see the block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -396,6 +421,12 @@ end
 describe "main command with duplicate short option [string & bool]." do
   it "raises an Exception when there is duplicate short option." do
     expect_raises(Exception, "Duplicate option. \"-b\"") do
+      #
+      # spec case:
+      #
+      #   string "-b B1", "--b1=B1"
+      #   bool "-b", "--b2"
+      #
       SpecMainCommandWithDuplicateShortOptionStringAndBool.string "-b B1", "--b1=B1"
       SpecMainCommandWithDuplicateShortOptionStringAndBool.bool "-b", "--b2"
     end
@@ -403,6 +434,8 @@ describe "main command with duplicate short option [string & bool]." do
 end
 
 class SpecMainCommandWithDuplicateShortOptionArrayAndBool < Clim
+  # Default setting only.
+  # For the spec case, please see the block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -413,6 +446,12 @@ end
 describe "main command with duplicate short option [array & bool]." do
   it "raises an Exception when there is duplicate short option." do
     expect_raises(Exception, "Duplicate option. \"-c\"") do
+      #
+      # spec case:
+      #
+      #   array "-c C1", "--c1=C1"
+      #   bool "-c", "--c2"
+      #
       SpecMainCommandWithDuplicateShortOptionStringAndBool.array "-c C1", "--c1=C1"
       SpecMainCommandWithDuplicateShortOptionStringAndBool.bool "-c", "--c2"
     end
@@ -420,6 +459,8 @@ describe "main command with duplicate short option [array & bool]." do
 end
 
 class SpecMainCommandWithDuplicateLongOptionStringAndArray < Clim
+  # Default setting only.
+  # For the spec case, please see the block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -430,6 +471,12 @@ end
 describe "main command with duplicate long option [string & array]." do
   it "raises an Exception when there is duplicate long option." do
     expect_raises(Exception, "Duplicate option. \"--duplicate\"") do
+      #
+      # spec case:
+      #
+      #   string "-a A1", "--duplicate=A1"
+      #   array "-b B1", "--duplicate=B1"
+      #
       SpecMainCommandWithDuplicateLongOptionStringAndArray.string "-a A1", "--duplicate=A1"
       SpecMainCommandWithDuplicateLongOptionStringAndArray.array "-b B1", "--duplicate=B1"
     end
@@ -437,6 +484,8 @@ describe "main command with duplicate long option [string & array]." do
 end
 
 class SpecMainCommandWithDuplicateLongOptionStringAndBool < Clim
+  # Default setting only.
+  # For the spec case, please see the block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -447,6 +496,12 @@ end
 describe "main command with duplicate long option [string & bool]." do
   it "raises an Exception when there is duplicate long option." do
     expect_raises(Exception, "Duplicate option. \"--duplicate\"") do
+      #
+      # spec case:
+      #
+      #   string "-a A1", "--duplicate=A1"
+      #   bool "-b", "--duplicate"
+      #
       SpecMainCommandWithDuplicateLongOptionStringAndBool.string "-a A1", "--duplicate=A1"
       SpecMainCommandWithDuplicateLongOptionStringAndBool.bool "-b", "--duplicate"
     end
@@ -454,6 +509,8 @@ describe "main command with duplicate long option [string & bool]." do
 end
 
 class SpecMainCommandWithDuplicateLongOptionArrayAndBool < Clim
+  # Default setting only.
+  # For the spec case, please see the block below.
   main_command
   desc "Main command with desc."
   usage "main_command with usage [options] [arguments]"
@@ -464,6 +521,12 @@ end
 describe "main command with duplicate long option [array & bool]." do
   it "raises an Exception when there is duplicate long option." do
     expect_raises(Exception, "Duplicate option. \"--duplicate\"") do
+      #
+      # spec case:
+      #
+      #   array "-a A1", "--duplicate=A1"
+      #   bool "-b", "--duplicate"
+      #
       SpecMainCommandWithDuplicateLongOptionArrayAndBool.array "-a A1", "--duplicate=A1"
       SpecMainCommandWithDuplicateLongOptionArrayAndBool.bool "-b", "--duplicate"
     end
