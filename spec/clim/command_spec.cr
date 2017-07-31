@@ -84,55 +84,87 @@ describe Clim::Command do
       cmd.max_name_length.should eq(0)
     end
   end
-  #  describe "#duplicate_name?" do
-  #    it "returns true when command names are duplicated. [main_cmd]" do
-  #      main_cmd = Command.new("main_cmd")
-  #      main_cmd.duplicate_name?("main_cmd").should be_truthy
-  #    end
-  #    it "returns false when command names are not duplicated. [main_cmd]" do
-  #      main_cmd = Command.new("main_cmd")
-  #      main_cmd.duplicate_name?("main_cmd_not_duplicated").should be_falsey
-  #    end
-  #    it "returns true when command names are duplicated. [sub_cmd]" do
-  #      main_cmd = Command.new("main_cmd")
-  #
-  #      sub_cmd1 = Command.new("sub_cmd1")
-  #      main_cmd.sub_cmds << sub_cmd1
-  #      sub_cmd2 = Command.new("sub_cmd2")
-  #      main_cmd.sub_cmds << sub_cmd2
-  #
-  #      main_cmd.duplicate_name?("sub_cmd1").should be_truthy
-  #      main_cmd.duplicate_name?("sub_cmd2").should be_truthy
-  #    end
-  #    it "returns false when command names are not duplicated. [sub_cmd]" do
-  #      main_cmd = Command.new("main_cmd")
-  #
-  #      sub_cmd1 = Command.new("sub_cmd1")
-  #      main_cmd.sub_cmds << sub_cmd1
-  #      sub_cmd2 = Command.new("sub_cmd2")
-  #      main_cmd.sub_cmds << sub_cmd2
-  #
-  #      main_cmd.duplicate_name?("sub_cmd_not_duplicated").should be_falsey
-  #    end
-  #    it "returns true when command names are duplicated. [sub_sub_cmd]" do
-  #      main_cmd = Command.new("main_cmd")
-  #
-  #      sub_cmd = Command.new("sub_cmd")
-  #      main_cmd.sub_cmds << sub_cmd
-  #
-  #      sub_sub_cmd1 = Command.new("sub_sub_cmd1")
-  #      sub_cmd.sub_cmds << sub_sub_cmd1
-  #      sub_sub_cmd2 = Command.new("sub_sub_cmd2")
-  #      sub_cmd.sub_cmds << sub_sub_cmd2
-  #
-  #      sub_cmd.duplicate_name?("sub_sub_cmd1").should be_truthy
-  #      sub_cmd.duplicate_name?("sub_sub_cmd2").should be_truthy
-  #
-  #      # If the command hierarchy is different, allow command names with the same name.
-  #      main_cmd.duplicate_name?("sub_sub_cmd1").should be_truthy
-  #      main_cmd.duplicate_name?("sub_sub_cmd2").should be_truthy
-  #    end
-  #  end
+  describe "#duplicate_sub_command_name?" do
+    it "returns false when name not found in sub commands. (The same name as the main command.)" do
+      main_cmd = Command.new("main_cmd")
+      main_cmd.duplicate_sub_command_name?("main_cmd").should be_falsey
+    end
+    it "returns true when name found in sub commands." do
+      main_cmd = Command.new("main_cmd")
+
+      sub_cmd1 = Command.new("sub_cmd1")
+      main_cmd.sub_cmds << sub_cmd1
+      sub_cmd2 = Command.new("sub_cmd2")
+      main_cmd.sub_cmds << sub_cmd2
+
+      main_cmd.duplicate_sub_command_name?("sub_cmd1").should be_truthy
+    end
+    it "returns false when name not found in sub commands." do
+      main_cmd = Command.new("main_cmd")
+
+      sub_cmd1 = Command.new("sub_cmd1")
+      main_cmd.sub_cmds << sub_cmd1
+      sub_cmd2 = Command.new("sub_cmd2")
+      main_cmd.sub_cmds << sub_cmd2
+
+      main_cmd.duplicate_sub_command_name?("sub_cmd_not_duplicated").should be_falsey
+    end
+    it "returns false when name not found in sub commands. (The same name as the main command.)" do
+      main_cmd = Command.new("main_cmd")
+
+      sub_cmd = Command.new("sub_cmd")
+      main_cmd.sub_cmds << sub_cmd
+
+      sub_sub_cmd = Command.new("sub_sub_cmd")
+      sub_cmd.sub_cmds << sub_sub_cmd
+
+      #
+      main_cmd.duplicate_sub_command_name?("sub_sub_cmd").should be_falsey
+    end
+    #    it "returns false when command names are not duplicated. [main_cmd]" do
+    #      main_cmd = Command.new("main_cmd")
+    #      main_cmd.duplicate_name?("main_cmd_not_duplicated").should be_falsey
+    #    end
+    #    it "returns true when command names are duplicated. [sub_cmd]" do
+    #      main_cmd = Command.new("main_cmd")
+    #
+    #      sub_cmd1 = Command.new("sub_cmd1")
+    #      main_cmd.sub_cmds << sub_cmd1
+    #      sub_cmd2 = Command.new("sub_cmd2")
+    #      main_cmd.sub_cmds << sub_cmd2
+    #
+    #      main_cmd.duplicate_name?("sub_cmd1").should be_truthy
+    #      main_cmd.duplicate_name?("sub_cmd2").should be_truthy
+    #    end
+    #    it "returns false when command names are not duplicated. [sub_cmd]" do
+    #      main_cmd = Command.new("main_cmd")
+    #
+    #      sub_cmd1 = Command.new("sub_cmd1")
+    #      main_cmd.sub_cmds << sub_cmd1
+    #      sub_cmd2 = Command.new("sub_cmd2")
+    #      main_cmd.sub_cmds << sub_cmd2
+    #
+    #      main_cmd.duplicate_name?("sub_cmd_not_duplicated").should be_falsey
+    #    end
+    #    it "returns true when command names are duplicated. [sub_sub_cmd]" do
+    #      main_cmd = Command.new("main_cmd")
+    #
+    #      sub_cmd = Command.new("sub_cmd")
+    #      main_cmd.sub_cmds << sub_cmd
+    #
+    #      sub_sub_cmd1 = Command.new("sub_sub_cmd1")
+    #      sub_cmd.sub_cmds << sub_sub_cmd1
+    #      sub_sub_cmd2 = Command.new("sub_sub_cmd2")
+    #      sub_cmd.sub_cmds << sub_sub_cmd2
+    #
+    #      sub_cmd.duplicate_name?("sub_sub_cmd1").should be_truthy
+    #      sub_cmd.duplicate_name?("sub_sub_cmd2").should be_truthy
+    #
+    #      # If the command hierarchy is different, allow command names with the same name.
+    #      main_cmd.duplicate_name?("sub_sub_cmd1").should be_truthy
+    #      main_cmd.duplicate_name?("sub_sub_cmd2").should be_truthy
+    #    end
+  end
   describe "#parse" do
     main_cmd = Command.new("init")
     Spec.before_each do
@@ -195,19 +227,19 @@ describe Clim::Command do
         cmd.name.should eq("sub_sub_cmd1")
       end
     end
-    it "returns true when command names are duplicated." do
-      main_cmd = Command.new("main_cmd")
-
-      sub_cmd1 = Command.new("sub_cmd1")
-      main_cmd.sub_cmds << sub_cmd1
-
-      duplicate_cmd1 = Command.new("duplicate_cmd_name")
-      duplicate_cmd2 = Command.new("duplicate_cmd_name")
-      sub_cmd1.sub_cmds << duplicate_cmd1
-      sub_cmd1.sub_cmds << duplicate_cmd2
-
-      argv = %w(sub_cmd1 duplicate_cmd_name)
-      expect_raises(Exception, "There are duplicate registered commands. [duplicate_cmd_name]") { main_cmd.duplicate_name?(argv.first) }
-    end
+    #    it "returns true when command names are duplicated." do
+    #      main_cmd = Command.new("main_cmd")
+    #
+    #      sub_cmd1 = Command.new("sub_cmd1")
+    #      main_cmd.sub_cmds << sub_cmd1
+    #
+    #      duplicate_cmd1 = Command.new("duplicate_cmd_name")
+    #      duplicate_cmd2 = Command.new("duplicate_cmd_name")
+    #      sub_cmd1.sub_cmds << duplicate_cmd1
+    #      sub_cmd1.sub_cmds << duplicate_cmd2
+    #
+    #      argv = %w(sub_cmd1 duplicate_cmd_name)
+    #      expect_raises(Exception, "There are duplicate registered commands. [duplicate_cmd_name]") { main_cmd.duplicate_name?(argv.first) }
+    #    end
   end
 end

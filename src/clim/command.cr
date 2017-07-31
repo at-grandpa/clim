@@ -102,7 +102,7 @@ class Clim
     def parse(argv)
       return parse_by_parser(argv) if argv.empty?
       sub_cmds = find_sub_cmds_by(argv.first)
-      return parse_by_parser(argv) unless duplicate_name?(argv.first)
+      return parse_by_parser(argv) unless duplicate_sub_command_name?(argv.first)
       # return parse_by_parser(argv) if sub_cmds.empty?
       # raise "There are duplicate registered commands. [#{argv.first}]" if sub_cmds.size > 1
       sub_cmds.first.parse(argv[1..-1])

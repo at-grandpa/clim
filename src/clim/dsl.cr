@@ -50,7 +50,7 @@ class Clim
 
     def run(&block : RunProc)
       @@defining_command.run_proc = block
-      @@command_stack.last.add sub_cmds(@@defining_command) unless @@command_stack.empty?
+      @@command_stack.last.add_sub_commands(@@defining_command) unless @@command_stack.empty?
     end
 
     def sub(&block)
