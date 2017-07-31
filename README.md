@@ -253,7 +253,6 @@ require "clim"
     puts opts["string-long-name"]                     # => print your option value.
     puts typeof(opts["string-long-name"])             # => (Array(String) | Bool | String | Nil)
     puts typeof(opts["string-long-name"].as(String))  # => String
-    # puts opts["s"]                                  # => ERROR: Missing hash key: "s"
   end
 ```
 
@@ -265,8 +264,6 @@ require "clim"
     puts opts["bool-long-name"]                   # => print your option value.
     puts typeof(opts["bool-long-name"])           # => (Array(String) | Bool | String | Nil)
     puts typeof(opts["bool-long-name"].as(Bool))  # => Bool
-    # puts opts["b"]                              # => ERROR: Missing hash key: "b"
-  end
 ```
 
 #### array
@@ -277,7 +274,6 @@ require "clim"
     puts opts["array-long-name"]                            # => print your option value.
     puts typeof(opts["array-long-name"])                    # => (Array(String) | Bool | String | Nil)
     puts typeof(opts["array-long-name"].as(Array(String)))  # => Array(String)
-    # puts opts["a"]                                        # => ERROR: Missing hash key: "a"
   end
 ```
 

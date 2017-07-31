@@ -669,14 +669,56 @@ describe "Call the command." do
       #  end
       #
       SpecSubCommandWhenDuplicateCommandName.main_command
-      SpecSubCommandWhenDuplicateCommandName.run do |opts, args| end
+      SpecSubCommandWhenDuplicateCommandName.run do |opts, args|
+      end
 
       SpecSubCommandWhenDuplicateCommandName.sub do
         SpecSubCommandWhenDuplicateCommandName.command "sub_command"
-        SpecSubCommandWhenDuplicateCommandName.run do |opts, args| end
-        SpecSubCommandWhenDuplicateCommandName.command "sub_command"  # Duplicate name.
-        SpecSubCommandWhenDuplicateCommandName.run do |opts, args| end
+        SpecSubCommandWhenDuplicateCommandName.run do |opts, args|
+        end
+        SpecSubCommandWhenDuplicateCommandName.command "sub_command" # Duplicate name.
+        SpecSubCommandWhenDuplicateCommandName.run do |opts, args|
+        end
       end
+    end
+  end
+end
+
+class SpecSubCommandExecuteRunBlock < Clim
+  main_command
+  run do |opts, args|
+    raise "Run block of main_command was executed."
+  end
+
+  sub do
+    command "sub_command"
+    run do |opts, args|
+      raise "Run block of sub_command was executed."
+    end
+  end
+end
+
+describe "Call the sub command." do
+  it "raises an Exception because execute run block of sub_command." do
+    expect_raises(Exception, "Run block of sub_command was executed.") do
+      SpecSubCommandExecuteRunBlock.start_main(%w(sub_command arg1))
+    end
+  end
+end
+
+class SpecSubCommandExecuteHelpBlock < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the main command." do
+  it "raises an Exception because execute help block of sub_command." do
+    main_command = Command.new("main_command")
+    sub_command = Command.new("sub_command")
+    sub_command.help_proc = SpecSubCommandExecuteHelpBlock::RunProc.new { raise "Help block of sub_command was executed." }
+    sub_command.run_proc = SpecSubCommandExecuteHelpBlock::RunProc.new { raise "Run block of sub_command was executed." } # This should not be called.
+    main_command.add_sub_commands(sub_command)
+    expect_raises(Exception, "Help block of sub_command was executed.") do
+      SpecSubCommandExecuteHelpBlock.start_main(%w(sub_command --help), main_command)
     end
   end
 end
