@@ -14,9 +14,11 @@ class Clim
     property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(self) = [] of self
+    property help_proc : RunProc = RunProc.new { }
 
     def initialize(@name)
       @usage = "#{name} [options] [arguments]"
+      @help_proc = RunProc.new { puts help }
       initialize_parser
     end
 
@@ -113,7 +115,7 @@ class Clim
       parser.parse(input_args.to_be_exec.dup)
 
       if input_args.include_help_arg?
-        @run_proc = RunProc.new { puts help }
+        @run_proc = help_proc
       else
         opts.validate!
       end

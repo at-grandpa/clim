@@ -624,9 +624,24 @@ class SpecMainCommandExecuteRunBlock < Clim
 end
 
 describe "Call the main command." do
-  it "raises an Exception when execute run block." do
+  it "raises an Exception because execute run block." do
     expect_raises(Exception, "Run block execute.") do
       SpecMainCommandExecuteRunBlock.start_main(["arg1"])
+    end
+  end
+end
+
+class SpecMainCommandExecuteHelpBlock < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the main command." do
+  it "raises an Exception because execute help block." do
+    main_command = Command.new("main_command")
+    main_command.help_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Help block execute." }
+    main_command.run_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Run block execute." }
+    expect_raises(Exception, "Help block execute.") do
+      SpecMainCommandExecuteRunBlock.start_main(["--help"], main_command)
     end
   end
 end
