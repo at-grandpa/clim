@@ -543,21 +543,22 @@ describe "Call the main command twice." do
       #
       # spec case:
       #
-      #   class SpecClass
-      #     main_command
-      #     desc "Main command with desc."
-      #     usage "main_command with usage [options] [arguments]"
-      #     run do |opts, args|
-      #     end
+      #  class SpecClass
+      #    main_command
+      #    desc "Main command with desc."
+      #    usage "main_command with usage [options] [arguments]"
+      #    run do |opts, args|
+      #    end
       #
-      #     main_command  # A second call.
+      #    main_command  # A second call.
       #  end
       #
       SpecMainCommandWhenCallTheMainCommandTwice.main_command
       SpecMainCommandWhenCallTheMainCommandTwice.desc "Main command with desc."
       SpecMainCommandWhenCallTheMainCommandTwice.usage "main_command with usage [options] [arguments]"
-      SpecMainCommandWhenCallTheMainCommandTwice.run do |opts, args| end
-      SpecMainCommandWhenCallTheMainCommandTwice.main_command  # A second call.
+      SpecMainCommandWhenCallTheMainCommandTwice.run do |opts, args|
+      end
+      SpecMainCommandWhenCallTheMainCommandTwice.main_command # A second call.
     end
   end
 end
@@ -572,24 +573,25 @@ describe "Call the main command twice." do
       #
       # spec case:
       #
-      #   class SpecClass
-      #     main_command
-      #     desc "Main command with desc."
-      #     usage "main_command with usage [options] [arguments]"
-      #     run do |opts, args|
-      #     end
+      #  class SpecClass
+      #    main_command
+      #    desc "Main command with desc."
+      #    usage "main_command with usage [options] [arguments]"
+      #    run do |opts, args|
+      #    end
       #
-      #     sub do
-      #       main_command  # A second call.
-      #     end
+      #    sub do
+      #      main_command  # A second call.
+      #    end
       #  end
       #
       SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.main_command
       SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.desc "Main command with desc."
       SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.usage "main_command with usage [options] [arguments]"
-      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.run do |opts, args| end
+      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.run do |opts, args|
+      end
       SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.sub do
-        SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.main_command  # A second call.
+        SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.main_command # A second call.
       end
     end
   end
@@ -605,8 +607,8 @@ describe "Call the main command twice." do
       #
       # spec case:
       #
-      #   class SpecClass
-      #     command "spec_case"
+      #  class SpecClass
+      #    command "spec_case"
       #  end
       #
       SpecMainCommandWhenMainCommandIsNotDefined.command "spec_case"

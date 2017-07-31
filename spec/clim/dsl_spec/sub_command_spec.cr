@@ -644,3 +644,39 @@ describe "sub command jump over sub sub command." do
     end
   end
 end
+
+class SpecSubCommandWhenDuplicateCommandName < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
+      #
+      # spec case:
+      #
+      #  class SpecClass
+      #    main_command
+      #    run do |opts, args| end
+      #
+      #    sub do
+      #      command "sub_command"
+      #      run do |opts, args| end
+      #
+      #      command "sub_command"  # Duplicate name.
+      #      run do |opts, args| end
+      #    end
+      #  end
+      #
+      SpecSubCommandWhenDuplicateCommandName.main_command
+      SpecSubCommandWhenDuplicateCommandName.run do |opts, args| end
+
+      SpecSubCommandWhenDuplicateCommandName.sub do
+        SpecSubCommandWhenDuplicateCommandName.command "sub_command"
+        SpecSubCommandWhenDuplicateCommandName.run do |opts, args| end
+        SpecSubCommandWhenDuplicateCommandName.command "sub_command"  # Duplicate name.
+        SpecSubCommandWhenDuplicateCommandName.run do |opts, args| end
+      end
+    end
+  end
+end
