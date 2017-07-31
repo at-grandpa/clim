@@ -615,3 +615,18 @@ describe "Call the main command twice." do
     end
   end
 end
+
+class SpecMainCommandExecuteRunBlock < Clim
+  main_command
+  run do |opts, args|
+    raise "Run block execute."
+  end
+end
+
+describe "Call the main command." do
+  it "raises an Exception when execute run block." do
+    expect_raises(Exception, "Run block execute.") do
+      SpecMainCommandExecuteRunBlock.start_main(["arg1"])
+    end
+  end
+end
