@@ -32,7 +32,7 @@ describe Clim::Options do
       end
     end
   end
-  describe "#values" do
+  describe "#to_h" do
     it "returns hash when options are set." do
       opts = Options.new
       opts.add Option(String | Nil).new("-f", "--foo", "", false, "", "value foo")
@@ -40,14 +40,14 @@ describe Clim::Options do
       opts.add Option(String | Nil).new("-z VALUE", "--zoo=VALUE", "", false, "", "value zoo")
       opts.add Option(Bool | Nil).new("-v", "", false, false, "", true)
       opts.add Option(Array(String) | Nil).new("-a", "--array", [] of String, false, "", ["a", "b"])
-      expect_values = Clim::ReturnOptsType.new
-      expect_values.merge!({"help" => ""})
-      expect_values.merge!({"foo" => "value foo"})
-      expect_values.merge!({"bar" => "value bar"})
-      expect_values.merge!({"zoo" => "value zoo"})
-      expect_values.merge!({"v" => true})
-      expect_values.merge!({"array" => ["a", "b"]})
-      opts.values.should eq(expect_values)
+      expect = Clim::ReturnOptsType.new
+      expect.merge!({"help" => ""})
+      expect.merge!({"foo" => "value foo"})
+      expect.merge!({"bar" => "value bar"})
+      expect.merge!({"zoo" => "value zoo"})
+      expect.merge!({"v" => true})
+      expect.merge!({"array" => ["a", "b"]})
+      opts.to_h.should eq(expect)
     end
   end
   describe "#validate!" do

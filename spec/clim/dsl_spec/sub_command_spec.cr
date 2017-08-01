@@ -88,22 +88,22 @@ describe "sub command only." do
     [
       {
         argv:        %w(sub_command),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(sub_command arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(sub_command arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(sub_command arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
@@ -375,22 +375,22 @@ describe "sub sub command." do
     [
       {
         argv:        %w(sub_command sub_sub_command),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(sub_command sub_sub_command arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(sub_command sub_sub_command arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(sub_command sub_sub_command arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
@@ -583,22 +583,22 @@ describe "sub command jump over sub sub command." do
     [
       {
         argv:        %w(jump_over_sub_sub_command),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(jump_over_sub_sub_command arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(jump_over_sub_sub_command arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(jump_over_sub_sub_command arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|

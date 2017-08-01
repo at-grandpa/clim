@@ -24,13 +24,13 @@ class Clim
       opts.map(&.long_name).reject(&.empty?).includes?(name)
     end
 
-    def values : ReturnOptsType
-      values = ReturnOptsType.new
-      values.merge!({"help" => help})
+    def to_h : ReturnOptsType
+      hash = ReturnOptsType.new
+      hash.merge!({"help" => help})
       opts.each do |opt|
-        values.merge!(opt.to_h)
+        hash.merge!(opt.to_h)
       end
-      values
+      hash
     end
 
     def reset

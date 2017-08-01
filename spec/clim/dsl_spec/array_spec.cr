@@ -49,52 +49,52 @@ describe "main command with array." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"array" => nil}),
+        expect_opts: create_opts_hash({"array" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"array" => nil}),
+        expect_opts: create_opts_hash({"array" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values({"array" => ["rray"]}),
+        expect_opts: create_opts_hash({"array" => ["rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values({"array" => ["=array1"]}),
+        expect_opts: create_opts_hash({"array" => ["=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
@@ -194,42 +194,42 @@ describe "main command with array only short option." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"a" => nil}),
+        expect_opts: create_opts_hash({"a" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"a" => nil}),
+        expect_opts: create_opts_hash({"a" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values({"a" => ["array1"]}),
+        expect_opts: create_opts_hash({"a" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values({"a" => ["array1"]}),
+        expect_opts: create_opts_hash({"a" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values({"a" => ["array1"]}),
+        expect_opts: create_opts_hash({"a" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values({"a" => ["array1"]}),
+        expect_opts: create_opts_hash({"a" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values({"a" => ["rray"]}),
+        expect_opts: create_opts_hash({"a" => ["rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values({"a" => ["=array1"]}),
+        expect_opts: create_opts_hash({"a" => ["=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
@@ -337,32 +337,32 @@ describe "main command with array only long option." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"array" => nil}),
+        expect_opts: create_opts_hash({"array" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"array" => nil}),
+        expect_opts: create_opts_hash({"array" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1 arg1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --array array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -516,52 +516,52 @@ describe "main command with array default." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"array" => ["default value"]}),
+        expect_opts: create_opts_hash({"array" => ["default value"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"array" => ["default value"]}),
+        expect_opts: create_opts_hash({"array" => ["default value"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values({"array" => ["default value", "rray"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values({"array" => ["default value", "=array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
@@ -661,52 +661,52 @@ describe "main command with array required true and default exists." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"array" => ["default value"]}),
+        expect_opts: create_opts_hash({"array" => ["default value"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"array" => ["default value"]}),
+        expect_opts: create_opts_hash({"array" => ["default value"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values({"array" => ["default value", "rray"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values({"array" => ["default value", "=array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
@@ -806,42 +806,42 @@ describe "main command with array required true only." do
     [
       {
         argv:        %w(-a array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values({"array" => ["rray"]}),
+        expect_opts: create_opts_hash({"array" => ["rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values({"array" => ["=array1"]}),
+        expect_opts: create_opts_hash({"array" => ["=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
@@ -949,52 +949,52 @@ describe "main command with array required false and default exists." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"array" => ["default value"]}),
+        expect_opts: create_opts_hash({"array" => ["default value"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"array" => ["default value"]}),
+        expect_opts: create_opts_hash({"array" => ["default value"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values({"array" => ["default value", "array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values({"array" => ["default value", "rray"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values({"array" => ["default value", "=array1"]}),
+        expect_opts: create_opts_hash({"array" => ["default value", "=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
@@ -1094,52 +1094,52 @@ describe "main command with array required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"array" => nil}),
+        expect_opts: create_opts_hash({"array" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"array" => nil}),
+        expect_opts: create_opts_hash({"array" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-a array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-aarray1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--array=array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a array1 arg1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -a array1),
-        expect_opts: create_values({"array" => ["array1"]}),
+        expect_opts: create_opts_hash({"array" => ["array1"]}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-array), # Unintended case.
-        expect_opts: create_values({"array" => ["rray"]}),
+        expect_opts: create_opts_hash({"array" => ["rray"]}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-a=array1), # Unintended case.
-        expect_opts: create_values({"array" => ["=array1"]}),
+        expect_opts: create_opts_hash({"array" => ["=array1"]}),
         expect_args: [] of String,
       },
     ].each do |spec_case|

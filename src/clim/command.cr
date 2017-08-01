@@ -90,7 +90,7 @@ class Clim
     end
 
     def run_proc_arguments
-      return opts.values, args
+      return opts.to_h, args
     end
 
     def add_sub_commands(cmd)

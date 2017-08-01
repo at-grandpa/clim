@@ -44,22 +44,22 @@ describe "main command only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
@@ -160,22 +160,22 @@ describe "main command with desc." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
@@ -277,22 +277,22 @@ describe "main command with usage." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
@@ -645,7 +645,7 @@ describe "Call the main command." do
   it "raises an Exception because execute help block." do
     main_command = Command.new("main_command")
     main_command.help_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Help block was executed." }
-    main_command.run_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Run block was executed." }  # This should not be called.
+    main_command.run_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Run block was executed." } # This should not be called.
     expect_raises(Exception, "Help block was executed.") do
       SpecMainCommandExecuteRunBlock.start_main(%w(--help), main_command)
     end
