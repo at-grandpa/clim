@@ -16,28 +16,13 @@ class Clim
       raise ClimException.new "Duplicate option. \"--#{opt.long_name}\"" if opts.map(&.long_name).reject(&.empty?).includes?(opt.long_name)
     end
 
-    class Values
-      property help : String = ""
-      property hash : ReturnOptsType = ReturnOptsType.new
-
-      def merge!(other : ReturnOptsType)
-        other.each do |k, v|
-          if hash.has_key?(k)
-            raise ClimException.new "Duplicate option. \"#{k}\""
-          else
-            hash.merge!(other)
-          end
-        end
-      end
-    end
-
     def values : ReturnOptsType
-      values = Values.new
+      values = ReturnOptsType.new
       values.merge!({"help" => help})
       opts.each do |opt|
         values.merge!(opt.to_h)
       end
-      values.hash
+      values
     end
 
     def reset
