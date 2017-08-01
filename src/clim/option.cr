@@ -61,7 +61,7 @@ class Clim
         @value = true
       else
         unless arg === "true" || arg == "false"
-          raise ClimException.new "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]"
+          raise ClimInvalidOptionException.new "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]"
         end
         @value = arg === "true"
       end

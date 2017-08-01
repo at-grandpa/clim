@@ -70,10 +70,11 @@ class Clim
     def start(argv)
       start_main(argv)
     rescue ex : ClimException
-      puts ex.message
+      puts "ERROR: #{ex.message}"
     rescue ex : ClimInvalidOptionException
-      puts ex.message
-      @@main.help_proc.call
+      puts "ERROR: #{ex.message}"
+      puts ""
+      puts "Please see the `--help`."
     end
   end
 end
