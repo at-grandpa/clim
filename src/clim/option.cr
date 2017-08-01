@@ -60,17 +60,15 @@ class Clim
       if arg.empty?
         @value = true
       else
-        exception_msg = "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]"
-        raise ClimException.new exception_msg unless arg === "true" || arg == "false"
+        unless arg === "true" || arg == "false"
+          raise ClimInvalidOptionException.new "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]"
+        end
         @value = arg === "true"
       end
     end
 
     def add_to_array(arg)
-      iv_value = @value
-      value_tmp = iv_value.nil? ? [] of String : iv_value
-      value_tmp << arg
-      @value = value_tmp
+      @value = @value.nil? ? [arg] : @value.try &.<<(arg)
     end
 
     def reset

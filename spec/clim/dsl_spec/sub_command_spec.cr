@@ -25,12 +25,6 @@ describe "sub command only." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecSubCommandOnly.run_proc_arguments(spec_case[:argv])
@@ -68,12 +62,6 @@ describe "sub command only." do
       {
         argv: %w(sub_command ignore-arg --help),
       },
-      {
-        argv: %w(sub_command --help -ignore-option),
-      },
-      {
-        argv: %w(sub_command -ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecSubCommandOnly.run_proc_arguments(spec_case[:argv])
@@ -100,22 +88,22 @@ describe "sub command only." do
     [
       {
         argv:        %w(sub_command),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(sub_command arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(sub_command arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(sub_command arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
@@ -132,6 +120,22 @@ describe "sub command only." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(sub_command -m),
@@ -190,12 +194,6 @@ describe "sub command with desc." do
       {
         argv: %w(sub_command ignore-arg --help),
       },
-      {
-        argv: %w(sub_command --help -ignore-option),
-      },
-      {
-        argv: %w(sub_command -ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecSubCommandWithDesc.run_proc_arguments(spec_case[:argv])
@@ -248,12 +246,6 @@ describe "sub command with usage." do
       },
       {
         argv: %w(sub_command ignore-arg --help),
-      },
-      {
-        argv: %w(sub_command --help -ignore-option),
-      },
-      {
-        argv: %w(sub_command -ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -317,12 +309,6 @@ describe "sub sub command." do
       {
         argv: %w(sub_command sub_sub_command ignore-arg --help),
       },
-      {
-        argv: %w(sub_command sub_sub_command --help -ignore-option),
-      },
-      {
-        argv: %w(sub_command sub_sub_command -ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecSubSubCommand.run_proc_arguments(spec_case[:argv])
@@ -357,16 +343,7 @@ describe "sub sub command." do
         argv: %w(sub_command ignore-arg --help sub_sub_command),
       },
       {
-        argv: %w(sub_command --help -ignore-option sub_sub_command),
-      },
-      {
-        argv: %w(sub_command -ignore-option --help sub_sub_command),
-      },
-      {
         argv: %w(sub_command ignore-arg sub_sub_command --help),
-      },
-      {
-        argv: %w(sub_command -ignore-option sub_sub_command --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -398,22 +375,22 @@ describe "sub sub command." do
     [
       {
         argv:        %w(sub_command sub_sub_command),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(sub_command sub_sub_command arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(sub_command sub_sub_command arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(sub_command sub_sub_command arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
@@ -430,6 +407,42 @@ describe "sub sub command." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command sub_sub_command --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command sub_sub_command -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command --help -ignore-option sub_sub_command),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command -ignore-option --help sub_sub_command),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command -ignore-option sub_sub_command --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(sub_command sub_sub_command -m),
@@ -506,12 +519,6 @@ describe "sub command jump over sub sub command." do
       {
         argv: %w(jump_over_sub_sub_command ignore-arg --help),
       },
-      {
-        argv: %w(jump_over_sub_sub_command --help -ignore-option),
-      },
-      {
-        argv: %w(jump_over_sub_sub_command -ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecSubCommandJumpOverSubSubCommand.run_proc_arguments(spec_case[:argv])
@@ -545,12 +552,6 @@ describe "sub command jump over sub sub command." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecSubCommandJumpOverSubSubCommand.run_proc_arguments(spec_case[:argv])
@@ -582,22 +583,22 @@ describe "sub command jump over sub sub command." do
     [
       {
         argv:        %w(jump_over_sub_sub_command),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: [] of String,
       },
       {
         argv:        %w(jump_over_sub_sub_command arg1),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
       {
         argv:        %w(jump_over_sub_sub_command arg1 arg2),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2"],
       },
       {
         argv:        %w(jump_over_sub_sub_command arg1 arg2 arg3),
-        expect_opts: create_values,
+        expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
     ].each do |spec_case|
@@ -614,6 +615,22 @@ describe "sub command jump over sub sub command." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(jump_over_sub_sub_command --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(jump_over_sub_sub_command -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(jump_over_sub_sub_command -m),

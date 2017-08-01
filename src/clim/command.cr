@@ -20,9 +20,9 @@ class Clim
     end
 
     def initialize_parser
-      parser.on("--help", "Show this help.") { @run_proc = help_proc; @display_help_flag = true }
-      parser.invalid_option { |opt_name| raise ClimException.new "Undefined option. \"#{opt_name}\"" }
-      parser.missing_option { |opt_name| raise ClimException.new "Option that requires an argument. \"#{opt_name}\"" }
+      parser.on("--help", "Show this help.") { @display_help_flag = true }
+      parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
+      parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
       parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
@@ -36,11 +36,7 @@ class Clim
     end
 
     def help
-      if sub_cmds.empty?
-        base_help
-      else
-        base_help + sub_cmds_help
-      end
+      sub_cmds.empty? ? base_help : base_help + sub_cmds_help
     end
 
     def display_help?
@@ -86,20 +82,22 @@ class Clim
     end
 
     def run(opts, args)
-      run_proc.call(opts, args)
+      select_run_proc.call(opts, args)
+    end
+
+    def select_run_proc
+      display_help? ? @help_proc : @run_proc
     end
 
     def run_proc_arguments
-      return opts.values, args
+      return opts.to_h, args
     end
 
     def add_sub_commands(cmd)
-      raise ClimException.new "There are duplicate registered commands. [#{cmd.name}]" if duplicate_sub_command_name?(cmd.name)
+      unless find_sub_cmds_by(cmd.name).empty?
+        raise ClimException.new "There are duplicate registered commands. [#{cmd.name}]"
+      end
       @sub_cmds << cmd
-    end
-
-    def duplicate_sub_command_name?(name)
-      !find_sub_cmds_by(name).empty?
     end
 
     def find_sub_cmds_by(name)
@@ -108,19 +106,14 @@ class Clim
 
     def parse(argv)
       return parse_by_parser(argv) if argv.empty?
-      return parse_by_parser(argv) unless duplicate_sub_command_name?(argv.first)
+      return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
       find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
     end
 
     def parse_by_parser(argv)
-      input_args = InputArgs.new(argv)
-
       prepare_parse
-      parser.parse(input_args.to_be_exec.dup)
-      # parser.parse(argv.dup)
-
+      parser.parse(argv.dup)
       opts.validate! unless display_help?
-
       opts.help = help
       self
     end
@@ -130,6 +123,5 @@ class Clim
       @args = [] of String
       @display_help_flag = false
     end
-
   end
 end

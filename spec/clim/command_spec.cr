@@ -84,55 +84,6 @@ describe Clim::Command do
       cmd.max_name_length.should eq(0)
     end
   end
-  describe "#duplicate_sub_command_name?" do
-    it "returns false when name not found in sub commands. (The same name as the main command.)" do
-      main_cmd = Command.new("main_cmd")
-      main_cmd.duplicate_sub_command_name?("main_cmd").should be_falsey
-    end
-    it "returns true when name found in sub commands." do
-      main_cmd = Command.new("main_cmd")
-
-      sub_cmd1 = Command.new("sub_cmd1")
-      main_cmd.sub_cmds << sub_cmd1
-      sub_cmd2 = Command.new("sub_cmd2")
-      main_cmd.sub_cmds << sub_cmd2
-
-      main_cmd.duplicate_sub_command_name?("sub_cmd1").should be_truthy
-    end
-    it "returns false when name not found in sub commands." do
-      main_cmd = Command.new("main_cmd")
-
-      sub_cmd1 = Command.new("sub_cmd1")
-      main_cmd.sub_cmds << sub_cmd1
-      sub_cmd2 = Command.new("sub_cmd2")
-      main_cmd.sub_cmds << sub_cmd2
-
-      main_cmd.duplicate_sub_command_name?("sub_cmd_not_duplicated").should be_falsey
-    end
-    it "returns false when name not found in sub commands. (It exists in the sub sub command.)" do
-      main_cmd = Command.new("main_cmd")
-
-      sub_cmd = Command.new("sub_cmd")
-      main_cmd.sub_cmds << sub_cmd
-
-      sub_sub_cmd = Command.new("sub_sub_cmd")
-      sub_cmd.sub_cmds << sub_sub_cmd
-
-      main_cmd.duplicate_sub_command_name?("sub_sub_cmd").should be_falsey
-    end
-    it "returns true when name found in sub commands from sub_cmd to sub_sub_cmd." do
-      main_cmd = Command.new("main_cmd")
-
-      sub_cmd = Command.new("sub_cmd")
-      main_cmd.sub_cmds << sub_cmd
-
-      sub_sub_cmd = Command.new("sub_sub_cmd")
-      sub_cmd.sub_cmds << sub_sub_cmd
-
-      sub_cmd.duplicate_sub_command_name?("sub_sub_cmd").should be_truthy
-    end
-  end
-
   describe "#add_sub_commands?" do
     it "add sub command when command name is not duplicated." do
       main_cmd = Command.new("main_cmd")
@@ -155,7 +106,6 @@ describe Clim::Command do
       end
     end
   end
-
   describe "#parse" do
     main_cmd = Command.new("init")
     Spec.before_each do

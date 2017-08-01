@@ -32,33 +32,7 @@ describe Clim::Options do
       end
     end
   end
-  describe Options::Values do
-    describe "#merge!" do
-      it "merged hash." do
-        values = Options::Values.new
-        values.merge!({"string_key" => "string value"})
-        values.merge!({"bool_key" => true})
-        values.merge!({"array_key" => ["array", "value"]})
-        values.merge!({"merge_string_key" => "merge string value"})
-        values.hash.should eq({
-          "string_key"       => "string value",
-          "merge_string_key" => "merge string value",
-          "bool_key"         => true,
-          "array_key"        => ["array", "value"],
-        })
-      end
-      it "raises an Exception when option name is duplicated." do
-        values = Options::Values.new
-        values.merge!({"string_key" => "string value"})
-        values.merge!({"bool_key" => true})
-        values.merge!({"array_key" => ["array", "value"]})
-        expect_raises(Exception, "Duplicate option. \"string_key\"") do
-          values.merge!({"string_key" => "merge string value"}) # duplicated
-        end
-      end
-    end
-  end
-  describe "#values" do
+  describe "#to_h" do
     it "returns hash when options are set." do
       opts = Options.new
       opts.add Option(String | Nil).new("-f", "--foo", "", false, "", "value foo")
@@ -66,14 +40,14 @@ describe Clim::Options do
       opts.add Option(String | Nil).new("-z VALUE", "--zoo=VALUE", "", false, "", "value zoo")
       opts.add Option(Bool | Nil).new("-v", "", false, false, "", true)
       opts.add Option(Array(String) | Nil).new("-a", "--array", [] of String, false, "", ["a", "b"])
-      expect_values = Options::Values.new
-      expect_values.merge!({"help" => ""})
-      expect_values.merge!({"foo" => "value foo"})
-      expect_values.merge!({"bar" => "value bar"})
-      expect_values.merge!({"zoo" => "value zoo"})
-      expect_values.merge!({"v" => true})
-      expect_values.merge!({"array" => ["a", "b"]})
-      opts.values.should eq(expect_values.hash)
+      expect = Clim::ReturnOptsType.new
+      expect.merge!({"help" => ""})
+      expect.merge!({"foo" => "value foo"})
+      expect.merge!({"bar" => "value bar"})
+      expect.merge!({"zoo" => "value zoo"})
+      expect.merge!({"v" => true})
+      expect.merge!({"array" => ["a", "b"]})
+      opts.to_h.should eq(expect)
     end
   end
   describe "#validate!" do

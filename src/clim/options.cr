@@ -6,34 +6,31 @@ class Clim
     property help : String = ""
 
     def add(opt)
-      raise ClimException.new "Empty short option." if opt.short_name.empty?
-      raise ClimException.new "Duplicate option. \"-#{opt.short_name}\"" if opts.map(&.short_name).includes?(opt.short_name)
-      raise ClimException.new "Duplicate option. \"--#{opt.long_name}\"" if opts.map(&.long_name).reject(&.empty?).includes?(opt.long_name)
+      opt_validate!(opt)
       opts << opt
     end
 
-    class Values
-      property help : String = ""
-      property hash : ReturnOptsType = ReturnOptsType.new
-
-      def merge!(other : ReturnOptsType)
-        other.each do |k, v|
-          if hash.has_key?(k)
-            raise ClimException.new "Duplicate option. \"#{k}\""
-          else
-            hash.merge!(other)
-          end
-        end
-      end
+    def opt_validate!(opt)
+      raise ClimException.new "Empty short option." if opt.short_name.empty?
+      raise ClimException.new "Duplicate option. \"-#{opt.short_name}\"" if duplicate_short_name?(opt.short_name)
+      raise ClimException.new "Duplicate option. \"--#{opt.long_name}\"" if duplicate_long_name?(opt.long_name)
     end
 
-    def values : ReturnOptsType
-      values = Values.new
-      values.merge!({"help" => help})
+    def duplicate_short_name?(name)
+      opts.map(&.short_name).includes?(name)
+    end
+
+    def duplicate_long_name?(name)
+      opts.map(&.long_name).reject(&.empty?).includes?(name)
+    end
+
+    def to_h : ReturnOptsType
+      hash = ReturnOptsType.new
+      hash.merge!({"help" => help})
       opts.each do |opt|
-        values.merge!(opt.to_h)
+        hash.merge!(opt.to_h)
       end
-      values.hash
+      hash
     end
 
     def reset
@@ -41,10 +38,10 @@ class Clim
     end
 
     def validate!
-      raise "Required options. \"#{no_required_option_names.join("\", \"")}\"" unless no_required_option_names.empty?
+      raise "Required options. \"#{invalid_required_names.join("\", \"")}\"" unless invalid_required_names.empty?
     end
 
-    def no_required_option_names
+    def invalid_required_names
       opts.map do |opt|
         opt.required_set? ? opt.short : nil
       end.compact

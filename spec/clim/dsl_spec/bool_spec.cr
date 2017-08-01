@@ -21,12 +21,6 @@ describe "main command with bool." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBool.run_proc_arguments(spec_case[:argv])
@@ -54,42 +48,42 @@ describe "main command with bool." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -106,6 +100,14 @@ describe "main command with bool." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(--b),
@@ -146,12 +148,6 @@ describe "main command with bool only short option." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolOnlyShortOption.run_proc_arguments(spec_case[:argv])
@@ -179,27 +175,27 @@ describe "main command with bool only short option." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"b" => nil}),
+        expect_opts: create_opts_hash({"b" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"b" => nil}),
+        expect_opts: create_opts_hash({"b" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
-        expect_opts: create_values({"b" => true}),
+        expect_opts: create_opts_hash({"b" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b arg1),
-        expect_opts: create_values({"b" => true}),
+        expect_opts: create_opts_hash({"b" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
-        expect_opts: create_values({"b" => true}),
+        expect_opts: create_opts_hash({"b" => true}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -216,6 +212,14 @@ describe "main command with bool only short option." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(--bool),
@@ -264,12 +268,6 @@ describe "main command with bool only long option." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolOnlyLongOption.run_proc_arguments(spec_case[:argv])
@@ -297,27 +295,27 @@ describe "main command with bool only long option." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -334,6 +332,14 @@ describe "main command with bool only long option." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-b),
@@ -378,12 +384,6 @@ describe "main command with bool arguments." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolArguments.run_proc_arguments(spec_case[:argv])
@@ -411,32 +411,32 @@ describe "main command with bool arguments." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
@@ -453,6 +453,14 @@ describe "main command with bool arguments." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-b),
@@ -517,12 +525,6 @@ describe "main command with bool." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsOnlyShortOption.run_proc_arguments(spec_case[:argv])
@@ -550,22 +552,22 @@ describe "main command with bool." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"b" => nil}),
+        expect_opts: create_opts_hash({"b" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"b" => nil}),
+        expect_opts: create_opts_hash({"b" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
-        expect_opts: create_values({"b" => true}),
+        expect_opts: create_opts_hash({"b" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b false),
-        expect_opts: create_values({"b" => false}),
+        expect_opts: create_opts_hash({"b" => false}),
         expect_args: [] of String,
       },
     ].each do |spec_case|
@@ -582,6 +584,14 @@ describe "main command with bool." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-b),
@@ -654,12 +664,6 @@ describe "main command with bool desc." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolDesc.run_proc_arguments(spec_case[:argv])
@@ -706,12 +710,6 @@ describe "main command with bool default." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolDefault.run_proc_arguments(spec_case[:argv])
@@ -739,32 +737,32 @@ describe "main command with bool default." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -781,6 +779,14 @@ describe "main command with bool default." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(--b),
@@ -821,12 +827,6 @@ describe "main command with bool required true and default exists." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
@@ -854,42 +854,42 @@ describe "main command with bool required true and default exists." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -924,12 +924,6 @@ describe "main command with bool arguments required true and default exists." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredTrueAndDefaultExists.run_proc_arguments(spec_case[:argv])
@@ -957,72 +951,72 @@ describe "main command with bool arguments required true and default exists." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b true arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b false arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool true arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool false arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -1039,6 +1033,14 @@ describe "main command with bool arguments required true and default exists." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-b),
@@ -1103,12 +1105,6 @@ describe "main command with bool required true only." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
@@ -1136,32 +1132,32 @@ describe "main command with bool required true only." do
     [
       {
         argv:        %w(-b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -1178,6 +1174,14 @@ describe "main command with bool required true only." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(),
@@ -1218,12 +1222,6 @@ describe "main command with bool arguments required true only." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredTrueOnly.run_proc_arguments(spec_case[:argv])
@@ -1251,62 +1249,62 @@ describe "main command with bool arguments required true only." do
     [
       {
         argv:        %w(-b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b true arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b false arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool true arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool false arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -1327,6 +1325,14 @@ describe "main command with bool arguments required true only." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(arg1),
@@ -1395,12 +1401,6 @@ describe "main command with bool required false and default exists." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
@@ -1428,42 +1428,42 @@ describe "main command with bool required false and default exists." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -1501,12 +1501,6 @@ describe "main command with bool arguments required false and default exists." d
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredFalseAndDefaultExists.run_proc_arguments(spec_case[:argv])
@@ -1534,72 +1528,72 @@ describe "main command with bool arguments required false and default exists." d
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b true arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b false arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool true arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool false arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -1616,6 +1610,14 @@ describe "main command with bool arguments required false and default exists." d
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-b),
@@ -1680,12 +1682,6 @@ describe "main command with bool required false only." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
@@ -1713,42 +1709,42 @@ describe "main command with bool required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -1786,12 +1782,6 @@ describe "main command with bool arguments required false only." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsRequiredFalseOnly.run_proc_arguments(spec_case[:argv])
@@ -1819,72 +1809,72 @@ describe "main command with bool arguments required false only." do
     [
       {
         argv:        %w(),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: [] of String,
       },
       {
         argv:        %w(arg1),
-        expect_opts: create_values({"bool" => nil}),
+        expect_opts: create_opts_hash({"bool" => nil}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b true arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(-b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(-b false arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 -b false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool true arg1),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool true),
-        expect_opts: create_values({"bool" => true}),
+        expect_opts: create_opts_hash({"bool" => true}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(--bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: [] of String,
       },
       {
         argv:        %w(--bool false arg1),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
       {
         argv:        %w(arg1 --bool false),
-        expect_opts: create_values({"bool" => false}),
+        expect_opts: create_opts_hash({"bool" => false}),
         expect_args: ["arg1"],
       },
     ].each do |spec_case|
@@ -1901,6 +1891,14 @@ describe "main command with bool arguments required false only." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-b),
