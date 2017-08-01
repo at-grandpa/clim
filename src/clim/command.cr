@@ -36,11 +36,7 @@ class Clim
     end
 
     def help
-      if sub_cmds.empty?
-        base_help
-      else
-        base_help + sub_cmds_help
-      end
+      sub_cmds.empty? ? base_help : base_help + sub_cmds_help
     end
 
     def display_help?
