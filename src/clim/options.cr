@@ -6,10 +6,14 @@ class Clim
     property help : String = ""
 
     def add(opt)
+      opt_validate!(opt)
+      opts << opt
+    end
+
+    def opt_validate!(opt)
       raise ClimException.new "Empty short option." if opt.short_name.empty?
       raise ClimException.new "Duplicate option. \"-#{opt.short_name}\"" if opts.map(&.short_name).includes?(opt.short_name)
       raise ClimException.new "Duplicate option. \"--#{opt.long_name}\"" if opts.map(&.long_name).reject(&.empty?).includes?(opt.long_name)
-      opts << opt
     end
 
     class Values
@@ -41,10 +45,10 @@ class Clim
     end
 
     def validate!
-      raise "Required options. \"#{no_required_option_names.join("\", \"")}\"" unless no_required_option_names.empty?
+      raise "Required options. \"#{invalid_required_names.join("\", \"")}\"" unless invalid_required_names.empty?
     end
 
-    def no_required_option_names
+    def invalid_required_names
       opts.map do |opt|
         opt.required_set? ? opt.short : nil
       end.compact
