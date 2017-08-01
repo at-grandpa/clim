@@ -77,12 +77,8 @@ class Clim
       @value = @default.dup
     end
 
-    def required?
-      @required
-    end
-
     def required_set?
-      required? && @value.nil?
+      @required && @value.nil?
     end
   end
 end

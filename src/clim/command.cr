@@ -1,7 +1,3 @@
-require "./dsl"
-require "./options"
-require "./input_args"
-require "./exception"
 require "option_parser"
 
 class Clim
@@ -84,16 +80,12 @@ class Clim
       sub_cmds.empty? ? 0 : sub_cmds.map(&.name.size).max
     end
 
-    def run(run_proc_opts, run_proc_args)
-      run_proc.call(run_proc_opts, run_proc_args)
+    def run(opts, args)
+      run_proc.call(opts, args)
     end
 
     def run_proc_arguments
       return opts.values, args
-    end
-
-    def duplicate_sub_command_name?(name)
-      !find_sub_cmds_by(name).empty?
     end
 
     def add_sub_commands(cmd)
@@ -101,11 +93,18 @@ class Clim
       @sub_cmds << cmd
     end
 
+    def duplicate_sub_command_name?(name)
+      !find_sub_cmds_by(name).empty?
+    end
+
+    def find_sub_cmds_by(name)
+      sub_cmds.select(&.name.==(name))
+    end
+
     def parse(argv)
       return parse_by_parser(argv) if argv.empty?
-      sub_cmds = find_sub_cmds_by(argv.first)
       return parse_by_parser(argv) unless duplicate_sub_command_name?(argv.first)
-      sub_cmds.first.parse(argv[1..-1])
+      find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
     end
 
     def parse_by_parser(argv)
@@ -126,11 +125,8 @@ class Clim
 
     def prepare_parse
       opts.reset
-      args = [] of String
+      @args = [] of String
     end
 
-    def find_sub_cmds_by(name)
-      sub_cmds.select(&.name.==(name))
-    end
   end
 end

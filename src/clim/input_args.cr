@@ -1,8 +1,3 @@
-require "./dsl"
-require "./options"
-require "./exception"
-require "option_parser"
-
 class Clim
   class InputArgs
     property argv : Array(String)
