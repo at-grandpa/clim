@@ -113,10 +113,7 @@ class Clim
     end
 
     def parse_by_parser(argv)
-      # input_args = InputArgs.new(argv)
-
       prepare_parse
-      # parser.parse(input_args.to_be_exec.dup)
       parser.parse(argv.dup)
 
       opts.validate! unless display_help?
@@ -130,6 +127,5 @@ class Clim
       @args = [] of String
       @display_help_flag = false
     end
-
   end
 end
