@@ -19,6 +19,8 @@ Clim supports the following.
   - [x] string
   - [x] bool
   - [x] array
+- [x] Default values for options
+- [x] Required flag for options
 - [x] Nested sub commands
 - [x] `--help` option
 

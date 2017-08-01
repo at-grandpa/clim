@@ -12,8 +12,16 @@ class Clim
 
     def opt_validate!(opt)
       raise ClimException.new "Empty short option." if opt.short_name.empty?
-      raise ClimException.new "Duplicate option. \"-#{opt.short_name}\"" if opts.map(&.short_name).includes?(opt.short_name)
-      raise ClimException.new "Duplicate option. \"--#{opt.long_name}\"" if opts.map(&.long_name).reject(&.empty?).includes?(opt.long_name)
+      raise ClimException.new "Duplicate option. \"-#{opt.short_name}\"" if duplicate_short_name?(opt.short_name)
+      raise ClimException.new "Duplicate option. \"--#{opt.long_name}\"" if duplicate_long_name?(opt.long_name)
+    end
+
+    def duplicate_short_name?(name)
+      opts.map(&.short_name).includes?(name)
+    end
+
+    def duplicate_long_name?(name)
+      opts.map(&.long_name).reject(&.empty?).includes?(name)
     end
 
     def values : ReturnOptsType

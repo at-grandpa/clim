@@ -98,7 +98,9 @@ class Clim
     end
 
     def add_sub_commands(cmd)
-      raise ClimException.new "There are duplicate registered commands. [#{cmd.name}]" unless find_sub_cmds_by(cmd.name).empty?
+      unless find_sub_cmds_by(cmd.name).empty?
+        raise ClimException.new "There are duplicate registered commands. [#{cmd.name}]"
+      end
       @sub_cmds << cmd
     end
 
@@ -115,10 +117,8 @@ class Clim
     def parse_by_parser(argv)
       prepare_parse
       parser.parse(argv.dup)
-
       opts.validate! unless display_help?
       opts.help = help
-
       self
     end
 

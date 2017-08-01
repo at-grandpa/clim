@@ -60,8 +60,9 @@ class Clim
       if arg.empty?
         @value = true
       else
-        exception_msg = "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]"
-        raise ClimException.new exception_msg unless arg === "true" || arg == "false"
+        unless arg === "true" || arg == "false"
+          raise ClimException.new "Bool arguments accept only \"true\" or \"false\". Input: [#{arg}]"
+        end
         @value = arg === "true"
       end
     end
