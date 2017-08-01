@@ -22,12 +22,6 @@ describe "main command with array." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithArray.run_proc_arguments(spec_case[:argv])
@@ -119,6 +113,14 @@ describe "main command with array." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",
       },
@@ -164,12 +166,6 @@ describe "main command with array only short option." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -252,6 +248,14 @@ describe "main command with array only short option." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",
       },
@@ -305,12 +309,6 @@ describe "main command with array only long option." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -383,6 +381,14 @@ describe "main command with array only long option." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(--array),
         exception_message: "Option that requires an argument. \"--array\"",
       },
@@ -437,12 +443,6 @@ describe "main command with array desc." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithArrayDesc.run_proc_arguments(spec_case[:argv])
@@ -488,12 +488,6 @@ describe "main command with array default." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -586,6 +580,14 @@ describe "main command with array default." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",
       },
@@ -631,12 +633,6 @@ describe "main command with array required true and default exists." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -729,6 +725,14 @@ describe "main command with array required true and default exists." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",
       },
@@ -774,12 +778,6 @@ describe "main command with array required true only." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -866,6 +864,14 @@ describe "main command with array required true only." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(arg1),
         exception_message: "Required options. \"-a ARG\"",
       },
@@ -915,12 +921,6 @@ describe "main command with array required false and default exists." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1013,6 +1013,14 @@ describe "main command with array required false and default exists." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-a),
         exception_message: "Option that requires an argument. \"-a\"",
       },
@@ -1058,12 +1066,6 @@ describe "main command with array required false only." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1154,6 +1156,14 @@ describe "main command with array required false only." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-a),

@@ -18,12 +18,6 @@ describe "main command only." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandOnly.run_proc_arguments(spec_case[:argv])
@@ -84,6 +78,14 @@ describe "main command only." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-m),
         exception_message: "Undefined option. \"-m\"",
       },
@@ -131,12 +133,6 @@ describe "main command with desc." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -198,6 +194,14 @@ describe "main command with desc." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-m),
         exception_message: "Undefined option. \"-m\"",
       },
@@ -246,12 +250,6 @@ describe "main command with usage." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -311,6 +309,14 @@ describe "main command with usage." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-m),

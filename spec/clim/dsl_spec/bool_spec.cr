@@ -21,12 +21,6 @@ describe "main command with bool." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBool.run_proc_arguments(spec_case[:argv])
@@ -108,6 +102,14 @@ describe "main command with bool." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(--b),
         exception_message: "Undefined option. \"--b\"",
       },
@@ -145,12 +147,6 @@ describe "main command with bool only short option." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -218,6 +214,14 @@ describe "main command with bool only short option." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(--bool),
         exception_message: "Undefined option. \"--bool\"",
       },
@@ -263,12 +267,6 @@ describe "main command with bool only long option." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -336,6 +334,14 @@ describe "main command with bool only long option." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-b),
         exception_message: "Undefined option. \"-b\"",
       },
@@ -377,12 +383,6 @@ describe "main command with bool arguments." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -455,6 +455,14 @@ describe "main command with bool arguments." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",
       },
@@ -517,12 +525,6 @@ describe "main command with bool." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolArgumentsOnlyShortOption.run_proc_arguments(spec_case[:argv])
@@ -582,6 +584,14 @@ describe "main command with bool." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-b),
@@ -654,12 +664,6 @@ describe "main command with bool desc." do
       {
         argv: %w(ignore-arg --help),
       },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
-      },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
         run_proc_opts, run_proc_args = SpecMainCommandWithBoolDesc.run_proc_arguments(spec_case[:argv])
@@ -705,12 +709,6 @@ describe "main command with bool default." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -783,6 +781,14 @@ describe "main command with bool default." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(--b),
         exception_message: "Undefined option. \"--b\"",
       },
@@ -820,12 +826,6 @@ describe "main command with bool required true and default exists." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -923,12 +923,6 @@ describe "main command with bool arguments required true and default exists." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1041,6 +1035,14 @@ describe "main command with bool arguments required true and default exists." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",
       },
@@ -1102,12 +1104,6 @@ describe "main command with bool required true only." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1180,6 +1176,14 @@ describe "main command with bool required true only." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(),
         exception_message: "Required options. \"-b\"",
       },
@@ -1217,12 +1221,6 @@ describe "main command with bool arguments required true only." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1329,6 +1327,14 @@ describe "main command with bool arguments required true only." do
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(arg1),
         exception_message: "Required options. \"-b ARG\"",
       },
@@ -1394,12 +1400,6 @@ describe "main command with bool required false and default exists." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1500,12 +1500,6 @@ describe "main command with bool arguments required false and default exists." d
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1618,6 +1612,14 @@ describe "main command with bool arguments required false and default exists." d
         exception_message: "Undefined option. \"-h\"",
       },
       {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(-b),
         exception_message: "Option that requires an argument. \"-b\"",
       },
@@ -1679,12 +1681,6 @@ describe "main command with bool required false only." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1785,12 +1781,6 @@ describe "main command with bool arguments required false only." do
       },
       {
         argv: %w(ignore-arg --help),
-      },
-      {
-        argv: %w(--help -ignore-option),
-      },
-      {
-        argv: %w(-ignore-option --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1901,6 +1891,14 @@ describe "main command with bool arguments required false only." do
       {
         argv:              %w(-h),
         exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
         argv:              %w(-b),
