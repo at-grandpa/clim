@@ -11,6 +11,7 @@ class Clim
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(self) = [] of self
     property help_proc : RunProc = RunProc.new { }
+    property display_help_flag : Bool = false
 
     def initialize(@name)
       @usage = "#{name} [options] [arguments]"
@@ -19,7 +20,7 @@ class Clim
     end
 
     def initialize_parser
-      parser.on("--help", "Show this help.") { }
+      parser.on("--help", "Show this help.") { @run_proc = help_proc; @display_help_flag = true }
       parser.invalid_option { |opt_name| raise ClimException.new "Undefined option. \"#{opt_name}\"" }
       parser.missing_option { |opt_name| raise ClimException.new "Option that requires an argument. \"#{opt_name}\"" }
       parser.unknown_args { |unknown_args| @args = unknown_args }
@@ -40,6 +41,10 @@ class Clim
       else
         base_help + sub_cmds_help
       end
+    end
+
+    def display_help?
+      @display_help_flag
     end
 
     def base_help
@@ -112,12 +117,9 @@ class Clim
 
       prepare_parse
       parser.parse(input_args.to_be_exec.dup)
+      # parser.parse(argv.dup)
 
-      if input_args.include_help_arg?
-        @run_proc = help_proc
-      else
-        opts.validate!
-      end
+      opts.validate! unless display_help?
 
       opts.help = help
       self
@@ -126,6 +128,7 @@ class Clim
     def prepare_parse
       opts.reset
       @args = [] of String
+      @display_help_flag = false
     end
 
   end
