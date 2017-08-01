@@ -68,8 +68,11 @@ class Clim
 
     def start(argv)
       start_main(argv)
-    rescue ex
+    rescue ex : ClimException
       puts ex.message
+    rescue ex : ClimInvalidOptionException
+      puts ex.message
+      @@main.help_proc.call
     end
   end
 end

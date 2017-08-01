@@ -21,8 +21,8 @@ class Clim
 
     def initialize_parser
       parser.on("--help", "Show this help.") { @run_proc = help_proc; @display_help_flag = true }
-      parser.invalid_option { |opt_name| raise ClimException.new "Undefined option. \"#{opt_name}\"" }
-      parser.missing_option { |opt_name| raise ClimException.new "Option that requires an argument. \"#{opt_name}\"" }
+      parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
+      parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
       parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
@@ -113,11 +113,11 @@ class Clim
     end
 
     def parse_by_parser(argv)
-      input_args = InputArgs.new(argv)
+      # input_args = InputArgs.new(argv)
 
       prepare_parse
-      parser.parse(input_args.to_be_exec.dup)
-      # parser.parse(argv.dup)
+      # parser.parse(input_args.to_be_exec.dup)
+      parser.parse(argv.dup)
 
       opts.validate! unless display_help?
 
