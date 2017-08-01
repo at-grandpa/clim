@@ -2,10 +2,10 @@ class Clim
   alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
-  @@main : Command = Command.new("main_command")
-  @@defining : Command = @@main
-  @@stack : Array(Command) = [] of Command
-  @@defined_main : Bool = false
+  @@main : Command = Command.new("main_command") # Main command.
+  @@defining : Command = @@main                  # Current defining command.
+  @@stack : Array(Command) = [] of Command       # Command stack for `sub do ... end` scope.
+  @@defined_main : Bool = false                  # If the main command is defined, @@defined_main = true.
 
   module Dsl
     def main_command
@@ -42,6 +42,7 @@ class Clim
       end
     end
 
+    # Call the define_opts macro.
     difine_opts(method_name: "string", type: String | Nil) { |arg| opt.set_string(arg) }
     difine_opts(method_name: "bool", type: Bool | Nil) { |arg| opt.set_bool(arg) }
     difine_opts(method_name: "array", type: Array(String) | Nil) { |arg| opt.add_to_array(arg) }
