@@ -13,8 +13,6 @@
 
 ## Support
 
-Clim supports the following.
-
 - [x] Option types
   - [x] string
   - [x] bool
