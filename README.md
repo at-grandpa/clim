@@ -264,6 +264,7 @@ require "clim"
     puts opts["bool-long-name"]                   # => print your option value.
     puts typeof(opts["bool-long-name"])           # => (Array(String) | Bool | String | Nil)
     puts typeof(opts["bool-long-name"].as(Bool))  # => Bool
+  end
 ```
 
 #### array
