@@ -1,4 +1,5 @@
 require "./../../spec_helper"
+require "../dsl_spec"
 
 class SpecMainCommandWithBool < Clim
   main_command

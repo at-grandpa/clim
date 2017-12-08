@@ -1,5 +1,5 @@
 require "./../../spec_helper"
-require "./../dsl_spec"
+require "../dsl_spec"
 
 class SpecMainCommandWithArray < Clim
   main_command
