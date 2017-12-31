@@ -1,4 +1,6 @@
 require "option_parser"
+require "./dsl"
+require "./exception"
 require "./options"
 
 class Clim
