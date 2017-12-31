@@ -3,6 +3,7 @@ require "option_parser"
 class Clim
   class Command
     property name : String = ""
+    property alias_name : Array(String) = [] of String
     property desc : String = "Command Line Interface Tool."
     property usage : String = "{command} [options] [arguments]"
     property opts : Options = Options.new
@@ -101,7 +102,9 @@ class Clim
     end
 
     def find_sub_cmds_by(name)
-      sub_cmds.select(&.name.==(name))
+      sub_cmds.select do |cmd|
+        cmd.name == name || cmd.alias_name.includes?(name)
+      end
     end
 
     def parse(argv)

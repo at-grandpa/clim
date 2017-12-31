@@ -22,6 +22,7 @@ class Clim
 
     def alias_name(*name)
       raise ClimException.new "'alias_name' is not supported on main command." if @@stack.empty?
+      @@defining.alias_name.concat(name)
     end
 
     def desc(desc)
