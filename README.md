@@ -21,6 +21,7 @@
 - [x] Required flag for options
 - [x] Nested sub commands
 - [x] `--help` option
+- [x] Command name alias
 
 
 ## Installation
@@ -34,7 +35,7 @@ dependencies:
     version: 0.1.4
 ```
 
-## Sample Code 1 (main command)
+## Sample Code (main command)
 
 *src/hello.cr*
 
@@ -83,7 +84,7 @@ $ ./hello -n Taro -n Miko -g 'Good night'
 Good night, Taro, Miko!
 ```
 
-## Sample Code 2 (sub commands)
+## Sample Code (sub commands)
 
 *src/fake_git.cr*
 
@@ -109,6 +110,7 @@ module FakeGit
       # Following is difinition of command.
       #
       command "branch"
+      alias_name "b", "br"
       desc  "List, create, or delete branches."
       usage "fgit branch [arguments]"
       run do |opts, args|
@@ -116,6 +118,7 @@ module FakeGit
       end
 
       command "log"
+      alias_name "l"
       desc  "Show commit logs."
       usage "fgit log [arguments]"
       run do |opts, args|
@@ -230,6 +233,12 @@ require "clim"
 ```
 
 ### Command Informations
+
+#### alias_name
+
+```crystal
+  alias_name  "alias1", "alias2", "alias3"    # Command name alias.
+```
 
 #### desc
 
