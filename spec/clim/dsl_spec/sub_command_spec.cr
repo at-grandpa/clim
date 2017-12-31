@@ -740,3 +740,31 @@ describe "Call the main command." do
     end
   end
 end
+
+class SpecSubCommandWithAliasName < Clim
+  main_command
+  run do |opts, args|
+    raise "Run block of main_command was executed."
+  end
+
+  sub do
+    command "sub_command"
+    alias_name "sub_command_alias_name"
+    run do |opts, args|
+      raise "Run block of sub_command was executed."
+    end
+  end
+end
+
+describe "Call the sub command." do
+  it "raises an Exception because execute run block of sub_command." do
+    expect_raises(Exception, "Run block of sub_command was executed.") do
+      SpecSubCommandWithAliasName.start_main(%w(sub_command arg1))
+    end
+  end
+  it "raises an Exception because execute run block of sub_command with alias_name." do
+    expect_raises(Exception, "Run block of sub_command was executed.") do
+      SpecSubCommandWithAliasName.start_main(%w(sub_command_alias_name arg1))
+    end
+  end
+end
