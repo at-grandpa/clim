@@ -1,4 +1,5 @@
 require "option_parser"
+require "./options"
 
 class Clim
   class Command
@@ -95,9 +96,25 @@ class Clim
     end
 
     def add_sub_commands(cmd)
-      unless find_sub_cmds_by(cmd.name).empty?
-        raise ClimException.new "There are duplicate registered commands. [#{cmd.name}]"
+      # nameとalias_nameの重複
+      arr = [cmd.name] + cmd.alias_name
+      duplicate_names = arr.group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
+
+      # nameが他のcommandと違うかどうか
+      duplicate_names.concat find_sub_cmds_by(cmd.name).map(&.name)
+
+      # alias_nameが他のcommandと違うかどうか
+      cmd.alias_name.each do |alias_name|
+        next if duplicate_names.includes?(alias_name)
+        duplicate_names.concat find_sub_cmds_by(alias_name).map(&.name)
+        duplicate_names.concat find_sub_cmds_by(alias_name).map(&.alias_name).flatten
       end
+
+      # 重複チェック
+      unless duplicate_names.empty?
+        raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]"
+      end
+
       @sub_cmds << cmd
     end
 

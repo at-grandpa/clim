@@ -801,3 +801,126 @@ describe "Call the sub command." do
     end
   end
 end
+
+class SpecSubCommandWhenDuplicateAliasNameCase1 < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case1)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
+      #
+      # spec case:
+      #
+      #  class SpecClass
+      #    main_command
+      #    run do |opts, args| end
+      #
+      #    sub do
+      #      command "sub_command"
+      #      alias_name "sub_command" # Duplicate name.
+      #      run do |opts, args| end
+      #    end
+      #  end
+      #
+      SpecSubCommandWhenDuplicateAliasNameCase1.main_command
+      SpecSubCommandWhenDuplicateAliasNameCase1.run do |opts, args|
+      end
+
+      SpecSubCommandWhenDuplicateAliasNameCase1.sub do
+        SpecSubCommandWhenDuplicateAliasNameCase1.command "sub_command"
+        SpecSubCommandWhenDuplicateAliasNameCase1.alias_name "sub_command"
+        SpecSubCommandWhenDuplicateAliasNameCase1.run do |opts, args|
+        end
+      end
+    end
+  end
+end
+
+class SpecSubCommandWhenDuplicateAliasNameCase2 < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case2)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2]") do
+      #
+      # spec case:
+      #
+      #  class SpecClass
+      #    main_command
+      #    run do |opts, args| end
+      #
+      #    sub do
+      #      command "sub_command1"
+      #      alias_name "sub_command1", "sub_command2", "sub_command2" # Duplicate name.
+      #      run do |opts, args| end
+      #    end
+      #  end
+      #
+      SpecSubCommandWhenDuplicateAliasNameCase2.main_command
+      SpecSubCommandWhenDuplicateAliasNameCase2.run do |opts, args|
+      end
+
+      SpecSubCommandWhenDuplicateAliasNameCase2.sub do
+        SpecSubCommandWhenDuplicateAliasNameCase2.command "sub_command1"
+        SpecSubCommandWhenDuplicateAliasNameCase2.alias_name "sub_command1", "sub_command2", "sub_command2"
+        SpecSubCommandWhenDuplicateAliasNameCase2.run do |opts, args|
+        end
+      end
+    end
+  end
+end
+
+class SpecSubCommandWhenDuplicateAliasNameCase3 < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case3)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,alias_name1,sub_command2,alias_name2]") do
+      #
+      # spec case:
+      #
+      #  class SpecClass
+      #    main_command
+      #    run do |opts, args| end
+      #
+      #    sub do
+      #      command "sub_command1"
+      #      alias_name "alias_name1"
+      #      run do |opts, args| end
+      #
+      #      command "sub_command2"
+      #      alias_name "alias_name2"
+      #      run do |opts, args| end
+      #
+      #      command "sub_command3"
+      #      alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2" # Duplicate name.
+      #      run do |opts, args| end
+      #    end
+      #  end
+      #
+      SpecSubCommandWhenDuplicateAliasNameCase3.main_command
+      SpecSubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
+      end
+
+      SpecSubCommandWhenDuplicateAliasNameCase3.sub do
+        SpecSubCommandWhenDuplicateAliasNameCase3.command "sub_command1"
+        SpecSubCommandWhenDuplicateAliasNameCase3.alias_name "alias_name1"
+        SpecSubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
+        end
+
+        SpecSubCommandWhenDuplicateAliasNameCase3.command "sub_command2"
+        SpecSubCommandWhenDuplicateAliasNameCase3.alias_name "alias_name2"
+        SpecSubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
+        end
+
+        SpecSubCommandWhenDuplicateAliasNameCase3.command "sub_command3"
+        SpecSubCommandWhenDuplicateAliasNameCase3.alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2"
+        SpecSubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
+        end
+      end
+    end
+  end
+end

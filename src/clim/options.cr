@@ -1,3 +1,5 @@
+require "./option"
+
 class Clim
   class Options
     alias OptionsType = Option(String | Nil) | Option(Bool | Nil) | Option(Array(String) | Nil)
