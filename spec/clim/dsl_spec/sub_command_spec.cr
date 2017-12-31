@@ -878,7 +878,7 @@ end
 
 describe "Call the command." do
   it "raises an Exception when duplicate command name (case3)." do
-    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,alias_name1,sub_command2,alias_name2]") do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2,alias_name1,alias_name2]") do
       #
       # spec case:
       #

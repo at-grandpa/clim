@@ -96,26 +96,14 @@ class Clim
     end
 
     def add_sub_commands(cmd)
-      # nameとalias_nameの重複
-      arr = [cmd.name] + cmd.alias_name
-      duplicate_names = arr.group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
-
-      # nameが他のcommandと違うかどうか
-      duplicate_names.concat find_sub_cmds_by(cmd.name).map(&.name)
-
-      # alias_nameが他のcommandと違うかどうか
-      cmd.alias_name.each do |alias_name|
-        next if duplicate_names.includes?(alias_name)
-        duplicate_names.concat find_sub_cmds_by(alias_name).map(&.name)
-        duplicate_names.concat find_sub_cmds_by(alias_name).map(&.alias_name).flatten
-      end
-
-      # 重複チェック
+      @sub_cmds << cmd
+      names = @sub_cmds.map(&.name)
+      alias_names = @sub_cmds.map(&.alias_name).flatten
+      duplicate_names = (names + alias_names).group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
       unless duplicate_names.empty?
         raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]"
       end
-
-      @sub_cmds << cmd
+      @sub_cmds
     end
 
     def find_sub_cmds_by(name)
