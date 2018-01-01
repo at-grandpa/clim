@@ -952,6 +952,7 @@ class SpecSubCommandWithAliasNameForExecute < Clim
     end
 
     command "sub_command_2"
+    alias_name "alias_sub_command_2", "alias_sub_command_2_second"
     desc "Sub command 2 with desc."
     usage "sub_command_2 with usage [options] [arguments]"
     run do |opts, args|
@@ -1027,8 +1028,8 @@ describe "sub command with alias_name." do
 
             Sub Commands:
 
-              sub_command_1, alias_sub_command_1   Sub command 1 with desc.
-              sub_command_2                        Sub command 2 with desc.
+              sub_command_1, alias_sub_command_1                               Sub command 1 with desc.
+              sub_command_2, alias_sub_command_2, alias_sub_command_2_second   Sub command 2 with desc.
 
 
           HELP_MESSAGE
