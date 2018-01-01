@@ -1,8 +1,12 @@
 require "option_parser"
+require "./dsl"
+require "./exception"
+require "./options"
 
 class Clim
   class Command
     property name : String = ""
+    property alias_name : Array(String) = [] of String
     property desc : String = "Command Line Interface Tool."
     property usage : String = "{command} [options] [arguments]"
     property opts : Options = Options.new
@@ -72,13 +76,17 @@ class Clim
 
     def sub_cmds_help_lines
       sub_cmds.map do |cmd|
-        name = cmd.name + "#{" " * (max_name_length - cmd.name.size)}"
+        name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
         "    #{name}   #{cmd.desc}"
       end
     end
 
     def max_name_length
-      sub_cmds.empty? ? 0 : sub_cmds.map(&.name.size).max
+      sub_cmds.empty? ? 0 : sub_cmds.map { |cmd| name_and_alias_name(cmd).size }.max
+    end
+
+    def name_and_alias_name(cmd)
+      ([cmd.name] + cmd.alias_name).join(", ")
     end
 
     def run(opts, args)
@@ -94,14 +102,20 @@ class Clim
     end
 
     def add_sub_commands(cmd)
-      unless find_sub_cmds_by(cmd.name).empty?
-        raise ClimException.new "There are duplicate registered commands. [#{cmd.name}]"
-      end
       @sub_cmds << cmd
+      names = @sub_cmds.map(&.name)
+      alias_names = @sub_cmds.map(&.alias_name).flatten
+      duplicate_names = (names + alias_names).group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
+      unless duplicate_names.empty?
+        raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]"
+      end
+      @sub_cmds
     end
 
     def find_sub_cmds_by(name)
-      sub_cmds.select(&.name.==(name))
+      sub_cmds.select do |cmd|
+        cmd.name == name || cmd.alias_name.includes?(name)
+      end
     end
 
     def parse(argv)

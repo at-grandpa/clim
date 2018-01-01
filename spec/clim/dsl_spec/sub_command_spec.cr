@@ -740,3 +740,491 @@ describe "Call the main command." do
     end
   end
 end
+
+class SpecSubCommandWithAliasName < Clim
+  main_command
+  run do |opts, args|
+    raise "Run block of main_command was executed."
+  end
+
+  sub do
+    command "sub_command"
+    alias_name "sub_command_alias_name"
+    run do |opts, args|
+      raise "Run block of sub_command was executed."
+    end
+  end
+end
+
+describe "Call the sub command." do
+  it "raises an Exception because execute run block of sub_command." do
+    expect_raises(Exception, "Run block of sub_command was executed.") do
+      SpecSubCommandWithAliasName.start_main(%w(sub_command arg1))
+    end
+  end
+  it "raises an Exception because execute run block of sub_command with alias_name." do
+    expect_raises(Exception, "Run block of sub_command was executed.") do
+      SpecSubCommandWithAliasName.start_main(%w(sub_command_alias_name arg1))
+    end
+  end
+end
+
+class SpecSubCommandWithMultiAliasName < Clim
+  main_command
+  run do |opts, args|
+    raise "Run block of main_command was executed."
+  end
+
+  sub do
+    command "sub_command"
+    alias_name "alias_name_1", "alias_name_2"
+    run do |opts, args|
+      raise "Run block of sub_command was executed."
+    end
+  end
+end
+
+describe "Call the sub command." do
+  it "raises an Exception because execute run block of sub_command." do
+    expect_raises(Exception, "Run block of sub_command was executed.") do
+      SpecSubCommandWithMultiAliasName.start_main(%w(sub_command arg1))
+    end
+  end
+  it "raises an Exception because execute run block of sub_command with alias_name_1." do
+    expect_raises(Exception, "Run block of sub_command was executed.") do
+      SpecSubCommandWithMultiAliasName.start_main(%w(alias_name_1 arg1))
+    end
+  end
+  it "raises an Exception because execute run block of sub_command with alias_name_2." do
+    expect_raises(Exception, "Run block of sub_command was executed.") do
+      SpecSubCommandWithMultiAliasName.start_main(%w(alias_name_2 arg1))
+    end
+  end
+end
+
+class SpecSubCommandWhenDuplicateAliasNameCase1 < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case1)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
+      #
+      # spec case:
+      #
+      #  class SpecClass
+      #    main_command
+      #    run do |opts, args| end
+      #
+      #    sub do
+      #      command "sub_command"
+      #      alias_name "sub_command" # Duplicate name.
+      #      run do |opts, args| end
+      #    end
+      #  end
+      #
+      SpecSubCommandWhenDuplicateAliasNameCase1.main_command
+      SpecSubCommandWhenDuplicateAliasNameCase1.run do |opts, args|
+      end
+
+      SpecSubCommandWhenDuplicateAliasNameCase1.sub do
+        SpecSubCommandWhenDuplicateAliasNameCase1.command "sub_command"
+        SpecSubCommandWhenDuplicateAliasNameCase1.alias_name "sub_command"
+        SpecSubCommandWhenDuplicateAliasNameCase1.run do |opts, args|
+        end
+      end
+    end
+  end
+end
+
+class SpecSubCommandWhenDuplicateAliasNameCase2 < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case2)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2]") do
+      #
+      # spec case:
+      #
+      #  class SpecClass
+      #    main_command
+      #    run do |opts, args| end
+      #
+      #    sub do
+      #      command "sub_command1"
+      #      alias_name "sub_command1", "sub_command2", "sub_command2" # Duplicate name.
+      #      run do |opts, args| end
+      #    end
+      #  end
+      #
+      SpecSubCommandWhenDuplicateAliasNameCase2.main_command
+      SpecSubCommandWhenDuplicateAliasNameCase2.run do |opts, args|
+      end
+
+      SpecSubCommandWhenDuplicateAliasNameCase2.sub do
+        SpecSubCommandWhenDuplicateAliasNameCase2.command "sub_command1"
+        SpecSubCommandWhenDuplicateAliasNameCase2.alias_name "sub_command1", "sub_command2", "sub_command2"
+        SpecSubCommandWhenDuplicateAliasNameCase2.run do |opts, args|
+        end
+      end
+    end
+  end
+end
+
+class SpecSubCommandWhenDuplicateAliasNameCase3 < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case3)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2,alias_name1,alias_name2]") do
+      #
+      # spec case:
+      #
+      #  class SpecClass
+      #    main_command
+      #    run do |opts, args| end
+      #
+      #    sub do
+      #      command "sub_command1"
+      #      alias_name "alias_name1"
+      #      run do |opts, args| end
+      #
+      #      command "sub_command2"
+      #      alias_name "alias_name2"
+      #      run do |opts, args| end
+      #
+      #      command "sub_command3"
+      #      alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2" # Duplicate name.
+      #      run do |opts, args| end
+      #    end
+      #  end
+      #
+      SpecSubCommandWhenDuplicateAliasNameCase3.main_command
+      SpecSubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
+      end
+
+      SpecSubCommandWhenDuplicateAliasNameCase3.sub do
+        SpecSubCommandWhenDuplicateAliasNameCase3.command "sub_command1"
+        SpecSubCommandWhenDuplicateAliasNameCase3.alias_name "alias_name1"
+        SpecSubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
+        end
+
+        SpecSubCommandWhenDuplicateAliasNameCase3.command "sub_command2"
+        SpecSubCommandWhenDuplicateAliasNameCase3.alias_name "alias_name2"
+        SpecSubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
+        end
+
+        SpecSubCommandWhenDuplicateAliasNameCase3.command "sub_command3"
+        SpecSubCommandWhenDuplicateAliasNameCase3.alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2"
+        SpecSubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
+        end
+      end
+    end
+  end
+end
+
+class SpecSubCommandWithAliasNameForExecute < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  run do |opts, args|
+    raise "Main command is not target for spec."
+  end
+
+  sub do
+    command "sub_command_1"
+    alias_name "alias_sub_command_1"
+    desc "Sub command 1 with desc."
+    usage "sub_command_1 with usage [options] [arguments]"
+    run do |opts, args|
+      raise "Sub command 1 is not target for spec."
+    end
+
+    sub do
+      command "sub_sub_command_1"
+      desc "Sub sub command 1 with desc."
+      usage "sub_sub_command_1 with usage [options] [arguments]"
+      run do |opts, args|
+        raise "Sub sub command 1 is not target for spec."
+      end
+    end
+
+    command "sub_command_2"
+    alias_name "alias_sub_command_2", "alias_sub_command_2_second"
+    desc "Sub command 2 with desc."
+    usage "sub_command_2 with usage [options] [arguments]"
+    run do |opts, args|
+      raise "Sub command 2 is not target for spec."
+    end
+  end
+end
+
+describe "sub command with alias_name." do
+  describe "returns help with alias_name." do
+    [
+      {
+        argv: %w(sub_command_1 --help),
+      },
+      {
+        argv: %w(alias_sub_command_1 --help),
+      },
+      {
+        argv: %w(sub_command_1 --help ignore-arg),
+      },
+      {
+        argv: %w(alias_sub_command_1 --help ignore-arg),
+      },
+      {
+        argv: %w(sub_command_1 ignore-arg --help),
+      },
+      {
+        argv: %w(alias_sub_command_1 ignore-arg --help),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecSubCommandWithAliasNameForExecute.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
+          <<-HELP_MESSAGE
+
+            Sub command 1 with desc.
+
+            Usage:
+
+              sub_command_1 with usage [options] [arguments]
+
+            Options:
+
+              --help                           Show this help.
+
+            Sub Commands:
+
+              sub_sub_command_1   Sub sub command 1 with desc.
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns main command help." do
+    [
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(--help ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg --help),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecSubCommandWithAliasNameForExecute.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
+          <<-HELP_MESSAGE
+
+            Main command with desc.
+
+            Usage:
+
+              main_command with usage [options] [arguments]
+
+            Options:
+
+              --help                           Show this help.
+
+            Sub Commands:
+
+              sub_command_1, alias_sub_command_1                               Sub command 1 with desc.
+              sub_command_2, alias_sub_command_2, alias_sub_command_2_second   Sub command 2 with desc.
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns opts and args when passing argv." do
+    [
+      {
+        argv:        %w(sub_command_2),
+        expect_opts: create_opts_hash,
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(alias_sub_command_2),
+        expect_opts: create_opts_hash,
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(alias_sub_command_2_second),
+        expect_opts: create_opts_hash,
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(sub_command_2 arg1),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(alias_sub_command_2 arg1),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(alias_sub_command_2_second arg1),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(sub_command_2 arg1 arg2),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
+        argv:        %w(alias_sub_command_2 arg1 arg2),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
+        argv:        %w(alias_sub_command_2_second arg1 arg2),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
+        argv:        %w(sub_command_2 arg1 arg2 arg3),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+      {
+        argv:        %w(alias_sub_command_2 arg1 arg2 arg3),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+      {
+        argv:        %w(alias_sub_command_2_second arg1 arg2 arg3),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecSubCommandWithAliasNameForExecute.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
+      end
+    end
+  end
+  describe "raises Exception when passing invalid argv to main command." do
+    [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command_2 --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command_2 -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command_2 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(sub_command_2 --missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 --missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second --missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(sub_command_2 -m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 -m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second -m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(sub_command_2 arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(sub_command_2 -m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 -m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second -m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        expect_raises(Exception, spec_case[:exception_message]) do
+          SpecSubCommandWithAliasNameForExecute.run_proc_arguments(spec_case[:argv])
+        end
+      end
+    end
+  end
+end

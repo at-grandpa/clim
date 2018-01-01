@@ -116,6 +116,31 @@ describe "main command only." do
   end
 end
 
+class SpecMainCommandWithAliasName < Clim
+  # For the spec case, please see the "it" block below.
+end
+
+describe "Call the main command with alias_name." do
+  it "raises an Exception." do
+    expect_raises(Exception, "'alias_name' is not supported on main command.") do
+      #
+      # spec case:
+      #
+      #  class SpecClass
+      #    main_command
+      #    alias_name "second_name"
+      #    run do |opts, args|
+      #    end
+      #  end
+      #
+      SpecMainCommandWithAliasName.main_command
+      SpecMainCommandWithAliasName.alias_name "second_name"
+      SpecMainCommandWithAliasName.run do |opts, args|
+      end
+    end
+  end
+end
+
 class SpecMainCommandWithDesc < Clim
   main_command
   desc "Main command with desc."

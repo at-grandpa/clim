@@ -34,7 +34,7 @@ dependencies:
     version: 0.1.4
 ```
 
-## Sample Code 1 (main command)
+## Sample Code (main command)
 
 *src/hello.cr*
 
@@ -83,7 +83,7 @@ $ ./hello -n Taro -n Miko -g 'Good night'
 Good night, Taro, Miko!
 ```
 
-## Sample Code 2 (sub commands)
+## Sample Code (sub commands)
 
 *src/fake_git.cr*
 
