@@ -924,3 +924,201 @@ describe "Call the command." do
     end
   end
 end
+
+class SpecSubCommandWithAliasNameForExecute < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  run do |opts, args|
+    raise "Main command is not target for spec."
+  end
+
+  sub do
+    command "sub_command_1"
+    # alias_name "alias_sub_command_1"
+    desc "Sub command 1 with desc."
+    usage "sub_command_1 with usage [options] [arguments]"
+    run do |opts, args|
+      raise "Sub command 1 is not target for spec."
+    end
+
+    sub do
+      command "sub_sub_command_1"
+      desc "Sub sub command 1 with desc."
+      usage "sub_sub_command_1 with usage [options] [arguments]"
+      run do |opts, args|
+        raise "Sub sub command 1 is not target for spec."
+      end
+    end
+
+    command "sub_command_2"
+    desc "Sub command 2 with desc."
+    usage "sub_command_2 with usage [options] [arguments]"
+    run do |opts, args|
+      raise "Sub command 2 is not target for spec."
+    end
+  end
+end
+
+describe "sub command with alias_name." do
+  describe "returns help with alias_name." do
+    [
+      {
+        argv: %w(sub_command_1 --help),
+      },
+      {
+        argv: %w(sub_command_1 --help ignore-arg),
+      },
+      {
+        argv: %w(sub_command_1 ignore-arg --help),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecSubCommandWithAliasNameForExecute.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
+          <<-HELP_MESSAGE
+
+            Sub command 1 with desc.
+
+            Usage:
+
+              sub_command_1 with usage [options] [arguments]
+
+            Options:
+
+              --help                           Show this help.
+
+            Sub Commands:
+
+              sub_sub_command_1   Sub sub command 1 with desc.
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns main command help." do
+    [
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(--help ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg --help),
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecSubCommandWithAliasNameForExecute.run_proc_arguments(spec_case[:argv])
+        run_proc_opts["help"].should eq(
+          <<-HELP_MESSAGE
+
+            Main command with desc.
+
+            Usage:
+
+              main_command with usage [options] [arguments]
+
+            Options:
+
+              --help                           Show this help.
+
+            Sub Commands:
+
+              sub_command_1   Sub command 1 with desc.
+              sub_command_2   Sub command 2 with desc.
+
+
+          HELP_MESSAGE
+        )
+      end
+    end
+  end
+  describe "returns opts and args when passing argv." do
+    [
+      {
+        argv:        %w(sub_command_2),
+        expect_opts: create_opts_hash,
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(sub_command_2 arg1),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(sub_command_2 arg1 arg2),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
+        argv:        %w(sub_command_2 arg1 arg2 arg3),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        run_proc_opts, run_proc_args = SpecSubCommandWithAliasNameForExecute.run_proc_arguments(spec_case[:argv])
+        run_proc_opts.delete("help")
+        run_proc_opts.should eq(spec_case[:expect_opts])
+        run_proc_args.should eq(spec_case[:expect_args])
+      end
+    end
+  end
+  describe "raises Exception when passing invalid argv to main command." do
+    [
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command_2 --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command_2 -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(sub_command_2 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(sub_command_2 --missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(sub_command_2 -m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(sub_command_2 arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(sub_command_2 -m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+    ].each do |spec_case|
+      it "#{spec_case[:argv].join(" ")}" do
+        expect_raises(Exception, spec_case[:exception_message]) do
+          SpecSubCommandWithAliasNameForExecute.run_proc_arguments(spec_case[:argv])
+        end
+      end
+    end
+  end
+end

@@ -76,13 +76,13 @@ class Clim
 
     def sub_cmds_help_lines
       sub_cmds.map do |cmd|
-        name = cmd.name + "#{" " * (max_name_length - cmd.name.size)}"
+        name = ([cmd.name] + cmd.alias_name).join(",") + "#{" " * (max_name_length - cmd.name.size)}"
         "    #{name}   #{cmd.desc}"
       end
     end
 
     def max_name_length
-      sub_cmds.empty? ? 0 : sub_cmds.map(&.name.size).max
+      sub_cmds.empty? ? 0 : sub_cmds.map { |cmd| ([cmd.name] + cmd.alias_name).join(",").size }.max
     end
 
     def run(opts, args)
