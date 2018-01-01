@@ -215,7 +215,7 @@ $ ./fgit l short --help
 
     --help                           Show this help.
 
-$ ./fgit log short
+$ ./fgit l short
 Fake Git short log!!
 ```
 
