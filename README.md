@@ -21,6 +21,7 @@
 - [x] Required flag for options
 - [x] Nested sub commands
 - [x] `--help` option
+- [x] Command name alias
 
 
 ## Installation
@@ -31,7 +32,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.1.4
+    version: 0.1.5
 ```
 
 ## Sample Code (main command)
@@ -109,6 +110,7 @@ module FakeGit
       # Following is difinition of command.
       #
       command "branch"
+      alias_name "b", "br"
       desc  "List, create, or delete branches."
       usage "fgit branch [arguments]"
       run do |opts, args|
@@ -116,6 +118,7 @@ module FakeGit
       end
 
       command "log"
+      alias_name "l"
       desc  "Show commit logs."
       usage "fgit log [arguments]"
       run do |opts, args|
@@ -153,7 +156,7 @@ FakeGit::Cli.start(ARGV)
 ```
 
 ```
-$ crystal build -o ./fgit src/fake_git.cr
+$ crystal build -o ./fgit src/fake-git.cr
 $ ./fgit
 
   Fake Git command.
@@ -168,11 +171,10 @@ $ ./fgit
 
   Sub Commands:
 
-    branch   List, create, or delete branches.
-    log      Show commit logs.
+    branch, b, br   List, create, or delete branches.
+    log, l          Show commit logs.
 
-
-$ ./fgit branch --help
+$ ./fgit br --help
 
   List, create, or delete branches.
 
@@ -184,8 +186,7 @@ $ ./fgit branch --help
 
     --help                           Show this help.
 
-
-$ ./fgit log --help
+$ ./fgit l --help
 
   Show commit logs.
 
@@ -202,8 +203,7 @@ $ ./fgit log --help
     short   Show commit short logs.
     long    Show commit long logs.
 
-
-$ ./fgit log short --help
+$ ./fgit l short --help
 
   Show commit short logs.
 
@@ -215,11 +215,9 @@ $ ./fgit log short --help
 
     --help                           Show this help.
 
-
 $ ./fgit log short
 Fake Git short log!!
 ```
-
 
 ## Usage
 
@@ -230,6 +228,12 @@ require "clim"
 ```
 
 ### Command Informations
+
+#### alias_name
+
+```crystal
+  alias_name  "alias1", "alias2", "alias3"    # Command name alias.
+```
 
 #### desc
 
@@ -282,7 +286,7 @@ require "clim"
 
 You can specify short name, long name or both.
 
-see: [https://crystal-lang.org/api/0.23.0/OptionParser.html](https://crystal-lang.org/api/0.23.0/OptionParser.html)
+see: [https://crystal-lang.org/api/OptionParser.html](https://crystal-lang.org/api/OptionParser.html)
 
 #### Short name only
 
@@ -322,7 +326,6 @@ If both are specified, the long name becomes the key.
     # puts opts["s"]                                  # => ERROR: Missing hash key: "s"
   end
 ```
-
 
 ### default / required
 
