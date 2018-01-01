@@ -968,10 +968,19 @@ describe "sub command with alias_name." do
         argv: %w(sub_command_1 --help),
       },
       {
+        argv: %w(alias_sub_command_1 --help),
+      },
+      {
         argv: %w(sub_command_1 --help ignore-arg),
       },
       {
+        argv: %w(alias_sub_command_1 --help ignore-arg),
+      },
+      {
         argv: %w(sub_command_1 ignore-arg --help),
+      },
+      {
+        argv: %w(alias_sub_command_1 ignore-arg --help),
       },
     ].each do |spec_case|
       it "#{spec_case[:argv].join(" ")}" do
@@ -1045,7 +1054,27 @@ describe "sub command with alias_name." do
         expect_args: [] of String,
       },
       {
+        argv:        %w(alias_sub_command_2),
+        expect_opts: create_opts_hash,
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(alias_sub_command_2_second),
+        expect_opts: create_opts_hash,
+        expect_args: [] of String,
+      },
+      {
         argv:        %w(sub_command_2 arg1),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(alias_sub_command_2 arg1),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(alias_sub_command_2_second arg1),
         expect_opts: create_opts_hash,
         expect_args: ["arg1"],
       },
@@ -1055,7 +1084,27 @@ describe "sub command with alias_name." do
         expect_args: ["arg1", "arg2"],
       },
       {
+        argv:        %w(alias_sub_command_2 arg1 arg2),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
+        argv:        %w(alias_sub_command_2_second arg1 arg2),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
         argv:        %w(sub_command_2 arg1 arg2 arg3),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+      {
+        argv:        %w(alias_sub_command_2 arg1 arg2 arg3),
+        expect_opts: create_opts_hash,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+      {
+        argv:        %w(alias_sub_command_2_second arg1 arg2 arg3),
         expect_opts: create_opts_hash,
         expect_args: ["arg1", "arg2", "arg3"],
       },
@@ -1091,7 +1140,23 @@ describe "sub command with alias_name." do
         exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
+        argv:              %w(alias_sub_command_2 --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second --help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
         argv:              %w(sub_command_2 -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 -ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second -ignore-option --help),
         exception_message: "Undefined option. \"-ignore-option\"",
       },
       {
@@ -1099,7 +1164,23 @@ describe "sub command with alias_name." do
         exception_message: "Undefined option. \"-m\"",
       },
       {
+        argv:              %w(alias_sub_command_2 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
         argv:              %w(sub_command_2 --missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 --missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second --missing-option),
         exception_message: "Undefined option. \"--missing-option\"",
       },
       {
@@ -1107,11 +1188,35 @@ describe "sub command with alias_name." do
         exception_message: "Undefined option. \"-m\"",
       },
       {
+        argv:              %w(alias_sub_command_2 -m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second -m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
         argv:              %w(sub_command_2 arg1 -m),
         exception_message: "Undefined option. \"-m\"",
       },
       {
+        argv:              %w(alias_sub_command_2 arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
         argv:              %w(sub_command_2 -m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2 -m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(alias_sub_command_2_second -m -d),
         exception_message: "Undefined option. \"-m\"",
       },
     ].each do |spec_case|
