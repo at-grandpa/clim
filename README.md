@@ -86,7 +86,7 @@ Good night, Taro, Miko!
 
 ## Sample Code (sub commands)
 
-*src/fake_git.cr*
+*src/fake-git.cr*
 
 ```crystal
 require "clim"
