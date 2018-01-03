@@ -595,6 +595,24 @@ describe "Call the main command twice." do
   end
 end
 
+class SpecMainCommand::IfCallTheMainCommandTwice < Clim
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  run do |opts, args|
+  end
+
+  main_command # Exception!!
+end
+
+describe "If the main command is called twice, " do
+  it "raises an Exception." do
+    expect_raises(Exception, "Main command is already defined.") do
+      SpecMainCommand::IfCallTheMainCommandTwice.run_proc_arguments([] of String)
+    end
+  end
+end
+
 class SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock < Clim
   # For the spec case, please see the "it" block below.
 end

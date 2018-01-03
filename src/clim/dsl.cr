@@ -2,14 +2,16 @@ class Clim
   alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
-  @@main : Command = Command.new("main_command") # Main command.
-  @@defining : Command = @@main                  # Current defining command.
-  @@stack : Array(Command) = [] of Command       # Command stack for `sub do ... end` scope.
-  @@defined_main : Bool = false                  # If the main command is defined, @@defined_main = true.
+  @@main : Command = Command.new("main_command")    # Main command.
+  @@defining : Command = @@main                     # Current defining command.
+  @@stack : Array(Command) = [] of Command          # Command stack for `sub do ... end` scope.
+  @@defined_main : Bool = false                     # If the main command is defined, @@defined_main = true.
+  @@exceptions : Array(Proc(Nil)) = [] of Proc(Nil) # If the main command is defined, @@defined_main = true.
 
   module Dsl
     def main_command
-      raise ClimException.new "Main command is already defined." if @@defined_main
+      @@exceptions.push ->{ raise ClimException.new "Main command is already defined." } if @@defined_main
+      # raise ClimException.new "Main command is already defined." if @@defined_main
       @@main = Command.new("main_command")
       @@defining = @@main
       @@defined_main = true
@@ -64,6 +66,9 @@ class Clim
     end
 
     def run_proc_arguments(argv, root = @@main)
+      @@exceptions.each do |e|
+        e.call
+      end
       root.parse(argv).run_proc_arguments
     end
 
