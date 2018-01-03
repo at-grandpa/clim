@@ -117,26 +117,16 @@ describe "main command only." do
 end
 
 class SpecMainCommandWithAliasName < Clim
-  # For the spec case, please see the "it" block below.
+  main_command
+  alias_name "second_name" # Exception!!
+  run do |opts, args|
+  end
 end
 
-describe "Call the main command with alias_name." do
+describe "If 'alias_name' is called in 'main_command', " do
   it "raises an Exception." do
     expect_raises(Exception, "'alias_name' is not supported on main command.") do
-      #
-      # spec case:
-      #
-      #  class SpecClass
-      #    main_command
-      #    alias_name "second_name"
-      #    run do |opts, args|
-      #    end
-      #  end
-      #
-      SpecMainCommandWithAliasName.main_command
-      SpecMainCommandWithAliasName.alias_name "second_name"
-      SpecMainCommandWithAliasName.run do |opts, args|
-      end
+      SpecMainCommandWithAliasName.run_proc_arguments([] of String)
     end
   end
 end
@@ -561,36 +551,6 @@ describe "main command with duplicate long option [array & bool]." do
       #
       SpecMainCommandWithDuplicateLongOptionArrayAndBool.array "-a A1", "--duplicate=A1"
       SpecMainCommandWithDuplicateLongOptionArrayAndBool.bool "-b", "--duplicate"
-    end
-  end
-end
-
-class SpecMainCommandWhenCallTheMainCommandTwice < Clim
-  # For the spec case, please see the "it" block below.
-end
-
-describe "Call the main command twice." do
-  it "raises an Exception when Call the main command twice." do
-    expect_raises(Exception, "Main command is already defined.") do
-      #
-      # spec case:
-      #
-      #  class SpecClass
-      #    main_command
-      #    desc "Main command with desc."
-      #    usage "main_command with usage [options] [arguments]"
-      #    run do |opts, args|
-      #    end
-      #
-      #    main_command  # A second call.
-      #  end
-      #
-      SpecMainCommandWhenCallTheMainCommandTwice.main_command
-      SpecMainCommandWhenCallTheMainCommandTwice.desc "Main command with desc."
-      SpecMainCommandWhenCallTheMainCommandTwice.usage "main_command with usage [options] [arguments]"
-      SpecMainCommandWhenCallTheMainCommandTwice.run do |opts, args|
-      end
-      SpecMainCommandWhenCallTheMainCommandTwice.main_command # A second call.
     end
   end
 end
