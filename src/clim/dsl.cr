@@ -72,7 +72,10 @@ class Clim
     end
 
     def start(argv, root = @@main)
-      opts, args = run_proc_arguments(argv, root)
+      @@exceptions.each do |e|
+        e.call
+      end
+      opts, args = root.parse(argv).run_proc_arguments
       root.parse(argv).run(opts, args)
     rescue ex : ClimException
       puts "ERROR: #{ex.message}"

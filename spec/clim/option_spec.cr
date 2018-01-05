@@ -37,19 +37,6 @@ describe Clim::Option do
       opt.name.should eq("l")
     end
   end
-  describe "#extract_name" do
-    it "extract opt name." do
-      opt = Option(String).new("", "", "", false, "", "")
-      opt.extract_name("-a").should eq("a")
-      opt.extract_name("-a VALUE").should eq("a")
-      opt.extract_name("-a=VALUE").should eq("a")
-      opt.extract_name("--array").should eq("array")
-      opt.extract_name("--array VALUE").should eq("array")
-      opt.extract_name("--array=VALUE").should eq("array")
-      opt.extract_name("--dry-run").should eq("dry-run")
-      opt.extract_name("--dry_run").should eq("dry_run")
-    end
-  end
   describe "#to_h" do
     it "returns opt hash when type is String." do
       opt = Option(String).new("-l", "--long-name", "", false, "", "string_value")

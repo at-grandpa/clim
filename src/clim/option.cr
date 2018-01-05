@@ -22,7 +22,7 @@ class Clim
       extract_name(long)
     end
 
-    def extract_name(name)
+    private def extract_name(name)
       name.split(/(\s|=)/).first.gsub(/^-*/, "")
     end
 
@@ -37,7 +37,7 @@ class Clim
       desc
     end
 
-    def display_default
+    private def display_default
       default_value = default
       case default_value
       when String

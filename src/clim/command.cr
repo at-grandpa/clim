@@ -23,13 +23,6 @@ class Clim
       initialize_parser
     end
 
-    def initialize_parser
-      parser.on("--help", "Show this help.") { @display_help_flag = true }
-      parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
-      parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-      parser.unknown_args { |unknown_args| @args = unknown_args }
-    end
-
     def set_opt(opt, &proc : String ->)
       opts.add(opt)
       if opt.long.empty?
@@ -43,58 +36,8 @@ class Clim
       sub_cmds.empty? ? base_help : base_help + sub_cmds_help
     end
 
-    def display_help?
-      @display_help_flag
-    end
-
-    def base_help
-      <<-HELP_MESSAGE
-
-        #{desc}
-
-        Usage:
-
-          #{usage}
-
-        Options:
-
-      #{parser}
-
-
-      HELP_MESSAGE
-    end
-
-    def sub_cmds_help
-      <<-HELP_MESSAGE
-        Sub Commands:
-
-      #{sub_cmds_help_lines.join("\n")}
-
-
-      HELP_MESSAGE
-    end
-
-    def sub_cmds_help_lines
-      sub_cmds.map do |cmd|
-        name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
-        "    #{name}   #{cmd.desc}"
-      end
-    end
-
-    def max_name_length
-      sub_cmds.empty? ? 0 : sub_cmds.map { |cmd| name_and_alias_name(cmd).size }.max
-    end
-
-    def name_and_alias_name(cmd)
-      ([cmd.name] + cmd.alias_name).join(", ")
-    end
-
     def run(opts, args)
       select_run_proc.call(opts, args)
-    end
-
-    def select_run_proc
-      display_help? ? @help_proc : @run_proc
     end
 
     def run_proc_arguments
@@ -112,19 +55,76 @@ class Clim
       @sub_cmds
     end
 
-    def find_sub_cmds_by(name)
-      sub_cmds.select do |cmd|
-        cmd.name == name || cmd.alias_name.includes?(name)
-      end
-    end
-
     def parse(argv)
       return parse_by_parser(argv) if argv.empty?
       return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
       find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
     end
 
-    def parse_by_parser(argv)
+    private def initialize_parser
+      parser.on("--help", "Show this help.") { @display_help_flag = true }
+      parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
+      parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
+      parser.unknown_args { |unknown_args| @args = unknown_args }
+    end
+
+    private def display_help?
+      @display_help_flag
+    end
+
+    private def base_help
+      <<-HELP_MESSAGE
+
+        #{desc}
+
+        Usage:
+
+          #{usage}
+
+        Options:
+
+      #{parser}
+
+
+      HELP_MESSAGE
+    end
+
+    private def sub_cmds_help
+      <<-HELP_MESSAGE
+        Sub Commands:
+
+      #{sub_cmds_help_lines.join("\n")}
+
+
+      HELP_MESSAGE
+    end
+
+    private def sub_cmds_help_lines
+      sub_cmds.map do |cmd|
+        name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
+        "    #{name}   #{cmd.desc}"
+      end
+    end
+
+    private def max_name_length
+      sub_cmds.empty? ? 0 : sub_cmds.map { |cmd| name_and_alias_name(cmd).size }.max
+    end
+
+    private def name_and_alias_name(cmd)
+      ([cmd.name] + cmd.alias_name).join(", ")
+    end
+
+    private def select_run_proc
+      display_help? ? @help_proc : @run_proc
+    end
+
+    private def find_sub_cmds_by(name)
+      sub_cmds.select do |cmd|
+        cmd.name == name || cmd.alias_name.includes?(name)
+      end
+    end
+
+    private def parse_by_parser(argv)
       prepare_parse
       parser.parse(argv.dup)
       opts.validate! unless display_help?
@@ -132,7 +132,7 @@ class Clim
       self
     end
 
-    def prepare_parse
+    private def prepare_parse
       opts.reset
       @args = [] of String
       @display_help_flag = false

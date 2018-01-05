@@ -71,19 +71,6 @@ describe Clim::Command do
       )
     end
   end
-  describe "#max_name_length" do
-    it "returns max name length when commands are set." do
-      main_cmd = Command.new("main_command")
-      main_cmd.sub_cmds << Command.new("foo")
-      main_cmd.sub_cmds << Command.new("fooo")
-      main_cmd.sub_cmds << Command.new("fo")
-      main_cmd.max_name_length.should eq(4)
-    end
-    it "returns 0 when commands are not set." do
-      cmd = Command.new("foo")
-      cmd.max_name_length.should eq(0)
-    end
-  end
   describe "#add_sub_commands?" do
     it "add sub command when command name is not duplicated." do
       main_cmd = Command.new("main_cmd")
