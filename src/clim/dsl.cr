@@ -11,7 +11,6 @@ class Clim
   module Dsl
     def main_command
       @@exceptions.push ->{ raise ClimException.new "Main command is already defined." } if @@defined_main
-      # raise ClimException.new "Main command is already defined." if @@defined_main
       @@main = Command.new("main_command")
       @@defining = @@main
       @@defined_main = true
