@@ -364,21 +364,21 @@ describe "main command with usage." do
   end
 end
 
-class SpecMainCommand::WithEmptyShortOption::String < Clim
-  main_command
-  string "", "--s1=S1"
-  run do |opts, args|
-  end
-end
-
-describe "main command with empty option." do
-  it "raises an Exception when short option is empty if short & long option exists. [string]" do
-    expect_raises(Exception, "Empty short option.") do
-      SpecMainCommand::WithEmptyShortOption::String.run_proc_arguments([] of String)
-    end
-  end
-end
-
+# class SpecMainCommand::WithEmptyShortOption::String < Clim
+#  main_command
+#  string "", "--s1=S1"
+#  run do |opts, args|
+#  end
+# end
+#
+# describe "main command with empty option, " do
+#  it "raises an Exception when short option is empty if short & long option exists. [string]" do
+#    expect_raises(Exception, "Empty short option.") do
+#      SpecMainCommand::WithEmptyShortOption::String.run_proc_arguments([] of String)
+#    end
+#  end
+# end
+#
 class SpecMainCommandWithEmptyShortOption < Clim
   main_command
   desc "Main command with desc."
@@ -589,35 +589,20 @@ describe "If the main command is called twice, " do
 end
 
 class SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock < Clim
-  # For the spec case, please see the "it" block below.
+  main_command
+  desc "Main command with desc."
+  usage "main_command with usage [options] [arguments]"
+  run do |opts, args|
+  end
+  sub do
+    main_command # A second call.
+  end
 end
 
 describe "Call the main command twice." do
   it "raises an Exception when Call the main command twice." do
     expect_raises(Exception, "Main command is already defined.") do
-      #
-      # spec case:
-      #
-      #  class SpecClass
-      #    main_command
-      #    desc "Main command with desc."
-      #    usage "main_command with usage [options] [arguments]"
-      #    run do |opts, args|
-      #    end
-      #
-      #    sub do
-      #      main_command  # A second call.
-      #    end
-      #  end
-      #
-      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.main_command
-      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.desc "Main command with desc."
-      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.usage "main_command with usage [options] [arguments]"
-      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.run do |opts, args|
-      end
-      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.sub do
-        SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.main_command # A second call.
-      end
+      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.run_proc_arguments([] of String)
     end
   end
 end

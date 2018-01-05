@@ -8,7 +8,7 @@ class Clim
     property help : String = ""
 
     def add(opt)
-      # opt_validate!(opt)
+      opt_validate!(opt)
       opts << opt
     end
 
