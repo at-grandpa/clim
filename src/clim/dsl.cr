@@ -74,10 +74,6 @@ class Clim
     def start_main(argv, root = @@main)
       opts, args = run_proc_arguments(argv, root)
       root.parse(argv).run(opts, args)
-    end
-
-    def start(argv)
-      start_main(argv)
     rescue ex : ClimException
       puts "ERROR: #{ex.message}"
     rescue ex : ClimInvalidOptionException
