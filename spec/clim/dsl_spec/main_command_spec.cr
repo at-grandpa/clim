@@ -364,6 +364,21 @@ describe "main command with usage." do
   end
 end
 
+class SpecMainCommand::WithEmptyShortOption::String < Clim
+  main_command
+  string "", "--s1=S1"
+  run do |opts, args|
+  end
+end
+
+describe "main command with empty option." do
+  it "raises an Exception when short option is empty if short & long option exists. [string]" do
+    expect_raises(Exception, "Empty short option.") do
+      SpecMainCommand::WithEmptyShortOption::String.run_proc_arguments([] of String)
+    end
+  end
+end
+
 class SpecMainCommandWithEmptyShortOption < Clim
   main_command
   desc "Main command with desc."
