@@ -719,7 +719,7 @@ end
 describe "Call the sub command." do
   it "raises an Exception because execute run block of sub_command." do
     expect_raises(Exception, "Run block of sub_command was executed.") do
-      SpecSubCommandExecuteRunBlock.start_main(%w(sub_command arg1))
+      SpecSubCommandExecuteRunBlock.start(%w(sub_command arg1))
     end
   end
 end
@@ -736,7 +736,7 @@ describe "Call the main command." do
     sub_command.run_proc = SpecSubCommandExecuteHelpBlock::RunProc.new { raise "Run block of sub_command was executed." } # This should not be called.
     main_command.add_sub_commands(sub_command)
     expect_raises(Exception, "Help block of sub_command was executed.") do
-      SpecSubCommandExecuteHelpBlock.start_main(%w(sub_command --help), main_command)
+      SpecSubCommandExecuteHelpBlock.start(%w(sub_command --help), main_command)
     end
   end
 end
@@ -759,12 +759,12 @@ end
 describe "Call the sub command." do
   it "raises an Exception because execute run block of sub_command." do
     expect_raises(Exception, "Run block of sub_command was executed.") do
-      SpecSubCommandWithAliasName.start_main(%w(sub_command arg1))
+      SpecSubCommandWithAliasName.start(%w(sub_command arg1))
     end
   end
   it "raises an Exception because execute run block of sub_command with alias_name." do
     expect_raises(Exception, "Run block of sub_command was executed.") do
-      SpecSubCommandWithAliasName.start_main(%w(sub_command_alias_name arg1))
+      SpecSubCommandWithAliasName.start(%w(sub_command_alias_name arg1))
     end
   end
 end
@@ -787,17 +787,17 @@ end
 describe "Call the sub command." do
   it "raises an Exception because execute run block of sub_command." do
     expect_raises(Exception, "Run block of sub_command was executed.") do
-      SpecSubCommandWithMultiAliasName.start_main(%w(sub_command arg1))
+      SpecSubCommandWithMultiAliasName.start(%w(sub_command arg1))
     end
   end
   it "raises an Exception because execute run block of sub_command with alias_name_1." do
     expect_raises(Exception, "Run block of sub_command was executed.") do
-      SpecSubCommandWithMultiAliasName.start_main(%w(alias_name_1 arg1))
+      SpecSubCommandWithMultiAliasName.start(%w(alias_name_1 arg1))
     end
   end
   it "raises an Exception because execute run block of sub_command with alias_name_2." do
     expect_raises(Exception, "Run block of sub_command was executed.") do
-      SpecSubCommandWithMultiAliasName.start_main(%w(alias_name_2 arg1))
+      SpecSubCommandWithMultiAliasName.start(%w(alias_name_2 arg1))
     end
   end
 end

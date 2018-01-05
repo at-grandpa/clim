@@ -71,7 +71,7 @@ class Clim
       root.parse(argv).run_proc_arguments
     end
 
-    def start_main(argv, root = @@main)
+    def start(argv, root = @@main)
       opts, args = run_proc_arguments(argv, root)
       root.parse(argv).run(opts, args)
     rescue ex : ClimException

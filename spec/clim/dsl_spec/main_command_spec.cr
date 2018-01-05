@@ -636,7 +636,7 @@ end
 describe "Call the main command." do
   it "raises an Exception because execute run block." do
     expect_raises(Exception, "Run block was executed.") do
-      SpecMainCommandExecuteRunBlock.start_main(%w(arg1))
+      SpecMainCommandExecuteRunBlock.start(%w(arg1))
     end
   end
 end
@@ -651,7 +651,7 @@ describe "Call the main command." do
     main_command.help_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Help block was executed." }
     main_command.run_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Run block was executed." } # This should not be called.
     expect_raises(Exception, "Help block was executed.") do
-      SpecMainCommandExecuteRunBlock.start_main(%w(--help), main_command)
+      SpecMainCommandExecuteRunBlock.start(%w(--help), main_command)
     end
   end
 end
