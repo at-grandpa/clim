@@ -5,9 +5,11 @@ class Clim
     property default : T
     property required : Bool
     property desc : String
+    property array_set_flag : Bool
     property value : T
 
     def initialize(@short, @long, @default, @required, @desc, @value)
+      @array_set_flag = false
     end
 
     def name
@@ -68,10 +70,13 @@ class Clim
     end
 
     def add_to_array(arg)
+      @value = [] of String if @array_set_flag == false
+      @array_set_flag = true
       @value = @value.nil? ? [arg] : @value.try &.<<(arg)
     end
 
     def reset
+      @array_set_flag = false
       @value = @default.dup
     end
 

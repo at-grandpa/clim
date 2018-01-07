@@ -102,12 +102,6 @@ spec(
     {
       argv: %w(--help),
     },
-    # {
-    #  argv: %w(--help --ignore-opts),
-    # },
-    # {
-    #  argv: %w(--ignore-opts --help),
-    # },
     {
       argv: %w(--help ignore-arg),
     },
@@ -387,42 +381,42 @@ spec(
     },
     {
       argv:        %w(-a array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-aarray1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(--array array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(--array=array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-a array1 arg1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: ["arg1"],
     },
     {
       argv:        %w(arg1 -a array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: ["arg1"],
     },
     {
       argv:        %w(-array), # Unintended case.
-      expect_opts: {"array" => ["default value", "rray"]},
+      expect_opts: {"array" => ["rray"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-a=array1), # Unintended case.
-      expect_opts: {"array" => ["default value", "=array1"]},
+      expect_opts: {"array" => ["=array1"]},
       expect_args: [] of String,
     },
     {
@@ -497,42 +491,42 @@ spec(
     },
     {
       argv:        %w(-a array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-aarray1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(--array array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(--array=array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-a array1 arg1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: ["arg1"],
     },
     {
       argv:        %w(arg1 -a array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: ["arg1"],
     },
     {
       argv:        %w(-array), # Unintended case.
-      expect_opts: {"array" => ["default value", "rray"]},
+      expect_opts: {"array" => ["rray"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-a=array1), # Unintended case.
-      expect_opts: {"array" => ["default value", "=array1"]},
+      expect_opts: {"array" => ["=array1"]},
       expect_args: [] of String,
     },
     {
@@ -715,42 +709,42 @@ spec(
     },
     {
       argv:        %w(-a array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-aarray1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(--array array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(--array=array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-a array1 arg1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: ["arg1"],
     },
     {
       argv:        %w(arg1 -a array1),
-      expect_opts: {"array" => ["default value", "array1"]},
+      expect_opts: {"array" => ["array1"]},
       expect_args: ["arg1"],
     },
     {
       argv:        %w(-array), # Unintended case.
-      expect_opts: {"array" => ["default value", "rray"]},
+      expect_opts: {"array" => ["rray"]},
       expect_args: [] of String,
     },
     {
       argv:        %w(-a=array1), # Unintended case.
-      expect_opts: {"array" => ["default value", "=array1"]},
+      expect_opts: {"array" => ["=array1"]},
       expect_args: [] of String,
     },
     {
