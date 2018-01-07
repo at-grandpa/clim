@@ -1,6 +1,131 @@
 require "./../../spec_helper"
 require "../dsl_spec"
 
+macro spec(spec_dsl, desc, it_desc, spec_cases)
+  {% for spec_case, index in spec_cases %}
+    # define dsl
+    class Case{{index}} < Clim
+      main_command
+      {{spec_dsl.id}}
+      run do |opts, args|
+        {% unless spec_case.keys.includes?("exception_message".id) %}
+          opts.delete("help")
+          opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
+          args.should eq {{spec_case["expect_args"]}}
+        {% end %}
+      end
+    end
+
+    describe {{desc}} do
+      describe "if dsl is [" + {{spec_dsl}} + "]," do
+        {% if spec_case.keys.includes?("exception_message".id) %}
+          # exception spec case
+          describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
+            it "raises an Exception." do
+              expect_raises(Exception, {{spec_case["exception_message"]}}) do
+                Case{{index}}.start_main({{spec_case["argv"]}})
+              end
+            end
+          end
+        {% else %}
+          # standard spec case
+          describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
+            it {{it_desc}} do
+              Case{{index}}.start_main({{spec_case["argv"]}})
+            end
+          end
+        {% end %}
+      end
+    end
+  {% end %}
+end
+
+spec(
+  spec_dsl: "array \"-a ARG\", \"--array=ARG\"",
+  desc: "main command with array dsl,",
+  it_desc: "opts and args are given as arguments of run block.",
+  spec_cases: [
+    {
+      argv:        %w(),
+      expect_opts: {"array" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(arg1),
+      expect_opts: {"array" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(-a array1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(-aarray1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(--array array1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(--array=array1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(-a array1 arg1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(arg1 -a array1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(-array), # Unintended case.
+      expect_opts: {"array" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(-a=array1), # Unintended case.
+      expect_opts: {"array" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              %w(-h),
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              %w(--help -ignore-option),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-ignore-option --help),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-a),
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              %w(--array),
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              %w(arg1 -a),
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              %w(arg1 --array),
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+  ]
+)
+
 class SpecMainCommandWithArray < Clim
   main_command
   desc "Main command with desc."

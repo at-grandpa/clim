@@ -1,5 +1,6 @@
 class Clim
   alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
+  # alias RunProc = Proc(ReturnOptsType, Array(String), ReturnOptsType?)
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
   @@main : Command = Command.new("main_command")    # Main command.
@@ -71,12 +72,16 @@ class Clim
       root.parse(argv).run_proc_arguments
     end
 
-    def start(argv, root = @@main)
+    def start_main(argv, root = @@main)
       @@exceptions.each do |e|
         e.call
       end
       opts, args = root.parse(argv).run_proc_arguments
       root.parse(argv).run(opts, args)
+    end
+
+    def start(argv)
+      start_main(argv)
     rescue ex : ClimException
       puts "ERROR: #{ex.message}"
     rescue ex : ClimInvalidOptionException
