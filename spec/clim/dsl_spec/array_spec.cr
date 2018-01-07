@@ -1,14 +1,17 @@
 require "./../../spec_helper"
 require "../dsl_spec"
 
-macro spec(spec_dsl, desc, it_desc, spec_cases)
+macro spec(spec_dsl, desc, it_desc, help_message, spec_cases)
   {% for spec_case, index in spec_cases %}
     # define dsl
     class Case{{index}} < Clim
       main_command
+      desc "Main command with desc."
+      usage "main_command with usage [options] [arguments]"
       {{spec_dsl.id}}
       run do |opts, args|
         {% unless spec_case.keys.includes?("exception_message".id) %}
+          opts["help"].should eq {{help_message}}
           opts.delete("help")
           opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
           args.should eq {{spec_case["expect_args"]}}
@@ -44,6 +47,21 @@ spec(
   spec_dsl: "array \"-a ARG\", \"--array=ARG\"",
   desc: "main command with array dsl,",
   it_desc: "opts and args are given as arguments of run block.",
+  help_message: <<-HELP_MESSAGE
+
+                  Main command with desc.
+
+                  Usage:
+
+                    main_command with usage [options] [arguments]
+
+                  Options:
+
+                    --help                           Show this help.
+                    -a ARG, --array=ARG              Option description.
+
+
+                HELP_MESSAGE,
   spec_cases: [
     {
       argv:        %w(),

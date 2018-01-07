@@ -36,12 +36,8 @@ class Clim
       sub_cmds.empty? ? base_help : base_help + sub_cmds_help
     end
 
-    def run(opts, args)
-      select_run_proc.call(opts, args)
-    end
-
-    def run_proc_arguments
-      return opts.to_h, args
+    def run
+      select_run_proc.call(opts.to_h, args)
     end
 
     def add_sub_commands(cmd)

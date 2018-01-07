@@ -65,19 +65,11 @@ class Clim
       @@stack.pop
     end
 
-    def run_proc_arguments(argv, root = @@main)
-      @@exceptions.each do |e|
-        e.call
-      end
-      root.parse(argv).run_proc_arguments
-    end
-
     def start_main(argv, root = @@main)
       @@exceptions.each do |e|
         e.call
       end
-      opts, args = root.parse(argv).run_proc_arguments
-      root.parse(argv).run(opts, args)
+      root.parse(argv).run
     end
 
     def start(argv)
