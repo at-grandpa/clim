@@ -43,7 +43,7 @@ class Clim
       default_value = default
       case default_value
       when String
-        default_value.empty? ? "\"\"" : default
+        default_value.empty? ? "\"\"" : "\"#{default}\""
       when Bool
         default_value
       when Array(String)
