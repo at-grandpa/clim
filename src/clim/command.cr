@@ -24,11 +24,6 @@ class Clim
 
     def set_opt(opt)
       opts.add(opt)
-      # if opt.long.empty?
-      #   parser.on(opt.short, opt.desc, &proc)
-      # else
-      #   parser.on(opt.short, opt.long, opt.desc, &proc)
-      # end
     end
 
     def help
