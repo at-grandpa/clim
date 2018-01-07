@@ -65,11 +65,11 @@ class Clim
       @@stack.pop
     end
 
-    def start_main(argv, root = @@main)
+    def start_main(argv, io = STDOUT, root = @@main)
       @@exceptions.each do |e|
         e.call
       end
-      root.parse(argv).run
+      root.parse(argv).run(io)
     end
 
     def start(argv)

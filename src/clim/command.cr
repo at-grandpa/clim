@@ -14,7 +14,6 @@ class Clim
     property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(self) = [] of self
-    property help_proc : RunProc = RunProc.new { }
     property display_help_flag : Bool = false
 
     def initialize(@name)
@@ -36,15 +35,12 @@ class Clim
       sub_cmds.empty? ? base_help : base_help + sub_cmds_help
     end
 
-    def run
-      select_run_proc.call(opts.to_h, args)
+    def run(io)
+      select_run_proc(io).call(opts.to_h, args)
     end
 
     def add_sub_commands(cmd)
       @sub_cmds << cmd
-      names = @sub_cmds.map(&.name)
-      alias_names = @sub_cmds.map(&.alias_name).flatten
-      duplicate_names = (names + alias_names).group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
       unless duplicate_names.empty?
         raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]"
       end
@@ -62,6 +58,12 @@ class Clim
       parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
       parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
       parser.unknown_args { |unknown_args| @args = unknown_args }
+    end
+
+    private def duplicate_names
+      names = @sub_cmds.map(&.name)
+      alias_names = @sub_cmds.map(&.alias_name).flatten
+      (names + alias_names).group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
     end
 
     private def display_help?
@@ -110,8 +112,8 @@ class Clim
       ([cmd.name] + cmd.alias_name).join(", ")
     end
 
-    private def select_run_proc
-      display_help? ? @help_proc : @run_proc
+    private def select_run_proc(io)
+      display_help? ? RunProc.new { io.puts help } : @run_proc
     end
 
     private def find_sub_cmds_by(name)
@@ -121,17 +123,14 @@ class Clim
     end
 
     private def parse_by_parser(argv)
-      prepare_parse
+      opts.reset
+      @args = [] of String
+      @display_help_flag = false
       parser.parse(argv.dup)
       opts.validate! unless display_help?
       opts.help = help
       self
     end
 
-    private def prepare_parse
-      opts.reset
-      @args = [] of String
-      @display_help_flag = false
-    end
   end
 end
