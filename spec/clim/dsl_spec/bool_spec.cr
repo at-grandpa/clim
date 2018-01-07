@@ -3,15 +3,17 @@ require "../dsl_spec"
 
 spec(
   spec_class_name: MainCommandWithBool,
-  spec_dsl: "bool \"-b\", \"--bool\"",
+  spec_dsl_lines: [
+    "bool \"-b\", \"--bool\"",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -95,15 +97,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolOnlyShortOption,
-  spec_dsl: "bool \"-b\"",
+  spec_dsl_lines: [
+    "bool \"-b\"",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -180,15 +184,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolOnlyLongOption,
-  spec_dsl: "bool \"--bool\"",
+  spec_dsl_lines: [
+    "bool \"--bool\"",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -261,15 +267,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolArguments,
-  spec_dsl: "bool \"-b ARG\", \"--bool=ARG\"",
+  spec_dsl_lines: [
+    "bool \"-b ARG\", \"--bool=ARG\"",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -367,15 +375,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsOnlyShortOption,
-  spec_dsl: "bool \"-b ARG\"",
+  spec_dsl_lines: [
+    "bool \"-b ARG\"",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -471,15 +481,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsOnlyLongOption,
-  spec_dsl: "bool \"--bool=ARG\"",
+  spec_dsl_lines: [
+    "bool \"--bool=ARG\"",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -577,15 +589,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolDesc,
-  spec_dsl: "bool \"-b\", \"--bool\", desc: \"Bool option description.\"",
+  spec_dsl_lines: [
+    "bool \"-b\", \"--bool\", desc: \"Bool option description.\"",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -609,15 +623,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolDefault,
-  spec_dsl: "bool \"-b\", \"--bool\", desc: \"Bool option description.\", default: false",
+  spec_dsl_lines: [
+    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", default: false",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -691,15 +707,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolRequiredTrueAndDefaultExists,
-  spec_dsl: "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: true, default: false",
+  spec_dsl_lines: [
+    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: true, default: false",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -763,15 +781,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredTrueAndDefaultExists,
-  spec_dsl: "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: true, default: false",
+  spec_dsl_lines: [
+    "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: true, default: false",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -909,15 +929,17 @@ spec(
 
 spec(
   spec_class_name: SpecMainCommandWithBoolRequiredTrueOnly,
-  spec_dsl: "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: true",
+  spec_dsl_lines: [
+    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: true",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -991,15 +1013,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredTrueOnly,
-  spec_dsl: "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: true",
+  spec_dsl_lines: [
+    "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: true",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -1135,15 +1159,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolRequiredFalseAndDefaultExists,
-  spec_dsl: "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: false, default: false",
+  spec_dsl_lines: [
+    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: false, default: false",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -1207,15 +1233,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredFalseAndDefaultExists,
-  spec_dsl: "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: false, default: false",
+  spec_dsl_lines: [
+    "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: false, default: false",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -1353,15 +1381,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolRequiredFalseOnly,
-  spec_dsl: "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: false",
+  spec_dsl_lines: [
+    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: false",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -1425,15 +1455,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredFalseOnly,
-  spec_dsl: "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: false",
+  spec_dsl_lines: [
+    "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: false",
+  ],
   spec_desc: "main command with bool dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 

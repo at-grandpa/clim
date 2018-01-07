@@ -3,15 +3,17 @@ require "../dsl_spec"
 
 spec(
   spec_class_name: MainCommandWithString,
-  spec_dsl: "string \"-s ARG\", \"--string=ARG\"",
+  spec_dsl_lines: [
+    "string \"-s ARG\", \"--string=ARG\"",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -113,15 +115,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithStringOnlyShortOption,
-  spec_dsl: "string \"-s ARG\"",
+  spec_dsl_lines: [
+    "string \"-s ARG\"",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -221,15 +225,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithStringOnlyLongOption,
-  spec_dsl: "string \"--string=ARG\"",
+  spec_dsl_lines: [
+    "string \"--string=ARG\"",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -315,15 +321,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithStringDesc,
-  spec_dsl: "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\"",
+  spec_dsl_lines: [
+    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\"",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -347,15 +355,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithStringDefault,
-  spec_dsl: "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", default: \"default value\"",
+  spec_dsl_lines: [
+    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", default: \"default value\"",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -457,15 +467,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithStringRequiredTrueAndDefaultExists,
-  spec_dsl: "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: true, default: \"default value\"",
+  spec_dsl_lines: [
+    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: true, default: \"default value\"",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -567,15 +579,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithStringRequiredTrueOnly,
-  spec_dsl: "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: true",
+  spec_dsl_lines: [
+    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: true",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -675,15 +689,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithStringRequiredFalseAndDefaultExists,
-  spec_dsl: "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: false, default: \"default value\"",
+  spec_dsl_lines: [
+    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: false, default: \"default value\"",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -785,15 +801,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithStringRequiredFalseOnly,
-  spec_dsl: "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: false",
+  spec_dsl_lines: [
+    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: false",
+  ],
   spec_desc: "main command with string dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 

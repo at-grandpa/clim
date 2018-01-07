@@ -1,14 +1,14 @@
 require "./../spec_helper"
 
-macro spec(spec_class_name, spec_dsl, spec_desc, help_message, spec_cases)
+macro spec(spec_class_name, spec_dsl_lines, spec_desc, help_message, spec_cases)
   {% for spec_case, index in spec_cases %}
     {% class_name = (spec_class_name.stringify + index.stringify).id %}
     # define dsl
     class {{class_name}} < Clim
       main_command
-      desc "Main command with desc."
-      usage "main_command with usage [options] [arguments]"
-      {{spec_dsl.id}}
+      {% for spec_dsl_line, index in spec_dsl_lines %}
+        {{spec_dsl_line.id}}
+      {% end %}
       run do |opts, args|
         {% if spec_case.keys.includes?("expect_opts".id) %}
           opts["help"].should eq {{help_message}}
@@ -21,7 +21,7 @@ macro spec(spec_class_name, spec_dsl, spec_desc, help_message, spec_cases)
 
     # spec
     describe {{spec_desc}} do
-      describe "if dsl is [" + {{spec_dsl}} + "]," do
+      describe "if dsl is [" + {{spec_dsl_lines.join(", ")}} + "]," do
         describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
           {% if spec_case.keys.includes?("expect_opts".id) %}
             it "opts and args are given as arguments of run block." do

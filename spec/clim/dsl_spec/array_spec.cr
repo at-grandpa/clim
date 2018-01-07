@@ -3,15 +3,17 @@ require "../dsl_spec"
 
 spec(
   spec_class_name: MainCommandWithArray,
-  spec_dsl: "array \"-a ARG\", \"--array=ARG\"",
+  spec_dsl_lines: [
+    "array \"-a ARG\", \"--array=ARG\"",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -113,15 +115,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithArrayOnlyShortOption,
-  spec_dsl: "array \"-a ARG\"",
+  spec_dsl_lines: [
+    "array \"-a ARG\"",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -221,15 +225,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithArrayOnlyLongOption,
-  spec_dsl: "array \"--array=ARG\"",
+  spec_dsl_lines: [
+    "array \"--array=ARG\"",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -319,15 +325,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithArrayDesc,
-  spec_dsl: "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\"",
+  spec_dsl_lines: [
+    "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\"",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -351,15 +359,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithArrayDefault,
-  spec_dsl: "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", default: [\"default value\"]",
+  spec_dsl_lines: [
+    "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", default: [\"default value\"]",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -461,15 +471,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithArrayRequiredTrueAndDefaultExists,
-  spec_dsl: "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: true, default: [\"default value\"]",
+  spec_dsl_lines: [
+    "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: true, default: [\"default value\"]",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -571,15 +583,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithArrayRequiredTrueOnly,
-  spec_dsl: "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: true",
+  spec_dsl_lines: [
+    "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: true",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -679,15 +693,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithArrayRequiredFalseAndDefaultExists,
-  spec_dsl: "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: false, default: [\"default value\"]",
+  spec_dsl_lines: [
+    "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: false, default: [\"default value\"]",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -789,15 +805,17 @@ spec(
 
 spec(
   spec_class_name: MainCommandWithArrayRequiredFalseOnly,
-  spec_dsl: "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: false",
+  spec_dsl_lines: [
+    "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: false",
+  ],
   spec_desc: "main command with array dsl,",
   help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                  Command Line Interface Tool.
 
                   Usage:
 
-                    main_command with usage [options] [arguments]
+                    main_command [options] [arguments]
 
                   Options:
 
@@ -807,92 +825,92 @@ spec(
 
                 HELP_MESSAGE,
   spec_cases: [
-      {
-        argv:        %w(),
-        expect_opts: {"array" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"array" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-aarray1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array=array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a array1 arg1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-array), # Unintended case.
-        expect_opts: {"array" => ["rray"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a=array1), # Unintended case.
-        expect_opts: {"array" => ["=array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
+    {
+      argv:        %w(),
+      expect_opts: {"array" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(arg1),
+      expect_opts: {"array" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(-a array1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(-aarray1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(--array array1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(--array=array1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(-a array1 arg1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(arg1 -a array1),
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(-array), # Unintended case.
+      expect_opts: {"array" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(-a=array1), # Unintended case.
+      expect_opts: {"array" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              %w(-h),
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              %w(--help -ignore-option),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-ignore-option --help),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-a),
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              %w(--array),
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              %w(arg1 -a),
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              %w(arg1 --array),
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv: %w(--help),
+    },
+    {
+      argv: %w(--help ignore-arg),
+    },
+    {
+      argv: %w(ignore-arg --help),
+    },
   ]
 )
