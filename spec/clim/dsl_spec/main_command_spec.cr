@@ -1,6 +1,4 @@
-require "./../../spec_helper"
 require "../dsl_spec"
-
 
 spec(
   spec_class_name: MainCommandWithArray,
@@ -328,4 +326,3 @@ describe "Call the main command twice." do
     end
   end
 end
-

@@ -1,4 +1,3 @@
-require "./../../spec_helper"
 require "../dsl_spec"
 
 spec(
