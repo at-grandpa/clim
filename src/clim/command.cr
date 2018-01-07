@@ -22,13 +22,13 @@ class Clim
       initialize_parser
     end
 
-    def set_opt(opt, &proc : String ->)
+    def set_opt(opt)
       opts.add(opt)
-      if opt.long.empty?
-        parser.on(opt.short, opt.desc, &proc)
-      else
-        parser.on(opt.short, opt.long, opt.desc, &proc)
-      end
+      # if opt.long.empty?
+      #   parser.on(opt.short, opt.desc, &proc)
+      # else
+      #   parser.on(opt.short, opt.long, opt.desc, &proc)
+      # end
     end
 
     def help
@@ -48,6 +48,17 @@ class Clim
     end
 
     def parse(argv)
+      opts.opts_validate!
+
+      # parser on
+      opts.opts.each do |opt|
+        if opt.long.empty?
+          parser.on(opt.short, opt.desc, &(opt.proc))
+        else
+          parser.on(opt.short, opt.long, opt.desc, &(opt.proc))
+        end
+      end
+
       return parse_by_parser(argv) if argv.empty?
       return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
       find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
@@ -131,6 +142,5 @@ class Clim
       opts.help = help
       self
     end
-
   end
 end

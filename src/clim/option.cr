@@ -5,11 +5,17 @@ class Clim
     property default : T
     property required : Bool
     property desc : String
+    property proc : String ->
     property array_set_flag : Bool
     property value : T
 
     def initialize(@short, @long, @default, @required, @desc, @value)
+      @proc = ->(arg : String) {}
       @array_set_flag = false
+    end
+
+    def set_proc(&proc : String ->)
+      @proc = proc
     end
 
     def name

@@ -39,13 +39,15 @@ class Clim
       # short name and long name
       def {{method_name.id}}(short, long, default : {{type}} = nil, required = false, desc = "Option description.")
         opt = Option({{type}}).new(short, long, default, required, desc, default)
-        @@defining.set_opt(opt) {{proc.id}}
+        opt.set_proc {{proc.id}}
+        @@defining.set_opt(opt)
       end
 
       # short name only
       def {{method_name.id}}(short, default : {{type}} = nil, required = false, desc = "Option description.")
         opt = Option({{type}}).new(short,  "", default, required, desc, default)
-        @@defining.set_opt(opt) {{proc.id}}
+        opt.set_proc {{proc.id}}
+        @@defining.set_opt(opt)
       end
     end
 
