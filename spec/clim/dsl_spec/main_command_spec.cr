@@ -1,579 +1,336 @@
 require "./../../spec_helper"
 require "../dsl_spec"
 
-class SpecMainCommandOnly < Clim
-  main_command
-  run do |opts, args|
-  end
-end
-
-describe "main command only." do
-  describe "returns help." do
-    [
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        run_proc_opts, run_proc_args = SpecMainCommandOnly.run_proc_arguments(spec_case[:argv])
-        run_proc_opts["help"].should eq(
-          <<-HELP_MESSAGE
-
-            Command Line Interface Tool.
-
-            Usage:
-
-              main_command [options] [arguments]
-
-            Options:
-
-              --help                           Show this help.
-
-
-          HELP_MESSAGE
-        )
+macro spec_main_command(spec_class_name, spec_dsl_lines, spec_desc, help_message, spec_cases)
+  {% for spec_case, index in spec_cases %}
+    {% class_name = (spec_class_name.stringify + index.stringify).id %}
+    # define dsl
+    class {{class_name}} < Clim
+      main_command
+      {% for spec_dsl_line, index in spec_dsl_lines %}
+        {{spec_dsl_line.id}}
+      {% end %}
+      run do |opts, args|
+        {% if spec_case.keys.includes?("expect_opts".id) %}
+          opts["help"].should eq {{help_message}}
+          opts.delete("help")
+          opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
+          args.should eq {{spec_case["expect_args"]}}
+        {% end %}
       end
     end
-  end
-  describe "returns opts and args when passing argv." do
-    [
-      {
-        argv:        %w(),
-        expect_opts: create_opts_hash,
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 arg2),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1", "arg2"],
-      },
-      {
-        argv:        %w(arg1 arg2 arg3),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1", "arg2", "arg3"],
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        run_proc_opts, run_proc_args = SpecMainCommandOnly.run_proc_arguments(spec_case[:argv])
-        run_proc_opts.delete("help")
-        run_proc_opts.should eq(spec_case[:expect_opts])
-        run_proc_args.should eq(spec_case[:expect_args])
-      end
-    end
-  end
-  describe "raises Exception when passing invalid argv." do
-    [
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-m),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(--missing-option),
-        exception_message: "Undefined option. \"--missing-option\"",
-      },
-      {
-        argv:              %w(-m arg1),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(arg1 -m),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(-m -d),
-        exception_message: "Undefined option. \"-m\"",
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandOnly.run_proc_arguments(spec_case[:argv])
+
+    # spec
+    describe {{spec_desc}} do
+      describe "if dsl is [" + {{spec_dsl_lines.join(", ")}} + "]," do
+        describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
+          {% if spec_case.keys.includes?("expect_opts".id) %}
+            it "opts and args are given as arguments of run block." do
+              {{class_name}}.start_main({{spec_case["argv"]}})
+            end
+          {% elsif spec_case.keys.includes?("exception_message".id) %}
+            it "raises an Exception." do
+              expect_raises(Exception, {{spec_case["exception_message"]}}) do
+                {{class_name}}.start_main({{spec_case["argv"]}})
+              end
+            end
+          {% else %}
+            it "display help." do
+              io = IO::Memory.new
+              {{class_name}}.start_main({{spec_case["argv"]}}, io)
+              io.to_s.should eq {{help_message}}
+            end
+          {% end %}
         end
       end
     end
-  end
+  {% end %}
 end
 
-class SpecMainCommandWithAliasName < Clim
+spec_main_command(
+  spec_class_name: MainCommandWithArray,
+  spec_dsl_lines: [] of String,
+  spec_desc: "main command,",
+  help_message: <<-HELP_MESSAGE
+
+                  Command Line Interface Tool.
+
+                  Usage:
+
+                    main_command [options] [arguments]
+
+                  Options:
+
+                    --help                           Show this help.
+
+
+                HELP_MESSAGE,
+  spec_cases: [
+    {
+      argv:        %w(),
+      expect_opts: ReturnOptsType.new,
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(arg1),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(arg1 arg2),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1", "arg2"],
+    },
+    {
+      argv:        %w(arg1 arg2 arg3),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1", "arg2", "arg3"],
+    },
+    {
+      argv:              %w(-h),
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              %w(--help -ignore-option),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-ignore-option --help),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-m),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(--missing-option),
+      exception_message: "Undefined option. \"--missing-option\"",
+    },
+    {
+      argv:              %w(-m arg1),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(arg1 -m),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(-m -d),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv: %w(--help),
+    },
+    {
+      argv: %w(--help ignore-arg),
+    },
+    {
+      argv: %w(ignore-arg --help),
+    },
+  ]
+)
+
+spec_main_command(
+  spec_class_name: MainCommandWithAliasName,
+  spec_dsl_lines: [
+    "alias_name \"second_name\"",
+  ],
+  spec_desc: "main command,",
+  help_message: <<-HELP_MESSAGE
+
+                  Command Line Interface Tool.
+
+                  Usage:
+
+                    main_command [options] [arguments]
+
+                  Options:
+
+                    --help                           Show this help.
+
+
+                HELP_MESSAGE,
+  spec_cases: [
+    {
+      argv:              %w(),
+      exception_message: "'alias_name' is not supported on main command.",
+    },
+  ]
+)
+
+spec_main_command(
+  spec_class_name: MainCommandWithDesc,
+  spec_dsl_lines: [
+    "desc \"Main command with desc.\"",
+  ],
+  spec_desc: "main command,",
+  help_message: <<-HELP_MESSAGE
+
+                  Main command with desc.
+
+                  Usage:
+
+                    main_command [options] [arguments]
+
+                  Options:
+
+                    --help                           Show this help.
+
+
+                HELP_MESSAGE,
+  spec_cases: [
+    {
+      argv:        %w(),
+      expect_opts: ReturnOptsType.new,
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(arg1),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(arg1 arg2),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1", "arg2"],
+    },
+    {
+      argv:        %w(arg1 arg2 arg3),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1", "arg2", "arg3"],
+    },
+    {
+      argv:              %w(-h),
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              %w(--help -ignore-option),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-ignore-option --help),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-m),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(--missing-option),
+      exception_message: "Undefined option. \"--missing-option\"",
+    },
+    {
+      argv:              %w(-m arg1),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(arg1 -m),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(-m -d),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv: %w(--help),
+    },
+    {
+      argv: %w(--help ignore-arg),
+    },
+    {
+      argv: %w(ignore-arg --help),
+    },
+  ]
+)
+
+spec_main_command(
+  spec_class_name: MainCommandWithUsage,
+  spec_dsl_lines: [
+    "desc \"Main command with desc.\"",
+    "usage \"main_command with usage [options] [arguments]\"",
+  ],
+  spec_desc: "main command,",
+  help_message: <<-HELP_MESSAGE
+
+                  Main command with desc.
+
+                  Usage:
+
+                    main_command with usage [options] [arguments]
+
+                  Options:
+
+                    --help                           Show this help.
+
+
+                HELP_MESSAGE,
+  spec_cases: [
+    {
+      argv:        %w(),
+      expect_opts: ReturnOptsType.new,
+      expect_args: [] of String,
+    },
+    {
+      argv:        %w(arg1),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        %w(arg1 arg2),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1", "arg2"],
+    },
+    {
+      argv:        %w(arg1 arg2 arg3),
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1", "arg2", "arg3"],
+    },
+    {
+      argv:              %w(-h),
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              %w(--help -ignore-option),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-ignore-option --help),
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              %w(-m),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(--missing-option),
+      exception_message: "Undefined option. \"--missing-option\"",
+    },
+    {
+      argv:              %w(-m arg1),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(arg1 -m),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              %w(-m -d),
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv: %w(--help),
+    },
+    {
+      argv: %w(--help ignore-arg),
+    },
+    {
+      argv: %w(ignore-arg --help),
+    },
+  ]
+)
+
+class MainCommand::IfCallTheMainCommandTwice < Clim
   main_command
-  alias_name "second_name" # Exception!!
-  run do |opts, args|
-  end
-end
-
-describe "If 'alias_name' is called in 'main_command', " do
-  it "raises an Exception." do
-    expect_raises(Exception, "'alias_name' is not supported on main command.") do
-      SpecMainCommandWithAliasName.run_proc_arguments([] of String)
-    end
-  end
-end
-
-class SpecMainCommandWithDesc < Clim
-  main_command
-  desc "Main command with desc."
-  run do |opts, args|
-  end
-end
-
-describe "main command with desc." do
-  describe "returns help." do
-    [
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        run_proc_opts, run_proc_args = SpecMainCommandWithDesc.run_proc_arguments(spec_case[:argv])
-        run_proc_opts["help"].should eq(
-          <<-HELP_MESSAGE
-
-            Main command with desc.
-
-            Usage:
-
-              main_command [options] [arguments]
-
-            Options:
-
-              --help                           Show this help.
-
-
-          HELP_MESSAGE
-        )
-      end
-    end
-  end
-  describe "returns opts and args when passing argv." do
-    [
-      {
-        argv:        %w(),
-        expect_opts: create_opts_hash,
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 arg2),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1", "arg2"],
-      },
-      {
-        argv:        %w(arg1 arg2 arg3),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1", "arg2", "arg3"],
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        run_proc_opts, run_proc_args = SpecMainCommandWithDesc.run_proc_arguments(spec_case[:argv])
-        run_proc_opts.delete("help")
-        run_proc_opts.should eq(spec_case[:expect_opts])
-        run_proc_args.should eq(spec_case[:expect_args])
-      end
-    end
-  end
-  describe "raises Exception when passing invalid argv." do
-    [
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-m),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(--missing-option),
-        exception_message: "Undefined option. \"--missing-option\"",
-      },
-      {
-        argv:              %w(-m arg1),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(arg1 -m),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(-m -d),
-        exception_message: "Undefined option. \"-m\"",
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithDesc.run_proc_arguments(spec_case[:argv])
-        end
-      end
-    end
-  end
-end
-
-class SpecMainCommandWithUsage < Clim
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-  end
-end
-
-describe "main command with usage." do
-  describe "returns help." do
-    [
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        run_proc_opts, run_proc_args = SpecMainCommandWithUsage.run_proc_arguments(spec_case[:argv])
-        run_proc_opts["help"].should eq(
-          <<-HELP_MESSAGE
-
-            Main command with desc.
-
-            Usage:
-
-              main_command with usage [options] [arguments]
-
-            Options:
-
-              --help                           Show this help.
-
-
-          HELP_MESSAGE
-        )
-      end
-    end
-  end
-  describe "returns opts and args when passing argv." do
-    [
-      {
-        argv:        %w(),
-        expect_opts: create_opts_hash,
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 arg2),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1", "arg2"],
-      },
-      {
-        argv:        %w(arg1 arg2 arg3),
-        expect_opts: create_opts_hash,
-        expect_args: ["arg1", "arg2", "arg3"],
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        run_proc_opts, run_proc_args = SpecMainCommandWithUsage.run_proc_arguments(spec_case[:argv])
-        run_proc_opts.delete("help")
-        run_proc_opts.should eq(spec_case[:expect_opts])
-        run_proc_args.should eq(spec_case[:expect_args])
-      end
-    end
-  end
-  describe "raises Exception when passing invalid argv." do
-    [
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-m),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(--missing-option),
-        exception_message: "Undefined option. \"--missing-option\"",
-      },
-      {
-        argv:              %w(-m arg1),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(arg1 -m),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(-m -d),
-        exception_message: "Undefined option. \"-m\"",
-      },
-    ].each do |spec_case|
-      it "#{spec_case[:argv].join(" ")}" do
-        expect_raises(Exception, spec_case[:exception_message]) do
-          SpecMainCommandWithUsage.run_proc_arguments(spec_case[:argv])
-        end
-      end
-    end
-  end
-end
-
-# class SpecMainCommand::WithEmptyShortOption::String < Clim
-#  main_command
-#  string "", "--s1=S1"
-#  run do |opts, args|
-#  end
-# end
-#
-# describe "main command with empty option, " do
-#  it "raises an Exception when short option is empty if short & long option exists. [string]" do
-#    expect_raises(Exception, "Empty short option.") do
-#      SpecMainCommand::WithEmptyShortOption::String.run_proc_arguments([] of String)
-#    end
-#  end
-# end
-#
-class SpecMainCommandWithEmptyShortOption < Clim
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-  end
-end
-
-describe "main command with empty option." do
-  it "raises an Exception when short option is empty if short & long option exists. [string]" do
-    expect_raises(Exception, "Empty short option.") do
-      SpecMainCommandWithEmptyShortOption.string "", "--s1=S1"
-    end
-  end
-  it "raises an Exception when short option is empty if short & long option exists. [bool]" do
-    expect_raises(Exception, "Empty short option.") do
-      SpecMainCommandWithEmptyShortOption.bool "", "--b1=B1"
-    end
-  end
-  it "raises an Exception when short option is empty if short & long option exists. [array]" do
-    expect_raises(Exception, "Empty short option.") do
-      SpecMainCommandWithEmptyShortOption.array "", "--a1=A1"
-    end
-  end
-  it "raises an Exception when short option is empty if short option only. [string]" do
-    expect_raises(Exception, "Empty short option.") do
-      SpecMainCommandWithEmptyShortOption.string ""
-    end
-  end
-  it "raises an Exception when short option is empty if short option only. [bool]" do
-    expect_raises(Exception, "Empty short option.") do
-      SpecMainCommandWithEmptyShortOption.bool ""
-    end
-  end
-  it "raises an Exception when short option is empty if short option only. [array]" do
-    expect_raises(Exception, "Empty short option.") do
-      SpecMainCommandWithEmptyShortOption.array ""
-    end
-  end
-end
-
-class SpecMainCommandWithDuplicateShortOptionStringAndArray < Clim
-  # Default setting only.
-  # For the spec case, please see the "it" block below.
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-  end
-end
-
-describe "main command with duplicate short option [string & array]." do
-  it "raises an Exception when there is duplicate short option." do
-    expect_raises(Exception, "Duplicate option. \"-a\"") do
-      #
-      # spec case:
-      #
-      #   string "-a A1", "--a1=A1"
-      #   array "-a A2", "--a2=A2"
-      #
-      SpecMainCommandWithDuplicateShortOptionStringAndArray.string "-a A1", "--a1=A1"
-      SpecMainCommandWithDuplicateShortOptionStringAndArray.array "-a A2", "--a2=A2"
-    end
-  end
-end
-
-class SpecMainCommandWithDuplicateShortOptionStringAndBool < Clim
-  # Default setting only.
-  # For the spec case, please see the "it" block below.
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-  end
-end
-
-describe "main command with duplicate short option [string & bool]." do
-  it "raises an Exception when there is duplicate short option." do
-    expect_raises(Exception, "Duplicate option. \"-b\"") do
-      #
-      # spec case:
-      #
-      #   string "-b B1", "--b1=B1"
-      #   bool "-b", "--b2"
-      #
-      SpecMainCommandWithDuplicateShortOptionStringAndBool.string "-b B1", "--b1=B1"
-      SpecMainCommandWithDuplicateShortOptionStringAndBool.bool "-b", "--b2"
-    end
-  end
-end
-
-class SpecMainCommandWithDuplicateShortOptionArrayAndBool < Clim
-  # Default setting only.
-  # For the spec case, please see the "it" block below.
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-  end
-end
-
-describe "main command with duplicate short option [array & bool]." do
-  it "raises an Exception when there is duplicate short option." do
-    expect_raises(Exception, "Duplicate option. \"-c\"") do
-      #
-      # spec case:
-      #
-      #   array "-c C1", "--c1=C1"
-      #   bool "-c", "--c2"
-      #
-      SpecMainCommandWithDuplicateShortOptionStringAndBool.array "-c C1", "--c1=C1"
-      SpecMainCommandWithDuplicateShortOptionStringAndBool.bool "-c", "--c2"
-    end
-  end
-end
-
-class SpecMainCommandWithDuplicateLongOptionStringAndArray < Clim
-  # Default setting only.
-  # For the spec case, please see the "it" block below.
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-  end
-end
-
-describe "main command with duplicate long option [string & array]." do
-  it "raises an Exception when there is duplicate long option." do
-    expect_raises(Exception, "Duplicate option. \"--duplicate\"") do
-      #
-      # spec case:
-      #
-      #   string "-a A1", "--duplicate=A1"
-      #   array "-b B1", "--duplicate=B1"
-      #
-      SpecMainCommandWithDuplicateLongOptionStringAndArray.string "-a A1", "--duplicate=A1"
-      SpecMainCommandWithDuplicateLongOptionStringAndArray.array "-b B1", "--duplicate=B1"
-    end
-  end
-end
-
-class SpecMainCommandWithDuplicateLongOptionStringAndBool < Clim
-  # Default setting only.
-  # For the spec case, please see the "it" block below.
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-  end
-end
-
-describe "main command with duplicate long option [string & bool]." do
-  it "raises an Exception when there is duplicate long option." do
-    expect_raises(Exception, "Duplicate option. \"--duplicate\"") do
-      #
-      # spec case:
-      #
-      #   string "-a A1", "--duplicate=A1"
-      #   bool "-b", "--duplicate"
-      #
-      SpecMainCommandWithDuplicateLongOptionStringAndBool.string "-a A1", "--duplicate=A1"
-      SpecMainCommandWithDuplicateLongOptionStringAndBool.bool "-b", "--duplicate"
-    end
-  end
-end
-
-class SpecMainCommandWithDuplicateLongOptionArrayAndBool < Clim
-  # Default setting only.
-  # For the spec case, please see the "it"  block below.
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
-  run do |opts, args|
-  end
-end
-
-describe "main command with duplicate long option [array & bool]." do
-  it "raises an Exception when there is duplicate long option." do
-    expect_raises(Exception, "Duplicate option. \"--duplicate\"") do
-      #
-      # spec case:
-      #
-      #   array "-a A1", "--duplicate=A1"
-      #   bool "-b", "--duplicate"
-      #
-      SpecMainCommandWithDuplicateLongOptionArrayAndBool.array "-a A1", "--duplicate=A1"
-      SpecMainCommandWithDuplicateLongOptionArrayAndBool.bool "-b", "--duplicate"
-    end
-  end
-end
-
-class SpecMainCommand::IfCallTheMainCommandTwice < Clim
-  main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
   run do |opts, args|
   end
 
@@ -583,75 +340,37 @@ end
 describe "If the main command is called twice, " do
   it "raises an Exception." do
     expect_raises(Exception, "Main command is already defined.") do
-      SpecMainCommand::IfCallTheMainCommandTwice.run_proc_arguments([] of String)
+      MainCommand::IfCallTheMainCommandTwice.start_main([] of String)
     end
   end
 end
 
-class SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock < Clim
+class MainCommandWhenCallTheMainCommandTwiceInSubBlock < Clim
   main_command
-  desc "Main command with desc."
-  usage "main_command with usage [options] [arguments]"
   run do |opts, args|
   end
   sub do
-    main_command # A second call.
+    main_command # Exception!!
   end
 end
 
-describe "Call the main command twice." do
-  it "raises an Exception when Call the main command twice." do
+describe "If the main command is called twice in sub block, " do
+  it "raises an Exception." do
     expect_raises(Exception, "Main command is already defined.") do
-      SpecMainCommandWhenCallTheMainCommandTwiceInSubBlock.run_proc_arguments([] of String)
+      MainCommandWhenCallTheMainCommandTwiceInSubBlock.start_main([] of String)
     end
   end
 end
 
-class SpecMainCommandWhenMainCommandIsNotDefined < Clim
-  # For the spec case, please see the "it" block below.
+class MainCommandWhenMainCommandIsNotDefined < Clim
+  command "spec_case"
 end
 
 describe "Call the main command twice." do
   it "raises an Exception when call command method if main_command is not defined." do
     expect_raises(Exception, "Main command is not defined.") do
-      #
-      # spec case:
-      #
-      #  class SpecClass
-      #    command "spec_case"
-      #  end
-      #
-      SpecMainCommandWhenMainCommandIsNotDefined.command "spec_case"
+      MainCommandWhenMainCommandIsNotDefined.start_main([] of String)
     end
   end
 end
 
-class SpecMainCommandExecuteRunBlock < Clim
-  main_command
-  run do |opts, args|
-    raise "Run block was executed."
-  end
-end
-
-describe "Call the main command." do
-  it "raises an Exception because execute run block." do
-    expect_raises(Exception, "Run block was executed.") do
-      SpecMainCommandExecuteRunBlock.start(%w(arg1))
-    end
-  end
-end
-
-class SpecMainCommandExecuteHelpBlock < Clim
-  # For the spec case, please see the "it" block below.
-end
-
-describe "Call the main command." do
-  it "raises an Exception because execute help block." do
-    main_command = Command.new("main_command")
-    main_command.help_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Help block was executed." }
-    main_command.run_proc = SpecMainCommandExecuteRunBlock::RunProc.new { raise "Run block was executed." } # This should not be called.
-    expect_raises(Exception, "Help block was executed.") do
-      SpecMainCommandExecuteRunBlock.start(%w(--help), main_command)
-    end
-  end
-end

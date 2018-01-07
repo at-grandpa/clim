@@ -18,7 +18,7 @@ class Clim
     end
 
     def command(name)
-      raise ClimException.new "Main command is not defined." if @@stack.empty?
+      @@exceptions.push ->{ raise ClimException.new "Main command is not defined." } if @@stack.empty?
       @@defining = Command.new(name)
     end
 
