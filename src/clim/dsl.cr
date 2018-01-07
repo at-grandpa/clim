@@ -66,9 +66,7 @@ class Clim
     end
 
     def start_main(argv, io = STDOUT, root = @@main)
-      @@exceptions.each do |e|
-        e.call
-      end
+      @@exceptions.each &.call
       root.parse(argv).run(io)
     end
 
