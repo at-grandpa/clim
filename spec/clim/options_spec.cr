@@ -28,7 +28,7 @@ describe Clim::Options do
       opt2 = Option(String | Nil).new("-b", "", "", false, "", "")
       opt2.set_string("bar")
       opts.add opt2
-      opts.validate!.should eq(nil)
+      opts.required_validate!.should eq(nil)
     end
     it "raises an Exception when there is required option." do
       opts = Options.new
@@ -37,7 +37,7 @@ describe Clim::Options do
       opts.add opt1
       opt2 = Option(String | Nil).new("-b", "", nil, true, "", nil)
       opts.add opt2
-      expect_raises(Exception, "Required options. \"-b\"") { opts.validate! }
+      expect_raises(Exception, "Required options. \"-b\"") { opts.required_validate! }
     end
     it "raises an Exception when there are required options." do
       opts = Options.new
@@ -45,7 +45,7 @@ describe Clim::Options do
       opts.add opt1
       opt2 = Option(String | Nil).new("-b", "", nil, true, "", nil)
       opts.add opt2
-      expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.validate! }
+      expect_raises(Exception, "Required options. \"-a\", \"-b\"") { opts.required_validate! }
     end
   end
 end

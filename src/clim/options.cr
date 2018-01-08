@@ -20,7 +20,7 @@ class Clim
       hash
     end
 
-    def validate!
+    def required_validate!
       raise "Required options. \"#{invalid_required_names.join("\", \"")}\"" unless invalid_required_names.empty?
     end
 

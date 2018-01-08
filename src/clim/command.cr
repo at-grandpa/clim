@@ -134,7 +134,7 @@ class Clim
 
     private def parse_by_parser(argv)
       parser.parse(argv.dup)
-      opts.validate! unless display_help?
+      opts.required_validate! unless display_help?
       opts.help = help
       self
     end
