@@ -2,26 +2,27 @@ class Clim
   alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
-  @@main : Command = Command.new("main_command") # Main command.
-  @@defining : Command = @@main                  # Current defining command.
-  @@stack : Array(Command) = [] of Command       # Command stack for `sub do ... end` scope.
-  @@defined_main : Bool = false                  # If the main command is defined, @@defined_main = true.
+  @@main : Command = Command.new("main_command")    # Main command.
+  @@defining : Command = @@main                     # Current defining command.
+  @@stack : Array(Command) = [] of Command          # Command stack for `sub do ... end` scope.
+  @@defined_main : Bool = false                     # If the main command is defined, @@defined_main = true.
+  @@exceptions : Array(Proc(Nil)) = [] of Proc(Nil) # exceptions pool
 
   module Dsl
     def main_command
-      raise ClimException.new "Main command is already defined." if @@defined_main
+      @@exceptions.push ->{ raise ClimException.new "Main command is already defined." } if @@defined_main
       @@main = Command.new("main_command")
       @@defining = @@main
       @@defined_main = true
     end
 
     def command(name)
-      raise ClimException.new "Main command is not defined." if @@stack.empty?
+      @@exceptions.push ->{ raise ClimException.new "Run block of main command is not defined." } if @@stack.empty?
       @@defining = Command.new(name)
     end
 
     def alias_name(*names)
-      raise ClimException.new "'alias_name' is not supported on main command." if @@stack.empty?
+      @@exceptions.push ->{ raise ClimException.new "'alias_name' is not supported on main command." } if @@stack.empty?
       @@defining.alias_name.concat(names)
     end
 
@@ -47,7 +48,6 @@ class Clim
       end
     end
 
-    # Call the define_opts macro.
     difine_opts(method_name: "string", type: String | Nil) { |arg| opt.set_string(arg) }
     difine_opts(method_name: "bool", type: Bool | Nil) { |arg| opt.set_bool(arg) }
     difine_opts(method_name: "array", type: Array(String) | Nil) { |arg| opt.add_to_array(arg) }
@@ -63,13 +63,9 @@ class Clim
       @@stack.pop
     end
 
-    def run_proc_arguments(argv, root = @@main)
-      root.parse(argv).run_proc_arguments
-    end
-
-    def start_main(argv, root = @@main)
-      opts, args = run_proc_arguments(argv, root)
-      root.parse(argv).run(opts, args)
+    def start_main(argv, io = STDOUT)
+      @@exceptions.each &.call
+      @@main.parse(argv).run(io)
     end
 
     def start(argv)

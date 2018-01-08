@@ -71,20 +71,7 @@ describe Clim::Command do
       )
     end
   end
-  describe "#max_name_length" do
-    it "returns max name length when commands are set." do
-      main_cmd = Command.new("main_command")
-      main_cmd.sub_cmds << Command.new("foo")
-      main_cmd.sub_cmds << Command.new("fooo")
-      main_cmd.sub_cmds << Command.new("fo")
-      main_cmd.max_name_length.should eq(4)
-    end
-    it "returns 0 when commands are not set." do
-      cmd = Command.new("foo")
-      cmd.max_name_length.should eq(0)
-    end
-  end
-  describe "#add_sub_commands?" do
+  describe "#add_sub_commands" do
     it "add sub command when command name is not duplicated." do
       main_cmd = Command.new("main_cmd")
 
@@ -92,18 +79,6 @@ describe Clim::Command do
       main_cmd.add_sub_commands(sub_cmd)
 
       main_cmd.sub_cmds.first.should eq sub_cmd
-    end
-    it "raises an Exception when command name is duplicated." do
-      main_cmd = Command.new("main_cmd")
-
-      sub_cmd = Command.new("sub_cmd")
-      main_cmd.add_sub_commands(sub_cmd)
-
-      duplicated_name_sub_cmd = Command.new("sub_cmd")
-
-      expect_raises(Exception, "There are duplicate registered commands. [sub_cmd]") do
-        main_cmd.add_sub_commands(duplicated_name_sub_cmd)
-      end
     end
   end
   describe "#parse" do

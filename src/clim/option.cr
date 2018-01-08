@@ -5,9 +5,17 @@ class Clim
     property default : T
     property required : Bool
     property desc : String
+    property proc : String ->
+    property array_set_flag : Bool
     property value : T
 
     def initialize(@short, @long, @default, @required, @desc, @value)
+      @proc = ->(arg : String) {}
+      @array_set_flag = false
+    end
+
+    def set_proc(&proc : String ->)
+      @proc = proc
     end
 
     def name
@@ -22,7 +30,7 @@ class Clim
       extract_name(long)
     end
 
-    def extract_name(name)
+    private def extract_name(name)
       name.split(/(\s|=)/).first.gsub(/^-*/, "")
     end
 
@@ -37,11 +45,11 @@ class Clim
       desc
     end
 
-    def display_default
+    private def display_default
       default_value = default
       case default_value
       when String
-        default_value.empty? ? "\"\"" : default
+        default_value.empty? ? "\"\"" : "\"#{default}\""
       when Bool
         default_value
       when Array(String)
@@ -68,11 +76,9 @@ class Clim
     end
 
     def add_to_array(arg)
+      @value = [] of String if @array_set_flag == false
+      @array_set_flag = true
       @value = @value.nil? ? [arg] : @value.try &.<<(arg)
-    end
-
-    def reset
-      @value = @default.dup
     end
 
     def required_set?

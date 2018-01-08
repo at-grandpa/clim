@@ -14,16 +14,11 @@ class Clim
     property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
     property sub_cmds : Array(self) = [] of self
-    property help_proc : RunProc = RunProc.new { }
     property display_help_flag : Bool = false
 
     def initialize(@name)
       @usage = "#{name} [options] [arguments]"
-      @help_proc = RunProc.new { puts help }
-      initialize_parser
-    end
-
-    def initialize_parser
+      # initialize parser
       parser.on("--help", "Show this help.") { @display_help_flag = true }
       parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
       parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
@@ -31,23 +26,60 @@ class Clim
     end
 
     def set_opt(opt, &proc : String ->)
+      opt.set_proc(&proc)
       opts.add(opt)
-      if opt.long.empty?
-        parser.on(opt.short, opt.desc, &proc)
-      else
-        parser.on(opt.short, opt.long, opt.desc, &proc)
-      end
     end
 
     def help
       sub_cmds.empty? ? base_help : base_help + sub_cmds_help
     end
 
-    def display_help?
+    def run(io)
+      select_run_proc(io).call(opts.to_h, args)
+    end
+
+    def add_sub_commands(cmd)
+      @sub_cmds << cmd
+    end
+
+    def parse(argv)
+      opts_validate!
+      set_opts_on_parser
+      recursive_parse(argv)
+    end
+
+    private def opts_validate!
+      opts.opts_validate!
+      raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
+    end
+
+    private def duplicate_names
+      names = @sub_cmds.map(&.name)
+      alias_names = @sub_cmds.map(&.alias_name).flatten
+      (names + alias_names).duplicate_value
+    end
+
+    private def set_opts_on_parser
+      opts.opts.each do |opt|
+        if opt.long.empty?
+          parser.on(opt.short, opt.desc, &(opt.proc))
+        else
+          parser.on(opt.short, opt.long, opt.desc, &(opt.proc))
+        end
+      end
+    end
+
+    def recursive_parse(argv)
+      return parse_by_parser(argv) if argv.empty?
+      return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
+      find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
+    end
+
+    private def display_help?
       @display_help_flag
     end
 
-    def base_help
+    private def base_help
       <<-HELP_MESSAGE
 
         #{desc}
@@ -64,7 +96,7 @@ class Clim
       HELP_MESSAGE
     end
 
-    def sub_cmds_help
+    private def sub_cmds_help
       <<-HELP_MESSAGE
         Sub Commands:
 
@@ -74,68 +106,36 @@ class Clim
       HELP_MESSAGE
     end
 
-    def sub_cmds_help_lines
+    private def sub_cmds_help_lines
       sub_cmds.map do |cmd|
         name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
         "    #{name}   #{cmd.desc}"
       end
     end
 
-    def max_name_length
+    private def max_name_length
       sub_cmds.empty? ? 0 : sub_cmds.map { |cmd| name_and_alias_name(cmd).size }.max
     end
 
-    def name_and_alias_name(cmd)
+    private def name_and_alias_name(cmd)
       ([cmd.name] + cmd.alias_name).join(", ")
     end
 
-    def run(opts, args)
-      select_run_proc.call(opts, args)
+    private def select_run_proc(io)
+      display_help? ? RunProc.new { io.puts help } : @run_proc
     end
 
-    def select_run_proc
-      display_help? ? @help_proc : @run_proc
-    end
-
-    def run_proc_arguments
-      return opts.to_h, args
-    end
-
-    def add_sub_commands(cmd)
-      @sub_cmds << cmd
-      names = @sub_cmds.map(&.name)
-      alias_names = @sub_cmds.map(&.alias_name).flatten
-      duplicate_names = (names + alias_names).group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
-      unless duplicate_names.empty?
-        raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]"
-      end
-      @sub_cmds
-    end
-
-    def find_sub_cmds_by(name)
+    private def find_sub_cmds_by(name)
       sub_cmds.select do |cmd|
         cmd.name == name || cmd.alias_name.includes?(name)
       end
     end
 
-    def parse(argv)
-      return parse_by_parser(argv) if argv.empty?
-      return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
-      find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
-    end
-
-    def parse_by_parser(argv)
-      prepare_parse
+    private def parse_by_parser(argv)
       parser.parse(argv.dup)
-      opts.validate! unless display_help?
+      opts.required_validate! unless display_help?
       opts.help = help
       self
-    end
-
-    def prepare_parse
-      opts.reset
-      @args = [] of String
-      @display_help_flag = false
     end
   end
 end
