@@ -1,7 +1,7 @@
 require "../dsl_spec"
 
 spec(
-  spec_class_name: MainCommandWithArray,
+  spec_class_name: MainCommandOnly,
   spec_dsl_lines: [] of String,
   spec_desc: "main command,",
   help_message: <<-HELP_MESSAGE
@@ -282,7 +282,7 @@ spec(
   ]
 )
 
-class MainCommand::IfCallTheMainCommandTwice < Clim
+class MainCommandIfCallTheMainCommandTwice < Clim
   main_command
   run do |opts, args|
   end
@@ -293,7 +293,7 @@ end
 describe "If the main command is called twice, " do
   it "raises an Exception." do
     expect_raises(Exception, "Main command is already defined.") do
-      MainCommand::IfCallTheMainCommandTwice.start_main([] of String)
+      MainCommandIfCallTheMainCommandTwice.start_main([] of String)
     end
   end
 end

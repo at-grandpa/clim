@@ -4,7 +4,7 @@ describe Clim::Option do
   describe "#desc" do
     it "returns desc with default when default set." do
       opt = Option(String).new("", "", "default value", false, "description for spec.", "")
-      opt.desc.should eq("description for spec.  [default:default value]")
+      opt.desc.should eq("description for spec.  [default:\"default value\"]")
     end
     it "returns appropriate desc when default is String type and empty." do
       opt = Option(String | Nil).new("", "", "", false, "description for spec.", "")
@@ -24,7 +24,7 @@ describe Clim::Option do
     end
     it "returns desc with default and required when default set and required is true." do
       opt = Option(String).new("", "", "default value", true, "description for spec.", "")
-      opt.desc.should eq("description for spec.  [default:default value]  [required]")
+      opt.desc.should eq("description for spec.  [default:\"default value\"]  [required]")
     end
   end
   describe "#name" do

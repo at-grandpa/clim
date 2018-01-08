@@ -1,37 +1,6 @@
 require "./../spec_helper"
 
 describe Clim::Options do
-  describe "#add" do
-    it "raises an Exception when short option name is empty." do
-      opts = Options.new
-      expect_raises(Exception, "Empty short option.") do
-        opts.add Option(String | Nil).new("", "", "", false, "", "")
-      end
-    end
-    it "raises an Exception when short option name is duplicated." do
-      opts = Options.new
-      opts.add Option(String | Nil).new("-a", "--array", "", false, "", "")
-      expect_raises(Exception, "Duplicate option. \"-a\"") do
-        opts.add Option(String | Nil).new("-a", "--array", "", false, "", "")
-      end
-    end
-    it "raises an Exception when long option name is duplicated." do
-      opts = Options.new
-      opts.add Option(String | Nil).new("-a", "--array", "", false, "", "")
-      expect_raises(Exception, "Duplicate option. \"--array\"") do
-        opts.add Option(String | Nil).new("-b", "--array", "", false, "", "")
-      end
-    end
-    it "raises an Exception when long option name other than empty is duplicated." do
-      opts = Options.new
-      opts.add Option(String | Nil).new("-a", "", "", false, "", "")
-      opts.add Option(String | Nil).new("-b", "", "", false, "", "")
-      opts.add Option(String | Nil).new("-c", "--array", "", false, "", "")
-      expect_raises(Exception, "Duplicate option. \"--array\"") do
-        opts.add Option(String | Nil).new("-d", "--array", "", false, "", "")
-      end
-    end
-  end
   describe "#to_h" do
     it "returns hash when options are set." do
       opts = Options.new
