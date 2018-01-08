@@ -36,14 +36,14 @@ class Clim
 
     def add_sub_commands(cmd)
       @sub_cmds << cmd
-      unless duplicate_names.empty?
-        raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]"
-      end
-      @sub_cmds
     end
 
     def parse(argv)
       opts.opts_validate!
+
+      unless duplicate_names.empty?
+        raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]"
+      end
 
       # parser on
       opts.opts.each do |opt|

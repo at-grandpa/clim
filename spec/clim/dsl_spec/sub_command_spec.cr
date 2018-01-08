@@ -1422,267 +1422,99 @@ spec_for_alias_name(
   }
 )
 
-#
-#
-# class SubCommandWhenDuplicateCommandName < Clim
-#  # For the spec case, please see the "it" block below.
-# end
-#
-# describe "Call the command." do
-#  it "raises an Exception when duplicate command name." do
-#    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
-#      #
-#      # spec case:
-#      #
-#      #  class SpecClass
-#      #    main_command
-#      #    run do |opts, args| end
-#      #
-#      #    sub do
-#      #      command "sub_command"
-#      #      run do |opts, args| end
-#      #
-#      #      command "sub_command"  # Duplicate name.
-#      #      run do |opts, args| end
-#      #    end
-#      #  end
-#      #
-#      SubCommandWhenDuplicateCommandName.main_command
-#      SubCommandWhenDuplicateCommandName.run do |opts, args|
-#      end
-#
-#      SubCommandWhenDuplicateCommandName.sub do
-#        SubCommandWhenDuplicateCommandName.command "sub_command"
-#        SubCommandWhenDuplicateCommandName.run do |opts, args|
-#        end
-#        SubCommandWhenDuplicateCommandName.command "sub_command" # Duplicate name.
-#        SubCommandWhenDuplicateCommandName.run do |opts, args|
-#        end
-#      end
-#    end
-#  end
-# end
-#
-# class SubCommandExecuteRunBlock < Clim
-#  main_command
-#  run do |opts, args|
-#    raise "Run block of main_command was executed."
-#  end
-#
-#  sub do
-#    command "sub_command"
-#    run do |opts, args|
-#      raise "Run block of sub_command was executed."
-#    end
-#  end
-# end
-#
-# describe "Call the sub command." do
-#  it "raises an Exception because execute run block of sub_command." do
-#    expect_raises(Exception, "Run block of sub_command was executed.") do
-#      SubCommandExecuteRunBlock.start(%w(sub_command arg1))
-#    end
-#  end
-# end
-#
-# class SubCommandExecuteHelpBlock < Clim
-#  # For the spec case, please see the "it" block below.
-# end
-#
-# describe "Call the main command." do
-#  it "raises an Exception because execute help block of sub_command." do
-#    main_command = Command.new("main_command")
-#    sub_command = Command.new("sub_command")
-#    sub_command.help_proc = SubCommandExecuteHelpBlock::RunProc.new { raise "Help block of sub_command was executed." }
-#    sub_command.run_proc = SubCommandExecuteHelpBlock::RunProc.new { raise "Run block of sub_command was executed." } # This should not be called.
-#    main_command.add_sub_commands(sub_command)
-#    expect_raises(Exception, "Help block of sub_command was executed.") do
-#      SubCommandExecuteHelpBlock.start(%w(sub_command --help), main_command)
-#    end
-#  end
-# end
-#
-# class SubCommandWithAliasName < Clim
-#  main_command
-#  run do |opts, args|
-#    raise "Run block of main_command was executed."
-#  end
-#
-#  sub do
-#    command "sub_command"
-#    alias_name "sub_command_alias_name"
-#    run do |opts, args|
-#      raise "Run block of sub_command was executed."
-#    end
-#  end
-# end
-#
-# describe "Call the sub command." do
-#  it "raises an Exception because execute run block of sub_command." do
-#    expect_raises(Exception, "Run block of sub_command was executed.") do
-#      SubCommandWithAliasName.start(%w(sub_command arg1))
-#    end
-#  end
-#  it "raises an Exception because execute run block of sub_command with alias_name." do
-#    expect_raises(Exception, "Run block of sub_command was executed.") do
-#      SubCommandWithAliasName.start(%w(sub_command_alias_name arg1))
-#    end
-#  end
-# end
-#
-# class SubCommandWithMultiAliasName < Clim
-#  main_command
-#  run do |opts, args|
-#    raise "Run block of main_command was executed."
-#  end
-#
-#  sub do
-#    command "sub_command"
-#    alias_name "alias_name_1", "alias_name_2"
-#    run do |opts, args|
-#      raise "Run block of sub_command was executed."
-#    end
-#  end
-# end
-#
-# describe "Call the sub command." do
-#  it "raises an Exception because execute run block of sub_command." do
-#    expect_raises(Exception, "Run block of sub_command was executed.") do
-#      SubCommandWithMultiAliasName.start(%w(sub_command arg1))
-#    end
-#  end
-#  it "raises an Exception because execute run block of sub_command with alias_name_1." do
-#    expect_raises(Exception, "Run block of sub_command was executed.") do
-#      SubCommandWithMultiAliasName.start(%w(alias_name_1 arg1))
-#    end
-#  end
-#  it "raises an Exception because execute run block of sub_command with alias_name_2." do
-#    expect_raises(Exception, "Run block of sub_command was executed.") do
-#      SubCommandWithMultiAliasName.start(%w(alias_name_2 arg1))
-#    end
-#  end
-# end
-#
-# class SubCommandWhenDuplicateAliasNameCase1 < Clim
-#  # For the spec case, please see the "it" block below.
-# end
-#
-# describe "Call the command." do
-#  it "raises an Exception when duplicate command name (case1)." do
-#    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
-#      #
-#      # spec case:
-#      #
-#      #  class SpecClass
-#      #    main_command
-#      #    run do |opts, args| end
-#      #
-#      #    sub do
-#      #      command "sub_command"
-#      #      alias_name "sub_command" # Duplicate name.
-#      #      run do |opts, args| end
-#      #    end
-#      #  end
-#      #
-#      SubCommandWhenDuplicateAliasNameCase1.main_command
-#      SubCommandWhenDuplicateAliasNameCase1.run do |opts, args|
-#      end
-#
-#      SubCommandWhenDuplicateAliasNameCase1.sub do
-#        SubCommandWhenDuplicateAliasNameCase1.command "sub_command"
-#        SubCommandWhenDuplicateAliasNameCase1.alias_name "sub_command"
-#        SubCommandWhenDuplicateAliasNameCase1.run do |opts, args|
-#        end
-#      end
-#    end
-#  end
-# end
-#
-# class SubCommandWhenDuplicateAliasNameCase2 < Clim
-#  # For the spec case, please see the "it" block below.
-# end
-#
-# describe "Call the command." do
-#  it "raises an Exception when duplicate command name (case2)." do
-#    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2]") do
-#      #
-#      # spec case:
-#      #
-#      #  class SpecClass
-#      #    main_command
-#      #    run do |opts, args| end
-#      #
-#      #    sub do
-#      #      command "sub_command1"
-#      #      alias_name "sub_command1", "sub_command2", "sub_command2" # Duplicate name.
-#      #      run do |opts, args| end
-#      #    end
-#      #  end
-#      #
-#      SubCommandWhenDuplicateAliasNameCase2.main_command
-#      SubCommandWhenDuplicateAliasNameCase2.run do |opts, args|
-#      end
-#
-#      SubCommandWhenDuplicateAliasNameCase2.sub do
-#        SubCommandWhenDuplicateAliasNameCase2.command "sub_command1"
-#        SubCommandWhenDuplicateAliasNameCase2.alias_name "sub_command1", "sub_command2", "sub_command2"
-#        SubCommandWhenDuplicateAliasNameCase2.run do |opts, args|
-#        end
-#      end
-#    end
-#  end
-# end
-#
-# class SubCommandWhenDuplicateAliasNameCase3 < Clim
-#  # For the spec case, please see the "it" block below.
-# end
-#
-# describe "Call the command." do
-#  it "raises an Exception when duplicate command name (case3)." do
-#    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2,alias_name1,alias_name2]") do
-#      #
-#      # spec case:
-#      #
-#      #  class SpecClass
-#      #    main_command
-#      #    run do |opts, args| end
-#      #
-#      #    sub do
-#      #      command "sub_command1"
-#      #      alias_name "alias_name1"
-#      #      run do |opts, args| end
-#      #
-#      #      command "sub_command2"
-#      #      alias_name "alias_name2"
-#      #      run do |opts, args| end
-#      #
-#      #      command "sub_command3"
-#      #      alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2" # Duplicate name.
-#      #      run do |opts, args| end
-#      #    end
-#      #  end
-#      #
-#      SubCommandWhenDuplicateAliasNameCase3.main_command
-#      SubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
-#      end
-#
-#      SubCommandWhenDuplicateAliasNameCase3.sub do
-#        SubCommandWhenDuplicateAliasNameCase3.command "sub_command1"
-#        SubCommandWhenDuplicateAliasNameCase3.alias_name "alias_name1"
-#        SubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
-#        end
-#
-#        SubCommandWhenDuplicateAliasNameCase3.command "sub_command2"
-#        SubCommandWhenDuplicateAliasNameCase3.alias_name "alias_name2"
-#        SubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
-#        end
-#
-#        SubCommandWhenDuplicateAliasNameCase3.command "sub_command3"
-#        SubCommandWhenDuplicateAliasNameCase3.alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2"
-#        SubCommandWhenDuplicateAliasNameCase3.run do |opts, args|
-#        end
-#      end
-#    end
-#  end
-# end
-#
+class SubCommandWhenDuplicateCommandName < Clim
+  main_command
+  run do |opts, args|
+  end
+
+  sub do
+    command "sub_command"
+    run do |opts, args|
+    end
+
+    command "sub_command" # Duplicate name.
+    run do |opts, args|
+    end
+  end
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
+      SubCommandWhenDuplicateCommandName.start_main([] of String)
+    end
+  end
+end
+
+class SubCommandWhenDuplicateAliasNameCase1 < Clim
+  main_command
+  run do |opts, args|
+  end
+
+  sub do
+    command "sub_command"
+    alias_name "sub_command" # duplicate
+    run do |opts, args|
+    end
+  end
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case1)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
+      SubCommandWhenDuplicateAliasNameCase1.start_main([] of String)
+    end
+  end
+end
+
+class SubCommandWhenDuplicateAliasNameCase2 < Clim
+  main_command
+  run do |opts, args|
+  end
+
+  sub do
+    command "sub_command1"
+    alias_name "sub_command1", "sub_command2", "sub_command2" # duplicate "sub_command1" and "sub_command2"
+    run do |opts, args|
+    end
+  end
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case2)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2]") do
+      SubCommandWhenDuplicateAliasNameCase2.start_main([] of String)
+    end
+  end
+end
+
+class SubCommandWhenDuplicateAliasNameCase3 < Clim
+  main_command
+  run do |opts, args|
+  end
+
+  sub do
+    command "sub_command1"
+    alias_name "alias_name1"
+    run do |opts, args|
+    end
+
+    command "sub_command2"
+    alias_name "alias_name2"
+    run do |opts, args|
+    end
+
+    command "sub_command3"
+    alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2"
+    run do |opts, args|
+    end
+  end
+end
+
+describe "Call the command." do
+  it "raises an Exception when duplicate command name (case3)." do
+    expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2,alias_name1,alias_name2]") do
+      SubCommandWhenDuplicateAliasNameCase3.start_main([] of String)
+    end
+  end
+end
