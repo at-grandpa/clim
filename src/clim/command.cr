@@ -44,12 +44,12 @@ class Clim
     end
 
     def parse(argv)
-      validate!
+      opts_validate!
       set_opts_on_parser
       recursive_parse(argv)
     end
 
-    private def validate!
+    private def opts_validate!
       opts.opts_validate!
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
     end
