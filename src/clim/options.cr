@@ -20,10 +20,6 @@ class Clim
       hash
     end
 
-    def reset
-      opts.each(&.reset)
-    end
-
     def validate!
       raise "Required options. \"#{invalid_required_names.join("\", \"")}\"" unless invalid_required_names.empty?
     end

@@ -18,8 +18,12 @@ class Clim
 
     def initialize(@name)
       @usage = "#{name} [options] [arguments]"
-      @help_proc = RunProc.new { puts help }
-      initialize_parser
+
+      # initialize parser
+      parser.on("--help", "Show this help.") { @display_help_flag = true }
+      parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
+      parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
+      parser.unknown_args { |unknown_args| @args = unknown_args }
     end
 
     def set_opt(opt, &proc : String ->)
@@ -40,13 +44,23 @@ class Clim
     end
 
     def parse(argv)
+      validate!
+      set_opts_on_parser
+      recursive_parse(argv)
+    end
+
+    private def validate!
       opts.opts_validate!
+      raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
+    end
 
-      unless duplicate_names.empty?
-        raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]"
-      end
+    private def duplicate_names
+      names = @sub_cmds.map(&.name)
+      alias_names = @sub_cmds.map(&.alias_name).flatten
+      (names + alias_names).group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
+    end
 
-      # parser on
+    private def set_opts_on_parser
       opts.opts.each do |opt|
         if opt.long.empty?
           parser.on(opt.short, opt.desc, &(opt.proc))
@@ -54,23 +68,12 @@ class Clim
           parser.on(opt.short, opt.long, opt.desc, &(opt.proc))
         end
       end
+    end
 
+    def recursive_parse(argv)
       return parse_by_parser(argv) if argv.empty?
       return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
-      find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
-    end
-
-    private def initialize_parser
-      parser.on("--help", "Show this help.") { @display_help_flag = true }
-      parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
-      parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-      parser.unknown_args { |unknown_args| @args = unknown_args }
-    end
-
-    private def duplicate_names
-      names = @sub_cmds.map(&.name)
-      alias_names = @sub_cmds.map(&.alias_name).flatten
-      (names + alias_names).group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
+      find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
     end
 
     private def display_help?
@@ -130,9 +133,6 @@ class Clim
     end
 
     private def parse_by_parser(argv)
-      opts.reset
-      @args = [] of String
-      @display_help_flag = false
       parser.parse(argv.dup)
       opts.validate! unless display_help?
       opts.help = help

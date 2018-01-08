@@ -81,11 +81,6 @@ class Clim
       @value = @value.nil? ? [arg] : @value.try &.<<(arg)
     end
 
-    def reset
-      @array_set_flag = false
-      @value = @default.dup
-    end
-
     def required_set?
       @required && @value.nil?
     end
