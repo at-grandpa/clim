@@ -18,7 +18,6 @@ class Clim
 
     def initialize(@name)
       @usage = "#{name} [options] [arguments]"
-
       # initialize parser
       parser.on("--help", "Show this help.") { @display_help_flag = true }
       parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
