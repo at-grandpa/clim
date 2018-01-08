@@ -1,100 +1,133 @@
 require "../dsl_spec"
 
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b, --bool                       Option description.
+
+
+                      HELP_MESSAGE
+%}
+
 spec(
   spec_class_name: MainCommandWithBool,
   spec_dsl_lines: [
     "bool \"-b\", \"--bool\"",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b, --bool                       Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Undefined option. \"-bool\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Undefined option. \"-bool\"",
+    },
+    {
+      argv: ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv: ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv: ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b                               Option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolOnlyShortOption,
@@ -102,88 +135,99 @@ spec(
     "bool \"-b\"",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b                               Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"b" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"b" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b),
-        expect_opts: {"b" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b arg1),
-        expect_opts: {"b" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b),
-        expect_opts: {"b" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(--bool),
-        exception_message: "Undefined option. \"--bool\"",
-      },
-      {
-        argv:              %w(--bool=ARG),
-        exception_message: "Undefined option. \"--bool=ARG\"",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Undefined option. \"-bool\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["--bool"],
+      exception_message: "Undefined option. \"--bool\"",
+    },
+    {
+      argv:              ["--bool=ARG"],
+      exception_message: "Undefined option. \"--bool=ARG\"",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Undefined option. \"-bool\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          --bool                           Option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolOnlyLongOption,
@@ -191,84 +235,95 @@ spec(
     "bool \"--bool\"",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        --bool                           Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-b),
-        exception_message: "Undefined option. \"-b\"",
-      },
-      {
-        argv:              %w(-b=ARG),
-        exception_message: "Undefined option. \"-b=ARG\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Undefined option. \"-bool\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-b"],
+      exception_message: "Undefined option. \"-b\"",
+    },
+    {
+      argv:              ["-b=ARG"],
+      exception_message: "Undefined option. \"-b=ARG\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Undefined option. \"-bool\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b ARG, --bool=ARG               Option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolArguments,
@@ -276,109 +331,121 @@ spec(
     "bool \"-b ARG\", \"--bool=ARG\"",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b ARG, --bool=ARG               Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(--bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(arg1 -b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(arg1 --bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(-b arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--bool=arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["arg1", "-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["arg1", "--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["-b", "arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--bool=arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b ARG                           Option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsOnlyShortOption,
@@ -386,107 +453,117 @@ spec(
     "bool \"-b ARG\"",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b ARG                           Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"b" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"b" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b true),
-        expect_opts: {"b" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b false),
-        expect_opts: {"b" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(--bool),
-        exception_message: "Undefined option. \"--bool\"",
-      },
-      {
-        argv:              %w(--bool true),
-        exception_message: "Undefined option. \"--bool\"",
-      },
-      {
-        argv:              %w(--bool false),
-        exception_message: "Undefined option. \"--bool\"",
-      },
-      {
-        argv:              %w(arg1 -b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(arg1 --bool),
-        exception_message: "Undefined option. \"--bool\"",
-      },
-      {
-        argv:              %w(-b arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--bool=arg1),
-        exception_message: "Undefined option. \"--bool=arg1\"",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"b" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["--bool"],
+      exception_message: "Undefined option. \"--bool\"",
+    },
+    {
+      argv:              ["--bool", "true"],
+      exception_message: "Undefined option. \"--bool\"",
+    },
+    {
+      argv:              ["--bool", "false"],
+      exception_message: "Undefined option. \"--bool\"",
+    },
+    {
+      argv:              ["arg1", "-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["arg1", "--bool"],
+      exception_message: "Undefined option. \"--bool\"",
+    },
+    {
+      argv:              ["-b", "arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--bool=arg1"],
+      exception_message: "Undefined option. \"--bool=arg1\"",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          --bool=ARG                       Option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsOnlyLongOption,
@@ -494,109 +571,121 @@ spec(
     "bool \"--bool=ARG\"",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        --bool=ARG                       Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool=true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool=false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(--bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(-b),
-        exception_message: "Undefined option. \"-b\"",
-      },
-      {
-        argv:              %w(-b true),
-        exception_message: "Undefined option. \"-b\"",
-      },
-      {
-        argv:              %w(-b false),
-        exception_message: "Undefined option. \"-b\"",
-      },
-      {
-        argv:              %w(arg1 --bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(arg1 -b),
-        exception_message: "Undefined option. \"-b\"",
-      },
-      {
-        argv:              %w(--bool arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool=true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool=false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["-b"],
+      exception_message: "Undefined option. \"-b\"",
+    },
+    {
+      argv:              ["-b", "true"],
+      exception_message: "Undefined option. \"-b\"",
+    },
+    {
+      argv:              ["-b", "false"],
+      exception_message: "Undefined option. \"-b\"",
+    },
+    {
+      argv:              ["arg1", "--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["arg1", "-b"],
+      exception_message: "Undefined option. \"-b\"",
+    },
+    {
+      argv:              ["--bool", "arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b, --bool                       Bool option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolDesc,
@@ -604,35 +693,41 @@ spec(
     "bool \"-b\", \"--bool\", desc: \"Bool option description.\"",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b, --bool                       Bool option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b, --bool                       Bool option description.  [default:false]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolDefault,
@@ -640,85 +735,97 @@ spec(
     "bool \"-b\", \"--bool\", desc: \"Bool option description.\", default: false",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b, --bool                       Bool option description.  [default:false]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Undefined option. \"-bool\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Undefined option. \"-bool\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b, --bool                       Bool option description.  [default:false]  [required]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolRequiredTrueAndDefaultExists,
@@ -726,75 +833,89 @@ spec(
     "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: true, default: false",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b, --bool                       Bool option description.  [default:false]  [required]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b ARG, --bool=ARG               Bool option description.  [default:false]  [required]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredTrueAndDefaultExists,
@@ -802,149 +923,169 @@ spec(
     "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: true, default: false",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b ARG, --bool=ARG               Bool option description.  [default:false]  [required]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b true arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b true),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b false arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b false),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool true arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool true),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool false arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool false),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(--bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(arg1 -b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(arg1 --bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(-b arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--bool=arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "true", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "false", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "true", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "false", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["arg1", "-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["arg1", "--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["-b", "arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--bool=arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b, --bool                       Bool option description.  [required]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: SpecMainCommandWithBoolRequiredTrueOnly,
@@ -952,85 +1093,97 @@ spec(
     "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: true",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b, --bool                       Bool option description.  [required]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(-b),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(),
-        exception_message: "Required options. \"-b\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Required options. \"-b\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        ["-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              [] of String,
+      exception_message: "Required options. \"-b\"",
+    },
+    {
+      argv:              ["arg1"],
+      exception_message: "Required options. \"-b\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b ARG, --bool=ARG               Bool option description.  [required]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredTrueOnly,
@@ -1038,147 +1191,165 @@ spec(
     "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: true",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b ARG, --bool=ARG               Bool option description.  [required]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(-b true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b true arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b true),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b false arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b false),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool true arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool true),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool false arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool false),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(),
-        exception_message: "Required options. \"-b ARG\"",
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Required options. \"-b ARG\"",
-      },
-      {
-        argv:              %w(-b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(--bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(arg1 -b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(arg1 --bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(-b arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--bool=arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        ["-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "true", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "false", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "true", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "false", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              [] of String,
+      exception_message: "Required options. \"-b ARG\"",
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["arg1"],
+      exception_message: "Required options. \"-b ARG\"",
+    },
+    {
+      argv:              ["-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["arg1", "-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["arg1", "--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["-b", "arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--bool=arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b, --bool                       Bool option description.  [default:false]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolRequiredFalseAndDefaultExists,
@@ -1186,75 +1357,89 @@ spec(
     "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: false, default: false",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b, --bool                       Bool option description.  [default:false]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b ARG, --bool=ARG               Bool option description.  [default:false]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredFalseAndDefaultExists,
@@ -1262,149 +1447,169 @@ spec(
     "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: false, default: false",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b ARG, --bool=ARG               Bool option description.  [default:false]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b true arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b true),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b false arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b false),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool true arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool true),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool false arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool false),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(--bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(arg1 -b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(arg1 --bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(-b arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--bool=arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "true", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "false", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "true", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "false", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["arg1", "-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["arg1", "--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["-b", "arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--bool=arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b, --bool                       Bool option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolRequiredFalseOnly,
@@ -1412,75 +1617,89 @@ spec(
     "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: false",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b, --bool                       Bool option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -b ARG, --bool=ARG               Bool option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredFalseOnly,
@@ -1488,146 +1707,147 @@ spec(
     "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: false",
   ],
   spec_desc: "main command with bool dsl,",
-  main_help_message: <<-HELP_MESSAGE
-   
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -b ARG, --bool=ARG               Bool option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"bool" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"bool" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b true arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b true),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-b false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-b false arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -b false),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool true),
-        expect_opts: {"bool" => true},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool true arg1),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool true),
-        expect_opts: {"bool" => true},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--bool false),
-        expect_opts: {"bool" => false},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--bool false arg1),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --bool false),
-        expect_opts: {"bool" => false},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(--bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(arg1 -b),
-        exception_message: "Option that requires an argument. \"-b\"",
-      },
-      {
-        argv:              %w(arg1 --bool),
-        exception_message: "Option that requires an argument. \"--bool\"",
-      },
-      {
-        argv:              %w(-b arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--bool=arg1),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-      },
-      {
-        argv:              %w(--b),
-        exception_message: "Undefined option. \"--b\"",
-      },
-      {
-        argv:              %w(-bool),
-        exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "true", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-b", "false", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-b", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "true", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool", "true"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => true},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool", "false", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--bool", "false"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"bool" => false},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["arg1", "-b"],
+      exception_message: "Option that requires an argument. \"-b\"",
+    },
+    {
+      argv:              ["arg1", "--bool"],
+      exception_message: "Option that requires an argument. \"--bool\"",
+    },
+    {
+      argv:              ["-b", "arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--bool=arg1"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+    },
+    {
+      argv:              ["--b"],
+      exception_message: "Undefined option. \"--b\"",
+    },
+    {
+      argv:              ["-bool"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
