@@ -22,7 +22,8 @@ class Clim
       initialize_parser
     end
 
-    def set_opt(opt)
+    def set_opt(opt, &proc : String ->)
+      opt.set_proc(&proc)
       opts.add(opt)
     end
 

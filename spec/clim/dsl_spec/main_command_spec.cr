@@ -319,9 +319,9 @@ class MainCommandWhenMainCommandIsNotDefined < Clim
   command "spec_case"
 end
 
-describe "Call the main command twice." do
+describe "Call the command," do
   it "raises an Exception when call command method if main_command is not defined." do
-    expect_raises(Exception, "Main command is not defined.") do
+    expect_raises(Exception, "Run block of main command is not defined.") do
       MainCommandWhenMainCommandIsNotDefined.start_main([] of String)
     end
   end

@@ -6,7 +6,7 @@ class Clim
   @@defining : Command = @@main                     # Current defining command.
   @@stack : Array(Command) = [] of Command          # Command stack for `sub do ... end` scope.
   @@defined_main : Bool = false                     # If the main command is defined, @@defined_main = true.
-  @@exceptions : Array(Proc(Nil)) = [] of Proc(Nil) # If the main command is defined, @@defined_main = true.
+  @@exceptions : Array(Proc(Nil)) = [] of Proc(Nil) # exceptions pool
 
   module Dsl
     def main_command
@@ -17,7 +17,7 @@ class Clim
     end
 
     def command(name)
-      @@exceptions.push ->{ raise ClimException.new "Main command is not defined." } if @@stack.empty?
+      @@exceptions.push ->{ raise ClimException.new "Run block of main command is not defined." } if @@stack.empty?
       @@defining = Command.new(name)
     end
 
@@ -38,19 +38,16 @@ class Clim
       # short name and long name
       def {{method_name.id}}(short, long, default : {{type}} = nil, required = false, desc = "Option description.")
         opt = Option({{type}}).new(short, long, default, required, desc, default)
-        opt.set_proc {{proc.id}}
-        @@defining.set_opt(opt)
+        @@defining.set_opt(opt) {{proc.id}}
       end
 
       # short name only
       def {{method_name.id}}(short, default : {{type}} = nil, required = false, desc = "Option description.")
         opt = Option({{type}}).new(short,  "", default, required, desc, default)
-        opt.set_proc {{proc.id}}
-        @@defining.set_opt(opt)
+        @@defining.set_opt(opt) {{proc.id}}
       end
     end
 
-    # Call the define_opts macro.
     difine_opts(method_name: "string", type: String | Nil) { |arg| opt.set_string(arg) }
     difine_opts(method_name: "bool", type: Bool | Nil) { |arg| opt.set_bool(arg) }
     difine_opts(method_name: "array", type: Array(String) | Nil) { |arg| opt.add_to_array(arg) }
@@ -66,9 +63,9 @@ class Clim
       @@stack.pop
     end
 
-    def start_main(argv, io = STDOUT, root = @@main)
+    def start_main(argv, io = STDOUT)
       @@exceptions.each &.call
-      root.parse(argv).run(io)
+      @@main.parse(argv).run(io)
     end
 
     def start(argv)
