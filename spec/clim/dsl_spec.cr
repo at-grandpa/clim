@@ -1,6 +1,6 @@
 require "./../spec_helper"
 
-macro check_opts_and_args(help, spec_case)
+macro assert_opts_and_args(help, spec_case)
   {% if spec_case.keys.includes?("expect_opts".id) %}
     opts["help"].should eq {{help}}
     opts.delete("help")
@@ -9,17 +9,22 @@ macro check_opts_and_args(help, spec_case)
   {% end %}
 end
 
+macro expand_dsl_lines(lines)
+  {% for line, index in lines %}
+    {{line.id}}
+  {% end %}
+end
+
 macro spec(spec_class_name, spec_dsl_lines, spec_desc, help_message, spec_cases)
   {% for spec_case, index in spec_cases %}
     {% class_name = (spec_class_name.stringify + index.stringify).id %}
+
     # define dsl
     class {{class_name}} < Clim
       main_command
-      {% for spec_dsl_line, index in spec_dsl_lines %}
-        {{spec_dsl_line.id}}
-      {% end %}
+      expand_dsl_lines({{spec_dsl_lines}})
       run do |opts, args|
-        check_opts_and_args({{help_message}}, {{spec_case}})
+        assert_opts_and_args({{help_message}}, {{spec_case}})
       end
     end
 

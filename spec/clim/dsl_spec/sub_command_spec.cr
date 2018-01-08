@@ -1,201 +1,56 @@
 require "../dsl_spec"
 
-macro spec_for_sub_commands(spec_class_name, main_help_message, sub_command_name, spec_dsl_lines, spec_desc, sub_help_message, spec_cases_hash)
+macro spec_for_sub_commands(spec_class_name, main_help_message, sub_help_message, spec_cases_hash)
   {% for key, spec_case_hash in spec_cases_hash %}
     {% for spec_case, index in spec_case_hash %}
       {% class_name = (spec_class_name.stringify + key.stringify.camelcase + index.stringify).id %}
+
       # define dsl
       class {{class_name}} < Clim
         main_command
         run do |opts, args|
-          check_opts_and_args({{main_help_message}}, {{spec_case}})
+          assert_opts_and_args({{main_help_message}}, {{spec_case}})
         end
 
         sub do
-          command {{sub_command_name}}
-          {% for spec_dsl_line, index in spec_dsl_lines %}
-            {{spec_dsl_line.id}}
-          {% end %}
+          command "sub_command"
+          desc "Sub command with desc."
+          usage "sub_command with usage [options] [arguments]"
           run do |opts, args|
-            check_opts_and_args({{sub_help_message}}, {{spec_case}})
+            assert_opts_and_args({{sub_help_message}}, {{spec_case}})
           end
         end
       end
 
       # spec
-      describe {{spec_desc}} do
-        describe "if dsl is [" + {{spec_dsl_lines.join(", ")}} + "]," do
-          describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
-            {% if spec_case.keys.includes?("expect_opts".id) %}
-              it "opts and args are given as arguments of run block." do
+      describe "sub command with desc and usage," do
+        describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
+          {% if spec_case.keys.includes?("expect_opts".id) %}
+            it "opts and args are given as arguments of run block." do
+              {{class_name}}.start_main({{spec_case["argv"]}})
+            end
+          {% elsif spec_case.keys.includes?("exception_message".id) %}
+            it "raises an Exception." do
+              expect_raises(Exception, {{spec_case["exception_message"]}}) do
                 {{class_name}}.start_main({{spec_case["argv"]}})
               end
-            {% elsif spec_case.keys.includes?("exception_message".id) %}
-              it "raises an Exception." do
-                expect_raises(Exception, {{spec_case["exception_message"]}}) do
-                  {{class_name}}.start_main({{spec_case["argv"]}})
-                end
-              end
-            {% else %}
-              it "display help." do
-                io = IO::Memory.new
-                {{class_name}}.start_main({{spec_case["argv"]}}, io)
-                {% if key == "main_command_case" %}
-                  io.to_s.should eq {{main_help_message}}
-                {% elsif key == "sub_command_case" %}
-                  io.to_s.should eq {{sub_help_message}}
-                {% end %}
-              end
-            {% end %}
-          end
+            end
+          {% else %}
+            it "display help." do
+              io = IO::Memory.new
+              {{class_name}}.start_main({{spec_case["argv"]}}, io)
+              {% if key == "main_command_case" %}
+                io.to_s.should eq {{main_help_message}}
+              {% elsif key == "sub_command_case" %}
+                io.to_s.should eq {{sub_help_message}}
+              {% end %}
+            end
+          {% end %}
         end
       end
     {% end %}
   {% end %}
 end
-
-spec_for_sub_commands(
-  spec_class_name: SubCommandOnly,
-  main_help_message: <<-HELP_MESSAGE
-
-                       Command Line Interface Tool.
-
-                       Usage:
-
-                         main_command [options] [arguments]
-
-                       Options:
-
-                         --help                           Show this help.
-
-                       Sub Commands:
-
-                         sub_command   Command Line Interface Tool.
-
-
-                     HELP_MESSAGE,
-  sub_command_name: "sub_command",
-  spec_dsl_lines: [] of String,
-  spec_desc: "sub command only,",
-  sub_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        sub_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: ReturnOptsType.new,
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: ReturnOptsType.new,
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 arg2),
-        expect_opts: ReturnOptsType.new,
-        expect_args: ["arg1", "arg2"],
-      },
-      {
-        argv:        %w(arg1 arg2 arg3),
-        expect_opts: ReturnOptsType.new,
-        expect_args: ["arg1", "arg2", "arg3"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-    sub_command_case: [
-      {
-        argv:        %w(sub_command),
-        expect_opts: ReturnOptsType.new,
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(sub_command arg1),
-        expect_opts: ReturnOptsType.new,
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(sub_command arg1 arg2),
-        expect_opts: ReturnOptsType.new,
-        expect_args: ["arg1", "arg2"],
-      },
-      {
-        argv:        %w(sub_command arg1 arg2 arg3),
-        expect_opts: ReturnOptsType.new,
-        expect_args: ["arg1", "arg2", "arg3"],
-      },
-      {
-        argv:              %w(sub_command --help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(sub_command -ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(sub_command -m),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(sub_command --missing-option),
-        exception_message: "Undefined option. \"--missing-option\"",
-      },
-      {
-        argv:              %w(sub_command -m arg1),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(sub_command arg1 -m),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv:              %w(sub_command -m -d),
-        exception_message: "Undefined option. \"-m\"",
-      },
-      {
-        argv: %w(sub_command --help),
-      },
-      {
-        argv: %w(sub_command --help ignore-arg),
-      },
-      {
-        argv: %w(sub_command ignore-arg --help),
-      },
-    ],
-  }
-)
 
 spec_for_sub_commands(
   spec_class_name: SubCommandWithDescAndUsage,
@@ -217,12 +72,6 @@ spec_for_sub_commands(
 
 
                      HELP_MESSAGE,
-  sub_command_name: "sub_command",
-  spec_dsl_lines: [
-    "desc \"Sub command with desc.\"",
-    "usage \"sub_command with usage [options] [arguments]\"",
-  ],
-  spec_desc: "sub command only,",
   sub_help_message: <<-HELP_MESSAGE
 
                       Sub command with desc.
@@ -343,63 +192,59 @@ spec_for_sub_commands(
   }
 )
 
-macro spec_for_sub_sub_commands(spec_class_name, main_help_message, sub_command_name, sub_help_message, sub_sub_command_name, spec_dsl_lines, spec_desc, sub_sub_help_message, spec_cases_hash)
+macro spec_for_sub_sub_commands(spec_class_name, main_help_message, sub_help_message, sub_sub_help_message, spec_cases_hash)
   {% for key, spec_case_hash in spec_cases_hash %}
     {% for spec_case, index in spec_case_hash %}
       {% class_name = (spec_class_name.stringify + key.stringify.camelcase + index.stringify).id %}
+
       # define dsl
       class {{class_name}} < Clim
         main_command
         run do |opts, args|
-          check_opts_and_args({{main_help_message}}, {{spec_case}})
+          assert_opts_and_args({{main_help_message}}, {{spec_case}})
         end
 
         sub do
-          command {{sub_command_name}}
+          command "sub_command"
           run do |opts, args|
-            check_opts_and_args({{sub_help_message}}, {{spec_case}})
+            assert_opts_and_args({{sub_help_message}}, {{spec_case}})
           end
 
           sub do
-            command {{sub_sub_command_name}}
-            {% for spec_dsl_line, index in spec_dsl_lines %}
-              {{spec_dsl_line.id}}
-            {% end %}
+            command "sub_sub_command"
             run do |opts, args|
-              check_opts_and_args({{sub_sub_help_message}}, {{spec_case}})
+              assert_opts_and_args({{sub_sub_help_message}}, {{spec_case}})
             end
           end
         end
       end
 
       # spec
-      describe {{spec_desc}} do
-        describe "if dsl is [" + {{spec_dsl_lines.join(", ")}} + "]," do
-          describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
-            {% if spec_case.keys.includes?("expect_opts".id) %}
-              it "opts and args are given as arguments of run block." do
+      describe "sub sub command," do
+        describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
+          {% if spec_case.keys.includes?("expect_opts".id) %}
+            it "opts and args are given as arguments of run block." do
+              {{class_name}}.start_main({{spec_case["argv"]}})
+            end
+          {% elsif spec_case.keys.includes?("exception_message".id) %}
+            it "raises an Exception." do
+              expect_raises(Exception, {{spec_case["exception_message"]}}) do
                 {{class_name}}.start_main({{spec_case["argv"]}})
               end
-            {% elsif spec_case.keys.includes?("exception_message".id) %}
-              it "raises an Exception." do
-                expect_raises(Exception, {{spec_case["exception_message"]}}) do
-                  {{class_name}}.start_main({{spec_case["argv"]}})
-                end
-              end
-            {% else %}
-              it "display help." do
-                io = IO::Memory.new
-                {{class_name}}.start_main({{spec_case["argv"]}}, io)
-                {% if key == "main_command_case" %}
-                  io.to_s.should eq {{main_help_message}}
-                {% elsif key == "sub_command_case" %}
-                  io.to_s.should eq {{sub_help_message}}
-                {% elsif key == "sub_sub_command_case" %}
-                  io.to_s.should eq {{sub_sub_help_message}}
-                {% end %}
-              end
-            {% end %}
-          end
+            end
+          {% else %}
+            it "display help." do
+              io = IO::Memory.new
+              {{class_name}}.start_main({{spec_case["argv"]}}, io)
+              {% if key == "main_command_case" %}
+                io.to_s.should eq {{main_help_message}}
+              {% elsif key == "sub_command_case" %}
+                io.to_s.should eq {{sub_help_message}}
+              {% elsif key == "sub_sub_command_case" %}
+                io.to_s.should eq {{sub_sub_help_message}}
+              {% end %}
+            end
+          {% end %}
         end
       end
     {% end %}
@@ -426,7 +271,6 @@ spec_for_sub_sub_commands(
 
 
                      HELP_MESSAGE,
-  sub_command_name: "sub_command",
   sub_help_message: <<-HELP_MESSAGE
 
                       Command Line Interface Tool.
@@ -445,9 +289,6 @@ spec_for_sub_sub_commands(
 
 
                     HELP_MESSAGE,
-  sub_sub_command_name: "sub_sub_command",
-  spec_dsl_lines: [] of String,
-  spec_desc: "sub command only,",
   sub_sub_help_message: <<-HELP_MESSAGE
 
                           Command Line Interface Tool.
@@ -627,15 +468,16 @@ spec_for_sub_sub_commands(
   }
 )
 
-macro spec_for_jump_over_sub_sub_command(spec_class_name, main_help_message, sub_command_name, sub_help_message, sub_sub_command_name, spec_dsl_lines, spec_desc, sub_sub_help_message, spec_cases_hash)
+macro spec_for_jump_over_sub_sub_command(spec_class_name, main_help_message, sub_help_message, sub_sub_help_message, spec_cases_hash)
   {% for key, spec_case_hash in spec_cases_hash %}
     {% for spec_case, index in spec_case_hash %}
       {% class_name = (spec_class_name.stringify + key.stringify.camelcase + index.stringify).id %}
+
       # define dsl
       class {{class_name}} < Clim
         main_command
         run do |opts, args|
-          check_opts_and_args({{main_help_message}}, {{spec_case}})
+          assert_opts_and_args({{main_help_message}}, {{spec_case}})
         end
 
         sub do
@@ -644,51 +486,45 @@ macro spec_for_jump_over_sub_sub_command(spec_class_name, main_help_message, sub
           end
 
           sub do
-            command {{sub_sub_command_name}}
-            {% for spec_dsl_line, index in spec_dsl_lines %}
-              {{spec_dsl_line.id}}
-            {% end %}
+            command "sub_sub_command"
             run do |opts, args|
-              check_opts_and_args({{sub_sub_help_message}}, {{spec_case}})
+              assert_opts_and_args({{sub_sub_help_message}}, {{spec_case}})
             end
           end
 
-          command {{sub_command_name}}
+          command "jump_over_sub_sub_command"
           run do |opts, args|
-            check_opts_and_args({{sub_help_message}}, {{spec_case}})
+            assert_opts_and_args({{sub_help_message}}, {{spec_case}})
           end
-
         end
       end
 
       # spec
-      describe {{spec_desc}} do
-        describe "if dsl is [" + {{spec_dsl_lines.join(", ")}} + "]," do
-          describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
-            {% if spec_case.keys.includes?("expect_opts".id) %}
-              it "opts and args are given as arguments of run block." do
+      describe "jump over sub_sub command," do
+        describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
+          {% if spec_case.keys.includes?("expect_opts".id) %}
+            it "opts and args are given as arguments of run block." do
+              {{class_name}}.start_main({{spec_case["argv"]}})
+            end
+          {% elsif spec_case.keys.includes?("exception_message".id) %}
+            it "raises an Exception." do
+              expect_raises(Exception, {{spec_case["exception_message"]}}) do
                 {{class_name}}.start_main({{spec_case["argv"]}})
               end
-            {% elsif spec_case.keys.includes?("exception_message".id) %}
-              it "raises an Exception." do
-                expect_raises(Exception, {{spec_case["exception_message"]}}) do
-                  {{class_name}}.start_main({{spec_case["argv"]}})
-                end
-              end
-            {% else %}
-              it "display help." do
-                io = IO::Memory.new
-                {{class_name}}.start_main({{spec_case["argv"]}}, io)
-                {% if key == "main_command_case" %}
-                  io.to_s.should eq {{main_help_message}}
-                {% elsif key == "sub_command_case" %}
-                  io.to_s.should eq {{sub_help_message}}
-                {% elsif key == "sub_sub_command_case" %}
-                  io.to_s.should eq {{sub_sub_help_message}}
-                {% end %}
-              end
-            {% end %}
-          end
+            end
+          {% else %}
+            it "display help." do
+              io = IO::Memory.new
+              {{class_name}}.start_main({{spec_case["argv"]}}, io)
+              {% if key == "main_command_case" %}
+                io.to_s.should eq {{main_help_message}}
+              {% elsif key == "sub_command_case" %}
+                io.to_s.should eq {{sub_help_message}}
+              {% elsif key == "sub_sub_command_case" %}
+                io.to_s.should eq {{sub_sub_help_message}}
+              {% end %}
+            end
+          {% end %}
         end
       end
     {% end %}
@@ -716,7 +552,6 @@ spec_for_jump_over_sub_sub_command(
 
 
                      HELP_MESSAGE,
-  sub_command_name: "jump_over_sub_sub_command",
   sub_help_message: <<-HELP_MESSAGE
 
                       Command Line Interface Tool.
@@ -731,9 +566,6 @@ spec_for_jump_over_sub_sub_command(
 
 
                     HELP_MESSAGE,
-  sub_sub_command_name: "sub_sub_command",
-  spec_dsl_lines: [] of String,
-  spec_desc: "jump over sub_sub command,",
   sub_sub_help_message: <<-HELP_MESSAGE
 
                           Command Line Interface Tool.
@@ -917,18 +749,19 @@ macro spec_for_alias_name(spec_class_name, main_help_message, sub_1_help_message
   {% for key, spec_case_hash in spec_cases_hash %}
     {% for spec_case, index in spec_case_hash %}
       {% class_name = (spec_class_name.stringify + key.stringify.camelcase + index.stringify).id %}
+
       # define dsl
       class {{class_name}} < Clim
         main_command
         run do |opts, args|
-          check_opts_and_args({{main_help_message}}, {{spec_case}})
+          assert_opts_and_args({{main_help_message}}, {{spec_case}})
         end
 
         sub do
           command "sub_command_1"
           alias_name "alias_sub_command_1"
           run do |opts, args|
-            check_opts_and_args({{sub_1_help_message}}, {{spec_case}})
+            assert_opts_and_args({{sub_1_help_message}}, {{spec_case}})
           end
 
           sub do
@@ -940,9 +773,8 @@ macro spec_for_alias_name(spec_class_name, main_help_message, sub_1_help_message
           command "sub_command_2"
           alias_name "alias_sub_command_2", "alias_sub_command_2_second"
           run do |opts, args|
-            check_opts_and_args({{sub_2_help_message}}, {{spec_case}})
+            assert_opts_and_args({{sub_2_help_message}}, {{spec_case}})
           end
-
         end
       end
 
