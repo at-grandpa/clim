@@ -8,12 +8,7 @@ macro spec_for_sub_commands(spec_class_name, main_help_message, sub_command_name
       class {{class_name}} < Clim
         main_command
         run do |opts, args|
-          {% if spec_case.keys.includes?("expect_opts".id) %}
-            opts["help"].should eq {{main_help_message}}
-            opts.delete("help")
-            opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-            args.should eq {{spec_case["expect_args"]}}
-          {% end %}
+          check_opts_and_args({{main_help_message}}, {{spec_case}})
         end
 
         sub do
@@ -22,12 +17,7 @@ macro spec_for_sub_commands(spec_class_name, main_help_message, sub_command_name
             {{spec_dsl_line.id}}
           {% end %}
           run do |opts, args|
-            {% if spec_case.keys.includes?("expect_opts".id) %}
-              opts["help"].should eq {{sub_help_message}}
-              opts.delete("help")
-              opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-              args.should eq {{spec_case["expect_args"]}}
-            {% end %}
+            check_opts_and_args({{sub_help_message}}, {{spec_case}})
           end
         end
       end
@@ -361,23 +351,13 @@ macro spec_for_sub_sub_commands(spec_class_name, main_help_message, sub_command_
       class {{class_name}} < Clim
         main_command
         run do |opts, args|
-          {% if spec_case.keys.includes?("expect_opts".id) %}
-            opts["help"].should eq {{main_help_message}}
-            opts.delete("help")
-            opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-            args.should eq {{spec_case["expect_args"]}}
-          {% end %}
+          check_opts_and_args({{main_help_message}}, {{spec_case}})
         end
 
         sub do
           command {{sub_command_name}}
           run do |opts, args|
-            {% if spec_case.keys.includes?("expect_opts".id) %}
-              opts["help"].should eq {{sub_help_message}}
-              opts.delete("help")
-              opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-              args.should eq {{spec_case["expect_args"]}}
-            {% end %}
+            check_opts_and_args({{sub_help_message}}, {{spec_case}})
           end
 
           sub do
@@ -386,12 +366,7 @@ macro spec_for_sub_sub_commands(spec_class_name, main_help_message, sub_command_
               {{spec_dsl_line.id}}
             {% end %}
             run do |opts, args|
-              {% if spec_case.keys.includes?("expect_opts".id) %}
-                opts["help"].should eq {{sub_sub_help_message}}
-                opts.delete("help")
-                opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-                args.should eq {{spec_case["expect_args"]}}
-              {% end %}
+              check_opts_and_args({{sub_sub_help_message}}, {{spec_case}})
             end
           end
         end
@@ -660,12 +635,7 @@ macro spec_for_jump_over_sub_sub_command(spec_class_name, main_help_message, sub
       class {{class_name}} < Clim
         main_command
         run do |opts, args|
-          {% if spec_case.keys.includes?("expect_opts".id) %}
-            opts["help"].should eq {{main_help_message}}
-            opts.delete("help")
-            opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-            args.should eq {{spec_case["expect_args"]}}
-          {% end %}
+          check_opts_and_args({{main_help_message}}, {{spec_case}})
         end
 
         sub do
@@ -679,23 +649,13 @@ macro spec_for_jump_over_sub_sub_command(spec_class_name, main_help_message, sub
               {{spec_dsl_line.id}}
             {% end %}
             run do |opts, args|
-              {% if spec_case.keys.includes?("expect_opts".id) %}
-                opts["help"].should eq {{sub_sub_help_message}}
-                opts.delete("help")
-                opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-                args.should eq {{spec_case["expect_args"]}}
-              {% end %}
+              check_opts_and_args({{sub_sub_help_message}}, {{spec_case}})
             end
           end
 
           command {{sub_command_name}}
           run do |opts, args|
-            {% if spec_case.keys.includes?("expect_opts".id) %}
-              opts["help"].should eq {{sub_help_message}}
-              opts.delete("help")
-              opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-              args.should eq {{spec_case["expect_args"]}}
-            {% end %}
+            check_opts_and_args({{sub_help_message}}, {{spec_case}})
           end
 
         end
@@ -961,24 +921,14 @@ macro spec_for_alias_name(spec_class_name, main_help_message, sub_1_help_message
       class {{class_name}} < Clim
         main_command
         run do |opts, args|
-          {% if spec_case.keys.includes?("expect_opts".id) %}
-            opts["help"].should eq {{main_help_message}}
-            opts.delete("help")
-            opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-            args.should eq {{spec_case["expect_args"]}}
-          {% end %}
+          check_opts_and_args({{main_help_message}}, {{spec_case}})
         end
 
         sub do
           command "sub_command_1"
           alias_name "alias_sub_command_1"
           run do |opts, args|
-            {% if spec_case.keys.includes?("expect_opts".id) %}
-              opts["help"].should eq {{sub_1_help_message}}
-              opts.delete("help")
-              opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-              args.should eq {{spec_case["expect_args"]}}
-            {% end %}
+            check_opts_and_args({{sub_1_help_message}}, {{spec_case}})
           end
 
           sub do
@@ -990,12 +940,7 @@ macro spec_for_alias_name(spec_class_name, main_help_message, sub_1_help_message
           command "sub_command_2"
           alias_name "alias_sub_command_2", "alias_sub_command_2_second"
           run do |opts, args|
-            {% if spec_case.keys.includes?("expect_opts".id) %}
-              opts["help"].should eq {{sub_2_help_message}}
-              opts.delete("help")
-              opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-              args.should eq {{spec_case["expect_args"]}}
-            {% end %}
+            check_opts_and_args({{sub_2_help_message}}, {{spec_case}})
           end
 
         end

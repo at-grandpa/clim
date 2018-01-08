@@ -1,5 +1,14 @@
 require "./../spec_helper"
 
+macro check_opts_and_args(help, spec_case)
+  {% if spec_case.keys.includes?("expect_opts".id) %}
+    opts["help"].should eq {{help}}
+    opts.delete("help")
+    opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
+    args.should eq {{spec_case["expect_args"]}}
+  {% end %}
+end
+
 macro spec(spec_class_name, spec_dsl_lines, spec_desc, help_message, spec_cases)
   {% for spec_case, index in spec_cases %}
     {% class_name = (spec_class_name.stringify + index.stringify).id %}
@@ -10,12 +19,7 @@ macro spec(spec_class_name, spec_dsl_lines, spec_desc, help_message, spec_cases)
         {{spec_dsl_line.id}}
       {% end %}
       run do |opts, args|
-        {% if spec_case.keys.includes?("expect_opts".id) %}
-          opts["help"].should eq {{help_message}}
-          opts.delete("help")
-          opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
-          args.should eq {{spec_case["expect_args"]}}
-        {% end %}
+        check_opts_and_args({{help_message}}, {{spec_case}})
       end
     end
 
