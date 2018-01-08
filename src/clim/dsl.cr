@@ -1,6 +1,5 @@
 class Clim
   alias ReturnOptsType = Hash(String, String | Bool | Array(String) | Nil)
-  # alias RunProc = Proc(ReturnOptsType, Array(String), ReturnOptsType?)
   alias RunProc = Proc(ReturnOptsType, Array(String), Nil)
 
   @@main : Command = Command.new("main_command")    # Main command.
