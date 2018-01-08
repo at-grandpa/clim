@@ -1,118 +1,153 @@
 require "../dsl_spec"
 
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -a ARG, --array=ARG              Option description.
+
+
+                      HELP_MESSAGE
+%}
+
 spec(
   spec_class_name: MainCommandWithArray,
   spec_dsl_lines: [
     "array \"-a ARG\", \"--array=ARG\"",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -a ARG, --array=ARG              Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"array" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"array" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-aarray1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array=array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a array1 arg1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-array), # Unintended case.
-        expect_opts: {"array" => ["rray"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a=array1), # Unintended case.
-        expect_opts: {"array" => ["=array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-aarray1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array=array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a", "array1", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-array"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a=array1"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              ["arg1", "-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["arg1", "--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -a ARG                           Option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithArrayOnlyShortOption,
@@ -120,111 +155,125 @@ spec(
     "array \"-a ARG\"",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -a ARG                           Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"a" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"a" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-a array1),
-        expect_opts: {"a" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-aarray1),
-        expect_opts: {"a" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a array1 arg1),
-        expect_opts: {"a" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -a array1),
-        expect_opts: {"a" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-array), # Unintended case.
-        expect_opts: {"a" => ["rray"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a=array1), # Unintended case.
-        expect_opts: {"a" => ["=array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Undefined option. \"--array\"",
-      },
-      {
-        argv:              %w(--array attay1),
-        exception_message: "Undefined option. \"--array\"",
-      },
-      {
-        argv:              %w(--array=array1),
-        exception_message: "Undefined option. \"--array=array1\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Undefined option. \"--array\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"a" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"a" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"a" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-aarray1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"a" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a", "array1", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"a" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"a" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-array"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"a" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a=array1"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"a" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["--array"],
+      exception_message: "Undefined option. \"--array\"",
+    },
+    {
+      argv:              ["--array", "attay1"],
+      exception_message: "Undefined option. \"--array\"",
+    },
+    {
+      argv:              ["--array=array1"],
+      exception_message: "Undefined option. \"--array=array1\"",
+    },
+    {
+      argv:              ["arg1", "-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["arg1", "--array"],
+      exception_message: "Undefined option. \"--array\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          --array=ARG                      Option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithArrayOnlyLongOption,
@@ -232,101 +281,113 @@ spec(
     "array \"--array=ARG\"",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        --array=ARG                      Option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"array" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"array" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(--array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array=array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array array1 arg1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 --array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Undefined option. \"-a\"",
-      },
-      {
-        argv:              %w(-a attay1),
-        exception_message: "Undefined option. \"-a\"",
-      },
-      {
-        argv:              %w(-a=array1),
-        exception_message: "Undefined option. \"-a=array1\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Undefined option. \"-a\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["--array", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array=array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array", "array1", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "--array", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              ["-a"],
+      exception_message: "Undefined option. \"-a\"",
+    },
+    {
+      argv:              ["-a", "attay1"],
+      exception_message: "Undefined option. \"-a\"",
+    },
+    {
+      argv:              ["-a=array1"],
+      exception_message: "Undefined option. \"-a=array1\"",
+    },
+    {
+      argv:              ["arg1", "--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              ["arg1", "-a"],
+      exception_message: "Undefined option. \"-a\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -a ARG, --array=ARG              Array option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithArrayDesc,
@@ -334,149 +395,170 @@ spec(
     "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\"",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -a ARG, --array=ARG              Array option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
 
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -a ARG, --array=ARG              Array option description.  [default:["default value"]]
+
+
+                      HELP_MESSAGE
+%}
 spec(
   spec_class_name: MainCommandWithArrayDefault,
   spec_dsl_lines: [
     "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", default: [\"default value\"]",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -a ARG, --array=ARG              Array option description.  [default:["default value"]]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"array" => ["default value"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"array" => ["default value"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-aarray1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array=array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a array1 arg1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-array), # Unintended case.
-        expect_opts: {"array" => ["rray"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a=array1), # Unintended case.
-        expect_opts: {"array" => ["=array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["default value"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["default value"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-aarray1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array=array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a", "array1", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-array"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a=array1"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              ["arg1", "-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["arg1", "--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -a ARG, --array=ARG              Array option description.  [default:["default value"]]  [required]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithArrayRequiredTrueAndDefaultExists,
@@ -484,113 +566,129 @@ spec(
     "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: true, default: [\"default value\"]",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -a ARG, --array=ARG              Array option description.  [default:["default value"]]  [required]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"array" => ["default value"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"array" => ["default value"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-aarray1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array=array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a array1 arg1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-array), # Unintended case.
-        expect_opts: {"array" => ["rray"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a=array1), # Unintended case.
-        expect_opts: {"array" => ["=array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["default value"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["default value"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-aarray1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array=array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a", "array1", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-array"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a=array1"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              ["arg1", "-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["arg1", "--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -a ARG, --array=ARG              Array option description.  [required]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithArrayRequiredTrueOnly,
@@ -598,111 +696,125 @@ spec(
     "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: true",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -a ARG, --array=ARG              Array option description.  [required]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(-a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-aarray1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array=array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a array1 arg1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-array), # Unintended case.
-        expect_opts: {"array" => ["rray"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a=array1), # Unintended case.
-        expect_opts: {"array" => ["=array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(),
-        exception_message: "Required options. \"-a ARG\"",
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(arg1),
-        exception_message: "Required options. \"-a ARG\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        ["-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-aarray1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array=array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a", "array1", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-array"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a=array1"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              [] of String,
+      exception_message: "Required options. \"-a ARG\"",
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["arg1"],
+      exception_message: "Required options. \"-a ARG\"",
+    },
+    {
+      argv:              ["-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              ["arg1", "-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["arg1", "--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -a ARG, --array=ARG              Array option description.  [default:["default value"]]
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithArrayRequiredFalseAndDefaultExists,
@@ -710,113 +822,129 @@ spec(
     "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: false, default: [\"default value\"]",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -a ARG, --array=ARG              Array option description.  [default:["default value"]]
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"array" => ["default value"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"array" => ["default value"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-aarray1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array=array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a array1 arg1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-array), # Unintended case.
-        expect_opts: {"array" => ["rray"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a=array1), # Unintended case.
-        expect_opts: {"array" => ["=array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["default value"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["default value"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-aarray1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array=array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a", "array1", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-array"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a=array1"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              ["arg1", "-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["arg1", "--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Command Line Interface Tool.
+
+                        Usage:
+
+                          main_command [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -a ARG, --array=ARG              Array option description.
+
+
+                      HELP_MESSAGE
+%}
 
 spec(
   spec_class_name: MainCommandWithArrayRequiredFalseOnly,
@@ -824,110 +952,107 @@ spec(
     "array \"-a ARG\", \"--array=ARG\", desc: \"Array option description.\", required: false",
   ],
   spec_desc: "main command with array dsl,",
-  main_help_message: <<-HELP_MESSAGE
-   
-                      Command Line Interface Tool.
-
-                      Usage:
-
-                        main_command [options] [arguments]
-
-                      Options:
-
-                        --help                           Show this help.
-                        -a ARG, --array=ARG              Array option description.
-
-
-                    HELP_MESSAGE,
-  spec_cases_hash: {
-    main_command_case: [
-      {
-        argv:        %w(),
-        expect_opts: {"array" => nil},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(arg1),
-        expect_opts: {"array" => nil},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-aarray1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(--array=array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a array1 arg1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(arg1 -a array1),
-        expect_opts: {"array" => ["array1"]},
-        expect_args: ["arg1"],
-      },
-      {
-        argv:        %w(-array), # Unintended case.
-        expect_opts: {"array" => ["rray"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:        %w(-a=array1), # Unintended case.
-        expect_opts: {"array" => ["=array1"]},
-        expect_args: [] of String,
-      },
-      {
-        argv:              %w(-h),
-        exception_message: "Undefined option. \"-h\"",
-      },
-      {
-        argv:              %w(--help -ignore-option),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-ignore-option --help),
-        exception_message: "Undefined option. \"-ignore-option\"",
-      },
-      {
-        argv:              %w(-a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(--array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv:              %w(arg1 -a),
-        exception_message: "Option that requires an argument. \"-a\"",
-      },
-      {
-        argv:              %w(arg1 --array),
-        exception_message: "Option that requires an argument. \"--array\"",
-      },
-      {
-        argv: %w(--help),
-      },
-      {
-        argv: %w(--help ignore-arg),
-      },
-      {
-        argv: %w(ignore-arg --help),
-      },
-    ],
-  }
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => nil},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => nil},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-aarray1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array=array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a", "array1", "arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "-a", "array1"],
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["array1"]},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["-array"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["rray"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-a=array1"], # Unintended case.
+      expect_help: {{main_help_message}},
+      expect_opts: {"array" => ["=array1"]},
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:              ["arg1", "-a"],
+      exception_message: "Option that requires an argument. \"-a\"",
+    },
+    {
+      argv:              ["arg1", "--array"],
+      exception_message: "Option that requires an argument. \"--array\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
 )
+{% end %}

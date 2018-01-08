@@ -35,28 +35,26 @@ macro it_blocks(class_name, spec_case)
   {% end %}
 end
 
-macro spec(spec_class_name, spec_dsl_lines, spec_desc, main_help_message, spec_cases_hash, sub_help_message = "", sub_sub_help_message = "")
-  {% for key, spec_case_hash in spec_cases_hash %}
-    {% for spec_case, index in spec_case_hash %}
-      {% class_name = (spec_class_name.stringify + index.stringify).id %}
+macro spec(spec_class_name, spec_dsl_lines, spec_desc, spec_cases)
+  {% for spec_case, index in spec_cases %}
+    {% class_name = (spec_class_name.stringify + index.stringify).id %}
 
-      # define dsl
-      class {{class_name}} < Clim
-        main_command
-        expand_dsl_lines({{spec_dsl_lines}})
-        run do |opts, args|
-          assert_opts_and_args({{main_help_message}}, {{spec_case}})
+    # define dsl
+    class {{class_name}} < Clim
+      main_command
+      expand_dsl_lines({{spec_dsl_lines}})
+      run do |opts, args|
+        assert_opts_and_args({{spec_case}})
+      end
+    end
+
+    # spec
+    describe {{spec_desc}} do
+      describe "if dsl is [" + {{spec_dsl_lines.join(", ")}} + "]," do
+        describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
+          it_blocks({{class_name}}, {{spec_case}})
         end
       end
-
-      # spec
-      describe {{spec_desc}} do
-        describe "if dsl is [" + {{spec_dsl_lines.join(", ")}} + "]," do
-          describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
-            it_blocks({{key}}, {{class_name}}, {{spec_case}}, {{main_help_message}}, {{sub_help_message}}, {{sub_sub_help_message}})
-          end
-        end
-      end
-    {% end %}
+    end
   {% end %}
 end
