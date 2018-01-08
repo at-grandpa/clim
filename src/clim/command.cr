@@ -57,7 +57,7 @@ class Clim
     private def duplicate_names
       names = @sub_cmds.map(&.name)
       alias_names = @sub_cmds.map(&.alias_name).flatten
-      (names + alias_names).group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
+      (names + alias_names).duplicate_value
     end
 
     private def set_opts_on_parser

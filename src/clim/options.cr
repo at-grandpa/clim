@@ -33,15 +33,11 @@ class Clim
     end
 
     private def duplicate_short_name
-      find_duplicate_str(opts.map(&.short_name))
+      opts.map(&.short_name).duplicate_value
     end
 
     private def duplicate_long_name
-      find_duplicate_str(opts.map(&.long_name))
-    end
-
-    private def find_duplicate_str(arr)
-      arr.group_by { |i| i }.reject { |_, v| v.size == 1 }.keys
+      opts.map(&.long_name).duplicate_value
     end
 
     private def invalid_required_names
