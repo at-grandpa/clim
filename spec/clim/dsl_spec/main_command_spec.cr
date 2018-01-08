@@ -4,83 +4,85 @@ spec(
   spec_class_name: MainCommandOnly,
   spec_dsl_lines: [] of String,
   spec_desc: "main command,",
-  help_message: <<-HELP_MESSAGE
+  main_help_message: <<-HELP_MESSAGE
 
-                  Command Line Interface Tool.
+                      Command Line Interface Tool.
 
-                  Usage:
+                      Usage:
 
-                    main_command [options] [arguments]
+                        main_command [options] [arguments]
 
-                  Options:
+                      Options:
 
-                    --help                           Show this help.
+                        --help                           Show this help.
 
 
-                HELP_MESSAGE,
-  spec_cases: [
-    {
-      argv:        %w(),
-      expect_opts: ReturnOptsType.new,
-      expect_args: [] of String,
-    },
-    {
-      argv:        %w(arg1),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        %w(arg1 arg2),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1", "arg2"],
-    },
-    {
-      argv:        %w(arg1 arg2 arg3),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1", "arg2", "arg3"],
-    },
-    {
-      argv:              %w(-h),
-      exception_message: "Undefined option. \"-h\"",
-    },
-    {
-      argv:              %w(--help -ignore-option),
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              %w(-ignore-option --help),
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              %w(-m),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(--missing-option),
-      exception_message: "Undefined option. \"--missing-option\"",
-    },
-    {
-      argv:              %w(-m arg1),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(arg1 -m),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(-m -d),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv: %w(--help),
-    },
-    {
-      argv: %w(--help ignore-arg),
-    },
-    {
-      argv: %w(ignore-arg --help),
-    },
-  ]
+                    HELP_MESSAGE,
+  spec_cases_hash: {
+    main_command_case: [
+      {
+        argv:        %w(),
+        expect_opts: ReturnOptsType.new,
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(arg1 arg2),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
+        argv:        %w(arg1 arg2 arg3),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(--missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(-m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(-m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(--help ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg --help),
+      },
+    ],
+  }
 )
 
 spec(
@@ -89,26 +91,28 @@ spec(
     "alias_name \"second_name\"",
   ],
   spec_desc: "main command,",
-  help_message: <<-HELP_MESSAGE
+  main_help_message: <<-HELP_MESSAGE
 
-                  Command Line Interface Tool.
+                      Command Line Interface Tool.
 
-                  Usage:
+                      Usage:
 
-                    main_command [options] [arguments]
+                        main_command [options] [arguments]
 
-                  Options:
+                      Options:
 
-                    --help                           Show this help.
+                        --help                           Show this help.
 
 
-                HELP_MESSAGE,
-  spec_cases: [
-    {
-      argv:              %w(),
-      exception_message: "'alias_name' is not supported on main command.",
-    },
-  ]
+                    HELP_MESSAGE,
+  spec_cases_hash: {
+    main_command_case: [
+      {
+        argv:              %w(),
+        exception_message: "'alias_name' is not supported on main command.",
+      },
+    ],
+  }
 )
 
 spec(
@@ -117,83 +121,85 @@ spec(
     "desc \"Main command with desc.\"",
   ],
   spec_desc: "main command,",
-  help_message: <<-HELP_MESSAGE
+  main_help_message: <<-HELP_MESSAGE
 
-                  Main command with desc.
+                      Main command with desc.
 
-                  Usage:
+                      Usage:
 
-                    main_command [options] [arguments]
+                        main_command [options] [arguments]
 
-                  Options:
+                      Options:
 
-                    --help                           Show this help.
+                        --help                           Show this help.
 
 
-                HELP_MESSAGE,
-  spec_cases: [
-    {
-      argv:        %w(),
-      expect_opts: ReturnOptsType.new,
-      expect_args: [] of String,
-    },
-    {
-      argv:        %w(arg1),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        %w(arg1 arg2),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1", "arg2"],
-    },
-    {
-      argv:        %w(arg1 arg2 arg3),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1", "arg2", "arg3"],
-    },
-    {
-      argv:              %w(-h),
-      exception_message: "Undefined option. \"-h\"",
-    },
-    {
-      argv:              %w(--help -ignore-option),
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              %w(-ignore-option --help),
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              %w(-m),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(--missing-option),
-      exception_message: "Undefined option. \"--missing-option\"",
-    },
-    {
-      argv:              %w(-m arg1),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(arg1 -m),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(-m -d),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv: %w(--help),
-    },
-    {
-      argv: %w(--help ignore-arg),
-    },
-    {
-      argv: %w(ignore-arg --help),
-    },
-  ]
+                    HELP_MESSAGE,
+  spec_cases_hash: {
+    main_command_case: [
+      {
+        argv:        %w(),
+        expect_opts: ReturnOptsType.new,
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(arg1 arg2),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
+        argv:        %w(arg1 arg2 arg3),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(--missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(-m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(-m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(--help ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg --help),
+      },
+    ],
+  }
 )
 
 spec(
@@ -203,83 +209,85 @@ spec(
     "usage \"main_command with usage [options] [arguments]\"",
   ],
   spec_desc: "main command,",
-  help_message: <<-HELP_MESSAGE
+  main_help_message: <<-HELP_MESSAGE
+   
+                      Main command with desc.
 
-                  Main command with desc.
+                      Usage:
 
-                  Usage:
+                        main_command with usage [options] [arguments]
 
-                    main_command with usage [options] [arguments]
+                      Options:
 
-                  Options:
-
-                    --help                           Show this help.
+                        --help                           Show this help.
 
 
-                HELP_MESSAGE,
-  spec_cases: [
-    {
-      argv:        %w(),
-      expect_opts: ReturnOptsType.new,
-      expect_args: [] of String,
-    },
-    {
-      argv:        %w(arg1),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        %w(arg1 arg2),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1", "arg2"],
-    },
-    {
-      argv:        %w(arg1 arg2 arg3),
-      expect_opts: ReturnOptsType.new,
-      expect_args: ["arg1", "arg2", "arg3"],
-    },
-    {
-      argv:              %w(-h),
-      exception_message: "Undefined option. \"-h\"",
-    },
-    {
-      argv:              %w(--help -ignore-option),
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              %w(-ignore-option --help),
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              %w(-m),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(--missing-option),
-      exception_message: "Undefined option. \"--missing-option\"",
-    },
-    {
-      argv:              %w(-m arg1),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(arg1 -m),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              %w(-m -d),
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv: %w(--help),
-    },
-    {
-      argv: %w(--help ignore-arg),
-    },
-    {
-      argv: %w(ignore-arg --help),
-    },
-  ]
+                    HELP_MESSAGE,
+  spec_cases_hash: {
+    main_command_case: [
+      {
+        argv:        %w(),
+        expect_opts: ReturnOptsType.new,
+        expect_args: [] of String,
+      },
+      {
+        argv:        %w(arg1),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1"],
+      },
+      {
+        argv:        %w(arg1 arg2),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1", "arg2"],
+      },
+      {
+        argv:        %w(arg1 arg2 arg3),
+        expect_opts: ReturnOptsType.new,
+        expect_args: ["arg1", "arg2", "arg3"],
+      },
+      {
+        argv:              %w(-h),
+        exception_message: "Undefined option. \"-h\"",
+      },
+      {
+        argv:              %w(--help -ignore-option),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-ignore-option --help),
+        exception_message: "Undefined option. \"-ignore-option\"",
+      },
+      {
+        argv:              %w(-m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(--missing-option),
+        exception_message: "Undefined option. \"--missing-option\"",
+      },
+      {
+        argv:              %w(-m arg1),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(arg1 -m),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv:              %w(-m -d),
+        exception_message: "Undefined option. \"-m\"",
+      },
+      {
+        argv: %w(--help),
+      },
+      {
+        argv: %w(--help ignore-arg),
+      },
+      {
+        argv: %w(ignore-arg --help),
+      },
+    ],
+  }
 )
 
 class MainCommandIfCallTheMainCommandTwice < Clim

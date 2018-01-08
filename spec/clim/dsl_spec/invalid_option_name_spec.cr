@@ -7,26 +7,28 @@ macro invalid_option_name_spec(spec_class_name, spec_dsl_lines_cases)
       spec_class_name: {{class_name}},
       spec_dsl_lines: {{spec_dsl_lines_case["lines"]}},
       spec_desc: "main command with invalid option name,",
-      help_message: <<-HELP_MESSAGE
+      main_help_message: <<-HELP_MESSAGE
 
-                      Command Line Interface Tool.
+                          Command Line Interface Tool.
 
-                      Usage:
+                          Usage:
 
-                        main_command [options] [arguments]
+                            main_command [options] [arguments]
 
-                      Options:
+                          Options:
 
-                        --help                           Show this help.
+                            --help                           Show this help.
 
 
-                    HELP_MESSAGE,
-      spec_cases: [
-        {
-          argv:              [] of String,
-          exception_message: {{spec_dsl_lines_case["exception_message"]}},
-        },
-      ]
+                        HELP_MESSAGE,
+      spec_cases_hash: {
+        main_command_case: [
+          {
+            argv:              [] of String,
+            exception_message: {{spec_dsl_lines_case["exception_message"]}},
+          },
+        ],
+      }
     )
   {% end %}
 end
