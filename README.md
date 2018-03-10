@@ -45,7 +45,7 @@ require "clim"
 module Hello
   class Cli < Clim
 
-    # Following is difinition of main command.
+    # Following is the definition of main command.
     #
     main_command
     desc   "Hello CLI tool."
@@ -94,7 +94,7 @@ require "clim"
 module FakeGit
   class Cli < Clim
 
-    # Following is difinition of main command.
+    # Following is the definition of main command.
     #
     main_command
     desc  "Fake Git command."
@@ -107,7 +107,7 @@ module FakeGit
     #
     sub do
 
-      # Following is difinition of command.
+      # Following is the definition of command.
       #
       command "branch"
       alias_name "b", "br"
@@ -129,7 +129,7 @@ module FakeGit
       #
       sub do
 
-        # Following is difinition of command.
+        # Following is the definition of command.
         #
         command "short"
         desc  "Show commit short logs."
