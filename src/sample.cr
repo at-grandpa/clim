@@ -14,7 +14,7 @@ class ExampleClim
     end
 
     macro command(name, &block)
-      class SubCommandByClim_{{ name.id.capitalize }} < Command
+      class CommandByClim_{{ name.id.capitalize }} < Command
         property name : String = {{name.id.stringify}}
 
         macro run(&block)
@@ -86,45 +86,14 @@ class ExampleClim
   # ===============================
 
   macro main_command(&block)
-    class MainCommandByClim < Command
-      property name : String = "main_command_by_clim"
-
-      macro run(&block)
-        def run(str2)
-          RunProc.new \{{ block.id }} .call(@options, str2)
-        end
-      end
-
+    Command.command "main_command_by_clim" do
       {{ yield }}
-
-      class OptionsByClim
-      end
-
-      def initialize
-        \{% for constant in @type.constants %}
-          \{% c = @type.constant(constant) %}
-          \{% if c.is_a?(TypeNode) %}
-            \{% if c.name.split("::").last == "OptionsByClim" %}
-              @options = \{{ c.id }}.new
-            \{% elsif c.name.split("::").last == "RunProc" %}
-            \{% else %}
-              @sub_commands << \{{ c.id }}.new
-            \{% end %}
-          \{% end %}
-        \{% end %}
-      end
-
-      \{% begin %}
-        \{% ccc = @type.constants.select{|c| @type.constant(c).name.split("::").last == "OptionsByClim"}.first %}
-        alias RunProc = Proc(\{{ ccc.id }}, String, Nil)
-        property options : \{{ ccc.id }} = \{{ ccc.id }}.new
-      \{% end %}
     end
 
     def self.start(argv)
       # argvの残りは、Commandが持っているといいかも
       # そうすると、runを呼ぶだけでいい
-      MainCommandByClim.new.parse(argv).run("bbb")
+      CommandByClim_Main_command_by_clim.new.parse(argv).run("bbb")
     end
   end
 end
