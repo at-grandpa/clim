@@ -54,9 +54,10 @@ class ExampleClim
       end
     end
 
-    macro options(name, type, desc, default, required)
+    macro options(short, long, type, desc, default, required)
       class OptionsByClim
-        property {{ name }} : {{ type }}? = {{ default }}
+        {% long = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^--/, "").id %}
+        property {{ long }} : {{ type }}? = {{ default }}
       end
     end
 
@@ -105,26 +106,35 @@ end
 class MyCli < ExampleClim
   main_command do
     desc "main command."
-    options name: "name", type: String, desc: "your name.", default: "Taro", required: true
+    options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
+    options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
     run do |options, str2|
       p "main ---"
       p options
+      p options.name
+      p options.time
       p "---"
     end
     command "sub1" do
       desc "desc sub1."
-      options name: "name", type: String, desc: "your name.", default: "Taro", required: true
+      options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
+      options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
       run do |options, str2|
         p "sub1 ---"
         p options
+        p options.name
+        p options.time
         p "---"
       end
       command "subsub1" do
         desc "desc subsub1."
-        options name: "name", type: String, desc: "your name.", default: "Taro", required: true
+        options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
+        options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
         run do |options, str2|
           p "subsub1 ---"
           p options
+          p options.name
+          p options.time
           p "---"
         end
       end
