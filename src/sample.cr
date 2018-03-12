@@ -41,6 +41,25 @@ class ExampleClim
             def initialize(@short : String, @long : String, @desc : String, @default : T?, @required : Bool)
               value = default
             end
+
+            def set_value(arg)
+              value = case T
+              when Float, Float64 then arg.to_f
+              when Float32 then arg.to_f32
+              when Int then arg.to_i
+              when Int8 then arg.to_i8
+              when Int16 then arg.to_i16
+              when Int32 then arg.to_i32
+              when Int64 then arg.to_i64
+              when UInt8 then arg.to_u8
+              when UInt16 then arg.to_u16
+              when UInt32 then arg.to_u32
+              when UInt64 then arg.to_u64
+
+              else
+
+              end
+            end
           end
         end
 
@@ -49,7 +68,8 @@ class ExampleClim
             \{% c = @type.constant(constant) %}
             \{% if c.is_a?(TypeNode) %}
               \{% if c.name.split("::").last == "OptionsByClim" %}
-                @options = \{{ c.id }}.new
+                options = \{{ c.id }}.new
+                options.setup_parser(parser)
               \{% elsif c.name.split("::").last == "RunProc" %}
               \{% else %}
                 @sub_commands << \{{ c.id }}.new
@@ -65,9 +85,10 @@ class ExampleClim
 
           class \{{ ccc.id }}
             def setup_parser(parser)
-              \\{% for instance_var in @type.instance_vars%}
-                \\{% p instance_var %}
+              \\{% for iv in @type.instance_vars %}
+                parser.on(\\{{iv}}.short, \\{{iv}}.long, \\{{iv}}.desc) {|arg| \\{{iv}}.value = arg }
               \\{% end %}
+              parser
             end
           end
         \{% end %}
