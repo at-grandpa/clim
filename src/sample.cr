@@ -58,18 +58,6 @@ class ExampleClim
 
     abstract def run(str2)
 
-    # def initialize
-    #   {% for constant in @type.constants %}
-    #     {% c = @type.constant(constant) %}
-    #     {% if c.is_a?(TypeNode) %}
-    #       {% unless c.name.split("::").last == "OptionsByClim" %}
-    #         @sub_commands << {{ c.id }}.new
-    #       {% end %}
-    #     {% end %}
-    #   {% end %}
-    #   @options = Command::OptionsByClim.new
-    # end
-
     def find_sub_cmds_by(name)
       @sub_commands.select do |cmd|
         cmd.name == name
