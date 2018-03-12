@@ -31,7 +31,15 @@ class ExampleClim
 
         class OptionsByClim
           class OptionByClim(T)
+            property short : String = ""
+            property long : String = ""
+            property desc : String = ""
+            property default : T? = nil
+            property required : Bool = false
+            property value : T? = nil
+
             def initialize(@short : String, @long : String, @desc : String, @default : T?, @required : Bool)
+              value = default
             end
           end
         end
