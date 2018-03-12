@@ -30,6 +30,10 @@ class ExampleClim
         {{ yield }}
 
         class OptionsByClim
+          class OptionByClim(T)
+            def initialize(@short : String, @long : String, @desc : String, @default : T?, @required : Bool)
+            end
+          end
         end
 
         def initialize
@@ -50,14 +54,22 @@ class ExampleClim
           \{% ccc = @type.constants.select{|c| @type.constant(c).name.split("::").last == "OptionsByClim"}.first %}
           alias RunProc = Proc(\{{ ccc.id }}, String, Nil)
           property options : \{{ ccc.id }} = \{{ ccc.id }}.new
+
+          class \{{ ccc.id }}
+            def setup_parser(parser)
+              \\{% for instance_var in @type.instance_vars%}
+                \\{% p instance_var %}
+              \\{% end %}
+            end
+          end
         \{% end %}
       end
     end
 
     macro options(short, long, type, desc, default, required)
       class OptionsByClim
-        {% long = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^--/, "").id %}
-        property {{ long }} : {{ type }}? = {{ default }}
+        {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^--/, "").id %}
+        property {{ long_var_name }} : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
       end
     end
 
