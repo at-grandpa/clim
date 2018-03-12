@@ -1,6 +1,10 @@
+require "option_parser"
+
 class ExampleClim
   abstract class Command
     property name : String = ""
+    property parser : OptionParser = OptionParser.new
+    property args : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
 
     def desc : String
@@ -65,9 +69,17 @@ class ExampleClim
     end
 
     def parse(argv)
+      parser.on("--help", "Show this help.") { @display_help_flag = true }
+      parser.invalid_option { |opt_name| raise Exception.new "Undefined option. \"#{opt_name}\"" }
+      parser.missing_option { |opt_name| raise Exception.new "Option that requires an argument. \"#{opt_name}\"" }
+      parser.unknown_args { |unknown_args| @args = unknown_args }
+      recursive_parse(argv)
+    end
+
+    def recursive_parse(argv)
       return self if argv.empty?
       return self if find_sub_cmds_by(argv.first).empty?
-      find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
+      find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
     end
   end
 
