@@ -4,7 +4,7 @@ class ExampleClim
   abstract class Command
     property name : String = ""
     property parser : OptionParser = OptionParser.new
-    property args : Array(String) = [] of String
+    property arguments : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
 
     def desc : String
@@ -22,8 +22,8 @@ class ExampleClim
         property name : String = {{name.id.stringify}}
 
         macro run(&block)
-          def run(str2)
-            RunProc.new \{{ block.id }} .call(@options, str2)
+          def run
+            RunProc.new \{{ block.id }} .call(@options, @arguments)
           end
         end
 
@@ -66,13 +66,14 @@ class ExampleClim
         end
 
         def initialize
+          @parser = OptionParser.new
           \{% for constant in @type.constants %}
             \{% c = @type.constant(constant) %}
             \{% if c.is_a?(TypeNode) %}
               \{% if c.name.split("::").last == "OptionsByClim" %}
                 @options = \{{ c.id }}.new
-                @options.setup_parser(parser)
-                p parser.to_s
+                @options.setup_parser(@parser)
+                p @parser.to_s
               \{% elsif c.name.split("::").last == "RunProc" %}
               \{% else %}
                 @sub_commands << \{{ c.id }}.new
@@ -83,7 +84,7 @@ class ExampleClim
 
         \{% begin %}
           \{% ccc = @type.constants.select{|c| @type.constant(c).name.split("::").last == "OptionsByClim"}.first %}
-          alias RunProc = Proc(\{{ ccc.id }}, String, Nil)
+          alias RunProc = Proc(\{{ ccc.id }}, Array(String), Nil)
           property options : \{{ ccc.id }} = \{{ ccc.id }}.new
 
           class \{{ ccc.id }}
@@ -108,7 +109,7 @@ class ExampleClim
       end
     end
 
-    abstract def run(str2)
+    abstract def run
 
     def find_sub_cmds_by(name)
       @sub_commands.select do |cmd|
@@ -117,21 +118,17 @@ class ExampleClim
     end
 
     def parse(argv)
-      parser.on("--help", "Show this help.") { @display_help_flag = true }
-      parser.invalid_option { |opt_name| raise Exception.new "Undefined option. \"#{opt_name}\"" }
-      parser.missing_option { |opt_name| raise Exception.new "Option that requires an argument. \"#{opt_name}\"" }
-      parser.unknown_args { |unknown_args| @args = unknown_args }
-      recursive_parse(argv)
-    end
-
-    def recursive_parse(argv)
       return parse_by_parser(argv) if argv.empty?
       return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
-      find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
+      find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
     end
 
     private def parse_by_parser(argv)
-      parser.parse(argv.dup)
+      @parser.on("--help", "Show this help.") { @display_help_flag = true }
+      @parser.invalid_option { |opt_name| raise Exception.new "Undefined option. \"#{opt_name}\"" }
+      @parser.missing_option { |opt_name| raise Exception.new "Option that requires an argument. \"#{opt_name}\"" }
+      @parser.unknown_args { |unknown_args| @arguments = unknown_args }
+      @parser.parse(argv.dup)
       # opts.required_validate! unless display_help?
       # opts.help = help
       self
@@ -148,7 +145,7 @@ class ExampleClim
     def self.start(argv)
       # argvの残りは、Commandが持っているといいかも
       # そうすると、runを呼ぶだけでいい
-      CommandByClim_Main_command_by_clim.new.parse(argv).run("bbb")
+      CommandByClim_Main_command_by_clim.new.parse(argv).run
     end
   end
 end
@@ -162,18 +159,19 @@ class MyCli < ExampleClim
     desc "main command."
     options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
     options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
-    run do |options, str2|
+    run do |options, arguments|
       p "main ---"
       p options
       p options.name
       p options.time
+      p arguments
       p "---"
     end
     command "sub1" do
       desc "desc sub1."
       options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
       options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
-      run do |options, str2|
+      run do |options, arguments|
         p "sub1 ---"
         p options
         p options.name
@@ -185,12 +183,13 @@ class MyCli < ExampleClim
         options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
         options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
         options "-b", "--bool", type: Bool, desc: "your bool.", default: false, required: true
-        run do |options, str2|
+        run do |options, arguments|
           p "subsub1 ---"
           p options
           p options.name
           p options.time
           p options.bool
+          p arguments
           p "---"
         end
       end
