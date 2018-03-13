@@ -6,6 +6,7 @@ class Clim
     include Macro
 
     property name : String = ""
+    property alias_name : Array(String) = [] of String
     property parser : OptionParser = OptionParser.new
     property arguments : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
@@ -29,7 +30,49 @@ class Clim
     end
 
     def help
-      "hoge"
+      @sub_commands.empty? ? base_help : base_help + sub_cmds_help
+    end
+
+    private def base_help
+      <<-HELP_MESSAGE
+
+        #{desc}
+
+        Usage:
+
+          #{usage}
+
+        Options:
+
+      #{parser}
+
+
+      HELP_MESSAGE
+    end
+
+    def sub_cmds_help
+      <<-HELP_MESSAGE
+        Sub Commands:
+
+      #{sub_cmds_help_lines.join("\n")}
+
+
+      HELP_MESSAGE
+    end
+
+    def sub_cmds_help_lines
+      @sub_commands.map do |cmd|
+        name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
+        "    #{name}   #{cmd.desc}"
+      end
+    end
+
+    def max_name_length
+      @sub_commands.empty? ? 0 : @sub_commands.map { |cmd| name_and_alias_name(cmd).size }.max
+    end
+
+    def name_and_alias_name(cmd)
+      ([cmd.name] + cmd.alias_name).join(", ")
     end
 
     private def parse_by_parser(argv)
