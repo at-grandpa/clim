@@ -56,6 +56,7 @@ class ExampleClim
                 \{% convert_method = type_hash[type_ver] %}
                 @value = arg.\{{convert_method.id}}
                 p "-------"
+                p arg
                 p @value
                 p self
                 p "-------"
@@ -183,11 +184,13 @@ class MyCli < ExampleClim
         desc "desc subsub1."
         options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
         options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
+        options "-b", "--bool", type: Bool, desc: "your bool.", default: false, required: true
         run do |options, str2|
           p "subsub1 ---"
           p options
           p options.name
           p options.time
+          p options.bool
           p "---"
         end
       end
