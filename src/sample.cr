@@ -23,7 +23,6 @@ class MyCli < Clim
     options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
     run do |options, arguments|
       p "main ---"
-      p options
       p options.name
       p options.time
       p arguments
@@ -35,7 +34,6 @@ class MyCli < Clim
       options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
       run do |options, arguments|
         p "sub1 ---"
-        p options
         p options.name
         p options.time
         p "---"
@@ -47,7 +45,6 @@ class MyCli < Clim
         options "-b", "--bool", type: Bool, desc: "your bool.", default: false, required: true
         run do |options, arguments|
           p "subsub1 ---"
-          p options
           p options.name
           p options.time
           p options.bool
