@@ -153,6 +153,18 @@ end
 # あとはバリデーションかなー
 # versionとか -> macroですぐにできる
 # optionいくか
+#
+# TODO:
+# 型の増加
+# 型が違った場合の挙動
+# rescue
+# 同じコマンドを指定した場合の動作
+#   - macro raise でキャッチ
+# helpの充実
+# テスト
+# versionの実装
+# shortのみ、longのみ
+# モジュールの切り出し
 
 class MyCli < ExampleClim
   main_command do
