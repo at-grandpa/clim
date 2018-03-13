@@ -7,6 +7,12 @@ class Clim
         end
       end
 
+      macro sub_command(name, &block)
+        command({{name}}) do
+          {{ yield }}
+        end
+      end
+
       macro command(name, &block)
         class CommandByClim_{{ name.id.capitalize }} < Command
           property name : String = {{name.id.stringify}}

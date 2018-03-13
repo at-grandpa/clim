@@ -29,7 +29,7 @@ class MyCli < Clim
       p arguments
       p "---"
     end
-    command "sub1" do
+    sub_command "sub1" do
       desc "desc sub1."
       options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
       options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
@@ -40,7 +40,7 @@ class MyCli < Clim
         p options.time
         p "---"
       end
-      command "subsub1" do
+      sub_command "subsub1" do
         desc "desc subsub1."
         options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
         options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
