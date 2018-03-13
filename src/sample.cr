@@ -39,26 +39,27 @@ class ExampleClim
             property value : T? = nil
 
             def initialize(@short : String, @long : String, @desc : String, @default : T?, @required : Bool)
-              value = default
+              @value = default
             end
 
-            def set_value(arg)
-              value = case T
-              when Float, Float64 then arg.to_f
-              when Float32 then arg.to_f32
-              when Int then arg.to_i
-              when Int8 then arg.to_i8
-              when Int16 then arg.to_i16
-              when Int32 then arg.to_i32
-              when Int64 then arg.to_i64
-              when UInt8 then arg.to_u8
-              when UInt16 then arg.to_u16
-              when UInt32 then arg.to_u32
-              when UInt64 then arg.to_u64
-
-              else
-
-              end
+            def set_value(arg : String)
+              \{% begin %}
+                \{% type_hash = {
+                  Int8   => "to_i8",
+                  Int16  => "to_i16",
+                  Int32  => "to_i32",
+                  String => "to_s",
+                  Bool   => "==(\"true\")",
+                } %}
+                \{% p @type.type_vars %}
+                \{% type_ver = @type.type_vars.first %}
+                \{% convert_method = type_hash[type_ver] %}
+                @value = arg.\{{convert_method.id}}
+                p "-------"
+                p @value
+                p self
+                p "-------"
+              \{% end %}
             end
           end
         end
@@ -68,8 +69,9 @@ class ExampleClim
             \{% c = @type.constant(constant) %}
             \{% if c.is_a?(TypeNode) %}
               \{% if c.name.split("::").last == "OptionsByClim" %}
-                options = \{{ c.id }}.new
-                options.setup_parser(parser)
+                @options = \{{ c.id }}.new
+                @options.setup_parser(parser)
+                p parser.to_s
               \{% elsif c.name.split("::").last == "RunProc" %}
               \{% else %}
                 @sub_commands << \{{ c.id }}.new
@@ -86,7 +88,7 @@ class ExampleClim
           class \{{ ccc.id }}
             def setup_parser(parser)
               \\{% for iv in @type.instance_vars %}
-                parser.on(\\{{iv}}.short, \\{{iv}}.long, \\{{iv}}.desc) {|arg| \\{{iv}}.value = arg }
+                parser.on(\\{{iv}}.short, \\{{iv}}.long, \\{{iv}}.desc) {|arg| \\{{iv}}.set_value(arg) }
               \\{% end %}
               parser
             end
@@ -98,7 +100,10 @@ class ExampleClim
     macro options(short, long, type, desc, default, required)
       class OptionsByClim
         {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^--/, "").id %}
-        property {{ long_var_name }} : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
+        property {{ long_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
+        def {{ long_var_name }}
+          {{ long_var_name }}_instance.@value
+        end
       end
     end
 
@@ -119,9 +124,16 @@ class ExampleClim
     end
 
     def recursive_parse(argv)
-      return self if argv.empty?
-      return self if find_sub_cmds_by(argv.first).empty?
+      return parse_by_parser(argv) if argv.empty?
+      return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
       find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
+    end
+
+    private def parse_by_parser(argv)
+      parser.parse(argv.dup)
+      # opts.required_validate! unless display_help?
+      # opts.help = help
+      self
     end
   end
 
