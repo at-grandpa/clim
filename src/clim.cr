@@ -6,8 +6,8 @@ class Clim
       {{ yield }}
     end
 
-    def self.start(argv)
-      CommandByClim_Main_command_by_clim.new.parse(argv).run
+    def self.start(argv, io : IO = STDOUT)
+      CommandByClim_Main_command_by_clim.new.parse(argv).run(io)
     end
   end
 end

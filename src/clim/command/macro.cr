@@ -18,8 +18,12 @@ class Clim
           property name : String = {{name.id.stringify}}
 
           macro run(&block)
-            def run
-              RunProc.new \{{ block.id }} .call(@options, @arguments)
+            def run(io : IO)
+              if @display_help_flag
+                RunProc.new { io.puts help }.call(@options, @arguments)
+              else
+                RunProc.new \{{ block.id }} .call(@options, @arguments)
+              end
             end
           end
 
@@ -51,11 +55,6 @@ class Clim
                   \{% type_ver = @type.type_vars.first %}
                   \{% convert_method = type_hash[type_ver] %}
                   @value = arg.\{{convert_method.id}}
-                  p "-------"
-                  p arg
-                  p @value
-                  p self
-                  p "-------"
                 \{% end %}
               end
             end
@@ -69,7 +68,6 @@ class Clim
                 \{% if c.name.split("::").last == "OptionsByClim" %}
                   @options = \{{ c.id }}.new
                   @options.setup_parser(@parser)
-                  p @parser.to_s
                 \{% elsif c.name.split("::").last == "RunProc" %}
                 \{% else %}
                   @sub_commands << \{{ c.id }}.new

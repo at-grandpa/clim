@@ -14,7 +14,7 @@ class Clim
       ""
     end
 
-    abstract def run
+    abstract def run(io : IO)
 
     def find_sub_cmds_by(name)
       @sub_commands.select do |cmd|
@@ -26,6 +26,10 @@ class Clim
       return parse_by_parser(argv) if argv.empty?
       return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
       find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
+    end
+
+    def help
+      "hoge"
     end
 
     private def parse_by_parser(argv)
