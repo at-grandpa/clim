@@ -49,7 +49,7 @@ class ExampleClim
                   Int16  => "to_i16",
                   Int32  => "to_i32",
                   String => "to_s",
-                  Bool   => "==(\"true\")",
+                  Bool   => "empty?",
                 } %}
                 \{% p @type.type_vars %}
                 \{% type_ver = @type.type_vars.first %}
