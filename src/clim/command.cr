@@ -39,18 +39,4 @@ class Clim
       self
     end
   end
-
-  # ===============================
-
-  macro main_command(&block)
-    Command.command "main_command_by_clim" do
-      {{ yield }}
-    end
-
-    def self.start(argv)
-      # argvの残りは、Commandが持っているといいかも
-      # そうすると、runを呼ぶだけでいい
-      CommandByClim_Main_command_by_clim.new.parse(argv).run
-    end
-  end
 end
