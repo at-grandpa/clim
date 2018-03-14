@@ -48,7 +48,21 @@ class Clim
 
           {{ yield }}
 
+          def parse_by_parser(argv)
+            @parser.on("--help", "Show this help.") { @display_help_flag = true }
+            @parser.invalid_option { |opt_name| raise Exception.new "Undefined option. \"#{opt_name}\"" }
+            @parser.missing_option { |opt_name| raise Exception.new "Option that requires an argument. \"#{opt_name}\"" }
+            @parser.unknown_args { |unknown_args| @arguments = unknown_args }
+            @parser.parse(argv.dup)
+            # opts.required_validate! unless display_help?
+            # opts.help = help
+            @options.help = help
+            self
+          end
+
           class OptionsByClim
+            property help : String = ""
+
             class OptionByClim(T)
               property short : String = ""
               property long : String = ""
@@ -79,6 +93,7 @@ class Clim
           end
 
           def initialize
+            @display_help_flag = false
             @parser = OptionParser.new
             \{% for constant in @type.constants %}
               \{% c = @type.constant(constant) %}
@@ -101,10 +116,9 @@ class Clim
 
             class \{{ ccc.id }}
               def setup_parser(parser)
-                \\{% for iv in @type.instance_vars %}
+                \\{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
                   parser.on(\\{{iv}}.short, \\{{iv}}.long, \\{{iv}}.desc) {|arg| \\{{iv}}.set_value(arg) }
                 \\{% end %}
-                parser
               end
             end
           \{% end %}
