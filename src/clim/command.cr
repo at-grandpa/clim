@@ -12,14 +12,23 @@ class Clim
     property sub_commands : Array(Command) = [] of Command
 
     def desc : String
-      ""
+      "Command Line Interface Tool."
+    end
+
+    def usage : String
+      "main_command [options] [arguments]"
+    end
+
+    def alias_name(*names) : Array(String)
+      raise Exception.new("'alias_name' is not supported on main command.") if @name == "main_command_by_clim"
+      [] of String
     end
 
     abstract def run(io : IO)
 
     def find_sub_cmds_by(name)
       @sub_commands.select do |cmd|
-        cmd.name == name
+        cmd.name == name || cmd.alias_name.includes?(name)
       end
     end
 

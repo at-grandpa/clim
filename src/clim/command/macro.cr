@@ -3,7 +3,22 @@ class Clim
     module Macro
       macro desc(description)
         def desc : String
-          {{ description.stringify }}
+          {{ description.id.stringify }}
+        end
+      end
+
+      macro usage(usage)
+        def usage : String
+          {{ usage.id.stringify }}
+        end
+      end
+
+      macro alias_name(*names)
+        {% if @type == CommandByClim_Main_command_by_clim %}
+          {% raise "'alias_name' is not supported on main command." %}
+        {% end %}
+        def alias_name(*names) : Array(String)
+          {{ names }}.to_a
         end
       end
 
