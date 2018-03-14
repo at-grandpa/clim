@@ -3,7 +3,6 @@ require "./../spec_helper"
 macro assert_opts_and_args(spec_case)
   {% if spec_case.keys.includes?("expect_opts".id) %}
     opts.help.should eq {{spec_case["expect_help"]}}
-    # opts.delete("help")
     # opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
     args.should eq {{spec_case["expect_args"]}}
   {% end %}
