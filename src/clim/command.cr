@@ -16,7 +16,7 @@ class Clim
     end
 
     def usage : String
-      "main_command [options] [arguments]"
+      "#{name} [options] [arguments]"
     end
 
     def alias_name(*names) : Array(String)

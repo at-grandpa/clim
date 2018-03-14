@@ -3,7 +3,7 @@ require "./clim/*"
 class Clim
   macro main_command(&block)
 
-    Command.command "main_command_by_clim" do
+    Command.command "main_command" do
       {{ yield }}
     end
 
@@ -12,7 +12,7 @@ class Clim
     {% end %}
 
     def self.start(argv, io : IO = STDOUT)
-      CommandByClim_Main_command_by_clim.new.parse(argv).run(io)
+      CommandByClim_Main_command.new.parse(argv).run(io)
     end
   end
 end
