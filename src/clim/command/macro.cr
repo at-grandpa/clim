@@ -70,7 +70,6 @@ class Clim
                     String => "to_s",
                     Bool   => "empty?",
                   } %}
-                  \{% p @type.type_vars %}
                   \{% type_ver = @type.type_vars.first %}
                   \{% convert_method = type_hash[type_ver] %}
                   @value = arg.\{{convert_method.id}}
@@ -112,7 +111,7 @@ class Clim
         end
       end
 
-      macro options(short, long, type, desc, default, required)
+      macro options(short, long, type, desc = "Option description.", default = nil, required = false)
         class OptionsByClim
           {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^--/, "").id %}
           property {{ long_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
