@@ -26,25 +26,21 @@ spec(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -138,25 +134,21 @@ spec(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -236,25 +228,21 @@ spec(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {

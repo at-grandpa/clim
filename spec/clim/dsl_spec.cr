@@ -1,11 +1,12 @@
 require "./../spec_helper"
 
 macro assert_opts_and_args(spec_case)
-  {% if spec_case.keys.includes?("expect_opts".id) %}
     opts.help.should eq {{spec_case["expect_help"]}}
-    # opts.should eq Clim::ReturnOptsType.new.merge({{spec_case["expect_opts"]}})
+    {% if spec_case.keys.includes?("expect_opts".id) %}
+      opts.{{spec_case["expect_opts"]["method"].id}}.class.should eq {{spec_case["expect_opts"]["type"]}}
+      opts.{{spec_case["expect_opts"]["method"].id}}.should eq {{spec_case["expect_opts"]["expect_value"]}}
+    {% end %}
     args.should eq {{spec_case["expect_args"]}}
-  {% end %}
 end
 
 macro expand_dsl_lines(lines)

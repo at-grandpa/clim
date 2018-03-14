@@ -72,25 +72,21 @@ spec_for_sub_commands(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -120,25 +116,21 @@ spec_for_sub_commands(
     {
       argv:        ["sub_command"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command", "arg1"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command", "arg1", "arg2"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -279,25 +271,21 @@ spec_for_sub_sub_commands(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -327,25 +315,21 @@ spec_for_sub_sub_commands(
     {
       argv:        ["sub_command"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command", "arg1"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command", "arg1", "arg2"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -391,25 +375,21 @@ spec_for_sub_sub_commands(
     {
       argv:        ["sub_command", "sub_sub_command"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1", "arg2"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -551,25 +531,21 @@ spec_for_jump_over_sub_sub_command(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -599,25 +575,21 @@ spec_for_jump_over_sub_sub_command(
     {
       argv:        ["sub_command", "sub_sub_command"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1", "arg2"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -663,25 +635,21 @@ spec_for_jump_over_sub_sub_command(
     {
       argv:        ["jump_over_sub_sub_command"],
       expect_help: {{jump_over_sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["jump_over_sub_sub_command", "arg1"],
       expect_help: {{jump_over_sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["jump_over_sub_sub_command", "arg1", "arg2"],
       expect_help: {{jump_over_sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["jump_over_sub_sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{jump_over_sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -829,25 +797,21 @@ spec_for_alias_name(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -877,49 +841,41 @@ spec_for_alias_name(
     {
       argv:        ["sub_command_1"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["alias_sub_command_1"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command_1", "arg1"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "arg1"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "arg1", "arg2"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["alias_sub_command_1", "arg1", "arg2"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command_1", "arg1", "arg2", "arg3"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
       argv:        ["alias_sub_command_1", "arg1", "arg2", "arg3"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -1005,73 +961,61 @@ spec_for_alias_name(
     {
       argv:        ["sub_command_2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["alias_sub_command_2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["alias_sub_command_2_second"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command_2", "arg1"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_2", "arg1"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_2_second", "arg1"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command_2", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["alias_sub_command_2", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["alias_sub_command_2_second", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command_2", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
       argv:        ["alias_sub_command_2", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
       argv:        ["alias_sub_command_2_second", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
