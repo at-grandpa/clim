@@ -207,119 +207,121 @@ spec(
 )
 {% end %}
 
-#  {% begin %}
-#  {%
-#    main_help_message = <<-HELP_MESSAGE
-#
-#                          Main command with desc.
-#
-#                          Usage:
-#
-#                            main_command with usage [options] [arguments]
-#
-#                          Options:
-#
-#                            --help                           Show this help.
-#
-#
-#                        HELP_MESSAGE
-#  %}
-#
-#  spec(
-#    spec_class_name: MainCommandWithUsage,
-#    spec_dsl_lines: [
-#      "desc \"Main command with desc.\"",
-#      "usage \"main_command with usage [options] [arguments]\"",
-#    ],
-#    spec_desc: "main command,",
-#    spec_cases: [
-#      {
-#        argv:        [] of String,
-#        expect_help: {{main_help_message}},
-#        expect_opts: ReturnOptsType.new,
-#        expect_args: [] of String,
-#      },
-#      {
-#        argv:        ["arg1"],
-#        expect_help: {{main_help_message}},
-#        expect_opts: ReturnOptsType.new,
-#        expect_args: ["arg1"],
-#      },
-#      {
-#        argv:        ["arg1", "arg2"],
-#        expect_help: {{main_help_message}},
-#        expect_opts: ReturnOptsType.new,
-#        expect_args: ["arg1", "arg2"],
-#      },
-#      {
-#        argv:        ["arg1", "arg2", "arg3"],
-#        expect_help: {{main_help_message}},
-#        expect_opts: ReturnOptsType.new,
-#        expect_args: ["arg1", "arg2", "arg3"],
-#      },
-#      {
-#        argv:              ["-h"],
-#        exception_message: "Undefined option. \"-h\"",
-#      },
-#      {
-#        argv:              ["--help", "-ignore-option"],
-#        exception_message: "Undefined option. \"-ignore-option\"",
-#      },
-#      {
-#        argv:              ["-ignore-option", "--help"],
-#        exception_message: "Undefined option. \"-ignore-option\"",
-#      },
-#      {
-#        argv:              ["-m"],
-#        exception_message: "Undefined option. \"-m\"",
-#      },
-#      {
-#        argv:              ["--missing-option"],
-#        exception_message: "Undefined option. \"--missing-option\"",
-#      },
-#      {
-#        argv:              ["-m", "arg1"],
-#        exception_message: "Undefined option. \"-m\"",
-#      },
-#      {
-#        argv:              ["arg1", "-m"],
-#        exception_message: "Undefined option. \"-m\"",
-#      },
-#      {
-#        argv:              ["-m", "-d"],
-#        exception_message: "Undefined option. \"-m\"",
-#      },
-#      {
-#        argv:        ["--help"],
-#        expect_help: {{main_help_message}},
-#      },
-#      {
-#        argv:        ["--help", "ignore-arg"],
-#        expect_help: {{main_help_message}},
-#      },
-#      {
-#        argv:        ["ignore-arg", "--help"],
-#        expect_help: {{main_help_message}},
-#      },
-#    ]
-#  )
-#  {% end %}
-#
-#  class MainCommandIfCallTheMainCommandTwice < Clim
-#    main_command
-#    run do |opts, args|
-#    end
-#
-#    main_command # Exception!!
-#  end
-#
-#  describe "If the main command is called twice, " do
-#    it "raises an Exception." do
-#      expect_raises(Exception, "Main command is already defined.") do
-#        MainCommandIfCallTheMainCommandTwice.start_main([] of String)
-#      end
-#    end
-#  end
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Main command with desc.
+
+                        Usage:
+
+                          main_command with usage [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+
+
+                      HELP_MESSAGE
+%}
+
+spec(
+  spec_class_name: MainCommandWithUsage,
+  spec_dsl_lines: [
+    "desc \"Main command with desc.\"",
+    "usage \"main_command with usage [options] [arguments]\"",
+  ],
+  spec_desc: "main command,",
+  spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: ReturnOptsType.new,
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["arg1"],
+      expect_help: {{main_help_message}},
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["arg1", "arg2"],
+      expect_help: {{main_help_message}},
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1", "arg2"],
+    },
+    {
+      argv:        ["arg1", "arg2", "arg3"],
+      expect_help: {{main_help_message}},
+      expect_opts: ReturnOptsType.new,
+      expect_args: ["arg1", "arg2", "arg3"],
+    },
+    {
+      argv:              ["-h"],
+      exception_message: "Undefined option. \"-h\"",
+    },
+    {
+      argv:              ["--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["-m"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["--missing-option"],
+      exception_message: "Undefined option. \"--missing-option\"",
+    },
+    {
+      argv:              ["-m", "arg1"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["arg1", "-m"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["-m", "-d"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+  ]
+)
+{% end %}
+
+class MainCommandIfCallTheMainCommandTwice < Clim
+  main_command do
+    run do |opts, args|
+    end
+  end
+
+  main_command do # Exception!!
+  end
+end
+
+describe "If the main command is called twice, " do
+  it "raises an Exception." do
+    expect_raises(Exception, "Main command is already defined.") do
+      MainCommandIfCallTheMainCommandTwice.start([] of String)
+    end
+  end
+end
 #
 #  class MainCommandWhenCallTheMainCommandTwiceInSubBlock < Clim
 #    main_command
