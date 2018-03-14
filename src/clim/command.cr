@@ -33,9 +33,24 @@ class Clim
     end
 
     def parse(argv)
+      opts_validate!
+      recursive_parse(argv)
+    end
+
+    private def opts_validate!
+      raise Exception.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
+    end
+
+    private def duplicate_names
+      names = @sub_commands.map(&.name)
+      alias_names = @sub_commands.map(&.alias_name).flatten
+      (names + alias_names).duplicate_value
+    end
+
+    def recursive_parse(argv)
       return parse_by_parser(argv) if argv.empty?
       return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
-      find_sub_cmds_by(argv.first).first.parse(argv[1..-1])
+      find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
     end
 
     def help

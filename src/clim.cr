@@ -7,7 +7,7 @@ class Clim
       {{ yield }}
     end
 
-    {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_Main_command_by_clim") %}
+    {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_Main_command") %}
       {% raise "Main command is already defined." %}
     {% end %}
 

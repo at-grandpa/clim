@@ -14,10 +14,10 @@ class Clim
       end
 
       macro alias_name(*names)
-        {% if @type == CommandByClim_Main_command_by_clim %}
+        {% if @type == CommandByClim_Main_command %}
           {% raise "'alias_name' is not supported on main command." %}
         {% end %}
-        def alias_name(*names) : Array(String)
+        def alias_name : Array(String)
           {{ names }}.to_a
         end
       end
@@ -29,6 +29,10 @@ class Clim
       end
 
       macro command(name, &block)
+        {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_" + name.id.capitalize.stringify) %}
+          {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
+        {% end %}
+
         class CommandByClim_{{ name.id.capitalize }} < Command
           property name : String = {{name.id.stringify}}
 
