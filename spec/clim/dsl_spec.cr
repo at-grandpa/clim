@@ -16,7 +16,7 @@ macro expand_dsl_lines(lines)
 end
 
 macro it_blocks(class_name, spec_case)
-  {% if spec_case.keys.includes?("expect_opts".id) %}
+  {% if spec_case.keys.includes?("expect_args".id) %}
     it "opts and args are given as arguments of run block." do
       {{class_name}}.start({{spec_case["argv"]}})
     end
