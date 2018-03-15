@@ -15,12 +15,13 @@ require "./clim"
 # versionの実装
 # shortのみ、longのみ
 # モジュールの切り出し
+# defaultが設定されていたら T? じゃなくて T にする
 
 class MyCli < Clim
   main_command do
     desc "main command."
-    options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
-    options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
+    option "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
+    option "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
     run do |options, arguments|
       p "main ---"
       p options.name
@@ -30,8 +31,8 @@ class MyCli < Clim
     end
     sub_command "sub1" do
       desc "desc sub1."
-      options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
-      options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
+      option "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
+      option "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
       run do |options, arguments|
         p "sub1 ---"
         p options.name
@@ -40,9 +41,9 @@ class MyCli < Clim
       end
       sub_command "subsub1" do
         desc "desc subsub1."
-        options "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
-        options "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
-        options "-b", "--bool", type: Bool, desc: "your bool.", default: false, required: true
+        option "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
+        option "-t", "--time=TIME", type: Int32, desc: "your time.", default: 4, required: true
+        option "-b", "--bool", type: Bool, desc: "your bool.", default: false, required: true
         run do |options, arguments|
           p "subsub1 ---"
           p options.name
