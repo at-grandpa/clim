@@ -54,14 +54,27 @@ class Clim
             @parser.missing_option { |opt_name| raise Exception.new "Option that requires an argument. \"#{opt_name}\"" }
             @parser.unknown_args { |unknown_args| @arguments = unknown_args }
             @parser.parse(argv.dup)
-            # opts.required_validate! unless display_help?
-            # opts.help = help
+            required_validate! unless display_help?
             @options.help = help
             self
           end
 
+          def display_help? : Bool
+            @display_help_flag
+          end
+
           class OptionsByClim
             property help : String = ""
+
+            def to_a
+              \{% begin %}
+                [
+                \{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
+                  \{{iv}},
+                \{% end %}
+                ]
+              \{% end %}
+            end
 
             class OptionByClim(T)
               property short : String = ""
@@ -118,6 +131,10 @@ class Clim
                   raise Exception.new "'default' type is not supported. default type is [#{typeof(default)}]"
                 end
               end
+
+              def required_set?
+                @required && @value.nil?
+              end
             end
           end
 
@@ -136,6 +153,16 @@ class Clim
                 \{% end %}
               \{% end %}
             \{% end %}
+          end
+
+          def required_validate!
+            raise "Required options. \"#{invalid_required_names.join("\", \"")}\"" unless invalid_required_names.empty?
+          end
+
+          private def invalid_required_names
+            @options.to_a.map do |option|
+              option.required_set? ? option.short : nil
+            end.compact
           end
 
           \{% begin %}
