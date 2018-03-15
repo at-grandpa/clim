@@ -99,6 +99,11 @@ class Clim
                     "Int8"   => "@value = arg.to_i8",
                     "Int16"  => "@value = arg.to_i16",
                     "Int32"  => "@value = arg.to_i32",
+                    "Int64"  => "@value = arg.to_i64",
+                    "uInt8"  => "@value = arg.to_ui8",
+                    "uInt16" => "@value = arg.to_ui16",
+                    "uInt32" => "@value = arg.to_ui32",
+                    "uInt64" => "@value = arg.to_ui64",
                     "String" => "@value = arg.to_s",
                     "Bool"   => <<-BOOL_ARG
                       @value = arg.try do |obj|

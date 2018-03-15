@@ -15,6 +15,11 @@ require "../dsl_spec"
                           --int8=VALUE                     Option description. [type:Int8]
                           --int16=VALUE                    Option description. [type:Int16]
                           --int32=VALUE                    Option description. [type:Int32]
+                          --int64=VALUE                    Option description. [type:Int64]
+                          --uint8=VALUE                    Option description. [type:UInt8]
+                          --uint16=VALUE                   Option description. [type:UInt16]
+                          --uint32=VALUE                   Option description. [type:UInt32]
+                          --uint64=VALUE                   Option description. [type:UInt64]
                           --string=VALUE                   Option description. [type:String]
                           --bool                           Option description. [type:Bool]
                           --array-string=VALUE             Option description. [type:Array(String)]
@@ -30,6 +35,11 @@ spec(
     "option \"--int8=VALUE\", type: Int8",
     "option \"--int16=VALUE\", type: Int16",
     "option \"--int32=VALUE\", type: Int32",
+    "option \"--int64=VALUE\", type: Int64",
+    "option \"--uint8=VALUE\", type: UInt8",
+    "option \"--uint16=VALUE\", type: UInt16",
+    "option \"--uint32=VALUE\", type: UInt32",
+    "option \"--uint64=VALUE\", type: UInt64",
     "option \"--string=VALUE\", type: String",
     "option \"--bool\", type: Bool",
     "option \"--array-string=VALUE\", type: Array(String)",
