@@ -65,13 +65,18 @@ class Clim
 
             class OptionByClim(T)
               property short : String = ""
-              property long : String = ""
+              property long : String? = ""
               property desc : String = ""
               property default : T? = nil
               property required : Bool = false
               property value : T? = nil
 
               def initialize(@short : String, @long : String, @desc : String, @default : T?, @required : Bool)
+                @value = default
+              end
+
+              def initialize(@short : String, @desc : String, @default : T?, @required : Bool)
+                @long = nil
                 @value = default
               end
 
@@ -117,7 +122,12 @@ class Clim
             class \{{ ccc.id }}
               def setup_parser(parser)
                 \\{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
-                  parser.on(\\{{iv}}.short, \\{{iv}}.long, \\{{iv}}.desc) {|arg| \\{{iv}}.set_value(arg) }
+                  long = \\{{iv}}.long
+                  if long.nil?
+                    parser.on(\\{{iv}}.short, \\{{iv}}.desc) {|arg| \\{{iv}}.set_value(arg) }
+                  else
+                    parser.on(\\{{iv}}.short, long, \\{{iv}}.desc) {|arg| \\{{iv}}.set_value(arg) }
+                  end
                 \\{% end %}
               end
             end
@@ -127,10 +137,20 @@ class Clim
 
       macro options(short, long, type, desc = "Option description.", default = nil, required = false)
         class OptionsByClim
-          {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^--/, "").id %}
+          {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").id %}
           property {{ long_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
           def {{ long_var_name }} : {{ type }}?
             {{ long_var_name }}_instance.@value
+          end
+        end
+      end
+
+      macro options(short, type, desc = "Option description.", default = nil, required = false)
+        class OptionsByClim
+          {% short_var_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").id %}
+          property {{ short_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ desc }}, {{ default }}, {{ required }})
+          def {{ short_var_name }} : {{ type }}?
+            {{ short_var_name }}_instance.@value
           end
         end
       end
