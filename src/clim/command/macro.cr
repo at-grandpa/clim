@@ -100,10 +100,10 @@ class Clim
                     "Int16"  => "@value = arg.to_i16",
                     "Int32"  => "@value = arg.to_i32",
                     "Int64"  => "@value = arg.to_i64",
-                    "uInt8"  => "@value = arg.to_ui8",
-                    "uInt16" => "@value = arg.to_ui16",
-                    "uInt32" => "@value = arg.to_ui32",
-                    "uInt64" => "@value = arg.to_ui64",
+                    "UInt8"  => "@value = arg.to_u8",
+                    "UInt16" => "@value = arg.to_u16",
+                    "UInt32" => "@value = arg.to_u32",
+                    "UInt64" => "@value = arg.to_u64",
                     "String" => "@value = arg.to_s",
                     "Bool"   => <<-BOOL_ARG
                       @value = arg.try do |obj|

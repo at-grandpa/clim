@@ -110,6 +110,112 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
+        "type" => Int64?,
+        "method" => "int64",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--int64", "5"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Int64?,
+        "method" => "int64",
+        "expect_value" => 5_i64,
+      },
+      expect_args: [] of String,
+    },
+
+
+
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => UInt8?,
+        "method" => "uint8",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--uint8", "5"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => UInt8?,
+        "method" => "uint8",
+        "expect_value" => 5_u8,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => UInt16?,
+        "method" => "uint16",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--uint16", "5"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => UInt16?,
+        "method" => "uint16",
+        "expect_value" => 5_u16,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => UInt32?,
+        "method" => "uint32",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--uint32", "5"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => UInt32?,
+        "method" => "uint32",
+        "expect_value" => 5_u32,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => UInt64?,
+        "method" => "uint64",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--uint64", "5"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => UInt64?,
+        "method" => "uint64",
+        "expect_value" => 5_u64,
+      },
+      expect_args: [] of String,
+    },
+
+
+
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
         "type" => String?,
         "method" => "string",
         "expect_value" => nil,
