@@ -180,7 +180,7 @@ class Clim
         end
       end
 
-      macro options(short, long, type, desc = "Option description.", default = nil, required = false)
+      macro option(short, long, type, desc = "Option description.", default = nil, required = false)
         class OptionsByClim
           {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").id %}
           property {{ long_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
@@ -190,7 +190,7 @@ class Clim
         end
       end
 
-      macro options(short, type, desc = "Option description.", default = nil, required = false)
+      macro option(short, type, desc = "Option description.", default = nil, required = false)
         class OptionsByClim
           {% short_var_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").id %}
           property {{ short_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ desc }}, {{ default }}, {{ required }})

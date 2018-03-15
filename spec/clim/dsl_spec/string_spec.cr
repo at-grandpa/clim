@@ -22,7 +22,7 @@ require "../dsl_spec"
 spec(
   spec_class_name: MainCommandWithString,
   spec_dsl_lines: [
-    "options \"-s ARG\", \"--string=ARG\", type: String",
+    "option \"-s ARG\", \"--string=ARG\", type: String",
   ],
   spec_desc: "main command with String options,",
   spec_cases: [
@@ -192,7 +192,7 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringOnlyShortOption,
   spec_dsl_lines: [
-    "options \"-s ARG\", type: String",
+    "option \"-s ARG\", type: String",
   ],
   spec_desc: "main command with string dsl,",
   spec_cases: [
@@ -350,7 +350,7 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringOnlyLongOption,
   spec_dsl_lines: [
-    "options \"--string=ARG\", type: String",
+    "option \"--string=ARG\", type: String",
   ],
   spec_desc: "main command with string dsl,",
   spec_cases: [
@@ -484,7 +484,7 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringDesc,
   spec_dsl_lines: [
-    "options \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\"",
   ],
   spec_desc: "main command with string dsl,",
   spec_cases: [
@@ -526,7 +526,7 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringDefault,
   spec_dsl_lines: [
-    "options \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", default: \"default value\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", default: \"default value\"",
   ],
   spec_desc: "main command with string dsl,",
   spec_cases: [
@@ -696,7 +696,7 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringRequiredTrueAndDefaultExists,
   spec_dsl_lines: [
-    "options \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: true, default: \"default value\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: true, default: \"default value\"",
   ],
   spec_desc: "main command with string dsl,",
   spec_cases: [
@@ -866,7 +866,7 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringRequiredTrueOnly,
   spec_dsl_lines: [
-    "options \"-s ARG\", \"--string=ARG\", type: String,  desc: \"String option description.\", required: true",
+    "option \"-s ARG\", \"--string=ARG\", type: String,  desc: \"String option description.\", required: true",
   ],
   spec_desc: "main command with string dsl,",
   spec_cases: [
@@ -1024,7 +1024,7 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringRequiredFalseAndDefaultExists,
   spec_dsl_lines: [
-    "options \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: false, default: \"default value\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: false, default: \"default value\"",
   ],
   spec_desc: "main command with string dsl,",
   spec_cases: [
@@ -1194,7 +1194,7 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringRequiredFalseOnly,
   spec_dsl_lines: [
-    "options \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: false",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: false",
   ],
   spec_desc: "main command with string dsl,",
   spec_cases: [
