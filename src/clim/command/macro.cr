@@ -95,23 +95,32 @@ class Clim
               def set_value(arg : String)
                 \{% begin %}
                   \{% type_hash = {
-                    Int8   => "to_i8",
-                    Int16  => "to_i16",
-                    Int32  => "to_i32",
-                    String => "to_s",
-                    Bool   => <<-BOOL_ARG
-                    try do |obj|
-                      next true if obj.empty?
-                      unless obj === "true" || obj == "false"
-                        raise Exception.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
+                    "Int8"   => "@value = arg.to_i8",
+                    "Int16"  => "@value = arg.to_i16",
+                    "Int32"  => "@value = arg.to_i32",
+                    "String" => "@value = arg.to_s",
+                    "Bool"   => <<-BOOL_ARG
+                      @value = arg.try do |obj|
+                        next true if obj.empty?
+                        unless obj === "true" || obj == "false"
+                          raise Exception.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
+                        end
+                        obj === "true"
                       end
-                      obj === "true"
-                    end
                     BOOL_ARG,
+                    "Array(String)" => <<-ARRAY_STRING_ARG
+                      v = @value
+                      if v.nil?
+                        v = [arg.to_s]
+                      else
+                        v << arg.to_s
+                      end
+                      @value = v
+                    ARRAY_STRING_ARG
                   } %}
                   \{% type_ver = @type.type_vars.first %}
-                  \{% convert_method = type_hash[type_ver] %}
-                  @value = arg.\{{convert_method.id}}
+                  \{% convert_method = type_hash[type_ver.stringify] %}
+                  \{{convert_method.id}}
                 \{% end %}
               end
 
