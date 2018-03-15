@@ -196,7 +196,7 @@ class Clim
 
       macro option(short, long, type, desc = "Option description.", default = nil, required = false)
         class OptionsByClim
-          {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").id %}
+          {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
           property {{ long_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
           def {{ long_var_name }} : {{ type }}?
             {{ long_var_name }}_instance.@value
@@ -206,7 +206,7 @@ class Clim
 
       macro option(short, type, desc = "Option description.", default = nil, required = false)
         class OptionsByClim
-          {% short_var_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").id %}
+          {% short_var_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
           property {{ short_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ desc }}, {{ default }}, {{ required }})
           def {{ short_var_name }} : {{ type }}?
             {{ short_var_name }}_instance.@value
