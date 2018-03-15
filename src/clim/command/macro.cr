@@ -82,6 +82,7 @@ class Clim
               property default : T? = nil
               property required : Bool = false
               property value : T? = nil
+              property array_set_flag : Bool = false
 
               def initialize(@short : String, @long : String, @desc : String, @default : T?, @required : Bool)
                 @value = default
@@ -109,13 +110,9 @@ class Clim
                       end
                     BOOL_ARG,
                     "Array(String)" => <<-ARRAY_STRING_ARG
-                      v = @value
-                      if v.nil?
-                        v = [arg.to_s]
-                      else
-                        v << arg.to_s
-                      end
-                      @value = v
+                      @value = [] of String if @array_set_flag == false
+                      @array_set_flag = true
+                      @value = @value.nil? ? [arg] : @value.try &.<<(arg)
                     ARRAY_STRING_ARG
                   } %}
                   \{% type_ver = @type.type_vars.first %}
