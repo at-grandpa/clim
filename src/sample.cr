@@ -10,10 +10,10 @@ require "./clim"
 # rescue
 # 同じコマンドを指定した場合の動作
 #   - macro raise でキャッチ
-# helpの充実
+# [done] helpの充実
 # テスト
 # versionの実装
-# shortのみ、longのみ
+# [done] shortのみ、longのみ
 # モジュールの切り出し
 # defaultが設定されていたら T? じゃなくて T にする
 

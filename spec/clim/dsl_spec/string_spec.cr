@@ -194,7 +194,7 @@ spec(
   spec_dsl_lines: [
     "option \"-s ARG\", type: String",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
@@ -352,7 +352,7 @@ spec(
   spec_dsl_lines: [
     "option \"--string=ARG\", type: String",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
@@ -486,7 +486,7 @@ spec(
   spec_dsl_lines: [
     "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\"",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        ["--help"],
@@ -528,7 +528,7 @@ spec(
   spec_dsl_lines: [
     "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", default: \"default value\"",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
@@ -698,7 +698,7 @@ spec(
   spec_dsl_lines: [
     "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: true, default: \"default value\"",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
@@ -868,7 +868,7 @@ spec(
   spec_dsl_lines: [
     "option \"-s ARG\", \"--string=ARG\", type: String,  desc: \"String option description.\", required: true",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        ["-s", "string1"],
@@ -1026,7 +1026,7 @@ spec(
   spec_dsl_lines: [
     "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: false, default: \"default value\"",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
@@ -1196,7 +1196,7 @@ spec(
   spec_dsl_lines: [
     "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: false",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
