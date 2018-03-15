@@ -99,16 +99,5 @@ class Clim
       ([cmd.name] + cmd.alias_name).join(", ")
     end
 
-    # def parse_by_parser(argv)
-    #   @parser.on("--help", "Show this help.") { @display_help_flag = true }
-    #   @parser.invalid_option { |opt_name| raise Exception.new "Undefined option. \"#{opt_name}\"" }
-    #   @parser.missing_option { |opt_name| raise Exception.new "Option that requires an argument. \"#{opt_name}\"" }
-    #   @parser.unknown_args { |unknown_args| @arguments = unknown_args }
-    #   @parser.parse(argv.dup)
-    #   # opts.required_validate! unless display_help?
-    #   # opts.help = help
-    #   @options.help = help
-    #   self
-    # end
   end
 end
