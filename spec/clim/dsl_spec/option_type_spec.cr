@@ -20,9 +20,12 @@ require "../dsl_spec"
                           --uint16=VALUE                   Option description. [type:UInt16]
                           --uint32=VALUE                   Option description. [type:UInt32]
                           --uint64=VALUE                   Option description. [type:UInt64]
+                          --float32=VALUE                  Option description. [type:Float32]
+                          --float64=VALUE                  Option description. [type:Float64]
                           --string=VALUE                   Option description. [type:String]
                           --bool                           Option description. [type:Bool]
                           --array-string=VALUE             Option description. [type:Array(String)]
+                          --array-int8=VALUE               Option description. [type:Array(Int8)]
                           --help                           Show this help.
 
 
@@ -40,9 +43,12 @@ spec(
     "option \"--uint16=VALUE\", type: UInt16",
     "option \"--uint32=VALUE\", type: UInt32",
     "option \"--uint64=VALUE\", type: UInt64",
+    "option \"--float32=VALUE\", type: Float32",
+    "option \"--float64=VALUE\", type: Float64",
     "option \"--string=VALUE\", type: String",
     "option \"--bool\", type: Bool",
     "option \"--array-string=VALUE\", type: Array(String)",
+    "option \"--array-int8=VALUE\", type: Array(Int8)",
   ],
   spec_desc: "option type spec,",
   spec_cases: [
@@ -126,9 +132,6 @@ spec(
       },
       expect_args: [] of String,
     },
-
-
-
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -210,8 +213,46 @@ spec(
       expect_args: [] of String,
     },
 
-
-
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Float32?,
+        "method" => "float32",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--float32", "5.5"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Float32?,
+        "method" => "float32",
+        "expect_value" => 5.5_f32,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Float64?,
+        "method" => "float64",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--float64", "5.5"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Float64?,
+        "method" => "float64",
+        "expect_value" => 5.5_f64,
+      },
+      expect_args: [] of String,
+    },
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -272,6 +313,30 @@ spec(
       },
       expect_args: [] of String,
     },
+
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8)?,
+        "method" => "array_int8",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int8", "1", "--array-int8", "2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8)?,
+        "method" => "array_int8",
+        "expect_value" => [1_i8, 2_i8],
+      },
+      expect_args: [] of String,
+    },
+
+
+
   ]
 )
 {% end %}

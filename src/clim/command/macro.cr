@@ -96,16 +96,18 @@ class Clim
               def set_value(arg : String)
                 \{% begin %}
                   \{% type_hash = {
-                    "Int8"   => "@value = arg.to_i8",
-                    "Int16"  => "@value = arg.to_i16",
-                    "Int32"  => "@value = arg.to_i32",
-                    "Int64"  => "@value = arg.to_i64",
-                    "UInt8"  => "@value = arg.to_u8",
-                    "UInt16" => "@value = arg.to_u16",
-                    "UInt32" => "@value = arg.to_u32",
-                    "UInt64" => "@value = arg.to_u64",
-                    "String" => "@value = arg.to_s",
-                    "Bool"   => <<-BOOL_ARG
+                    "Int8"    => "@value = arg.to_i8",
+                    "Int16"   => "@value = arg.to_i16",
+                    "Int32"   => "@value = arg.to_i32",
+                    "Int64"   => "@value = arg.to_i64",
+                    "UInt8"   => "@value = arg.to_u8",
+                    "UInt16"  => "@value = arg.to_u16",
+                    "UInt32"  => "@value = arg.to_u32",
+                    "UInt64"  => "@value = arg.to_u64",
+                    "Float32" => "@value = arg.to_f32",
+                    "Float64" => "@value = arg.to_f64",
+                    "String"  => "@value = arg.to_s",
+                    "Bool"    => <<-BOOL_ARG
                       @value = arg.try do |obj|
                         next true if obj.empty?
                         unless obj === "true" || obj == "false"
@@ -114,16 +116,19 @@ class Clim
                         obj === "true"
                       end
                     BOOL_ARG,
-                    "Array(String)" => <<-ARRAY_STRING_ARG
-                      @value = [] of String if @array_set_flag == false
-                      @array_set_flag = true
-                      @value = @value.nil? ? [arg] : @value.try &.<<(arg)
-                    ARRAY_STRING_ARG
+                    "Array(String)" => "add_array_value(String, to_s)",
+                    "Array(Int8)" => "add_array_value(Int8, to_i8)",
                   } %}
                   \{% type_ver = @type.type_vars.first %}
                   \{% convert_method = type_hash[type_ver.stringify] %}
                   \{{convert_method.id}}
                 \{% end %}
+              end
+
+              macro add_array_value(type, cast_method)
+                @value = [] of \{{type}} if @array_set_flag == false
+                @array_set_flag = true
+                @value = @value.nil? ? [arg.\{{cast_method}}] : @value.try &.<<(arg.\{{cast_method}})
               end
 
               def desc
