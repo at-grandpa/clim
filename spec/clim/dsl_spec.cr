@@ -3,7 +3,7 @@ require "./../spec_helper"
 macro assert_opts_and_args(spec_case)
     opts.help.should eq {{spec_case["expect_help"]}}
     {% if spec_case.keys.includes?("expect_opts".id) %}
-      opts.{{spec_case["expect_opts"]["method"].id}}.class.should eq {{spec_case["expect_opts"]["type"]}}
+      opts.{{spec_case["expect_opts"]["method"].id}}.is_a?({{spec_case["expect_opts"]["type"]}}).should be_true
       opts.{{spec_case["expect_opts"]["method"].id}}.should eq {{spec_case["expect_opts"]["expect_value"]}}
     {% end %}
     args.should eq {{spec_case["expect_args"]}}

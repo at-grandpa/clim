@@ -129,7 +129,7 @@ class Clim
         class OptionsByClim
           {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^--/, "").id %}
           property {{ long_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
-          def {{ long_var_name }}
+          def {{ long_var_name }} : {{ type }}?
             {{ long_var_name }}_instance.@value
           end
         end
