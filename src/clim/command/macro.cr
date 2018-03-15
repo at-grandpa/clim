@@ -97,9 +97,9 @@ class Clim
 
               def desc
                 desc = @desc
-                # desc = desc + "  [type:#{T.to_s}]" unless default.nil?
-                desc = desc + "  [default:#{display_default}]" unless default.nil?
-                desc = desc + "  [required]" if required
+                desc = desc + " [type:#{T.to_s}]"
+                desc = desc + " [default:#{display_default}]" unless default.nil?
+                desc = desc + " [required]" if required
                 desc
               end
 

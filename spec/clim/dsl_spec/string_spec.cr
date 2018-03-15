@@ -12,7 +12,7 @@ require "../dsl_spec"
 
                         Options:
 
-                          -s ARG, --string=ARG             Option description.
+                          -s ARG, --string=ARG             Option description. [type:String]
                           --help                           Show this help.
 
 
@@ -182,7 +182,7 @@ spec(
 
                         Options:
 
-                          -s ARG                           Option description.
+                          -s ARG                           Option description. [type:String]
                           --help                           Show this help.
 
 
@@ -340,7 +340,7 @@ spec(
 
                         Options:
 
-                          --string=ARG                     Option description.
+                          --string=ARG                     Option description. [type:String]
                           --help                           Show this help.
 
 
@@ -474,7 +474,7 @@ spec(
 
                         Options:
 
-                          -s ARG, --string=ARG             String option description.
+                          -s ARG, --string=ARG             String option description. [type:String]
                           --help                           Show this help.
 
 
@@ -516,7 +516,7 @@ spec(
 
                         Options:
 
-                          -s ARG, --string=ARG             String option description.  [default:"default value"]
+                          -s ARG, --string=ARG             String option description. [type:String] [default:"default value"]
                           --help                           Show this help.
 
 
