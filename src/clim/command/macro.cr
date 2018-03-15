@@ -66,14 +66,13 @@ class Clim
           class OptionsByClim
             property help : String = ""
 
-            def to_a
-              \{% begin %}
-                [
-                \{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
-                  \{{iv}},
-                \{% end %}
-                ]
+            def invalid_required_names
+              ret = [] of String | Nil
+              \{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
+                short_or_nil = \{{iv}}.required_set? ? \{{iv}}.short : nil
+                ret << short_or_nil
               \{% end %}
+              ret.compact
             end
 
             class OptionByClim(T)
@@ -132,7 +131,7 @@ class Clim
                 end
               end
 
-              def required_set?
+              def required_set? : Bool
                 @required && @value.nil?
               end
             end
@@ -156,13 +155,7 @@ class Clim
           end
 
           def required_validate!
-            raise "Required options. \"#{invalid_required_names.join("\", \"")}\"" unless invalid_required_names.empty?
-          end
-
-          private def invalid_required_names
-            @options.to_a.map do |option|
-              option.required_set? ? option.short : nil
-            end.compact
+            raise "Required options. \"#{@options.invalid_required_names.join("\", \"")}\"" unless @options.invalid_required_names.empty?
           end
 
           \{% begin %}
@@ -181,6 +174,7 @@ class Clim
                   end
                 \\{% end %}
               end
+
             end
           \{% end %}
         end
