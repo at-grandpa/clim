@@ -99,7 +99,15 @@ class Clim
                     Int16  => "to_i16",
                     Int32  => "to_i32",
                     String => "to_s",
-                    Bool   => "empty?",
+                    Bool   => <<-BOOL_ARG
+                    try do |obj|
+                      next true if obj.empty?
+                      unless obj === "true" || obj == "false"
+                        raise Exception.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
+                      end
+                      obj === "true"
+                    end
+                    BOOL_ARG,
                   } %}
                   \{% type_ver = @type.type_vars.first %}
                   \{% convert_method = type_hash[type_ver] %}
