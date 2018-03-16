@@ -108,6 +108,10 @@ class Clim
       Help.new(self).display
     end
 
+    def display_help? : Bool
+      @display_help_flag
+    end
+
     macro option_base(short, long, type, desc, default, required)
       {% if short.empty? %}
         {% raise "Empty option name." %}
@@ -153,6 +157,11 @@ class Clim
       class CommandByClim_{{ name.id.capitalize }} < Command
         property name : String = {{name.id.stringify}}
 
+        class OptionsByClim < Options
+          class OptionByClim < Option
+          end
+        end
+
         macro run(&block)
           def run(io : IO)
             if @display_help_flag
@@ -175,15 +184,6 @@ class Clim
           required_validate! unless display_help?
           @options.help = help
           self
-        end
-
-        def display_help? : Bool
-          @display_help_flag
-        end
-
-        class OptionsByClim < Options
-          class OptionByClim < Option
-          end
         end
 
         def initialize
