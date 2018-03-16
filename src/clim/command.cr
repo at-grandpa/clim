@@ -11,17 +11,51 @@ class Clim
     property arguments : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
 
+    macro desc(description)
+      def desc : String
+        {{ description.id.stringify }}
+      end
+    end
+
     def desc : String
       "Command Line Interface Tool."
+    end
+
+    macro usage(usage)
+      def usage : String
+        {{ usage.id.stringify }}
+      end
     end
 
     def usage : String
       "#{name} [options] [arguments]"
     end
 
+    macro alias_name(*names)
+      {% if @type == CommandByClim_Main_command %}
+        {% raise "'alias_name' is not supported on main command." %}
+      {% end %}
+      def alias_name : Array(String)
+        {{ names }}.to_a
+      end
+    end
+
     def alias_name(*names) : Array(String)
-      raise ClimException.new("'alias_name' is not supported on main command.") if @name == "main_command_by_clim"
       [] of String
+    end
+
+    macro version(version_str, short = nil)
+      def version_str : String
+        {{ version_str.id.stringify }}
+      end
+
+      def define_version(parser)
+        {% if short == nil %}
+          parser.on("--version", "Show version.") { @display_version_flag = true }
+        {% else %}
+          parser.on({{short.id.stringify}}, "--version", "Show version.") { @display_version_flag = true }
+        {% end %}
+      end
     end
 
     def version_str
@@ -61,49 +95,7 @@ class Clim
     end
 
     def help
-      @sub_commands.empty? ? base_help : base_help + sub_cmds_help
-    end
-
-    private def base_help
-      <<-HELP_MESSAGE
-
-        #{desc}
-
-        Usage:
-
-          #{usage}
-
-        Options:
-
-      #{@parser}
-
-
-      HELP_MESSAGE
-    end
-
-    def sub_cmds_help
-      <<-HELP_MESSAGE
-        Sub Commands:
-
-      #{sub_cmds_help_lines.join("\n")}
-
-
-      HELP_MESSAGE
-    end
-
-    def sub_cmds_help_lines
-      @sub_commands.map do |cmd|
-        name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
-        "    #{name}   #{cmd.desc}"
-      end
-    end
-
-    def max_name_length
-      @sub_commands.empty? ? 0 : @sub_commands.map { |cmd| name_and_alias_name(cmd).size }.max
-    end
-
-    def name_and_alias_name(cmd)
-      ([cmd.name] + cmd.alias_name).join(", ")
+      Help.new(self).display
     end
   end
 end

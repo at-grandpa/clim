@@ -33,10 +33,6 @@ class Clim
       {{ yield }}
     end
 
-    {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_Main_command") %}
-      {% raise "Main command is already defined." %}
-    {% end %}
-
     def self.start_parse(argv, io : IO = STDOUT)
       CommandByClim_Main_command.new.parse(argv).run(io)
     end
@@ -50,5 +46,10 @@ class Clim
       puts ""
       puts "Please see the `--help`."
     end
+
+    {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_Main_command") %}
+      {% raise "Main command is already defined." %}
+    {% end %}
+
   end
 end

@@ -1,40 +1,6 @@
 class Clim
   abstract class Command
     module Macro
-      macro desc(description)
-        def desc : String
-          {{ description.id.stringify }}
-        end
-      end
-
-      macro usage(usage)
-        def usage : String
-          {{ usage.id.stringify }}
-        end
-      end
-
-      macro alias_name(*names)
-        {% if @type == CommandByClim_Main_command %}
-          {% raise "'alias_name' is not supported on main command." %}
-        {% end %}
-        def alias_name : Array(String)
-          {{ names }}.to_a
-        end
-      end
-
-      macro version(version_str, short = nil)
-        def version_str : String
-          {{ version_str.id.stringify }}
-        end
-
-        def define_version(parser)
-          {% if short == nil %}
-            parser.on("--version", "Show version.") { @display_version_flag = true }
-          {% else %}
-            parser.on({{short.id.stringify}}, "--version", "Show version.") { @display_version_flag = true }
-          {% end %}
-        end
-      end
 
       macro sub_command(name, &block)
         command({{name}}) do
