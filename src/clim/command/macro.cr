@@ -116,8 +116,15 @@ class Clim
                         obj === "true"
                       end
                     BOOL_ARG,
-                    "Array(String)" => "add_array_value(String, to_s)",
                     "Array(Int8)" => "add_array_value(Int8, to_i8)",
+                    "Array(Int16)" => "add_array_value(Int16, to_i16)",
+                    "Array(Int32)" => "add_array_value(Int32, to_i32)",
+                    "Array(Int64)" => "add_array_value(Int64, to_i64)",
+                    "Array(UInt8)" => "add_array_value(UInt8, to_u8)",
+                    "Array(UInt16)" => "add_array_value(UInt16, to_u16)",
+                    "Array(UInt32)" => "add_array_value(UInt32, to_u32)",
+                    "Array(UInt64)" => "add_array_value(UInt64, to_u64)",
+                    "Array(String)" => "add_array_value(String, to_s)",
                   } %}
                   \{% type_ver = @type.type_vars.first %}
                   \{% convert_method = type_hash[type_ver.stringify] %}
