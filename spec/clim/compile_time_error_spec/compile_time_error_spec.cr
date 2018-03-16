@@ -71,4 +71,14 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "empty option name." do
+    `crystal run spec/clim/compile_time_error_spec/files/empty_option_name.cr --no-color 2>&1`.should eq <<-ERROR
+    Error in spec/clim/compile_time_error_spec/files/empty_option_name.cr:6: Empty option name.
+
+        option "", type: String, desc: "empty option name."
+        ^
+
+
+    ERROR
+  end
 end

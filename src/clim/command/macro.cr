@@ -48,7 +48,6 @@ class Clim
         {% end %}
       end
 
-
       macro command(name, &block)
         {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_" + name.id.capitalize.stringify) %}
           {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
@@ -252,6 +251,10 @@ class Clim
       end
 
       macro option_base(short, long, type, desc, default, required)
+        {% if short.empty? %}
+          {% raise "Empty option name." %}
+        {% end %}
+
         {% unless SUPPORT_TYPES.includes?(type) %}
           {% raise "Type [#{type}] is not supported on option." %}
         {% end %}

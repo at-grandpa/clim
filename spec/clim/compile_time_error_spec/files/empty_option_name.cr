@@ -3,7 +3,7 @@ require "big"
 
 class MyCli < Clim
   main_command do
-    option "-n", type: BigInt, desc: "my big int.", default: 0
+    option "", type: String, desc: "empty option name."
     run do |opts, args|
     end
   end
