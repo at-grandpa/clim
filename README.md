@@ -2,7 +2,7 @@
 
 "clim" is slim command line interface builder for Crystal.
 
-*"clim" = "cli" + "slim"*
+_"clim" = "cli" + "slim"_
 
 [![Build Status](https://travis-ci.org/at-grandpa/clim.svg?branch=master)](https://travis-ci.org/at-grandpa/clim)
 
@@ -14,13 +14,34 @@
 ## Support
 
 - [x] Option types
-  - [x] string
-  - [x] bool
-  - [x] array
-- [x] Default values for options
-- [x] Required flag for options
+  - [x] `Int8`
+  - [x] `Int16`
+  - [x] `Int32`
+  - [x] `Int64`
+  - [x] `UInt8`
+  - [x] `UInt16`
+  - [x] `UInt32`
+  - [x] `UInt64`
+  - [x] `Float32`
+  - [x] `Float64`
+  - [x] `String`
+  - [x] `Bool`
+  - [x] `Array(Int8)`
+  - [x] `Array(Int16)`
+  - [x] `Array(Int32)`
+  - [x] `Array(Int64)`
+  - [x] `Array(UInt8)`
+  - [x] `Array(UInt16)`
+  - [x] `Array(UInt32)`
+  - [x] `Array(UInt64)`
+  - [x] `Array(Float32)`
+  - [x] `Array(Float64)`
+  - [x] `Array(String)`
+- [x] Default values for option
+- [x] Required flag for option
 - [x] Nested sub commands
 - [x] `--help` option
+- [x] `version` macro
 - [x] Command name alias
 
 
