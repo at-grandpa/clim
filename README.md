@@ -338,83 +338,46 @@ class MyCli < Clim
   end
 end
 ```
-デフォルトが指定されていなければ nilable になる
-boolは引数いらない
 
-
-#### bool
+If default is not specified, it is nilable.
 
 ```crystal
-  bool  "-b", "--bool-long-name", desc: "Option description."  # Bool option
-  run do |opts, args|
-    puts opts["bool-long-name"]                   # => print your option value.
-    puts typeof(opts["bool-long-name"])           # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["bool-long-name"].as(Bool))  # => Bool
+class MyCli < Clim
+  main_command do
+    option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings."
+    run do |options, arguments|
+      puts typeof(options.greeting) # => (String | Nil)
+    end
   end
+end
 ```
 
-#### array
+For Bool, you do not need to specify arguments for short or long.
 
 ```crystal
-  array "-a ITEM", "--array-long-name=ITEM", desc: "Option description."  # Array option
-  run do |opts, args|
-    puts opts["array-long-name"]                            # => print your option value.
-    puts typeof(opts["array-long-name"])                    # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["array-long-name"].as(Array(String)))  # => Array(String)
+class MyCli < Clim
+  main_command do
+    option "-v", "--verbose", type: Bool, desc: "Verbose."
+    run do |options, arguments|
+      puts typeof(options.verbose) # => Bool
+    end
   end
+end
 ```
 
-### Option name
-
-You can specify short name, long name or both.
-
-see: [https://crystal-lang.org/api/OptionParser.html](https://crystal-lang.org/api/OptionParser.html)
-
-#### Short name only
+Option method names are long name if there is a long, and short name if there is only a short. Also, hyphens are replaced by underscores.
 
 ```crystal
-  string "-s ARG", desc: "Option description." # String option
-  run do |opts, args|
-    puts opts["s"]                     # => print your option value.
-    puts typeof(opts["s"])             # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["s"].as(String))  # => String
-    # puts opts["string-long-name"]    # => ERROR: Missing hash key: "string-long-name"
+class MyCli < Clim
+  main_command do
+    option "-n", type: String, desc: "name."  # => short name only.
+    option "--my-age", type: Int32, desc: "age." # => long name only.
+    run do |options, arguments|
+      puts typeof(options.n)      # => (String | Nil)
+      puts typeof(options.my_age) # => (Int32 | Nil)
+    end
   end
-```
-
-#### Long name only
-
-```crystal
-  string "--string-long-name=ARG", desc: "Option description." # String option
-  run do |opts, args|
-    puts opts["string-long-name"]                     # => print your option value.
-    puts typeof(opts["string-long-name"])             # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["string-long-name"].as(String))  # => String
-    # puts opts["s"]                                  # => ERROR: Missing hash key: "s"
-  end
-```
-
-
-#### Both
-
-If both are specified, the long name becomes the key.
-
-```crystal
-  string "-s ARG", "--string-long-name=ARG", desc: "Option description."  # String option
-  run do |opts, args|
-    puts opts["string-long-name"]                     # => print your option value.
-    puts typeof(opts["string-long-name"])             # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["string-long-name"].as(String))  # => String
-    # puts opts["s"]                                  # => ERROR: Missing hash key: "s"
-  end
-```
-
-### default / required
-
-```crystal
-  string "-s ARG",  "--string-long-name=ARG", default: "default value"               # Default value.
-  bool   "-b",      "--bool-long-name",       required: true                         # Required.
-  array  "-a ITEM", "--array-long-name=ITEM", default: [] of String, required: true  # Both.
+end
 ```
 
 ### help
