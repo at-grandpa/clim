@@ -222,7 +222,7 @@ class Clim
 
       end
 
-      macro option(short, long, type, desc = "Option description.", default = nil, required = false)
+      macro option_base(short, long, type, desc, default, required)
         {% if long == nil %}
           {% base_option_name = short %}
         {% else %}
@@ -234,7 +234,6 @@ class Clim
             option_by_clim_macro({{type}}, {{default}})
           end
 
-          {% long = short if type.id.stringify == "Bool" %}
           {% default = false if type.id.stringify == "Bool" %}
           {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
           property {{ option_name }}_instance : OptionByClim_{{option_name}} = OptionByClim_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default }}, {{ required }})
@@ -244,21 +243,12 @@ class Clim
         end
       end
 
-      macro option(short, type, desc = "Option description.", default = nil, required = false)
-        {% short_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-        class OptionsByClim
-          class OptionByClim_{{short_name}} < OptionByClim
-            option_by_clim_macro({{type}}, {{default}})
-          end
+      macro option(short, long, type, desc = "Option description.", default = nil, required = false)
+        option_base({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
+      end
 
-          {% default = false if type.id.stringify == "Bool" %}
-          {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
-          {% short_var_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-          property {{short_var_name}}_instance : OptionByClim_{{short_name}} = OptionByClim_{{short_name}}.new({{ short }}, {{ desc }}, {{ default }}, {{ required }})
-          def {{ short_var_name }} : {{ type }}?
-            {{ short_var_name }}_instance.@value
-          end
-        end
+      macro option(short, type, desc = "Option description.", default = nil, required = false)
+        option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
       end
     end
   end
