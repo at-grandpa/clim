@@ -65,8 +65,8 @@ class Clim
           def parse_by_parser(argv)
             @parser.on("--help", "Show this help.") { @display_help_flag = true }
             define_version(@parser)
-            @parser.invalid_option { |opt_name| raise Exception.new "Undefined option. \"#{opt_name}\"" }
-            @parser.missing_option { |opt_name| raise Exception.new "Option that requires an argument. \"#{opt_name}\"" }
+            @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
+            @parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
             @parser.unknown_args { |unknown_args| @arguments = unknown_args }
             @parser.parse(argv.dup)
             required_validate! unless display_help?
@@ -120,7 +120,7 @@ class Clim
                   when Nil
                     "nil"
                   else
-                    raise Exception.new "'default' type is not supported. default type is [#{typeof(default)}]"
+                    raise ClimException.new "[#{typeof(default)}] is not supported."
                   end
                 {% end %}
               end
@@ -173,7 +173,7 @@ class Clim
                       @value = arg.try do |obj|
                         next true if obj.empty?
                         unless obj === "true" || obj == "false"
-                          raise Exception.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
+                          raise ClimException.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
                         end
                         obj === "true"
                       end

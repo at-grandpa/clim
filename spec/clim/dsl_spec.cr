@@ -18,24 +18,24 @@ end
 macro it_blocks(class_name, spec_case)
   {% if spec_case.keys.includes?("expect_args".id) %}
     it "opts and args are given as arguments of run block." do
-      {{class_name}}.start({{spec_case["argv"]}})
+      {{class_name}}.start_parse({{spec_case["argv"]}})
     end
   {% elsif spec_case.keys.includes?("exception_message".id) %}
     it "raises an Exception." do
       expect_raises(Exception, {{spec_case["exception_message"]}}) do
-        {{class_name}}.start({{spec_case["argv"]}})
+        {{class_name}}.start_parse({{spec_case["argv"]}})
       end
     end
   {% elsif spec_case.keys.includes?("expect_help".id) %}
     it "display help." do
       io = IO::Memory.new
-      {{class_name}}.start({{spec_case["argv"]}}, io)
+      {{class_name}}.start_parse({{spec_case["argv"]}}, io)
       io.to_s.should eq {{spec_case["expect_help"]}}
     end
   {% else %}
     it "output." do
       io = IO::Memory.new
-      {{class_name}}.start({{spec_case["argv"]}}, io)
+      {{class_name}}.start_parse({{spec_case["argv"]}}, io)
       io.to_s.should eq {{spec_case["expect_output"]}}
     end
   {% end %}

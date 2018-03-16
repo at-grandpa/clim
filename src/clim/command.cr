@@ -20,7 +20,7 @@ class Clim
     end
 
     def alias_name(*names) : Array(String)
-      raise Exception.new("'alias_name' is not supported on main command.") if @name == "main_command_by_clim"
+      raise ClimException.new("'alias_name' is not supported on main command.") if @name == "main_command_by_clim"
       [] of String
     end
 
@@ -45,7 +45,7 @@ class Clim
     end
 
     private def opts_validate!
-      raise Exception.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
+      raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
     end
 
     private def duplicate_names

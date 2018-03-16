@@ -435,7 +435,7 @@ spec(
 # describe "If the main command is called twice, " do
 #   it "raises an Exception." do
 #     expect_raises(Exception, "Main command is already defined.") do
-#       MainCommandIfCallTheMainCommandTwice.start([] of String)
+#       MainCommandIfCallTheMainCommandTwice.start_parse([] of String)
 #     end
 #   end
 # end
