@@ -5,7 +5,7 @@ require "./clim"
 # optionいくか
 #
 # TODO:
-# 型の増加
+# [done] 型の増加
 # 型が違った場合の挙動
 # rescue
 # 同じコマンドを指定した場合の動作

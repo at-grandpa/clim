@@ -151,6 +151,8 @@ class Clim
               private def display_default
                 default_value = default
                 case default_value
+                when Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64
+                  default_value
                 when String
                   default_value.empty? ? "\"\"" : "\"#{default}\""
                 when Bool
