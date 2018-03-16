@@ -70,12 +70,12 @@ class Clim
 
   macro main_command(&block)
 
-    Command.command "main_command" do
+    Command.command "main_command_of_clim_library" do
       {{ yield }}
     end
 
     def self.start_parse(argv, io : IO = STDOUT)
-      CommandByClim_Main_command.new.parse(argv).run(io)
+      Command_Main_command_of_clim_library.new.parse(argv).run(io)
     end
 
     def self.start(argv)
@@ -88,7 +88,7 @@ class Clim
       puts "Please see the `--help`."
     end
 
-    {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_Main_command") %}
+    {% if @type.constants.map(&.id.stringify).includes?("Command_Main_command_of_clim_library") %}
       {% raise "Main command is already defined." %}
     {% end %}
 

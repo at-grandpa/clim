@@ -30,7 +30,7 @@ class Clim
     end
 
     macro alias_name(*names)
-      {% if @type == CommandByClim_Main_command %}
+      {% if @type == Command_Main_command_of_clim_library %}
         {% raise "'alias_name' is not supported on main command." %}
       {% end %}
       def alias_name : Array(String)
@@ -128,20 +128,16 @@ class Clim
       {% raise "Empty option name." if short.empty?  %}
       {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES_ALL.includes?(type) %}
 
-      {% if long == nil %}
-        {% base_option_name = short %}
-      {% else %}
-        {% base_option_name = long %}
-      {% end %}
+      {% base_option_name = long == nil ? short : long %}
       {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
       class OptionsForEachCommand
-        class OptionByClim_{{option_name}} < Option
+        class Option_{{option_name}} < Option
           option_by_clim_macro({{type}}, {{default}})
         end
 
         {% default = false if type.id.stringify == "Bool" %}
         {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
-        property {{ option_name }}_instance : OptionByClim_{{option_name}} = OptionByClim_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default }}, {{ required }})
+        property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default }}, {{ required }})
         def {{ option_name }} : {{ type }}?
           {{ option_name }}_instance.@value
         end
@@ -157,17 +153,17 @@ class Clim
     end
 
     macro command(name, &block)
-      {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_" + name.id.capitalize.stringify) %}
+      {% if @type.constants.map(&.id.stringify).includes?("Command_" + name.id.capitalize.stringify) %}
         {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
       {% end %}
 
-      class CommandByClim_{{ name.id.capitalize }} < Command
+      class Command_{{ name.id.capitalize }} < Command
         property name : String = {{name.id.stringify}}
 
-        class OptionsByClim_{{ name.id.capitalize }} < Options
+        class Options_{{ name.id.capitalize }} < Options
         end
 
-        alias OptionsForEachCommand = OptionsByClim_{{ name.id.capitalize }}
+        alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
 
         def parse_by_parser(argv)
           @parser.on("--help", "Show this help.") { @display_help_flag = true }
@@ -213,9 +209,7 @@ class Clim
             \{% end %}
           end
         end
-
       end
-
     end
   end
 end
