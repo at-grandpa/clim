@@ -293,6 +293,62 @@ spec(
 )
 {% end %}
 
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Main command with desc.
+
+                        Usage:
+
+                          main_command with usage [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          --version                        Show version.
+
+
+                      HELP_MESSAGE
+%}
+
+spec(
+  spec_class_name: MainCommandWithVersion,
+  spec_dsl_lines: [
+    "version \"Version 0.9.9\"",
+    "desc \"Main command with desc.\"",
+    "usage \"main_command with usage [options] [arguments]\"",
+  ],
+  spec_desc: "main command,",
+  spec_cases: [
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:          ["--version"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["--version", "arg"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["--version", "arg"],
+      expect_output: "Version 0.9.9\n",
+    },
+  ]
+)
+{% end %}
+
 # ここのテストどうするか
 # class MainCommandIfCallTheMainCommandTwice < Clim
 #   main_command do

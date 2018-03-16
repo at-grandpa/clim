@@ -26,11 +26,17 @@ macro it_blocks(class_name, spec_case)
         {{class_name}}.start({{spec_case["argv"]}})
       end
     end
-  {% else %}
+  {% elsif spec_case.keys.includes?("expect_help".id) %}
     it "display help." do
       io = IO::Memory.new
       {{class_name}}.start({{spec_case["argv"]}}, io)
       io.to_s.should eq {{spec_case["expect_help"]}}
+    end
+  {% else %}
+    it "output." do
+      io = IO::Memory.new
+      {{class_name}}.start({{spec_case["argv"]}}, io)
+      io.to_s.should eq {{spec_case["expect_output"]}}
     end
   {% end %}
 end

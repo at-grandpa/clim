@@ -24,6 +24,13 @@ class Clim
       [] of String
     end
 
+    def version_str
+      ""
+    end
+
+    def define_version(parser)
+    end
+
     abstract def run(io : IO)
 
     def find_sub_cmds_by(name)
@@ -98,6 +105,5 @@ class Clim
     def name_and_alias_name(cmd)
       ([cmd.name] + cmd.alias_name).join(", ")
     end
-
   end
 end

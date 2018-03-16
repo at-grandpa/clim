@@ -22,6 +22,16 @@ class Clim
         end
       end
 
+      macro version(version_str)
+        def version_str : String
+          {{ version_str.id.stringify }}
+        end
+
+        def define_version(parser)
+          parser.on("--version", "Show version.") { @display_version_flag = true }
+        end
+      end
+
       macro sub_command(name, &block)
         command({{name}}) do
           {{ yield }}
@@ -40,6 +50,8 @@ class Clim
             def run(io : IO)
               if @display_help_flag
                 RunProc.new { io.puts help }.call(@options, @arguments)
+              elsif @display_version_flag
+                RunProc.new { io.puts version_str }.call(@options, @arguments)
               else
                 RunProc.new \{{ block.id }} .call(@options, @arguments)
               end
@@ -48,6 +60,7 @@ class Clim
 
           def parse_by_parser(argv)
             @parser.on("--help", "Show this help.") { @display_help_flag = true }
+            define_version(@parser)
             @parser.invalid_option { |opt_name| raise Exception.new "Undefined option. \"#{opt_name}\"" }
             @parser.missing_option { |opt_name| raise Exception.new "Option that requires an argument. \"#{opt_name}\"" }
             @parser.unknown_args { |unknown_args| @arguments = unknown_args }
@@ -182,6 +195,7 @@ class Clim
 
           def initialize
             @display_help_flag = false
+            @display_version_flag = false
             @parser = OptionParser.new
             \{% for constant in @type.constants %}
               \{% c = @type.constant(constant) %}
@@ -254,6 +268,7 @@ class Clim
       macro option(short, type, desc = "Option description.", default = nil, required = false)
         option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
       end
+
     end
   end
 end
