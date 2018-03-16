@@ -22,13 +22,17 @@ class Clim
         end
       end
 
-      macro version(version_str)
+      macro version(version_str, short = nil)
         def version_str : String
           {{ version_str.id.stringify }}
         end
 
         def define_version(parser)
-          parser.on("--version", "Show version.") { @display_version_flag = true }
+          {% if short == nil %}
+            parser.on("--version", "Show version.") { @display_version_flag = true }
+          {% else %}
+            parser.on({{short.id.stringify}}, "--version", "Show version.") { @display_version_flag = true }
+          {% end %}
         end
       end
 
@@ -268,7 +272,6 @@ class Clim
       macro option(short, type, desc = "Option description.", default = nil, required = false)
         option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
       end
-
     end
   end
 end
