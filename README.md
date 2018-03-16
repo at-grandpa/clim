@@ -320,7 +320,7 @@ You can specify multiple options for the command.
  Argument | Description | example | required
 ---------|----------|---------|------
  First argument | short or long name | `-t TIMES`, `--times TIMES` | true
- Second　argument | long name | `--times TIMES` | false
+ Second argument | long name | `--times TIMES` | false
  `type` | option type | `type: Array(Float32)` | true
  `desc` | option description | `desc: "option description."` | false
  `default` | default value | `default: [1.1_f32, 2.2_f32]` | false
