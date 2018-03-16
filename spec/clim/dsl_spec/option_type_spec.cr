@@ -24,7 +24,8 @@ require "../dsl_spec"
                           --float32=VALUE                  Option description. [type:Float32]
                           --float64=VALUE                  Option description. [type:Float64]
                           --string=VALUE                   Option description. [type:String]
-                          --bool                           Option description. [type:Bool]
+                          --bool                           Option description. [type:Bool] [default:false]
+                          --bool-default                   Option description. [type:Bool] [default:false]
                           --array-int8=VALUE               Option description. [type:Array(Int8)]
                           --array-int16=VALUE              Option description. [type:Array(Int16)]
                           --array-int32=VALUE              Option description. [type:Array(Int32)]
@@ -58,6 +59,7 @@ spec(
     "option \"--float64=VALUE\", type: Float64",
     "option \"--string=VALUE\", type: String",
     "option \"--bool\", type: Bool",
+    "option \"--bool-default\", type: Bool, default: false",
     "option \"--array-int8=VALUE\", type: Array(Int8)",
     "option \"--array-int16=VALUE\", type: Array(Int16)",
     "option \"--array-int32=VALUE\", type: Array(Int32)",
@@ -319,7 +321,7 @@ spec(
       expect_opts: {
         "type" => Bool?,
         "method" => "bool",
-        "expect_value" => nil,
+        "expect_value" => false,
       },
       expect_args: [] of String,
     },

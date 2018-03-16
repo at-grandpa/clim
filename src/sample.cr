@@ -16,6 +16,7 @@ require "./clim"
 # [done] shortのみ、longのみ
 # モジュールの切り出し
 # defaultが設定されていたら T? じゃなくて T にする
+# You can not specify 'required: true' for Bool option. のテスト
 
 class MyCli < Clim
   main_command do

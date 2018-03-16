@@ -14,7 +14,7 @@
                 "reveal": "always",
                 "panel": "new"
             },
-            "command": "crystal spec"
+            "command": "make spec"
         },
         {
             "taskName": "crystal spec current file",

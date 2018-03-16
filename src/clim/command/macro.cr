@@ -151,7 +151,7 @@ class Clim
               private def display_default
                 default_value = default
                 case default_value
-                when Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64
+                when Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64
                   default_value
                 when String
                   default_value.empty? ? "\"\"" : "\"#{default}\""
@@ -217,6 +217,8 @@ class Clim
 
       macro option(short, long, type, desc = "Option description.", default = nil, required = false)
         class OptionsByClim
+          {% default = false if type.id.stringify == "Bool" %}
+          {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
           {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
           property {{ long_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
           def {{ long_var_name }} : {{ type }}?
@@ -227,6 +229,8 @@ class Clim
 
       macro option(short, type, desc = "Option description.", default = nil, required = false)
         class OptionsByClim
+          {% default = false if type.id.stringify == "Bool" %}
+          {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
           {% short_var_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
           property {{ short_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ desc }}, {{ default }}, {{ required }})
           def {{ short_var_name }} : {{ type }}?
