@@ -88,20 +88,24 @@ class Clim
 
               private def display_default
                 default_value = default
-                case default_value
-                when Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64
-                  default_value
-                when String
-                  default_value.empty? ? "\"\"" : "\"#{default}\""
-                when Bool
-                  default_value
-                when Array(String)
-                  default_value.empty? ? "[] of String" : default
-                when Nil
-                  "nil"
-                else
-                  raise Exception.new "'default' type is not supported. default type is [#{typeof(default)}]"
-                end
+                {% begin %}
+                  case default_value
+                  when Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64
+                    default_value
+                  when String
+                    default_value.empty? ? "\"\"" : "\"#{default}\""
+                  when Bool
+                    default_value
+                  {% for type in [Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64, String] %}
+                  when Array({{type}})
+                    default_value.empty? ? "[] of {{type}}" : default
+                  {% end %}
+                  when Nil
+                    "nil"
+                  else
+                    raise Exception.new "'default' type is not supported. default type is [#{typeof(default)}]"
+                  end
+                {% end %}
               end
 
               def required_set? : Bool
