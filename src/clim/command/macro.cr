@@ -46,8 +46,6 @@ class Clim
             end
           end
 
-          {{ yield }}
-
           def parse_by_parser(argv)
             @parser.on("--help", "Show this help.") { @display_help_flag = true }
             @parser.invalid_option { |opt_name| raise Exception.new "Undefined option. \"#{opt_name}\"" }
@@ -75,23 +73,12 @@ class Clim
               ret.compact
             end
 
-            class OptionByClim(T)
+            class OptionByClim
               property short : String = ""
               property long : String? = ""
               property desc : String = ""
-              property default : T? = nil
               property required : Bool = false
-              property value : T? = nil
               property array_set_flag : Bool = false
-
-              def initialize(@short : String, @long : String, @desc : String, @default : T?, @required : Bool)
-                @value = default
-              end
-
-              def initialize(@short : String, @desc : String, @default : T?, @required : Bool)
-                @long = nil
-                @value = default
-              end
 
               def set_value(arg : String)
                 \{% begin %}
@@ -140,14 +127,6 @@ class Clim
                 @value = @value.nil? ? [arg.\{{cast_method}}] : @value.try &.<<(arg.\{{cast_method}})
               end
 
-              def desc
-                desc = @desc
-                desc = desc + " [type:#{T.to_s}]"
-                desc = desc + " [default:#{display_default}]" unless default.nil?
-                desc = desc + " [required]" if required
-                desc
-              end
-
               private def display_default
                 default_value = default
                 case default_value
@@ -193,6 +172,8 @@ class Clim
             raise "Required options. \"#{@options.invalid_required_names.join("\", \"")}\"" unless @options.invalid_required_names.empty?
           end
 
+          {{ yield }}
+
           \{% begin %}
             \{% ccc = @type.constants.select{|c| @type.constant(c).name.split("::").last == "OptionsByClim"}.first %}
             alias RunProc = Proc(\{{ ccc.id }}, Array(String), Nil)
@@ -213,14 +194,44 @@ class Clim
             end
           \{% end %}
         end
+
       end
 
       macro option(short, long, type, desc = "Option description.", default = nil, required = false)
+        {% short_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
         class OptionsByClim
+          class OptionByClim_{{short_name}} < OptionByClim
+            {% if default == nil %}
+              {% value_type = type.stringify + "?" %}
+            {% else %}
+              {% value_type = type.stringify %}
+            {% end %}
+
+            def desc
+              desc = @desc
+              desc = desc + " [type:#{{{type}}.to_s}]"
+              desc = desc + " [default:#{display_default}]" unless default.nil?
+              desc = desc + " [required]" if required
+              desc
+            end
+
+            property default : {{value_type.id}} = {{default}}
+            property value : {{value_type.id}} = {{default}}
+
+            def initialize(@short : String, @long : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
+              @value = default
+            end
+
+            def initialize(@short : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
+              @long = nil
+              @value = default
+            end
+          end
+
           {% default = false if type.id.stringify == "Bool" %}
           {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
           {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-          property {{ long_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
+          property {{ long_var_name }}_instance : OptionByClim_{{short_name}} = OptionByClim_{{short_name}}.new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
           def {{ long_var_name }} : {{ type }}?
             {{ long_var_name }}_instance.@value
           end
@@ -228,16 +239,46 @@ class Clim
       end
 
       macro option(short, type, desc = "Option description.", default = nil, required = false)
+        {% short_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
         class OptionsByClim
+          class OptionByClim_{{short_name}} < OptionByClim
+            {% if default == nil %}
+              {% value_type = type.stringify + "?" %}
+            {% else %}
+              {% value_type = type.stringify %}
+            {% end %}
+
+            def desc
+              desc = @desc
+              desc = desc + " [type:#{{{type}}.to_s}]"
+              desc = desc + " [default:#{display_default}]" unless default.nil?
+              desc = desc + " [required]" if required
+              desc
+            end
+
+            property default : {{value_type.id}} = {{default}}
+            property value : {{value_type.id}} = {{default}}
+
+            def initialize(@short : String, @long : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
+              @value = default
+            end
+
+            def initialize(@short : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
+              @long = nil
+              @value = default
+            end
+          end
+
           {% default = false if type.id.stringify == "Bool" %}
           {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
           {% short_var_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-          property {{ short_var_name }}_instance : OptionByClim({{ type }}) = OptionByClim({{ type }}).new({{ short }}, {{ desc }}, {{ default }}, {{ required }})
+          property {{short_var_name}}_instance : OptionByClim_{{short_name}} = OptionByClim_{{short_name}}.new({{ short }}, {{ desc }}, {{ default }}, {{ required }})
           def {{ short_var_name }} : {{ type }}?
             {{ short_var_name }}_instance.@value
           end
         end
       end
+
     end
   end
 end
