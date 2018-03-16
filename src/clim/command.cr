@@ -170,8 +170,6 @@ class Clim
         property name : String = {{name.id.stringify}}
 
         class OptionsByClim_{{ name.id.capitalize }} < Options
-          class OptionByClim < Option
-          end
         end
 
         alias OptionsForEachCommand = OptionsByClim_{{ name.id.capitalize }}
@@ -194,11 +192,8 @@ class Clim
           @parser = OptionParser.new
           @options = OptionsForEachCommand.new
           @options.setup_parser(@parser)
-          \{% for constant in @type.constants %}
-            \{% c = @type.constant(constant) %}
-            \{% if c.superclass.id.stringify == "Clim::Command" %}
-              @sub_commands << \{{ c.id }}.new
-            \{% end %}
+          \{% for command_class in @type.constants.select{|c| @type.constant(c).superclass.id.stringify == "Clim::Command"} %}
+            @sub_commands << \{{ command_class.id }}.new
           \{% end %}
         end
 
