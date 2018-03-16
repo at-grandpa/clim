@@ -61,4 +61,14 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "not supported type." do
+    `crystal run spec/clim/compile_time_error_spec/files/not_supported_type.cr --no-color 2>&1`.should eq <<-ERROR
+    Error in spec/clim/compile_time_error_spec/files/not_supported_type.cr:6: Type [BigInt] is not supported on option.
+
+        option "-n", type: BigInt, desc: "my big int.", default: 0
+        ^
+
+
+    ERROR
+  end
 end

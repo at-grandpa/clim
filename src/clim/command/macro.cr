@@ -252,6 +252,10 @@ class Clim
       end
 
       macro option_base(short, long, type, desc, default, required)
+        {% unless SUPPORT_TYPES.includes?(type) %}
+          {% raise "Type [#{type}] is not supported on option." %}
+        {% end %}
+
         {% if long == nil %}
           {% base_option_name = short %}
         {% else %}
