@@ -8,7 +8,7 @@ require "../dsl_spec"
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -150,7 +150,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -270,7 +270,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -386,7 +386,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -532,7 +532,7 @@ spec(
 
                        Usage:
 
-                         main_command [options] [arguments]
+                         main_command_of_clim_library [options] [arguments]
 
                        Options:
 
@@ -666,7 +666,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -812,7 +812,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -854,7 +854,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -976,7 +976,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -1098,7 +1098,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -1324,7 +1324,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -1446,7 +1446,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
