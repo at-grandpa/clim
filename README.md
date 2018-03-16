@@ -380,18 +380,22 @@ class MyCli < Clim
 end
 ```
 
-### help
+### help string
 
 ```crystal
-  run do |opts, args|
-    puts opts["help"].as(String)  # Get help string.
+class MyCli < Clim
+  main_command do
+    run do |options, arguments|
+      options.help # => help string
+    end
   end
+end
 ```
 
 ## Development
 
 ```
-$ crystal spec
+$ make spec
 ```
 
 ## Contributing
