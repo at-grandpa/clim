@@ -75,6 +75,18 @@ class Clim
       {% end %}
     end
 
+    macro run(&block)
+      def run(io : IO)
+        if @display_help_flag
+          RunProc.new { io.puts help }.call(@options, @arguments)
+        elsif @display_version_flag
+          RunProc.new { io.puts version_str }.call(@options, @arguments)
+        else
+          RunProc.new {{ block.id }} .call(@options, @arguments)
+        end
+      end
+    end
+
     abstract def run(io : IO)
 
     def find_sub_cmds_by(name)
@@ -159,18 +171,6 @@ class Clim
 
         class OptionsByClim < Options
           class OptionByClim < Option
-          end
-        end
-
-        macro run(&block)
-          def run(io : IO)
-            if @display_help_flag
-              RunProc.new { io.puts help }.call(@options, @arguments)
-            elsif @display_version_flag
-              RunProc.new { io.puts version_str }.call(@options, @arguments)
-            else
-              RunProc.new \{{ block.id }} .call(@options, @arguments)
-            end
           end
         end
 
