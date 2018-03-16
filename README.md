@@ -65,27 +65,25 @@ require "clim"
 
 module Hello
   class Cli < Clim
-
-    # Following is the definition of main command.
-    #
-    main_command
-    desc   "Hello CLI tool."
-    usage  "hello [options] [arguments] ..."
-    array  "-n NAME",  "--name=NAME",      desc: "Target name.",        default: [] of String
-    string "-g WORDS", "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
-    run do |opts, args|
-      print "#{opts["greeting"].as(String)}, "
-      print "#{opts["name"].as(Array(String)).join(", ")}!"
-      print "\n"
+    main_command do
+      desc "Hello CLI tool."
+      usage "hello [options] [arguments] ..."
+      version "Version 0.1.0"
+      option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings.", default: "Hello"
+      option "-n NAME", "--name=NAME", type: Array(String), desc: "Target name.", default: ["Taro"]
+      run do |options, arguments|
+        print "#{options.greeting}, "
+        print "#{options.name.join(", ")}!"
+        print "\n"
+      end
     end
-
   end
 end
 
 Hello::Cli.start(ARGV)
 ```
 
-```
+```console
 $ crystal build src/hello.cr
 $ ./hello --help
 
@@ -97,94 +95,69 @@ $ ./hello --help
 
   Options:
 
+    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:"Hello"]
+    -n NAME, --name=NAME             Target name. [type:Array(String)] [default:["Taro"]]
     --help                           Show this help.
-    -n NAME, --name=NAME             Target name.  [default:[] of String]
-    -g WORDS, --greeting=WORDS       Words of greetings.  [default:Hello]
+    --version                        Show version.
 
-$ ./hello -n Taro -n Miko -g 'Good night'
-Good night, Taro, Miko!
+$ ./hello -n Ichiro -n Miko -g 'Good night'
+Good night, Ichiro, Miko!
 ```
 
 ## Sample Code (sub commands)
 
-*src/fake-git.cr*
+*src/fake-crystal-command.cr*
 
 ```crystal
 require "clim"
 
-module FakeGit
+module FakeCrystalCommand
   class Cli < Clim
-
-    # Following is the definition of main command.
-    #
-    main_command
-    desc  "Fake Git command."
-    usage "fgit [sub_command] [arguments]"
-    run do |opts, args|
-      puts opts["help"]
-    end
-
-    # A block that defines a sub command of the main command.
-    #
-    sub do
-
-      # Following is the definition of command.
-      #
-      command "branch"
-      alias_name "b", "br"
-      desc  "List, create, or delete branches."
-      usage "fgit branch [arguments]"
-      run do |opts, args|
-        puts "Fake Git branch!!"
+    main_command do
+      desc "Fake Crystal command."
+      usage "fcrystal [sub_command] [arguments]"
+      run do |options, arguments|
+        puts options.help # => help string.
       end
-
-      command "log"
-      alias_name "l"
-      desc  "Show commit logs."
-      usage "fgit log [arguments]"
-      run do |opts, args|
-        puts "Fake Git log!!"
-      end
-
-      # A block that defines a sub command of command "log".
-      #
-      sub do
-
-        # Following is the definition of command.
-        #
-        command "short"
-        desc  "Show commit short logs."
-        usage "fgit log short [arguments]"
-        run do |opts, args|
-          puts "Fake Git short log!!"
+      sub_command "tool" do
+        desc "run a tool"
+        usage "fcrystal tool [tool] [arguments]"
+        run do |options, arguments|
+          puts "Fake Crystal tool!!"
         end
-
-        command "long"
-        desc  "Show commit long logs."
-        usage "fgit log long [arguments]"
-        run do |opts, args|
-          puts "Fake Git long log!!"
+        sub_command "format" do
+          desc "format project, directories and/or files"
+          usage "fcrystal tool format [options] [file or directory]"
+          run do |options, arguments|
+            puts "Fake Crystal tool format!!"
+          end
         end
-
       end
-
+      sub_command "spec" do
+        desc "build and run specs"
+        usage "crystal spec [options] [files]"
+        run do |options, arguments|
+          puts "Fake Crystal spec!!"
+        end
+      end
     end
-
   end
 end
 
-FakeGit::Cli.start(ARGV)
+FakeCrystalCommand::Cli.start(ARGV)
 ```
 
-```
-$ crystal build -o ./fgit src/fake-git.cr
-$ ./fgit
+Build and run.
 
-  Fake Git command.
+```console
+$ crystal build -o ./fcrystal src/fake-crystal-command.cr
+$ ./fcrystal
+
+  Fake Crystal command.
 
   Usage:
 
-    fgit [sub_command] [arguments]
+    fcrystal [sub_command] [arguments]
 
   Options:
 
@@ -192,28 +165,21 @@ $ ./fgit
 
   Sub Commands:
 
-    branch, b, br   List, create, or delete branches.
-    log, l          Show commit logs.
+    tool   run a tool
+    spec   build and run specs
 
-$ ./fgit br --help
+```
 
-  List, create, or delete branches.
+Show sub command help.
 
-  Usage:
+```console
+$ ./fcrystal tool --help
 
-    fgit branch [arguments]
-
-  Options:
-
-    --help                           Show this help.
-
-$ ./fgit l --help
-
-  Show commit logs.
+  run a tool
 
   Usage:
 
-    fgit log [arguments]
+    fcrystal tool [tool] [arguments]
 
   Options:
 
@@ -221,65 +187,160 @@ $ ./fgit l --help
 
   Sub Commands:
 
-    short   Show commit short logs.
-    long    Show commit long logs.
+    format   format project, directories and/or files
 
-$ ./fgit l short --help
+```
 
-  Show commit short logs.
+Run sub sub command.
 
-  Usage:
-
-    fgit log short [arguments]
-
-  Options:
-
-    --help                           Show this help.
-
-$ ./fgit l short
-Fake Git short log!!
+```console
+$ ./fcrystal tool format
+Fake Crystal tool format!!
 ```
 
 ## Usage
 
-### require
+### require & inherit
 
 ```crystal
 require "clim"
+
+class MyCli < Clim
+
+  # ...
+
+end
 ```
 
 ### Command Informations
 
-#### alias_name
-
-```crystal
-  alias_name  "alias1", "alias2", "alias3"    # Command name alias.
-```
-
 #### desc
 
+Description of the command. It is displayed in Help.
+
 ```crystal
-  desc  "My Command Line Interface."          # Command description.
+class MyCli < Clim
+  main_command do
+    desc "My Command Line Interface."
+    run do |options, arguments|
+      # ...
+    end
+  end
+end
 ```
 
 #### usage
 
-```crystal
-  usage  "mycli [sub-command] [options] ..."  # Command usage.
-```
-
-### Command Options
-
-#### string
+Usage of the command. It is displayed in Help.
 
 ```crystal
-  string "-s ARG", "--string-long-name=ARG", desc: "Option description."  # String option
-  run do |opts, args|
-    puts opts["string-long-name"]                     # => print your option value.
-    puts typeof(opts["string-long-name"])             # => (Array(String) | Bool | String | Nil)
-    puts typeof(opts["string-long-name"].as(String))  # => String
+class MyCli < Clim
+  main_command do
+    usage  "mycli [sub-command] [options] ..."
+    run do |options, arguments|
+      # ...
+    end
   end
+end
 ```
+
+#### alias_name
+
+An alias for the command. It can be specified only for subcommand.
+
+```crystal
+class MyCli < Clim
+  main_command do
+    run do |options, arguments|
+      # ...
+    end
+    sub_command "sub" do
+      alias_name  "alias1", "alias2"
+      run do |options, arguments|
+        puts "sub_command run!!"
+      end
+    end
+  end
+end
+```
+
+```console
+$ ./mycli sub
+sub_command run!!
+$ ./mycli alias1
+sub_command run!!
+$ ./mycli alias2
+sub_command run!!
+```
+
+#### version
+
+You can specify the string to be displayed with `--version`.
+
+```crystal
+class MyCli < Clim
+  main_command do
+    version "mycli version: 1.0.1"
+    run do |options, arguments|
+      # ...
+    end
+  end
+end
+```
+
+```console
+$ ./mycli --version
+mycli version: 1.0.1
+```
+
+If you want to display it even with `-v`, add ` short: "-v" `.
+
+```crystal
+class MyCli < Clim
+  main_command do
+    version "mycli version: 1.0.1", short: "-v"
+    run do |options, arguments|
+      # ...
+    end
+  end
+end
+```
+
+```console
+$ ./mycli --version
+mycli version: 1.0.1
+$ ./mycli -v
+mycli version: 1.0.1
+```
+
+#### option
+
+You can specify multiple options for the command.
+
+ Argument | Description | example | required
+---------|----------|---------|------
+ First argument | short or long name | `-t TIMES`, `--times TIMES` | true
+ Second　argument | long name | `--times TIMES` | false
+ `type` | option type | `type: Array(Float32)` | true
+ `desc` | option description | `desc: "option description."` | false
+ `default` | default value | `default: [1.1_f32, 2.2_f32]` | false
+ `required` | required flag | `required: true` | false
+
+```crystal
+class MyCli < Clim
+  main_command do
+    option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings.", default: "Hello"
+    option "-n NAME", "--name=NAME", type: Array(String), desc: "Target name.", default: ["Taro"]
+    run do |options, arguments|
+      puts typeof(options.greeting) # => String
+      puts typeof(options.name)     # => Array(String)
+    end
+  end
+end
+```
+デフォルトが指定されていなければ nilable になる
+boolは引数いらない
+
 
 #### bool
 
