@@ -124,7 +124,7 @@ class Clim
       {% end %}
       {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
       class OptionsByClim < Options
-        class OptionByClim_{{option_name}} < OptionByClim
+        class OptionByClim_{{option_name}} < Option
           option_by_clim_macro({{type}}, {{default}})
         end
 
@@ -182,10 +182,7 @@ class Clim
         end
 
         class OptionsByClim < Options
-
           class OptionByClim < Option
-
-            # option
           end
         end
 
