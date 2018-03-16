@@ -1,12 +1,9 @@
-require "./../../../src/clim"
+require "./../../../../src/clim"
 
 class MyCli < Clim
-  main_command do
+  sub_command do
     run do |opts, args|
     end
-  end
-
-  main_command do
   end
 end
 

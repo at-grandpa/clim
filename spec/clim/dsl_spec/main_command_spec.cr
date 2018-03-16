@@ -91,21 +91,6 @@ spec(
 )
 {% end %}
 
-# コンパイル時に落ちるが、テストはどうするか
-# spec(
-#   spec_class_name: MainCommandWithAliasName,
-#   spec_dsl_lines: [
-#     "alias_name \"second_name\"",
-#   ],
-#   spec_desc: "main command,",
-#   spec_cases: [
-#     {
-#       argv:              [] of String,
-#       exception_message: "'alias_name' is not supported on main command.",
-#     },
-#   ]
-# )
-
 {% begin %}
 {%
   main_help_message = <<-HELP_MESSAGE

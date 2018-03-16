@@ -1,4 +1,4 @@
-require "./../../../src/clim"
+require "./../../../../src/clim"
 
 class MyCli < Clim
   main_command do
