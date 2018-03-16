@@ -1,69 +1,113 @@
 require "option_parser"
+require "./command/*"
 
 class Clim
-  class Command
+  abstract class Command
     property name : String = ""
     property alias_name : Array(String) = [] of String
-    property desc : String = "Command Line Interface Tool."
-    property usage : String = "{command} [options] [arguments]"
-    property opts : Options = Options.new
-    property args : Array(String) = [] of String
-    property run_proc : RunProc = RunProc.new { }
     property parser : OptionParser = OptionParser.new
-    property sub_cmds : Array(self) = [] of self
-    property display_help_flag : Bool = false
+    property arguments : Array(String) = [] of String
+    property sub_commands : Array(Command) = [] of Command
 
-    def initialize(@name)
-      @usage = "#{name} [options] [arguments]"
-      # initialize parser
-      parser.on("--help", "Show this help.") { @display_help_flag = true }
-      parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
-      parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-      parser.unknown_args { |unknown_args| @args = unknown_args }
+    macro desc(description)
+      def desc : String
+        {{ description.id.stringify }}
+      end
     end
 
-    def set_opt(opt, &proc : String ->)
-      opt.set_proc(&proc)
-      opts.add(opt)
+    def desc : String
+      "Command Line Interface Tool."
     end
 
-    def help
-      sub_cmds.empty? ? base_help : base_help + sub_cmds_help
+    macro usage(usage)
+      def usage : String
+        {{ usage.id.stringify }}
+      end
     end
 
-    def run(io)
-      select_run_proc(io).call(opts.to_h, args)
+    def usage : String
+      "#{name} [options] [arguments]"
     end
 
-    def add_sub_commands(cmd)
-      @sub_cmds << cmd
+    macro alias_name(*names)
+      {% if @type == Command_Main_command_of_clim_library %}
+        {% raise "'alias_name' is not supported on main command." %}
+      {% end %}
+      def alias_name : Array(String)
+        {{ names }}.to_a
+      end
+    end
+
+    def alias_name(*names) : Array(String)
+      [] of String
+    end
+
+    macro version(version_str, short = nil)
+      def version_str : String
+        {{ version_str.id.stringify }}
+      end
+
+      def define_version(parser)
+        {% if short == nil %}
+          parser.on("--version", "Show version.") { @display_version_flag = true }
+        {% else %}
+          parser.on({{short.id.stringify}}, "--version", "Show version.") { @display_version_flag = true }
+        {% end %}
+      end
+    end
+
+    def version_str
+      ""
+    end
+
+    def define_version(parser)
+    end
+
+    macro main_command
+      {% if @type.superclass.id.stringify == "Clim::Command" %}
+        {% raise "Can not be declared 'main_command' as sub command." %}
+      {% end %}
+    end
+
+    macro sub_command(name, &block)
+      command({{name}}) do
+        {{ yield }}
+      end
+    end
+
+    macro run(&block)
+      def run(io : IO)
+        if @display_help_flag
+          RunProc.new { io.puts help }.call(@options, @arguments)
+        elsif @display_version_flag
+          RunProc.new { io.puts version_str }.call(@options, @arguments)
+        else
+          RunProc.new {{ block.id }} .call(@options, @arguments)
+        end
+      end
+    end
+
+    abstract def run(io : IO)
+
+    def find_sub_cmds_by(name)
+      @sub_commands.select do |cmd|
+        cmd.name == name || cmd.alias_name.includes?(name)
+      end
     end
 
     def parse(argv)
       opts_validate!
-      set_opts_on_parser
       recursive_parse(argv)
     end
 
     private def opts_validate!
-      opts.opts_validate!
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
     end
 
     private def duplicate_names
-      names = @sub_cmds.map(&.name)
-      alias_names = @sub_cmds.map(&.alias_name).flatten
+      names = @sub_commands.map(&.name)
+      alias_names = @sub_commands.map(&.alias_name).flatten
       (names + alias_names).duplicate_value
-    end
-
-    private def set_opts_on_parser
-      opts.opts.each do |opt|
-        if opt.long.empty?
-          parser.on(opt.short, opt.desc, &(opt.proc))
-        else
-          parser.on(opt.short, opt.long, opt.desc, &(opt.proc))
-        end
-      end
     end
 
     def recursive_parse(argv)
@@ -72,67 +116,100 @@ class Clim
       find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
     end
 
-    private def display_help?
+    def help
+      Help.new(self).display
+    end
+
+    def display_help? : Bool
       @display_help_flag
     end
 
-    private def base_help
-      <<-HELP_MESSAGE
+    macro option_base(short, long, type, desc, default, required)
+      {% raise "Empty option name." if short.empty?  %}
+      {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES_ALL.includes?(type) %}
 
-        #{desc}
+      {% base_option_name = long == nil ? short : long %}
+      {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
+      class OptionsForEachCommand
+        class Option_{{option_name}} < Option
+          option_by_clim_macro({{type}}, {{default}})
+        end
 
-        Usage:
-
-          #{usage}
-
-        Options:
-
-      #{parser}
-
-
-      HELP_MESSAGE
-    end
-
-    private def sub_cmds_help
-      <<-HELP_MESSAGE
-        Sub Commands:
-
-      #{sub_cmds_help_lines.join("\n")}
-
-
-      HELP_MESSAGE
-    end
-
-    private def sub_cmds_help_lines
-      sub_cmds.map do |cmd|
-        name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
-        "    #{name}   #{cmd.desc}"
+        {% default = false if type.id.stringify == "Bool" %}
+        {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
+        property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default }}, {{ required }})
+        def {{ option_name }} : {{ type }}?
+          {{ option_name }}_instance.@value
+        end
       end
     end
 
-    private def max_name_length
-      sub_cmds.empty? ? 0 : sub_cmds.map { |cmd| name_and_alias_name(cmd).size }.max
+    macro option(short, long, type, desc = "Option description.", default = nil, required = false)
+      option_base({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
-    private def name_and_alias_name(cmd)
-      ([cmd.name] + cmd.alias_name).join(", ")
+    macro option(short, type, desc = "Option description.", default = nil, required = false)
+      option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
-    private def select_run_proc(io)
-      display_help? ? RunProc.new { io.puts help } : @run_proc
-    end
+    macro command(name, &block)
+      {% if @type.constants.map(&.id.stringify).includes?("Command_" + name.id.capitalize.stringify) %}
+        {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
+      {% end %}
 
-    private def find_sub_cmds_by(name)
-      sub_cmds.select do |cmd|
-        cmd.name == name || cmd.alias_name.includes?(name)
+      class Command_{{ name.id.capitalize }} < Command
+        property name : String = {{name.id.stringify}}
+
+        class Options_{{ name.id.capitalize }} < Options
+        end
+
+        alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
+
+        def parse_by_parser(argv)
+          @parser.on("--help", "Show this help.") { @display_help_flag = true }
+          define_version(@parser)
+          @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
+          @parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
+          @parser.unknown_args { |unknown_args| @arguments = unknown_args }
+          @parser.parse(argv.dup)
+          required_validate! unless display_help?
+          @options.help = help
+          self
+        end
+
+        def initialize
+          @display_help_flag = false
+          @display_version_flag = false
+          @parser = OptionParser.new
+          @options = OptionsForEachCommand.new
+          @options.setup_parser(@parser)
+          \{% for command_class in @type.constants.select{|c| @type.constant(c).superclass.id.stringify == "Clim::Command"} %}
+            @sub_commands << \{{ command_class.id }}.new
+          \{% end %}
+        end
+
+        def required_validate!
+          raise "Required options. \"#{@options.invalid_required_names.join("\", \"")}\"" unless @options.invalid_required_names.empty?
+        end
+
+        {{ yield }}
+
+        alias RunProc = Proc(OptionsForEachCommand, Array(String), Nil)
+        property options : OptionsForEachCommand = OptionsForEachCommand.new
+
+        class OptionsForEachCommand
+          def setup_parser(parser)
+            \{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
+              long = \{{iv}}.long
+              if long.nil?
+                parser.on(\{{iv}}.short, \{{iv}}.desc) {|arg| \{{iv}}.set_value(arg) }
+              else
+                parser.on(\{{iv}}.short, long, \{{iv}}.desc) {|arg| \{{iv}}.set_value(arg) }
+              end
+            \{% end %}
+          end
+        end
       end
-    end
-
-    private def parse_by_parser(argv)
-      parser.parse(argv.dup)
-      opts.required_validate! unless display_help?
-      opts.help = help
-      self
     end
   end
 end

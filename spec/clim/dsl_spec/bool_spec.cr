@@ -8,12 +8,12 @@ require "../dsl_spec"
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b, --bool                       Option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b, --bool                       Option description.
 
 
                       HELP_MESSAGE
@@ -22,56 +22,88 @@ require "../dsl_spec"
 spec(
   spec_class_name: MainCommandWithBool,
   spec_dsl_lines: [
-    "bool \"-b\", \"--bool\"",
+    "option \"-b\", \"--bool\", type: Bool",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
@@ -118,12 +150,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b                               Option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b                               Option description.
 
 
                       HELP_MESSAGE
@@ -132,38 +164,58 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolOnlyShortOption,
   spec_dsl_lines: [
-    "bool \"-b\"",
+    "option \"-b\", type: Bool",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
@@ -218,12 +270,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          --bool                           Option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          --bool                           Option description.
 
 
                       HELP_MESSAGE
@@ -232,38 +284,58 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolOnlyLongOption,
   spec_dsl_lines: [
-    "bool \"--bool\"",
+    "option \"--bool\", type: Bool",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
@@ -314,12 +386,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b ARG, --bool=ARG               Option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b ARG, --bool=ARG               Option description.
 
 
                       HELP_MESSAGE
@@ -328,44 +400,68 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolArguments,
   spec_dsl_lines: [
-    "bool \"-b ARG\", \"--bool=ARG\"",
+    "option \"-b ARG\", \"--bool=ARG\", type: Bool",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
@@ -430,52 +526,68 @@ spec(
 
 {% begin %}
 {%
-  main_help_message = <<-HELP_MESSAGE
+ main_help_message = <<-HELP_MESSAGE
 
-                        Command Line Interface Tool.
+                       Command Line Interface Tool.
 
-                        Usage:
+                       Usage:
 
-                          main_command [options] [arguments]
+                         main_command_of_clim_library [options] [arguments]
 
-                        Options:
+                       Options:
 
-                          --help                           Show this help.
-                          -b ARG                           Option description.
+                         -b ARG                           Option description. [type:Bool] [default:false]
+                         --help                           Show this help.
 
 
-                      HELP_MESSAGE
+                     HELP_MESSAGE
 %}
 
 spec(
   spec_class_name: MainCommandWithBoolArgumentsOnlyShortOption,
   spec_dsl_lines: [
-    "bool \"-b ARG\"",
+    "option \"-b ARG\", type: Bool",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"b" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "b",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
@@ -554,12 +666,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          --bool=ARG                       Option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          --bool=ARG                       Option description.
 
 
                       HELP_MESSAGE
@@ -568,44 +680,68 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolArgumentsOnlyLongOption,
   spec_dsl_lines: [
-    "bool \"--bool=ARG\"",
+    "option \"--bool=ARG\", type: Bool",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool=true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool=false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
@@ -676,12 +812,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b, --bool                       Bool option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b, --bool                       Bool option description.
 
 
                       HELP_MESSAGE
@@ -690,9 +826,9 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolDesc,
   spec_dsl_lines: [
-    "bool \"-b\", \"--bool\", desc: \"Bool option description.\"",
+    "option \"-b\", \"--bool\", type: Bool, desc: \"Bool option description.\"",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        ["--help"],
@@ -718,12 +854,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b, --bool                       Bool option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b, --bool                       Bool option description.  [default:false]
 
 
                       HELP_MESSAGE
@@ -732,44 +868,68 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolDefault,
   spec_dsl_lines: [
-    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", default: false",
+    "option \"-b\", \"--bool\", type: Bool, desc: \"Bool option description.\", default: false",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
@@ -816,536 +976,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b, --bool                       Bool option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b, --bool                       Bool option description.  [default:false]  [required]
-
-
-                      HELP_MESSAGE
-%}
-
-spec(
-  spec_class_name: MainCommandWithBoolRequiredTrueAndDefaultExists,
-  spec_dsl_lines: [
-    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: true, default: false",
-  ],
-  spec_desc: "main command with bool dsl,",
-  spec_cases: [
-    {
-      argv:        [] of String,
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["-b"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["--bool"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["-b", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "-b"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["--bool", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "--bool"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["--help"],
-      expect_help: {{main_help_message}},
-    },
-    {
-      argv:        ["--help", "ignore-arg"],
-      expect_help: {{main_help_message}},
-    },
-    {
-      argv:        ["ignore-arg", "--help"],
-      expect_help: {{main_help_message}},
-    },
-  ]
-)
-{% end %}
-
-{% begin %}
-{%
-  main_help_message = <<-HELP_MESSAGE
-
-                        Command Line Interface Tool.
-
-                        Usage:
-
-                          main_command [options] [arguments]
-
-                        Options:
-
-                          --help                           Show this help.
-                          -b ARG, --bool=ARG               Bool option description.  [default:false]  [required]
-
-
-                      HELP_MESSAGE
-%}
-
-spec(
-  spec_class_name: MainCommandWithBoolArgumentsRequiredTrueAndDefaultExists,
-  spec_dsl_lines: [
-    "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: true, default: false",
-  ],
-  spec_desc: "main command with bool dsl,",
-  spec_cases: [
-    {
-      argv:        [] of String,
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["-b", "true"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["-b", "true", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "-b", "true"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["-b", "false"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["-b", "false", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "-b", "false"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["--bool", "true"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["--bool", "true", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "--bool", "true"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["--bool", "false"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["--bool", "false", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "--bool", "false"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:              ["-h"],
-      exception_message: "Undefined option. \"-h\"",
-    },
-    {
-      argv:              ["--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["-b"],
-      exception_message: "Option that requires an argument. \"-b\"",
-    },
-    {
-      argv:              ["--bool"],
-      exception_message: "Option that requires an argument. \"--bool\"",
-    },
-    {
-      argv:              ["arg1", "-b"],
-      exception_message: "Option that requires an argument. \"-b\"",
-    },
-    {
-      argv:              ["arg1", "--bool"],
-      exception_message: "Option that requires an argument. \"--bool\"",
-    },
-    {
-      argv:              ["-b", "arg1"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-    },
-    {
-      argv:              ["--bool=arg1"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-    },
-    {
-      argv:              ["--b"],
-      exception_message: "Undefined option. \"--b\"",
-    },
-    {
-      argv:              ["-bool"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
-    },
-    {
-      argv:        ["--help"],
-      expect_help: {{main_help_message}},
-    },
-    {
-      argv:        ["--help", "ignore-arg"],
-      expect_help: {{main_help_message}},
-    },
-    {
-      argv:        ["ignore-arg", "--help"],
-      expect_help: {{main_help_message}},
-    },
-  ]
-)
-{% end %}
-
-{% begin %}
-{%
-  main_help_message = <<-HELP_MESSAGE
-
-                        Command Line Interface Tool.
-
-                        Usage:
-
-                          main_command [options] [arguments]
-
-                        Options:
-
-                          --help                           Show this help.
-                          -b, --bool                       Bool option description.  [required]
-
-
-                      HELP_MESSAGE
-%}
-
-spec(
-  spec_class_name: SpecMainCommandWithBoolRequiredTrueOnly,
-  spec_dsl_lines: [
-    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: true",
-  ],
-  spec_desc: "main command with bool dsl,",
-  spec_cases: [
-    {
-      argv:        ["-b"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["--bool"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["-b", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "-b"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["--bool", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "--bool"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:              ["-h"],
-      exception_message: "Undefined option. \"-h\"",
-    },
-    {
-      argv:              ["--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              [] of String,
-      exception_message: "Required options. \"-b\"",
-    },
-    {
-      argv:              ["arg1"],
-      exception_message: "Required options. \"-b\"",
-    },
-    {
-      argv:        ["--help"],
-      expect_help: {{main_help_message}},
-    },
-    {
-      argv:        ["--help", "ignore-arg"],
-      expect_help: {{main_help_message}},
-    },
-    {
-      argv:        ["ignore-arg", "--help"],
-      expect_help: {{main_help_message}},
-    },
-  ]
-)
-{% end %}
-
-{% begin %}
-{%
-  main_help_message = <<-HELP_MESSAGE
-
-                        Command Line Interface Tool.
-
-                        Usage:
-
-                          main_command [options] [arguments]
-
-                        Options:
-
-                          --help                           Show this help.
-                          -b ARG, --bool=ARG               Bool option description.  [required]
-
-
-                      HELP_MESSAGE
-%}
-
-spec(
-  spec_class_name: MainCommandWithBoolArgumentsRequiredTrueOnly,
-  spec_dsl_lines: [
-    "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: true",
-  ],
-  spec_desc: "main command with bool dsl,",
-  spec_cases: [
-    {
-      argv:        ["-b", "true"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["-b", "true", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "-b", "true"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["-b", "false"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["-b", "false", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "-b", "false"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["--bool", "true"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["--bool", "true", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "--bool", "true"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["--bool", "false"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["--bool", "false", "arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["arg1", "--bool", "false"],
-      expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:              [] of String,
-      exception_message: "Required options. \"-b ARG\"",
-    },
-    {
-      argv:              ["-h"],
-      exception_message: "Undefined option. \"-h\"",
-    },
-    {
-      argv:              ["--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["arg1"],
-      exception_message: "Required options. \"-b ARG\"",
-    },
-    {
-      argv:              ["-b"],
-      exception_message: "Option that requires an argument. \"-b\"",
-    },
-    {
-      argv:              ["--bool"],
-      exception_message: "Option that requires an argument. \"--bool\"",
-    },
-    {
-      argv:              ["arg1", "-b"],
-      exception_message: "Option that requires an argument. \"-b\"",
-    },
-    {
-      argv:              ["arg1", "--bool"],
-      exception_message: "Option that requires an argument. \"--bool\"",
-    },
-    {
-      argv:              ["-b", "arg1"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-    },
-    {
-      argv:              ["--bool=arg1"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
-    },
-    {
-      argv:              ["--b"],
-      exception_message: "Undefined option. \"--b\"",
-    },
-    {
-      argv:              ["-bool"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
-    },
-    {
-      argv:        ["--help"],
-      expect_help: {{main_help_message}},
-    },
-    {
-      argv:        ["--help", "ignore-arg"],
-      expect_help: {{main_help_message}},
-    },
-    {
-      argv:        ["ignore-arg", "--help"],
-      expect_help: {{main_help_message}},
-    },
-  ]
-)
-{% end %}
-
-{% begin %}
-{%
-  main_help_message = <<-HELP_MESSAGE
-
-                        Command Line Interface Tool.
-
-                        Usage:
-
-                          main_command [options] [arguments]
-
-                        Options:
-
-                          --help                           Show this help.
-                          -b, --bool                       Bool option description.  [default:false]
 
 
                       HELP_MESSAGE
@@ -1354,56 +990,88 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolRequiredFalseAndDefaultExists,
   spec_dsl_lines: [
-    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: false, default: false",
+    "option \"-b\", \"--bool\", type: Bool, desc: \"Bool option description.\", required: false, default: false",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
@@ -1430,12 +1098,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b ARG, --bool=ARG               Bool option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b ARG, --bool=ARG               Bool option description.  [default:false]
 
 
                       HELP_MESSAGE
@@ -1444,92 +1112,148 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredFalseAndDefaultExists,
   spec_dsl_lines: [
-    "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: false, default: false",
+    "option \"-b ARG\", \"--bool=ARG\", type: Bool, desc: \"Bool option description.\", required: false, default: false",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "true", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "false", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool", "true", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool", "false", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
@@ -1600,70 +1324,102 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b, --bool                       Bool option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b, --bool                       Bool option description.
 
 
                       HELP_MESSAGE
-%}
+ %}
 
-spec(
+ spec(
   spec_class_name: MainCommandWithBoolRequiredFalseOnly,
   spec_dsl_lines: [
-    "bool \"-b\", \"--bool\", desc: \"Bool option description.\", required: false",
+    "option \"-b\", \"--bool\", type: Bool, desc: \"Bool option description.\", required: false",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
@@ -1690,12 +1446,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -b ARG, --bool=ARG               Bool option description. [type:Bool] [default:false]
                           --help                           Show this help.
-                          -b ARG, --bool=ARG               Bool option description.
 
 
                       HELP_MESSAGE
@@ -1704,92 +1460,148 @@ spec(
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredFalseOnly,
   spec_dsl_lines: [
-    "bool \"-b ARG\", \"--bool=ARG\", desc: \"Bool option description.\", required: false",
+    "option \"-b ARG\", \"--bool=ARG\", type: Bool, desc: \"Bool option description.\", required: false",
   ],
-  spec_desc: "main command with bool dsl,",
+  spec_desc: "main command with Bool option,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => nil},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "true", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-b", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-b", "false", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-b", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool", "true", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool", "true"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => true},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => true,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--bool", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--bool", "false", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool", "false"],
       expect_help: {{main_help_message}},
-      expect_opts: {"bool" => false},
+      expect_opts: {
+        "type" => Bool?,
+        "method" => "bool",
+        "expect_value" => false,
+      },
       expect_args: ["arg1"],
     },
     {

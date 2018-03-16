@@ -6,17 +6,16 @@ macro spec_for_sub_commands(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command
-      run do |opts, args|
-        assert_opts_and_args({{spec_case}})
-      end
-
-      sub do
-        command "sub_command"
-        desc "Sub command with desc."
-        usage "sub_command with usage [options] [arguments]"
+      main_command do
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
+        end
+        sub_command "sub_command" do
+          desc "Sub command with desc."
+          usage "sub_command with usage [options] [arguments]"
+          run do |opts, args|
+            assert_opts_and_args({{spec_case}})
+          end
         end
       end
     end
@@ -38,7 +37,7 @@ end
 
                       Usage:
 
-                        main_command [options] [arguments]
+                        main_command_of_clim_library [options] [arguments]
 
                       Options:
 
@@ -73,25 +72,21 @@ spec_for_sub_commands(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -121,25 +116,21 @@ spec_for_sub_commands(
     {
       argv:        ["sub_command"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command", "arg1"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command", "arg1", "arg2"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -192,21 +183,18 @@ macro spec_for_sub_sub_commands(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command
-      run do |opts, args|
-        assert_opts_and_args({{spec_case}})
-      end
-
-      sub do
-        command "sub_command"
+      main_command do
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
-
-        sub do
-          command "sub_sub_command"
+        sub_command "sub_command" do
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
+          end
+          sub_command "sub_sub_command" do
+            run do |opts, args|
+              assert_opts_and_args({{spec_case}})
+            end
           end
         end
       end
@@ -229,7 +217,7 @@ end
 
                       Usage:
 
-                        main_command [options] [arguments]
+                        main_command_of_clim_library [options] [arguments]
 
                       Options:
 
@@ -283,25 +271,21 @@ spec_for_sub_sub_commands(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -331,25 +315,21 @@ spec_for_sub_sub_commands(
     {
       argv:        ["sub_command"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command", "arg1"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command", "arg1", "arg2"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -395,25 +375,21 @@ spec_for_sub_sub_commands(
     {
       argv:        ["sub_command", "sub_sub_command"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1", "arg2"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -466,26 +442,23 @@ macro spec_for_jump_over_sub_sub_command(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command
-      run do |opts, args|
-        assert_opts_and_args({{spec_case}})
-      end
-
-      sub do
-        command "sub_command"
+      main_command do
         run do |opts, args|
+          assert_opts_and_args({{spec_case}})
         end
-
-        sub do
-          command "sub_sub_command"
+        command "sub_command" do
+          run do |opts, args|
+          end
+          command "sub_sub_command" do
+            run do |opts, args|
+              assert_opts_and_args({{spec_case}})
+            end
+          end
+        end
+        command "jump_over_sub_sub_command" do
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
-        end
-
-        command "jump_over_sub_sub_command"
-        run do |opts, args|
-          assert_opts_and_args({{spec_case}})
         end
       end
     end
@@ -507,7 +480,7 @@ end
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -558,25 +531,21 @@ spec_for_jump_over_sub_sub_command(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -606,25 +575,21 @@ spec_for_jump_over_sub_sub_command(
     {
       argv:        ["sub_command", "sub_sub_command"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1", "arg2"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command", "sub_sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -670,25 +635,21 @@ spec_for_jump_over_sub_sub_command(
     {
       argv:        ["jump_over_sub_sub_command"],
       expect_help: {{jump_over_sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["jump_over_sub_sub_command", "arg1"],
       expect_help: {{jump_over_sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["jump_over_sub_sub_command", "arg1", "arg2"],
       expect_help: {{jump_over_sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["jump_over_sub_sub_command", "arg1", "arg2", "arg3"],
       expect_help: {{jump_over_sub_sub_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -741,28 +702,25 @@ macro spec_for_alias_name(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command
-      run do |opts, args|
-        assert_opts_and_args({{spec_case}})
-      end
-
-      sub do
-        command "sub_command_1"
-        alias_name "alias_sub_command_1"
+      main_command do
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
-
-        sub do
-          command "sub_sub_command_1"
+        sub_command "sub_command_1" do
+          alias_name "alias_sub_command_1"
           run do |opts, args|
+            assert_opts_and_args({{spec_case}})
+          end
+          sub_command "sub_sub_command_1" do
+            run do |opts, args|
+            end
           end
         end
-
-        command "sub_command_2"
-        alias_name "alias_sub_command_2", "alias_sub_command_2_second"
-        run do |opts, args|
-          assert_opts_and_args({{spec_case}})
+        sub_command "sub_command_2" do
+          alias_name "alias_sub_command_2", "alias_sub_command_2_second"
+          run do |opts, args|
+            assert_opts_and_args({{spec_case}})
+          end
         end
       end
     end
@@ -784,7 +742,7 @@ end
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -839,25 +797,21 @@ spec_for_alias_name(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -887,49 +841,41 @@ spec_for_alias_name(
     {
       argv:        ["sub_command_1"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["alias_sub_command_1"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command_1", "arg1"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "arg1"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "arg1", "arg2"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["alias_sub_command_1", "arg1", "arg2"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command_1", "arg1", "arg2", "arg3"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
       argv:        ["alias_sub_command_1", "arg1", "arg2", "arg3"],
       expect_help: {{sub_1_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -1015,73 +961,61 @@ spec_for_alias_name(
     {
       argv:        ["sub_command_2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["alias_sub_command_2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["alias_sub_command_2_second"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["sub_command_2", "arg1"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_2", "arg1"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_2_second", "arg1"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["sub_command_2", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["alias_sub_command_2", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["alias_sub_command_2_second", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["sub_command_2", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
       argv:        ["alias_sub_command_2", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
       argv:        ["alias_sub_command_2_second", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -1208,39 +1142,39 @@ spec_for_alias_name(
 )
 {% end %}
 
-class SubCommandWhenDuplicateCommandName < Clim
-  main_command
-  run do |opts, args|
-  end
-
-  sub do
-    command "sub_command"
-    run do |opts, args|
-    end
-
-    command "sub_command" # Duplicate name.
-    run do |opts, args|
-    end
-  end
-end
-
-describe "Call the command." do
-  it "raises an Exception when duplicate command name." do
-    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
-      SubCommandWhenDuplicateCommandName.start_main([] of String)
-    end
-  end
-end
-
+# ここのテストどうしようか
+# class SubCommandWhenDuplicateCommandName < Clim
+#   main_command do
+#     run do |opts, args|
+#     end
+#     command "sub_command" do
+#       run do |opts, args|
+#       end
+#     end
+#     # Duplicate name.
+#     command "sub_command" do
+#       run do |opts, args|
+#       end
+#     end
+#   end
+# end
+#
+# describe "Call the command." do
+#  it "raises an Exception when duplicate command name." do
+#    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
+#      SubCommandWhenDuplicateCommandName.start_main([] of String)
+#    end
+#  end
+# end
+#
 class SubCommandWhenDuplicateAliasNameCase1 < Clim
-  main_command
-  run do |opts, args|
-  end
-
-  sub do
-    command "sub_command"
-    alias_name "sub_command" # duplicate
+  main_command do
     run do |opts, args|
+    end
+    sub_command "sub_command" do
+      alias_name "sub_command" # duplicate
+      run do |opts, args|
+      end
     end
   end
 end
@@ -1248,20 +1182,19 @@ end
 describe "Call the command." do
   it "raises an Exception when duplicate command name (case1)." do
     expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
-      SubCommandWhenDuplicateAliasNameCase1.start_main([] of String)
+      SubCommandWhenDuplicateAliasNameCase1.start_parse([] of String)
     end
   end
 end
 
 class SubCommandWhenDuplicateAliasNameCase2 < Clim
-  main_command
-  run do |opts, args|
-  end
-
-  sub do
-    command "sub_command1"
-    alias_name "sub_command1", "sub_command2", "sub_command2" # duplicate "sub_command1" and "sub_command2"
+  main_command do
     run do |opts, args|
+    end
+    sub_command "sub_command1" do
+      alias_name "sub_command1", "sub_command2", "sub_command2" # duplicate "sub_command1" and "sub_command2"
+      run do |opts, args|
+      end
     end
   end
 end
@@ -1269,30 +1202,29 @@ end
 describe "Call the command." do
   it "raises an Exception when duplicate command name (case2)." do
     expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2]") do
-      SubCommandWhenDuplicateAliasNameCase2.start_main([] of String)
+      SubCommandWhenDuplicateAliasNameCase2.start_parse([] of String)
     end
   end
 end
 
 class SubCommandWhenDuplicateAliasNameCase3 < Clim
-  main_command
-  run do |opts, args|
-  end
-
-  sub do
-    command "sub_command1"
-    alias_name "alias_name1"
+  main_command do
     run do |opts, args|
     end
-
-    command "sub_command2"
-    alias_name "alias_name2"
-    run do |opts, args|
+    sub_command "sub_command1" do
+      alias_name "alias_name1"
+      run do |opts, args|
+      end
     end
-
-    command "sub_command3"
-    alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2"
-    run do |opts, args|
+    sub_command "sub_command2" do
+      alias_name "alias_name2"
+      run do |opts, args|
+      end
+    end
+    sub_command "sub_command3" do
+      alias_name "sub_command1", "sub_command2", "alias_name1", "alias_name2"
+      run do |opts, args|
+      end
     end
   end
 end
@@ -1300,7 +1232,7 @@ end
 describe "Call the command." do
   it "raises an Exception when duplicate command name (case3)." do
     expect_raises(Exception, "There are duplicate registered commands. [sub_command1,sub_command2,alias_name1,alias_name2]") do
-      SubCommandWhenDuplicateAliasNameCase3.start_main([] of String)
+      SubCommandWhenDuplicateAliasNameCase3.start_parse([] of String)
     end
   end
 end

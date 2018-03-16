@@ -8,7 +8,7 @@ require "../dsl_spec"
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -26,25 +26,21 @@ spec(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -95,20 +91,6 @@ spec(
 )
 {% end %}
 
-spec(
-  spec_class_name: MainCommandWithAliasName,
-  spec_dsl_lines: [
-    "alias_name \"second_name\"",
-  ],
-  spec_desc: "main command,",
-  spec_cases: [
-    {
-      argv:              [] of String,
-      exception_message: "'alias_name' is not supported on main command.",
-    },
-  ]
-)
-
 {% begin %}
 {%
   main_help_message = <<-HELP_MESSAGE
@@ -117,7 +99,7 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -137,25 +119,21 @@ spec(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -235,25 +213,21 @@ spec(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "arg2"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2"],
     },
     {
       argv:        ["arg1", "arg2", "arg3"],
       expect_help: {{main_help_message}},
-      expect_opts: ReturnOptsType.new,
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
@@ -304,47 +278,130 @@ spec(
 )
 {% end %}
 
-class MainCommandIfCallTheMainCommandTwice < Clim
-  main_command
-  run do |opts, args|
-  end
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
 
-  main_command # Exception!!
-end
+                        Main command with desc.
 
-describe "If the main command is called twice, " do
-  it "raises an Exception." do
-    expect_raises(Exception, "Main command is already defined.") do
-      MainCommandIfCallTheMainCommandTwice.start_main([] of String)
-    end
-  end
-end
+                        Usage:
 
-class MainCommandWhenCallTheMainCommandTwiceInSubBlock < Clim
-  main_command
-  run do |opts, args|
-  end
-  sub do
-    main_command # Exception!!
-  end
-end
+                          main_command with usage [options] [arguments]
 
-describe "If the main command is called twice in sub block, " do
-  it "raises an Exception." do
-    expect_raises(Exception, "Main command is already defined.") do
-      MainCommandWhenCallTheMainCommandTwiceInSubBlock.start_main([] of String)
-    end
-  end
-end
+                        Options:
 
-class MainCommandWhenMainCommandIsNotDefined < Clim
-  command "spec_case"
-end
+                          --help                           Show this help.
+                          --version                        Show version.
 
-describe "Call the command," do
-  it "raises an Exception when call command method if main_command is not defined." do
-    expect_raises(Exception, "Run block of main command is not defined.") do
-      MainCommandWhenMainCommandIsNotDefined.start_main([] of String)
-    end
-  end
-end
+
+                      HELP_MESSAGE
+%}
+
+spec(
+  spec_class_name: MainCommandWithVersion,
+  spec_dsl_lines: [
+    "version \"Version 0.9.9\"",
+    "desc \"Main command with desc.\"",
+    "usage \"main_command with usage [options] [arguments]\"",
+  ],
+  spec_desc: "main command,",
+  spec_cases: [
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:          ["--version"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["--version", "arg"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["arg", "--version"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:              ["-v"],
+      exception_message: "Undefined option. \"-v\"",
+    },
+  ]
+)
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Main command with desc.
+
+                        Usage:
+
+                          main_command with usage [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
+                          -v, --version                    Show version.
+
+
+                      HELP_MESSAGE
+%}
+
+spec(
+  spec_class_name: MainCommandWithVersionShort,
+  spec_dsl_lines: [
+    "version \"Version 0.9.9\", short: \"-v\"",
+    "desc \"Main command with desc.\"",
+    "usage \"main_command with usage [options] [arguments]\"",
+  ],
+  spec_desc: "main command,",
+  spec_cases: [
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:          ["--version"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["--version", "arg"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["arg", "--version"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["-v"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["-v", "arg"],
+      expect_output: "Version 0.9.9\n",
+    },
+    {
+      argv:          ["arg", "-v"],
+      expect_output: "Version 0.9.9\n",
+    },
+  ]
+)
+{% end %}

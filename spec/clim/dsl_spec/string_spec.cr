@@ -8,12 +8,12 @@ require "../dsl_spec"
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -s ARG, --string=ARG             Option description. [type:String]
                           --help                           Show this help.
-                          -s ARG, --string=ARG             Option description.
 
 
                       HELP_MESSAGE
@@ -22,68 +22,108 @@ require "../dsl_spec"
 spec(
   spec_class_name: MainCommandWithString,
   spec_dsl_lines: [
-    "string \"-s ARG\", \"--string=ARG\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => nil},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => nil,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => nil},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => nil,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "tring"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "tring",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "=string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "=string1",
+      },
       expect_args: [] of String,
     },
     {
@@ -138,12 +178,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -s ARG                           Option description. [type:String]
                           --help                           Show this help.
-                          -s ARG                           Option description.
 
 
                       HELP_MESSAGE
@@ -152,56 +192,88 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringOnlyShortOption,
   spec_dsl_lines: [
-    "string \"-s ARG\"",
+    "option \"-s ARG\", type: String",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"s" => nil},
+      expect_opts: {
+        "type" => String?,
+        "method" => "s",
+        "expect_value" => nil,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"s" => nil},
+      expect_opts: {
+        "type" => String?,
+        "method" => "s",
+        "expect_value" => nil,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"s" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "s",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"s" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "s",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"s" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "s",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"s" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "s",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"s" => "tring"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "s",
+        "expect_value" => "tring",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"s" => "=string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "s",
+        "expect_value" => "=string1",
+      },
       expect_args: [] of String,
     },
     {
@@ -264,12 +336,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          --string=ARG                     Option description. [type:String]
                           --help                           Show this help.
-                          --string=ARG                     Option description.
 
 
                       HELP_MESSAGE
@@ -278,44 +350,68 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringOnlyLongOption,
   spec_dsl_lines: [
-    "string \"--string=ARG\"",
+    "option \"--string=ARG\", type: String",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => nil},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => nil,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => nil},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => nil,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string", "string1", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "--string", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
@@ -374,12 +470,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -s ARG, --string=ARG             String option description. [type:String]
                           --help                           Show this help.
-                          -s ARG, --string=ARG             String option description.
 
 
                       HELP_MESSAGE
@@ -388,9 +484,9 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringDesc,
   spec_dsl_lines: [
-    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\"",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        ["--help"],
@@ -416,12 +512,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -s ARG, --string=ARG             String option description. [type:String] [default:"default value"]
                           --help                           Show this help.
-                          -s ARG, --string=ARG             String option description.  [default:"default value"]
 
 
                       HELP_MESSAGE
@@ -430,68 +526,108 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringDefault,
   spec_dsl_lines: [
-    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", default: \"default value\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", default: \"default value\"",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "default value"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "default value",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "default value"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "default value",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "tring"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "tring",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "=string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "=string1",
+      },
       expect_args: [] of String,
     },
     {
@@ -546,12 +682,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -s ARG, --string=ARG             String option description. [type:String] [default:"default value"] [required]
                           --help                           Show this help.
-                          -s ARG, --string=ARG             String option description.  [default:"default value"]  [required]
 
 
                       HELP_MESSAGE
@@ -560,68 +696,108 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringRequiredTrueAndDefaultExists,
   spec_dsl_lines: [
-    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: true, default: \"default value\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: true, default: \"default value\"",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "default value"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "default value",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "default value"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "default value",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "tring"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "tring",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "=string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "=string1",
+      },
       expect_args: [] of String,
     },
     {
@@ -676,12 +852,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -s ARG, --string=ARG             String option description. [type:String] [required]
                           --help                           Show this help.
-                          -s ARG, --string=ARG             String option description.  [required]
 
 
                       HELP_MESSAGE
@@ -690,56 +866,88 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringRequiredTrueOnly,
   spec_dsl_lines: [
-    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: true",
+    "option \"-s ARG\", \"--string=ARG\", type: String,  desc: \"String option description.\", required: true",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "tring"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "tring",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "=string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "=string1",
+      },
       expect_args: [] of String,
     },
     {
@@ -802,12 +1010,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -s ARG, --string=ARG             String option description. [type:String] [default:"default value"]
                           --help                           Show this help.
-                          -s ARG, --string=ARG             String option description.  [default:"default value"]
 
 
                       HELP_MESSAGE
@@ -816,68 +1024,108 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringRequiredFalseAndDefaultExists,
   spec_dsl_lines: [
-    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: false, default: \"default value\"",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: false, default: \"default value\"",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "default value"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "default value",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "default value"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "default value",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "tring"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "tring",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "=string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "=string1",
+      },
       expect_args: [] of String,
     },
     {
@@ -932,12 +1180,12 @@ spec(
 
                         Usage:
 
-                          main_command [options] [arguments]
+                          main_command_of_clim_library [options] [arguments]
 
                         Options:
 
+                          -s ARG, --string=ARG             String option description. [type:String]
                           --help                           Show this help.
-                          -s ARG, --string=ARG             String option description.
 
 
                       HELP_MESSAGE
@@ -946,68 +1194,108 @@ spec(
 spec(
   spec_class_name: MainCommandWithStringRequiredFalseOnly,
   spec_dsl_lines: [
-    "string \"-s ARG\", \"--string=ARG\", desc: \"String option description.\", required: false",
+    "option \"-s ARG\", \"--string=ARG\", type: String, desc: \"String option description.\", required: false",
   ],
-  spec_desc: "main command with string dsl,",
+  spec_desc: "main command with String options,",
   spec_cases: [
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => nil},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => nil,
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => nil},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => nil,
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "string1",
+      },
       expect_args: ["arg1"],
     },
     {
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "tring"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "tring",
+      },
       expect_args: [] of String,
     },
     {
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
-      expect_opts: {"string" => "=string1"},
+      expect_opts: {
+        "type" => String?,
+        "method" => "string",
+        "expect_value" => "=string1",
+      },
       expect_args: [] of String,
     },
     {
