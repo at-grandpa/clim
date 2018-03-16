@@ -12,7 +12,7 @@ require "../dsl_spec"
 
                         Options:
 
-                          --int8=VALUE                     Option description. [type:Int8]
+                          -i=VALUE, --int8=VALUE           Option description. [type:Int8]
                           --int8-default=VALUE             Option description. [type:Int8] [default:1]
                           --int16=VALUE                    Option description. [type:Int16]
                           --int32=VALUE                    Option description. [type:Int32]
@@ -46,7 +46,7 @@ require "../dsl_spec"
 spec(
   spec_class_name: OptionTypeSpec,
   spec_dsl_lines: [
-    "option \"--int8=VALUE\", type: Int8",
+    "option \"-i=VALUE\", \"--int8=VALUE\", type: Int8",
     "option \"--int8-default=VALUE\", type: Int8, default: 1_i8",
     "option \"--int16=VALUE\", type: Int16",
     "option \"--int32=VALUE\", type: Int32",
@@ -81,6 +81,16 @@ spec(
         "type" => Int8?,
         "method" => "int8",
         "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-i", "5"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Int8?,
+        "method" => "int8",
+        "expect_value" => 5_i8,
       },
       expect_args: [] of String,
     },
