@@ -183,12 +183,7 @@ class Clim
 
         class OptionsByClim < Options
 
-          class OptionByClim
-            property short : String = ""
-            property long : String? = ""
-            property desc : String = ""
-            property required : Bool = false
-            property array_set_flag : Bool = false
+          class OptionByClim < Option
 
             macro add_array_value(type, cast_method)
               @value = [] of \{{type}} if @array_set_flag == false

@@ -1,3 +1,5 @@
+require "./options/*"
+
 class Clim
   abstract class Command
     class Options
