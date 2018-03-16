@@ -223,18 +223,23 @@ class Clim
       end
 
       macro option(short, long, type, desc = "Option description.", default = nil, required = false)
-        {% short_name = short.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
+        {% if long == nil %}
+          {% base_option_name = short %}
+        {% else %}
+          {% base_option_name = long %}
+        {% end %}
+        {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
         class OptionsByClim
-          class OptionByClim_{{short_name}} < OptionByClim
+          class OptionByClim_{{option_name}} < OptionByClim
             option_by_clim_macro({{type}}, {{default}})
           end
 
+          {% long = short if type.id.stringify == "Bool" %}
           {% default = false if type.id.stringify == "Bool" %}
           {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
-          {% long_var_name = long.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-          property {{ long_var_name }}_instance : OptionByClim_{{short_name}} = OptionByClim_{{short_name}}.new({{ short }}, {{ long }}, {{ desc }}, {{ default }}, {{ required }})
-          def {{ long_var_name }} : {{ type }}?
-            {{ long_var_name }}_instance.@value
+          property {{ option_name }}_instance : OptionByClim_{{option_name}} = OptionByClim_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default }}, {{ required }})
+          def {{ option_name }} : {{ type }}?
+            {{ option_name }}_instance.@value
           end
         end
       end
