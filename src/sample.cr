@@ -10,13 +10,13 @@ require "./clim"
 # [done] helpの充実
 # [done] shortのみ、longのみ
 # [done] versionの実装
+# [done] rescue
+# [done] You can not specify 'required: true' for Bool option. のテスト
 # サポートしていない型だったらエラー
 # 同じコマンドを指定した場合の動作
 #   - macro raise でキャッチ
-# You can not specify 'required: true' for Bool option. のテスト
 # 型が違った場合の挙動
 # モジュールの切り出し
-# rescue
 
 # class MyCli < Clim
 #  main_command do
@@ -62,7 +62,8 @@ class MyCli < Clim
   main_command do
     version "Version 1.0.0", short: "-v"
     desc "main command."
-    option "-n", "--name=NAME", type: Hash(String, String), desc: "your name.", default: {"k" => "v"} , required: true
+    option "-n", "--name=NAME", type: String, desc: "your name.", default: "Taro", required: true
+    option "-b", type: Bool, desc: "your bool.", required: true
     run do |options, arguments|
       p "main ---"
       p options.name

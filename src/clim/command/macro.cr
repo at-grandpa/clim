@@ -42,6 +42,13 @@ class Clim
         end
       end
 
+      macro main_command
+        {% if @type.superclass.id.stringify == "Clim::Command" %}
+          {% raise "Can not be declared 'main_command' as sub command." %}
+        {% end %}
+      end
+
+
       macro command(name, &block)
         {% if @type.constants.map(&.id.stringify).includes?("CommandByClim_" + name.id.capitalize.stringify) %}
           {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
