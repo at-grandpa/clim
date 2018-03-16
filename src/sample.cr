@@ -6,17 +6,17 @@ require "./clim"
 #
 # TODO:
 # [done] 型の増加
-# 型が違った場合の挙動
-# rescue
+# [done] defaultが設定されていたら T? じゃなくて T にする
+# [done] helpの充実
+# [done] shortのみ、longのみ
+# versionの実装
+# サポートしていない型だったらエラー
 # 同じコマンドを指定した場合の動作
 #   - macro raise でキャッチ
-# [done] helpの充実
-# テスト
-# versionの実装
-# [done] shortのみ、longのみ
-# モジュールの切り出し
-# [done] defaultが設定されていたら T? じゃなくて T にする
 # You can not specify 'required: true' for Bool option. のテスト
+# 型が違った場合の挙動
+# モジュールの切り出し
+# rescue
 
 class MyCli < Clim
   main_command do
