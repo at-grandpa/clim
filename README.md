@@ -32,7 +32,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.1.5
+    version: 0.2.0
 ```
 
 ## Sample Code (main command)
