@@ -129,7 +129,7 @@ class Clim
         {% raise "Empty option name." %}
       {% end %}
 
-      {% unless SUPPORT_TYPES.includes?(type) %}
+      {% unless SUPPORT_TYPES_ALL.includes?(type) %}
         {% raise "Type [#{type}] is not supported on option." %}
       {% end %}
 

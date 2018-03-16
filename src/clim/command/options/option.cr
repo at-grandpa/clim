@@ -19,21 +19,21 @@ class Clim
         end
 
         private def display_default
-          default_value = default
+          default_value = @default.dup
           {% begin %}
             case default_value
-            when Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64
+            when Nil
+              "nil"
+            when {{*SUPPORT_TYPES_BOOL}}
               default_value
-            when String
-              default_value.empty? ? "\"\"" : "\"#{default}\""
-            when Bool
+            when {{*SUPPORT_TYPES_STRING}}
+              default_value.empty? ? "\"\"" : "\"#{default_value}\""
+            when {{*(SUPPORT_TYPES_INT + SUPPORT_TYPES_UINT + SUPPORT_TYPES_FLOAT)}}
               default_value
-            {% for type in [Int8, Int16, Int32, Int64, UInt8, UInt16, UInt32, UInt64, Float32, Float64, String] %}
+            {% for type in (SUPPORT_TYPES_INT + SUPPORT_TYPES_UINT + SUPPORT_TYPES_FLOAT + SUPPORT_TYPES_STRING) %}
             when Array({{type}})
               default_value.empty? ? "[] of {{type}}" : default
             {% end %}
-            when Nil
-              "nil"
             else
               raise ClimException.new "[#{typeof(default)}] is not supported."
             end
@@ -81,14 +81,14 @@ class Clim
                  "Float64" => "@value = arg.to_f64",
                  "String"  => "@value = arg.to_s",
                  "Bool"    => <<-BOOL_ARG
-                @value = arg.try do |obj|
-                  next true if obj.empty?
-                  unless obj === "true" || obj == "false"
-                    raise ClimException.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
-                  end
-                  obj === "true"
-                end
-              BOOL_ARG,
+    @value = arg.try do |obj|
+      next true if obj.empty?
+      unless obj === "true" || obj == "false"
+        raise ClimException.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
+      end
+      obj === "true"
+    end
+  BOOL_ARG,
                  "Array(Int8)"    => "add_array_value(Int8, to_i8)",
                  "Array(Int16)"   => "add_array_value(Int16, to_i16)",
                  "Array(Int32)"   => "add_array_value(Int32, to_i32)",
