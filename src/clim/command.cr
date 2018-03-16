@@ -139,7 +139,7 @@ class Clim
         {% base_option_name = long %}
       {% end %}
       {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-      class OptionsByClim < Options
+      class OptionsForEachCommand
         class OptionByClim_{{option_name}} < Option
           option_by_clim_macro({{type}}, {{default}})
         end
@@ -169,10 +169,12 @@ class Clim
       class CommandByClim_{{ name.id.capitalize }} < Command
         property name : String = {{name.id.stringify}}
 
-        class OptionsByClim < Options
+        class OptionsByClim_{{ name.id.capitalize }} < Options
           class OptionByClim < Option
           end
         end
+
+        alias OptionsForEachCommand = OptionsByClim_{{ name.id.capitalize }}
 
         def parse_by_parser(argv)
           @parser.on("--help", "Show this help.") { @display_help_flag = true }
@@ -190,16 +192,12 @@ class Clim
           @display_help_flag = false
           @display_version_flag = false
           @parser = OptionParser.new
+          @options = OptionsForEachCommand.new
+          @options.setup_parser(@parser)
           \{% for constant in @type.constants %}
             \{% c = @type.constant(constant) %}
-            \{% if c.is_a?(TypeNode) %}
-              \{% if c.name.split("::").last == "OptionsByClim" %}
-                @options = \{{ c.id }}.new
-                @options.setup_parser(@parser)
-              \{% elsif c.name.split("::").last == "RunProc" %}
-              \{% else %}
-                @sub_commands << \{{ c.id }}.new
-              \{% end %}
+            \{% if c.superclass.id.stringify == "Clim::Command" %}
+              @sub_commands << \{{ c.id }}.new
             \{% end %}
           \{% end %}
         end
@@ -210,25 +208,22 @@ class Clim
 
         {{ yield }}
 
-        \{% begin %}
-          \{% ccc = @type.constants.select{|c| @type.constant(c).name.split("::").last == "OptionsByClim"}.first %}
-          alias RunProc = Proc(\{{ ccc.id }}, Array(String), Nil)
-          property options : \{{ ccc.id }} = \{{ ccc.id }}.new
+        alias RunProc = Proc(OptionsForEachCommand, Array(String), Nil)
+        property options : OptionsForEachCommand = OptionsForEachCommand.new
 
-          class \{{ ccc.id }}
-            def setup_parser(parser)
-              \\{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
-                long = \\{{iv}}.long
-                if long.nil?
-                  parser.on(\\{{iv}}.short, \\{{iv}}.desc) {|arg| \\{{iv}}.set_value(arg) }
-                else
-                  parser.on(\\{{iv}}.short, long, \\{{iv}}.desc) {|arg| \\{{iv}}.set_value(arg) }
-                end
-              \\{% end %}
-            end
-
+        class OptionsForEachCommand
+          def setup_parser(parser)
+            \{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
+              long = \{{iv}}.long
+              if long.nil?
+                parser.on(\{{iv}}.short, \{{iv}}.desc) {|arg| \{{iv}}.set_value(arg) }
+              else
+                parser.on(\{{iv}}.short, long, \{{iv}}.desc) {|arg| \{{iv}}.set_value(arg) }
+              end
+            \{% end %}
           end
-        \{% end %}
+        end
+
       end
 
     end
