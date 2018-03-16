@@ -31,6 +31,7 @@ require "../dsl_spec"
                           --array-int32=VALUE              Option description. [type:Array(Int32)]
                           --array-int64=VALUE              Option description. [type:Array(Int64)]
                           --array-int8-default=VALUE       Option description. [type:Array(Int8)] [default:[] of Int8]
+                          --array-int8-default-value=VALUE Option description. [type:Array(Int8)] [default:[1_i8, 2_i8, 3_i8]]
                           --array-int16-default=VALUE      Option description. [type:Array(Int16)] [default:[] of Int16]
                           --array-int32-default=VALUE      Option description. [type:Array(Int32)] [default:[] of Int32]
                           --array-int64-default=VALUE      Option description. [type:Array(Int64)] [default:[] of Int64]
@@ -73,6 +74,7 @@ spec(
     "option \"--array-int32=VALUE\", type: Array(Int32)",
     "option \"--array-int64=VALUE\", type: Array(Int64)",
     "option \"--array-int8-default=VALUE\", type: Array(Int8), default: [] of Int8",
+    "option \"--array-int8-default-value=VALUE\", type: Array(Int8), default: [1_i8,2_i8,3_i8]",
     "option \"--array-int16-default=VALUE\", type: Array(Int16), default: [] of Int16",
     "option \"--array-int32-default=VALUE\", type: Array(Int32), default: [] of Int32",
     "option \"--array-int64-default=VALUE\", type: Array(Int64), default: [] of Int64",
@@ -378,6 +380,46 @@ spec(
         "type" => Array(Int8)?,
         "method" => "array_int8",
         "expect_value" => [1_i8, 2_i8],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8_default",
+        "expect_value" => [] of Int8,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int8-default", "1", "--array-int8-default", "2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8_default",
+        "expect_value" => [1_i8, 2_i8],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8_default_value",
+        "expect_value" => [1_i8, 2_i8, 3_i8],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int8-default-value", "8", "--array-int8-default-value", "9"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8_default_value",
+        "expect_value" => [8_i8, 9_i8],
       },
       expect_args: [] of String,
     },
