@@ -32,6 +32,8 @@ require "../dsl_spec"
                           --array-uint16=VALUE             Option description. [type:Array(UInt16)]
                           --array-uint32=VALUE             Option description. [type:Array(UInt32)]
                           --array-uint64=VALUE             Option description. [type:Array(UInt64)]
+                          --array-float32=VALUE            Option description. [type:Array(Float32)]
+                          --array-float64=VALUE            Option description. [type:Array(Float64)]
                           --array-string=VALUE             Option description. [type:Array(String)]
                           --help                           Show this help.
 
@@ -62,6 +64,8 @@ spec(
     "option \"--array-uint16=VALUE\", type: Array(UInt16)",
     "option \"--array-uint32=VALUE\", type: Array(UInt32)",
     "option \"--array-uint64=VALUE\", type: Array(UInt64)",
+    "option \"--array-float32=VALUE\", type: Array(Float32)",
+    "option \"--array-float64=VALUE\", type: Array(Float64)",
     "option \"--array-string=VALUE\", type: Array(String)",
   ],
   spec_desc: "option type spec,",
@@ -387,8 +391,6 @@ spec(
       },
       expect_args: [] of String,
     },
-
-
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -405,7 +407,7 @@ spec(
       expect_opts: {
         "type" => Array(UInt8)?,
         "method" => "array_uint8",
-        "expect_value" => [1_i8, 2_i8],
+        "expect_value" => [1_u8, 2_u8],
       },
       expect_args: [] of String,
     },
@@ -425,7 +427,7 @@ spec(
       expect_opts: {
         "type" => Array(UInt16)?,
         "method" => "array_uint16",
-        "expect_value" => [1_i16, 2_i16],
+        "expect_value" => [1_u16, 2_u16],
       },
       expect_args: [] of String,
     },
@@ -445,7 +447,7 @@ spec(
       expect_opts: {
         "type" => Array(UInt32)?,
         "method" => "array_uint32",
-        "expect_value" => [1_i32, 2_i32],
+        "expect_value" => [1_u32, 2_u32],
       },
       expect_args: [] of String,
     },
@@ -465,11 +467,50 @@ spec(
       expect_opts: {
         "type" => Array(UInt64)?,
         "method" => "array_uint64",
-        "expect_value" => [1_i64, 2_i64],
+        "expect_value" => [1_u64, 2_u64],
       },
       expect_args: [] of String,
     },
-
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Float32)?,
+        "method" => "array_float32",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-float32", "1.1", "--array-float32", "2.2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Float32)?,
+        "method" => "array_float32",
+        "expect_value" => [1.1_f32, 2.2_f32],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Float64)?,
+        "method" => "array_float64",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-float64", "1.1", "--array-float64", "2.2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Float64)?,
+        "method" => "array_float64",
+        "expect_value" => [1.1_f64, 2.2_f64],
+      },
+      expect_args: [] of String,
+    },
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
