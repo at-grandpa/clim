@@ -3,8 +3,6 @@ require "./command/*"
 
 class Clim
   abstract class Command
-    include Macro
-
     property name : String = ""
     property alias_name : Array(String) = [] of String
     property parser : OptionParser = OptionParser.new
@@ -183,17 +181,7 @@ class Clim
           @display_help_flag
         end
 
-        class OptionsByClim
-          property help : String = ""
-
-          def invalid_required_names
-            ret = [] of String | Nil
-            \{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
-              short_or_nil = \{{iv}}.required_set? ? \{{iv}}.short : nil
-              ret << short_or_nil
-            \{% end %}
-            ret.compact
-          end
+        class OptionsByClim < Options
 
           class OptionByClim
             property short : String = ""
@@ -348,6 +336,5 @@ class Clim
       end
 
     end
-
   end
 end
