@@ -63,16 +63,16 @@ class Clim
     def define_version(parser)
     end
 
-    macro sub_command(name, &block)
-      command({{name}}) do
-        {{ yield }}
-      end
-    end
-
     macro main_command
       {% if @type.superclass.id.stringify == "Clim::Command" %}
         {% raise "Can not be declared 'main_command' as sub command." %}
       {% end %}
+    end
+
+    macro sub_command(name, &block)
+      command({{name}}) do
+        {{ yield }}
+      end
     end
 
     macro run(&block)
@@ -125,13 +125,8 @@ class Clim
     end
 
     macro option_base(short, long, type, desc, default, required)
-      {% if short.empty? %}
-        {% raise "Empty option name." %}
-      {% end %}
-
-      {% unless SUPPORT_TYPES_ALL.includes?(type) %}
-        {% raise "Type [#{type}] is not supported on option." %}
-      {% end %}
+      {% raise "Empty option name." if short.empty?  %}
+      {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES_ALL.includes?(type) %}
 
       {% if long == nil %}
         {% base_option_name = short %}
