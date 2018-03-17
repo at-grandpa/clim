@@ -30,9 +30,7 @@ class Clim
     end
 
     macro alias_name(*names)
-      {% if @type == Command_Main_command_of_clim_library %}
-        {% raise "'alias_name' is not supported on main command." %}
-      {% end %}
+      {% raise "'alias_name' is not supported on main command." if @type == Command_Main_command_of_clim_library %}
       def alias_name : Array(String)
         {{ names }}.to_a
       end
@@ -64,9 +62,7 @@ class Clim
     end
 
     macro main_command
-      {% if @type.superclass.id.stringify == "Clim::Command" %}
-        {% raise "Can not be declared 'main_command' as sub command." %}
-      {% end %}
+      {% raise "Can not be declared 'main_command' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
     end
 
     macro sub_command(name, &block)
@@ -89,7 +85,7 @@ class Clim
 
     abstract def run(io : IO)
 
-    def find_sub_cmds_by(name)
+    private def find_sub_cmds_by(name)
       @sub_commands.select do |cmd|
         cmd.name == name || cmd.alias_name.includes?(name)
       end
@@ -116,11 +112,11 @@ class Clim
       find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
     end
 
-    def help
+    private def help
       Help.new(self).display
     end
 
-    def display_help? : Bool
+    private def display_help? : Bool
       @display_help_flag
     end
 
@@ -132,7 +128,7 @@ class Clim
       {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
       class OptionsForEachCommand
         class Option_{{option_name}} < Option
-          option_by_clim_macro({{type}}, {{default}})
+          define_option_macro({{type}}, {{default}})
         end
 
         {% default = false if type.id.stringify == "Bool" %}
@@ -165,7 +161,7 @@ class Clim
 
         alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
 
-        def parse_by_parser(argv)
+        private def parse_by_parser(argv)
           @parser.on("--help", "Show this help.") { @display_help_flag = true }
           define_version(@parser)
           @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
@@ -188,7 +184,7 @@ class Clim
           \{% end %}
         end
 
-        def required_validate!
+        private def required_validate!
           raise "Required options. \"#{@options.invalid_required_names.join("\", \"")}\"" unless @options.invalid_required_names.empty?
         end
 
