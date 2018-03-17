@@ -42,7 +42,7 @@ class Clim
 
     macro version(version_str, short = nil)
       def version_str : String
-        {{ version_str.id.stringify }}
+        {{ version_str }}
       end
 
       def define_version(parser)
