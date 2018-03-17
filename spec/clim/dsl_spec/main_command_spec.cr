@@ -351,6 +351,66 @@ spec(
                         Options:
 
                           --help                           Show this help.
+                          --version                        Show version.
+
+
+                      HELP_MESSAGE
+%}
+
+spec(
+  spec_class_name: MainCommandWithVersionConst,
+  spec_dsl_lines: [
+    "version Clim::VERSION",
+    "desc \"Main command with desc.\"",
+    "usage \"main_command with usage [options] [arguments]\"",
+  ],
+  spec_desc: "main command,",
+  spec_cases: [
+    {
+      argv:        ["--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["--help", "ignore-arg"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:        ["ignore-arg", "--help"],
+      expect_help: {{main_help_message}},
+    },
+    {
+      argv:          ["--version"],
+      expect_output: Clim::VERSION + "\n",
+    },
+    {
+      argv:          ["--version", "arg"],
+      expect_output: Clim::VERSION + "\n",
+    },
+    {
+      argv:          ["arg", "--version"],
+      expect_output: Clim::VERSION + "\n",
+    },
+    {
+      argv:              ["-v"],
+      exception_message: "Undefined option. \"-v\"",
+    },
+  ]
+)
+{% end %}
+
+{% begin %}
+{%
+  main_help_message = <<-HELP_MESSAGE
+
+                        Main command with desc.
+
+                        Usage:
+
+                          main_command with usage [options] [arguments]
+
+                        Options:
+
+                          --help                           Show this help.
                           -v, --version                    Show version.
 
 
