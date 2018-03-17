@@ -85,7 +85,7 @@ class Clim
 
     abstract def run(io : IO)
 
-    def find_sub_cmds_by(name)
+    private def find_sub_cmds_by(name)
       @sub_commands.select do |cmd|
         cmd.name == name || cmd.alias_name.includes?(name)
       end
@@ -112,11 +112,11 @@ class Clim
       find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
     end
 
-    def help
+    private def help
       Help.new(self).display
     end
 
-    def display_help? : Bool
+    private def display_help? : Bool
       @display_help_flag
     end
 
@@ -161,7 +161,7 @@ class Clim
 
         alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
 
-        def parse_by_parser(argv)
+        private def parse_by_parser(argv)
           @parser.on("--help", "Show this help.") { @display_help_flag = true }
           define_version(@parser)
           @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
@@ -184,7 +184,7 @@ class Clim
           \{% end %}
         end
 
-        def required_validate!
+        private def required_validate!
           raise "Required options. \"#{@options.invalid_required_names.join("\", \"")}\"" unless @options.invalid_required_names.empty?
         end
 
