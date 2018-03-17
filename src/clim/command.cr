@@ -128,7 +128,7 @@ class Clim
       {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
       class OptionsForEachCommand
         class Option_{{option_name}} < Option
-          option_by_clim_macro({{type}}, {{default}})
+          define_option_macro({{type}}, {{default}})
         end
 
         {% default = false if type.id.stringify == "Bool" %}
