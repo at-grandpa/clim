@@ -198,16 +198,6 @@ class Clim
         property options : OptionsForEachCommand = OptionsForEachCommand.new
 
         class OptionsForEachCommand
-          def setup_parser(parser)
-            \{% for iv in @type.instance_vars.reject{|iv| iv.stringify == "help"} %}
-              long = \{{iv}}.long
-              if long.nil?
-                parser.on(\{{iv}}.short, \{{iv}}.desc) {|arg| \{{iv}}.set_value(arg) }
-              else
-                parser.on(\{{iv}}.short, long, \{{iv}}.desc) {|arg| \{{iv}}.set_value(arg) }
-              end
-            \{% end %}
-          end
         end
       end
     end
