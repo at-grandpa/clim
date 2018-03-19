@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "taskName": "crystal spec all",
+            "label": "crystal spec all",
             "type": "shell",
             "group": {
                 "kind": "test",
@@ -17,7 +17,7 @@
             "command": "make spec"
         },
         {
-            "taskName": "crystal spec current file",
+            "label": "crystal spec current file",
             "type": "shell",
             "group": {
                 "kind": "test",
@@ -30,7 +30,7 @@
             "command": "crystal spec ${relativeFile}"
         },
         {
-            "taskName": "crystal spec current line",
+            "label": "crystal spec current line",
             "type": "shell",
             "group": {
                 "kind": "test",

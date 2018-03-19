@@ -1142,31 +1142,6 @@ spec_for_alias_name(
 )
 {% end %}
 
-# ここのテストどうしようか
-# class SubCommandWhenDuplicateCommandName < Clim
-#   main_command do
-#     run do |opts, args|
-#     end
-#     command "sub_command" do
-#       run do |opts, args|
-#       end
-#     end
-#     # Duplicate name.
-#     command "sub_command" do
-#       run do |opts, args|
-#       end
-#     end
-#   end
-# end
-#
-# describe "Call the command." do
-#  it "raises an Exception when duplicate command name." do
-#    expect_raises(Exception, "There are duplicate registered commands. [sub_command]") do
-#      SubCommandWhenDuplicateCommandName.start_main([] of String)
-#    end
-#  end
-# end
-#
 class SubCommandWhenDuplicateAliasNameCase1 < Clim
   main_command do
     run do |opts, args|
