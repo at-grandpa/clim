@@ -135,7 +135,7 @@ module FakeCrystalCommand
       end
       sub_command "spec" do
         desc "build and run specs"
-        usage "crystal spec [options] [files]"
+        usage "fcrystal spec [options] [files]"
         run do |options, arguments|
           puts "Fake Crystal spec!!"
         end
