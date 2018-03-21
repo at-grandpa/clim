@@ -11,7 +11,7 @@ class Clim
 
     macro desc(description)
       def desc : String
-        {{ description.id.stringify }}
+        {{ description }}
       end
     end
 
@@ -21,7 +21,7 @@ class Clim
 
     macro usage(usage)
       def usage : String
-        {{ usage.id.stringify }}
+        {{ usage }}
       end
     end
 
