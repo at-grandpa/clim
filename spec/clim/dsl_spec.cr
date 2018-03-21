@@ -9,7 +9,7 @@ macro assert_opts_and_args(spec_case)
     args.should eq {{spec_case["expect_args"]}}
 end
 
-macro expand_dsl_lines(lines)
+macro expand_lines(lines)
   {% for line, index in lines %}
     {{line.id}}
   {% end %}
@@ -41,14 +41,15 @@ macro it_blocks(class_name, spec_case)
   {% end %}
 end
 
-macro spec(spec_class_name, spec_dsl_lines, spec_desc, spec_cases)
+macro spec(spec_class_name, spec_dsl_lines, spec_desc, spec_cases, spec_class_define_lines = [] of StringLiteral)
   {% for spec_case, index in spec_cases %}
     {% class_name = (spec_class_name.stringify + index.stringify).id %}
 
     # define dsl
     class {{class_name}} < Clim
+      expand_lines({{spec_class_define_lines}})
       main_command do
-        expand_dsl_lines({{spec_dsl_lines}})
+        expand_lines({{spec_dsl_lines}})
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
