@@ -353,7 +353,7 @@ You can specify multiple options for the command.
 ```crystal
 class MyCli < Clim
   main_command do
-    option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings.", default: "Hello"
+    option "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
     option "-n NAME", "--name=NAME", type: Array(String), desc: "Target name.", default: ["Taro"]
     run do |options, arguments|
       puts typeof(options.greeting) # => String
