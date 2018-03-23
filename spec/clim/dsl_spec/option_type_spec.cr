@@ -12,6 +12,10 @@ require "../dsl_spec"
 
                         Options:
 
+                          -d=DEFAULT_TYPE                  Option description. [type:String]
+                          --default-type=DEFAULT_TYPE      Option description. [type:String]
+                          --default-type-default=DEFAULT_TYPE
+                                                           Option description. [type:String] [default:\"Default String!\"]
                           -i=VALUE, --int8=VALUE           Option description. [type:Int8]
                           --int8-default=VALUE             Option description. [type:Int8] [default:1]
                           --int16=VALUE                    Option description. [type:Int16]
@@ -55,6 +59,9 @@ require "../dsl_spec"
 spec(
   spec_class_name: OptionTypeSpec,
   spec_dsl_lines: [
+    "option \"-d=DEFAULT_TYPE\"",
+    "option \"--default-type=DEFAULT_TYPE\"",
+    "option \"--default-type-default=DEFAULT_TYPE\", default: \"Default String!\"",
     "option \"-i=VALUE\", \"--int8=VALUE\", type: Int8",
     "option \"--int8-default=VALUE\", type: Int8, default: 1_i8",
     "option \"--int16=VALUE\", type: Int16",
@@ -92,6 +99,66 @@ spec(
   ],
   spec_desc: "option type spec,",
   spec_cases: [
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => String?,
+        "method" => "d",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["-d", "foo", "bar"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => String?,
+        "method" => "d",
+        "expect_value" => "foo",
+      },
+      expect_args: ["bar"]
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => String?,
+        "method" => "default_type",
+        "expect_value" => nil,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--default-type", "foo", "bar"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => String?,
+        "method" => "default_type",
+        "expect_value" => "foo",
+      },
+      expect_args: ["bar"]
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => String,
+        "method" => "default_type_default",
+        "expect_value" => "Default String!",
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--default-type-default", "foo", "bar"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => String,
+        "method" => "default_type_default",
+        "expect_value" => "foo",
+      },
+      expect_args: ["bar"]
+    },
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},

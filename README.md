@@ -53,10 +53,31 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.2.1
+    version: 0.2.2
 ```
 
-## Sample Code (main command)
+## Minimum sample
+
+*src/minimum.cr*
+
+```crystal
+require "clim"
+
+class MyCli < Clim
+  main_command do
+    run do |options, arguments|
+      puts "#{arguments.join(", ")}!"
+    end
+  end
+end
+
+MyCli.start(ARGV)
+```
+
+```console
+```
+
+## Command information sample
 
 *src/hello.cr*
 
@@ -104,7 +125,7 @@ $ ./hello -n Ichiro -n Miko -g 'Good night'
 Good night, Ichiro, Miko!
 ```
 
-## Sample Code (sub commands)
+## Sub commands sample
 
 *src/fake-crystal-command.cr*
 
@@ -317,14 +338,14 @@ mycli version: 1.0.1
 
 You can specify multiple options for the command.
 
- Argument | Description | example | required
----------|----------|---------|------
- First argument | short or long name | `-t TIMES`, `--times TIMES` | true
- Second argument | long name | `--times TIMES` | false
- `type` | option type | `type: Array(Float32)` | true
- `desc` | option description | `desc: "option description."` | false
- `default` | default value | `default: [1.1_f32, 2.2_f32]` | false
- `required` | required flag | `required: true` | false
+ Argument | Description | Example | Required | Default
+---------|----------|---------|------|------
+ First argument | short or long name | `-t TIMES`, `--times TIMES` | true | -
+ Second argument | long name | `--times TIMES` | false | -
+ `type` | option type | `type: Array(Float32)` | false | String
+ `desc` | option description | `desc: "option description."` | false | "Option description."
+ `default` | default value | `default: [1.1_f32, 2.2_f32]` | false | nil
+ `required` | required flag | `required: true` | false | false
 
 ```crystal
 class MyCli < Clim
