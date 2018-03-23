@@ -75,6 +75,9 @@ MyCli.start(ARGV)
 ```
 
 ```console
+$ crystal build -o ./minimum src/minimum.cr
+$ ./minimum foo bar baz
+foo, bar, baz!
 ```
 
 ## Command information sample
