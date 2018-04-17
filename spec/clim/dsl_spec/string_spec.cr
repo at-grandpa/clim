@@ -534,7 +534,7 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "default value",
       },
@@ -544,7 +544,7 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "default value",
       },
@@ -554,7 +554,7 @@ spec(
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -564,7 +564,7 @@ spec(
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -574,7 +574,7 @@ spec(
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -584,7 +584,7 @@ spec(
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -594,7 +594,7 @@ spec(
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -604,7 +604,7 @@ spec(
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -614,7 +614,7 @@ spec(
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "tring",
       },
@@ -624,7 +624,7 @@ spec(
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "=string1",
       },
@@ -704,7 +704,7 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "default value",
       },
@@ -714,7 +714,7 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "default value",
       },
@@ -724,7 +724,7 @@ spec(
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -734,7 +734,7 @@ spec(
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -744,7 +744,7 @@ spec(
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -754,7 +754,7 @@ spec(
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -764,7 +764,7 @@ spec(
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -774,7 +774,7 @@ spec(
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -784,7 +784,7 @@ spec(
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "tring",
       },
@@ -794,7 +794,7 @@ spec(
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "=string1",
       },
@@ -1032,7 +1032,7 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "default value",
       },
@@ -1042,7 +1042,7 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "default value",
       },
@@ -1052,7 +1052,7 @@ spec(
       argv:        ["-s", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -1062,7 +1062,7 @@ spec(
       argv:        ["-sstring1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -1072,7 +1072,7 @@ spec(
       argv:        ["--string", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -1082,7 +1082,7 @@ spec(
       argv:        ["--string=string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -1092,7 +1092,7 @@ spec(
       argv:        ["-s", "string1", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -1102,7 +1102,7 @@ spec(
       argv:        ["arg1", "-s", "string1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "string1",
       },
@@ -1112,7 +1112,7 @@ spec(
       argv:        ["-string"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "tring",
       },
@@ -1122,7 +1122,7 @@ spec(
       argv:        ["-s=string1"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => String?,
+        "type" => String,
         "method" => "string",
         "expect_value" => "=string1",
       },

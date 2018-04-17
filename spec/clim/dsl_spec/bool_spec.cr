@@ -526,7 +526,7 @@ spec(
 
 {% begin %}
 {%
- main_help_message = <<-HELP_MESSAGE
+  main_help_message = <<-HELP_MESSAGE
 
                        Command Line Interface Tool.
 
@@ -876,7 +876,7 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -886,7 +886,7 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -896,7 +896,7 @@ spec(
       argv:        ["-b"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -906,7 +906,7 @@ spec(
       argv:        ["--bool"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -916,7 +916,7 @@ spec(
       argv:        ["-b", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -926,7 +926,7 @@ spec(
       argv:        ["arg1", "-b"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -998,7 +998,7 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1008,7 +1008,7 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1018,7 +1018,7 @@ spec(
       argv:        ["-b"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1028,7 +1028,7 @@ spec(
       argv:        ["--bool"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1038,7 +1038,7 @@ spec(
       argv:        ["-b", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1048,7 +1048,7 @@ spec(
       argv:        ["arg1", "-b"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1058,7 +1058,7 @@ spec(
       argv:        ["--bool", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1068,7 +1068,7 @@ spec(
       argv:        ["arg1", "--bool"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1120,7 +1120,7 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1130,7 +1130,7 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1140,7 +1140,7 @@ spec(
       argv:        ["-b", "true"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1150,7 +1150,7 @@ spec(
       argv:        ["-b", "true", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1160,7 +1160,7 @@ spec(
       argv:        ["arg1", "-b", "true"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1170,7 +1170,7 @@ spec(
       argv:        ["-b", "false"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1180,7 +1180,7 @@ spec(
       argv:        ["-b", "false", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1190,7 +1190,7 @@ spec(
       argv:        ["arg1", "-b", "false"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1200,7 +1200,7 @@ spec(
       argv:        ["--bool", "true"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1210,7 +1210,7 @@ spec(
       argv:        ["--bool", "true", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1220,7 +1220,7 @@ spec(
       argv:        ["arg1", "--bool", "true"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => true,
       },
@@ -1230,7 +1230,7 @@ spec(
       argv:        ["--bool", "false"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1240,7 +1240,7 @@ spec(
       argv:        ["--bool", "false", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1250,7 +1250,7 @@ spec(
       argv:        ["arg1", "--bool", "false"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Bool?,
+        "type" => Bool,
         "method" => "bool",
         "expect_value" => false,
       },
@@ -1333,7 +1333,7 @@ spec(
 
 
                       HELP_MESSAGE
- %}
+%}
 
  spec(
   spec_class_name: MainCommandWithBoolRequiredFalseOnly,
