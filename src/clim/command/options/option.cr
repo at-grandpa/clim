@@ -37,11 +37,14 @@ class Clim
         macro define_option_macro(type, default, required)
           {% if default == nil && required == false %}
             {% value_type = type.stringify + "?" %}
+            {% default_value = nil %}
           {% else %}
             {% value_type = type.stringify %}
+            {% default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
           {% end %}
-          property default : {{value_type.id}} = {{default}}
-          property value : {{value_type.id}} = {{default}}
+
+          property default : {{value_type.id}} = {{default_value}}
+          property value : {{value_type.id}} = {{default_value}}
 
           def initialize(@short : String, @long : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
             @value = default

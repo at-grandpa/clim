@@ -121,7 +121,7 @@ class Clim
     end
 
     macro option_base(short, long, type, desc, default, required)
-      {% raise "Empty option name." if short.empty?  %}
+      {% raise "Empty option name." if short.empty? %}
       {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES_ALL.includes?(type) %}
 
       {% base_option_name = long == nil ? short : long %}
@@ -133,7 +133,14 @@ class Clim
 
         {% default = false if type.id.stringify == "Bool" %}
         {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
-        property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default }}, {{ required }})
+
+        {% if default == nil && required == false %}
+          {% default_value = nil %}
+        {% else %}
+          {% default_value = default == nil ? SUPPORT_TYPES_ALL_HASH[type][:default] : default %}
+        {% end %}
+
+        property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default_value }}, {{ required }})
         def {{ option_name }}
           {{ option_name }}_instance.@value
         end
