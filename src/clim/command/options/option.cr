@@ -34,8 +34,12 @@ class Clim
           {% end %}
         end
 
-        macro define_option_macro(type, default)
-          {% value_type = default == nil ? type.stringify + "?" : type.stringify %}
+        macro define_option_macro(type, default, required)
+          {% if default == nil && required == false %}
+            {% value_type = type.stringify + "?" %}
+          {% else %}
+            {% value_type = type.stringify %}
+          {% end %}
           property default : {{value_type.id}} = {{default}}
           property value : {{value_type.id}} = {{default}}
 

@@ -128,13 +128,13 @@ class Clim
       {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
       class OptionsForEachCommand
         class Option_{{option_name}} < Option
-          define_option_macro({{type}}, {{default}})
+          define_option_macro({{type}}, {{default}}, {{required}})
         end
 
         {% default = false if type.id.stringify == "Bool" %}
         {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
         property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default }}, {{ required }})
-        def {{ option_name }} : {{ type }}?
+        def {{ option_name }}
           {{ option_name }}_instance.@value
         end
       end
