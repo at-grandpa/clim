@@ -36,15 +36,22 @@ class Clim
 
         macro define_option_macro(type, default, required)
           {% if default == nil && required == false %}
+            {% display_default_on_help_flag = false %}
             {% value_type = type.stringify + "?" %}
             {% default_value = nil %}
+          {% elsif default == nil && required == true %}
+            {% display_default_on_help_flag = false %}
+            {% value_type = type.stringify %}
+            {% default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
           {% else %}
+            {% display_default_on_help_flag = true %}
             {% value_type = type.stringify %}
             {% default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
           {% end %}
 
           property default : {{value_type.id}} = {{default_value}}
           property value : {{value_type.id}} = {{default_value}}
+          property display_default_on_help_flag : Bool = {{display_default_on_help_flag.id}}
 
           def initialize(@short : String, @long : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
             @value = default
@@ -58,7 +65,7 @@ class Clim
           def desc
             desc = @desc
             desc = desc + " [type:#{{{type}}.to_s}]"
-            desc = desc + " [default:#{display_default}]" unless default.nil?
+            desc = desc + " [default:#{display_default}]" if display_default_on_help_flag
             desc = desc + " [required]" if required
             desc
           end
