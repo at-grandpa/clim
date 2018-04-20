@@ -8,8 +8,8 @@ class Clim
         property required : Bool = false
         property array_set_flag : Bool = false
 
-        def required_set? : Bool
-          @required && @value.nil?
+        def required_not_set? : Bool
+          @required && !set_value?
         end
 
         private def display_default
@@ -51,6 +51,7 @@ class Clim
 
           property default : {{value_type.id}} = {{default_value}}
           property value : {{value_type.id}} = {{default_value}}
+          property set_value : Bool = false
           property display_default_on_help_flag : Bool = {{display_default_on_help_flag.id}}
 
           def initialize(@short : String, @long : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
@@ -126,6 +127,11 @@ class Clim
             {% else %}
               {% raise "Type [#{type}] is not supported on option." %}
             {% end %}
+            @set_value = true
+          end
+
+          def set_value?
+            @set_value
           end
         end
 
