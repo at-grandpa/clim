@@ -46,7 +46,7 @@ class Clim
           {% else %}
             {% display_default_on_help_flag = true %}
             {% value_type = type.stringify %}
-            {% default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
+            {% default_value = default %}
           {% end %}
 
           property default : {{value_type.id}} = {{default_value}}
