@@ -714,26 +714,6 @@ spec(
   spec_desc: "main command with Array(String) option,",
   spec_cases: [
     {
-      argv:        [] of String,
-      expect_help: {{main_help_message}},
-      expect_opts: {
-        "type" => Array(String),
-        "method" => "array",
-        "expect_value" => ["default value"],
-      },
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["arg1"],
-      expect_help: {{main_help_message}},
-      expect_opts: {
-        "type" => Array(String),
-        "method" => "array",
-        "expect_value" => ["default value"],
-      },
-      expect_args: ["arg1"],
-    },
-    {
       argv:        ["-a", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -812,6 +792,14 @@ spec(
         "expect_value" => ["=array1"],
       },
       expect_args: [] of String,
+    },
+    {
+      argv:              [] of String,
+      exception_message: "Required options. \"-a ARG\"",
+    },
+    {
+      argv:              ["arg1"],
+      exception_message: "Required options. \"-a ARG\"",
     },
     {
       argv:              ["-h"],
@@ -965,6 +953,10 @@ spec(
     },
     {
       argv:              [] of String,
+      exception_message: "Required options. \"-a ARG\"",
+    },
+    {
+      argv:              ["arg1"],
       exception_message: "Required options. \"-a ARG\"",
     },
     {

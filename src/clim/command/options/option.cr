@@ -35,32 +35,52 @@ class Clim
         end
 
         macro define_option_macro(type, default, required)
-          {% if default == nil && required == false %}
-            {% display_default_on_help_flag = false %}
-            {% value_type = type.stringify + "?" %}
-            {% default_value = nil %}
-          {% elsif default == nil && required == true %}
-            {% display_default_on_help_flag = false %}
+          {% if default != nil && required == true %}
             {% value_type = type.stringify %}
-            {% default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
-          {% else %}
-            {% display_default_on_help_flag = true %}
-            {% value_type = type.stringify %}
+            {% value_default_value = default %}
+            {% default_type = type.stringify %}
             {% default_value = default %}
+            {% display_default_on_help_flag = true %}
+          {% elsif default != nil && required == false %}
+            {% value_type = type.stringify %}
+            {% value_default_value = default %}
+            {% default_type = type.stringify %}
+            {% default_value = default %}
+            {% display_default_on_help_flag = true %}
+          {% elsif default == nil && required == true %}
+            {% value_type = type.stringify %}
+            {% value_default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
+            {% default_type = type.stringify + "?" %}
+            {% default_value = default %}
+            {% display_default_on_help_flag = false %}
+          {% elsif default == nil && required == false %}
+            {% value_type = type.stringify + "?" %}
+            {% value_default_value = default %}
+            {% default_type = type.stringify + "?" %}
+            {% default_value = default %}
+            {% display_default_on_help_flag = false %}
           {% end %}
 
-          property default : {{value_type.id}} = {{default_value}}
-          property value : {{value_type.id}} = {{default_value}}
+          property value : {{value_type.id}} = {{value_default_value}}
+          property default : {{default_type.id}} = {{default_value}}
           property set_value : Bool = false
           property display_default_on_help_flag : Bool = {{display_default_on_help_flag.id}}
 
-          def initialize(@short : String, @long : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
-            @value = default
+          def initialize(@short : String, @long : String, @desc : String, @default : {{default_type.id}}, @required : Bool)
+            {% if default == nil && required == true %}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:default]}}
+            {% else %}
+              @value = default
+            {% end %}
           end
 
-          def initialize(@short : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
+          def initialize(@short : String, @desc : String, @default : {{default_type.id}}, @required : Bool)
             @long = nil
-            @value = default
+            {% if default == nil && required == true %}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:default]}}
+            {% else %}
+              @value = default
+            {% end %}
           end
 
           def desc

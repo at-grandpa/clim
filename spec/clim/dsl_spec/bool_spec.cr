@@ -12,7 +12,7 @@ require "../dsl_spec"
 
                         Options:
 
-                          -b, --bool                       Option description. [type:Bool] [default:false]
+                          -b, --bool                       Option description. [type:Bool]
                           --help                           Show this help.
 
 
@@ -154,7 +154,7 @@ spec(
 
                         Options:
 
-                          -b                               Option description. [type:Bool] [default:false]
+                          -b                               Option description. [type:Bool]
                           --help                           Show this help.
 
 
@@ -274,7 +274,7 @@ spec(
 
                         Options:
 
-                          --bool                           Option description. [type:Bool] [default:false]
+                          --bool                           Option description. [type:Bool]
                           --help                           Show this help.
 
 
@@ -390,7 +390,7 @@ spec(
 
                         Options:
 
-                          -b ARG, --bool=ARG               Option description. [type:Bool] [default:false]
+                          -b ARG, --bool=ARG               Option description. [type:Bool]
                           --help                           Show this help.
 
 
@@ -536,7 +536,7 @@ spec(
 
                        Options:
 
-                         -b ARG                           Option description. [type:Bool] [default:false]
+                         -b ARG                           Option description. [type:Bool]
                          --help                           Show this help.
 
 
@@ -670,7 +670,7 @@ spec(
 
                         Options:
 
-                          --bool=ARG                       Option description. [type:Bool] [default:false]
+                          --bool=ARG                       Option description. [type:Bool]
                           --help                           Show this help.
 
 
@@ -816,7 +816,7 @@ spec(
 
                         Options:
 
-                          -b, --bool                       Bool option description. [type:Bool] [default:false]
+                          -b, --bool                       Bool option description. [type:Bool]
                           --help                           Show this help.
 
 
@@ -1328,7 +1328,7 @@ spec(
 
                         Options:
 
-                          -b, --bool                       Bool option description. [type:Bool] [default:false]
+                          -b, --bool                       Bool option description. [type:Bool]
                           --help                           Show this help.
 
 
@@ -1450,7 +1450,7 @@ spec(
 
                         Options:
 
-                          -b ARG, --bool=ARG               Bool option description. [type:Bool] [default:false]
+                          -b ARG, --bool=ARG               Bool option description. [type:Bool]
                           --help                           Show this help.
 
 

@@ -28,7 +28,7 @@ require "../dsl_spec"
                           --float32=VALUE                  Option description. [type:Float32]
                           --float64=VALUE                  Option description. [type:Float64]
                           --string=VALUE                   Option description. [type:String]
-                          --bool                           Option description. [type:Bool] [default:false]
+                          --bool                           Option description. [type:Bool]
                           --bool-default                   Option description. [type:Bool] [default:false]
                           --array-int8=VALUE               Option description. [type:Array(Int8)]
                           --array-int16=VALUE              Option description. [type:Array(Int16)]
