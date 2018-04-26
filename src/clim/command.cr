@@ -122,7 +122,7 @@ class Clim
 
     macro option_base(short, long, type, desc, default, required)
       {% raise "Empty option name." if short.empty? %}
-      {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES_ALL.includes?(type) %}
+      {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES_ALL_HASH.keys.includes?(type) %}
 
       {% base_option_name = long == nil ? short : long %}
       {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}

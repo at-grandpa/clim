@@ -15,18 +15,22 @@ class Clim
         private def display_default
           default_value = @default.dup
           {% begin %}
+            {% support_types_number = SUPPORT_TYPES_ALL_HASH.map { |k, v| v[:type] == "number" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_string = SUPPORT_TYPES_ALL_HASH.map { |k, v| v[:type] == "string" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_bool = SUPPORT_TYPES_ALL_HASH.map { |k, v| v[:type] == "bool" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_array = SUPPORT_TYPES_ALL_HASH.map { |k, v| v[:type] == "array" ? k : nil }.reject(&.==(nil)) %}
             case default_value
             when Nil
               "nil"
-            when {{*SUPPORT_TYPES_BOOL}}
+            when {{*support_types_bool}}
               default_value
-            when {{*SUPPORT_TYPES_STRING}}
+            when {{*support_types_string}}
               default_value.empty? ? "\"\"" : "\"#{default_value}\""
-            when {{*(SUPPORT_TYPES_INT + SUPPORT_TYPES_UINT + SUPPORT_TYPES_FLOAT)}}
+            when {{*support_types_number}}
               default_value
-            {% for type in (SUPPORT_TYPES_INT + SUPPORT_TYPES_UINT + SUPPORT_TYPES_FLOAT + SUPPORT_TYPES_STRING) %}
-            when Array({{type}})
-              default_value.empty? ? "[] of {{type}}" : default
+            {% for type in support_types_array %}
+            when {{type}}
+              default_value.empty? ? "[] of {{type.type_vars.first}}" : default
             {% end %}
             else
               raise ClimException.new "[#{typeof(default)}] is not supported."
