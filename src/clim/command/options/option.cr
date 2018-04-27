@@ -40,28 +40,28 @@ class Clim
 
         macro define_option_macro(type, default, required)
           {% if default != nil && required == true %}
-            {% value_type = type.stringify %}
+            {% value_type = type.stringify.id %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
             {% default_type = type.stringify %}
           {% elsif default != nil && required == false %}
-            {% value_type = type.stringify %}
+            {% value_type = type.stringify.id %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
             {% default_type = type.stringify %}
           {% elsif default == nil && required == true %}
-            {% value_type = type.stringify %}
+            {% value_type = type.stringify.id %}
             {% value_default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
             {% value_default_assign = SUPPORT_TYPES_ALL_HASH[type][:default] %}
             {% default_type = type.stringify + "?" %}
           {% elsif default == nil && required == false %}
-            {% value_type = type.stringify + "?" %}
+            {% value_type = (type.stringify + "?").id %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
             {% default_type = type.stringify + "?" %}
           {% end %}
 
-          property value : {{value_type.id}} = {{value_default_value}}
+          property value : {{value_type}} = {{value_default_value}}
           property default : {{default_type.id}} = {{default}}
           property set_value : Bool = false
 
