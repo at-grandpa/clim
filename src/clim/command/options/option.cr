@@ -39,12 +39,7 @@ class Clim
         end
 
         macro define_option_macro(type, default, required)
-          {% if default != nil && required == true %}
-            {% value_type = type.stringify.id %}
-            {% value_default_value = default %}
-            {% value_default_assign = "default".id %}
-            {% default_type = type.stringify.id %}
-          {% elsif default != nil && required == false %}
+          {% if default != nil %}
             {% value_type = type.stringify.id %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
