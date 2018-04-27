@@ -97,27 +97,27 @@ class Clim
 
           def set_value(arg : String)
             {% if type.id == Int8.id %}
-              @value = arg.to_i8
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == Int16.id %}
-              @value = arg.to_i16
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == Int32.id %}
-              @value = arg.to_i32
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == Int64.id %}
-              @value = arg.to_i64
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == UInt8.id %}
-              @value = arg.to_u8
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == UInt16.id %}
-              @value = arg.to_u16
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == UInt32.id %}
-              @value = arg.to_u32
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == UInt64.id %}
-              @value = arg.to_u64
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == Float32.id %}
-              @value = arg.to_f32
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == Float64.id %}
-              @value = arg.to_f64
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == String.id %}
-              @value = arg.to_s
+              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
             {% elsif type.id == Bool.id %}
               @value = arg.try do |obj|
                 next true if obj.empty?
