@@ -44,31 +44,26 @@ class Clim
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
             {% default_type = type.stringify %}
-            {% display_default_on_help_flag = true %}
           {% elsif default != nil && required == false %}
             {% value_type = type.stringify %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
             {% default_type = type.stringify %}
-            {% display_default_on_help_flag = true %}
           {% elsif default == nil && required == true %}
             {% value_type = type.stringify %}
             {% value_default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
             {% value_default_assign = SUPPORT_TYPES_ALL_HASH[type][:default] %}
             {% default_type = type.stringify + "?" %}
-            {% display_default_on_help_flag = false %}
           {% elsif default == nil && required == false %}
             {% value_type = type.stringify + "?" %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
             {% default_type = type.stringify + "?" %}
-            {% display_default_on_help_flag = false %}
           {% end %}
 
           property value : {{value_type.id}} = {{value_default_value}}
           property default : {{default_type.id}} = {{default}}
           property set_value : Bool = false
-          property display_default_on_help_flag : Bool = {{display_default_on_help_flag.id}}
 
           def initialize(@short : String, @long : String, @desc : String, @default : {{default_type.id}}, @required : Bool)
               @value = {{value_default_assign}}
@@ -82,7 +77,7 @@ class Clim
           def desc
             desc = @desc
             desc = desc + " [type:#{{{type}}.to_s}]"
-            desc = desc + " [default:#{display_default}]" if display_default_on_help_flag
+            desc = desc + " [default:#{display_default}]" unless {{(default == nil).id}}
             desc = desc + " [required]" if required
             desc
           end
