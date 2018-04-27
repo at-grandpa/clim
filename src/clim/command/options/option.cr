@@ -97,27 +97,27 @@ class Clim
 
           def set_value(arg : String)
             {% if type.id == Int8.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == Int16.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == Int32.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == Int64.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == UInt8.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == UInt16.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == UInt32.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == UInt64.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == Float32.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == Float64.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == String.id %}
-              @value = arg.{{SUPPORT_TYPES_ALL_HASH[type][:converter_method].id}}
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == Bool.id %}
               @value = arg.try do |obj|
                 next true if obj.empty?
@@ -127,27 +127,27 @@ class Clim
                 obj === "true"
               end
             {% elsif type.id == "Array(Int8)".id %}
-              add_array_value(Int8, to_i8)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(Int16)".id %}
-              add_array_value(Int16, to_i16)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(Int32)".id %}
-              add_array_value(Int32, to_i32)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(Int64)".id %}
-              add_array_value(Int64, to_i64)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(UInt8)".id %}
-              add_array_value(UInt8, to_u8)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(UInt16)".id %}
-              add_array_value(UInt16, to_u16)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(UInt32)".id %}
-              add_array_value(UInt32, to_u32)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(UInt64)".id %}
-              add_array_value(UInt64, to_u64)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(Float32)".id %}
-              add_array_value(Float32, to_f32)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(Float64)".id %}
-              add_array_value(Float64, to_f64)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(String)".id %}
-              add_array_value(String, to_s)
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% else %}
               {% raise "Type [#{type}] is not supported on option." %}
             {% end %}
@@ -159,10 +159,10 @@ class Clim
           end
         end
 
-        macro add_array_value(type, cast_method)
+        macro add_array_value(type, casted_arg)
           @value = [] of {{type}} if @array_set_flag == false
           @array_set_flag = true
-          @value = @value.nil? ? [arg.{{cast_method}}] : @value.try &.<<(arg.{{cast_method}})
+          @value.nil? ? [{{casted_arg}}] : @value.try &.<<({{casted_arg}})
         end
       end
     end
