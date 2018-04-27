@@ -53,16 +53,16 @@ class Clim
             {% value_type = type.stringify.id %}
             {% value_default_value = SUPPORT_TYPES[type][:default] %}
             {% value_default_assign = SUPPORT_TYPES[type][:default] %}
-            {% default_type = type.id == Bool.id ? type.stringify.id : (type.stringify + "?").id %}
+            {% default_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% elsif default == nil && required == false %}
-            {% value_type = type.id == Bool.id ? type.stringify.id : (type.stringify + "?").id%}
-            {% value_default_value = type.id == Bool.id ? false : default %}
-            {% value_default_assign = "default".id %}
-            {% default_type = type.id == Bool.id ? type.stringify.id : (type.stringify + "?").id %}
+            {% value_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_default_value = SUPPORT_TYPES[type][:nilable] ? default : SUPPORT_TYPES[type][:default] %}
+            {% value_default_assign = SUPPORT_TYPES[type][:nilable] ? "default".id : SUPPORT_TYPES[type][:default] %}
+            {% default_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% end %}
 
           property value : {{value_type}} = {{value_default_value}}
-          property default : {{default_type}} = {{ type.id == Bool.id ? false : default }}
+          property default : {{default_type}} = {{ SUPPORT_TYPES[type][:nilable] ? default : SUPPORT_TYPES[type][:default] }}
           property set_value : Bool = false
 
           def initialize(@short : String, @long : String, @desc : String, @default : {{default_type}}, @required : Bool)

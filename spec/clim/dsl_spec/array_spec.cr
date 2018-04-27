@@ -30,9 +30,9 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
-        "expect_value" => nil,
+        "expect_value" => [] of String,
       },
       expect_args: [] of String,
     },
@@ -40,9 +40,9 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
-        "expect_value" => nil,
+        "expect_value" => [] of String,
       },
       expect_args: ["arg1"],
     },
@@ -50,7 +50,7 @@ spec(
       argv:        ["-a", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -60,7 +60,7 @@ spec(
       argv:        ["-a", "array1", "arg1", "-a", "array2"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1", "array2"],
       },
@@ -70,7 +70,7 @@ spec(
       argv:        ["-aarray1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -80,7 +80,7 @@ spec(
       argv:        ["--array", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -90,7 +90,7 @@ spec(
       argv:        ["--array=array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -100,7 +100,7 @@ spec(
       argv:        ["-a", "array1", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -110,7 +110,7 @@ spec(
       argv:        ["arg1", "-a", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -120,7 +120,7 @@ spec(
       argv:        ["-array"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["rray"],
       },
@@ -130,7 +130,7 @@ spec(
       argv:        ["-a=array1"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["=array1"],
       },
@@ -210,9 +210,9 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "a",
-        "expect_value" => nil,
+        "expect_value" => [] of String,
       },
       expect_args: [] of String,
     },
@@ -220,9 +220,9 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "a",
-        "expect_value" => nil,
+        "expect_value" => [] of String,
       },
       expect_args: ["arg1"],
     },
@@ -230,7 +230,7 @@ spec(
       argv:        ["-a", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "a",
         "expect_value" => ["array1"],
       },
@@ -240,7 +240,7 @@ spec(
       argv:        ["-aarray1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "a",
         "expect_value" => ["array1"],
       },
@@ -250,7 +250,7 @@ spec(
       argv:        ["-a", "array1", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "a",
         "expect_value" => ["array1"],
       },
@@ -260,7 +260,7 @@ spec(
       argv:        ["arg1", "-a", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "a",
         "expect_value" => ["array1"],
       },
@@ -270,7 +270,7 @@ spec(
       argv:        ["-array"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "a",
         "expect_value" => ["rray"],
       },
@@ -280,7 +280,7 @@ spec(
       argv:        ["-a=array1"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "a",
         "expect_value" => ["=array1"],
       },
@@ -368,9 +368,9 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
-        "expect_value" => nil,
+        "expect_value" => [] of String,
       },
       expect_args: [] of String,
     },
@@ -378,9 +378,9 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
-        "expect_value" => nil,
+        "expect_value" => [] of String,
       },
       expect_args: ["arg1"],
     },
@@ -388,7 +388,7 @@ spec(
       argv:        ["--array", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -398,7 +398,7 @@ spec(
       argv:        ["--array=array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -408,7 +408,7 @@ spec(
       argv:        ["--array", "array1", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -418,7 +418,7 @@ spec(
       argv:        ["arg1", "--array", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -1207,9 +1207,9 @@ spec(
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
-        "expect_value" => nil,
+        "expect_value" => [] of String,
       },
       expect_args: [] of String,
     },
@@ -1217,9 +1217,9 @@ spec(
       argv:        ["arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
-        "expect_value" => nil,
+        "expect_value" => [] of String,
       },
       expect_args: ["arg1"],
     },
@@ -1227,7 +1227,7 @@ spec(
       argv:        ["-a", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -1237,7 +1237,7 @@ spec(
       argv:        ["-aarray1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -1247,7 +1247,7 @@ spec(
       argv:        ["--array", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -1257,7 +1257,7 @@ spec(
       argv:        ["--array=array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -1267,7 +1267,7 @@ spec(
       argv:        ["-a", "array1", "arg1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -1277,7 +1277,7 @@ spec(
       argv:        ["arg1", "-a", "array1"],
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["array1"],
       },
@@ -1287,7 +1287,7 @@ spec(
       argv:        ["-array"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["rray"],
       },
@@ -1297,7 +1297,7 @@ spec(
       argv:        ["-a=array1"], # Unintended case.
       expect_help: {{main_help_message}},
       expect_opts: {
-        "type" => Array(String)?,
+        "type" => Array(String),
         "method" => "array",
         "expect_value" => ["=array1"],
       },

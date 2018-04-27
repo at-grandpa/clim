@@ -132,12 +132,13 @@ class Clim
         end
 
         {% default = false if type.id.stringify == "Bool" %}
+        # おかしい
         {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
 
-        {% if default == nil && required == false %}
-          {% default_value = nil %}
+        {% if default == nil %}
+          {% default_value = SUPPORT_TYPES[type][:nilable] ? default : SUPPORT_TYPES[type][:default] %}
         {% else %}
-          {% default_value = default == nil ? SUPPORT_TYPES[type][:default] : default %}
+          {% default_value = default %}
         {% end %}
 
         property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default_value }}, {{ required }})
