@@ -81,6 +81,8 @@ class Clim
             {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES.keys.includes?(type) %}
             @value = {{SUPPORT_TYPES[type][:convert_arg_process].id}}
             @set_value = true
+          rescue ex
+            raise ClimInvalidTypeCastException.new ex.message
           end
 
           def set_value?

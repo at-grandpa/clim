@@ -99,6 +99,10 @@ spec(
   ],
   spec_desc: "option type spec,",
   spec_cases: [
+
+    # ====================================================
+    # Default type (String)
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -159,6 +163,10 @@ spec(
       },
       expect_args: ["bar"]
     },
+
+    # ====================================================
+    # Int8
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -180,6 +188,10 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["-i", "foo"],
+      exception_message: "Invalid Int8: foo",
+    },
+    {
       argv:        ["--int8", "5"] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -188,6 +200,10 @@ spec(
         "expect_value" => 5_i8,
       },
       expect_args: [] of String,
+    },
+    {
+      argv:              ["--int8", "foo"],
+      exception_message: "Invalid Int8: foo",
     },
     {
       argv:        [] of String,
@@ -210,6 +226,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--int8-default", "foo"],
+      exception_message: "Invalid Int8: foo",
+    },
+
+    # ====================================================
+    # Int16
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -229,6 +253,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--int16", "foo"],
+      exception_message: "Invalid Int16: foo",
+    },
+
+    # ====================================================
+    # Int32
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -250,6 +282,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--int32", "foo"],
+      exception_message: "Invalid Int32: foo",
+    },
+
+    # ====================================================
+    # Int64
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -269,6 +309,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--int64", "foo"],
+      exception_message: "Invalid Int64: foo",
+    },
+
+    # ====================================================
+    # UInt8
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -290,6 +338,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--uint8", "foo"],
+      exception_message: "Invalid UInt8: foo",
+    },
+
+    # ====================================================
+    # UInt16
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -309,6 +365,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--uint16", "foo"],
+      exception_message: "Invalid UInt16: foo",
+    },
+
+    # ====================================================
+    # UInt32
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -330,6 +394,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--uint32", "foo"],
+      exception_message: "Invalid UInt32: foo",
+    },
+
+    # ====================================================
+    # UInt64
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -349,7 +421,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--uint64", "foo"],
+      exception_message: "Invalid UInt64: foo",
+    },
 
+    # ====================================================
+    # Float32
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -371,6 +450,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--float32", "foo"],
+      exception_message: "Invalid Float32: foo",
+    },
+
+    # ====================================================
+    # Float64
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -391,6 +478,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--float64", "foo"],
+      exception_message: "Invalid Float64: foo",
+    },
+
+    # ====================================================
+    # String
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -410,6 +505,10 @@ spec(
       },
       expect_args: [] of String,
     },
+
+    # ====================================================
+    # Bool
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -430,6 +529,10 @@ spec(
       },
       expect_args: [] of String,
     },
+
+    # ====================================================
+    # Array(Int8)
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -449,6 +552,10 @@ spec(
         "expect_value" => [1_i8, 2_i8],
       },
       expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-int8", "foo"],
+      exception_message: "Invalid Int8: foo",
     },
     {
       argv:        [] of String,
@@ -471,6 +578,10 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--array-int8-default", "foo"],
+      exception_message: "Invalid Int8: foo",
+    },
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -490,6 +601,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--array-int8-default-value", "foo"],
+      exception_message: "Invalid Int8: foo",
+    },
+
+    # ====================================================
+    # Array(Int16)
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -511,6 +630,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--array-int16", "foo"],
+      exception_message: "Invalid Int16: foo",
+    },
+
+    # ====================================================
+    # Array(Int32)
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -530,6 +657,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--array-int32", "foo"],
+      exception_message: "Invalid Int32: foo",
+    },
+
+    # ====================================================
+    # Array(Int64)
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -551,6 +686,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--array-int64", "foo"],
+      exception_message: "Invalid Int64: foo",
+    },
+
+    # ====================================================
+    # Array(UInt8)
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -570,6 +713,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--array-uint8", "foo"],
+      exception_message: "Invalid UInt8: foo",
+    },
+
+    # ====================================================
+    # Array(UInt16)
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -591,6 +742,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--array-uint16", "foo"],
+      exception_message: "Invalid UInt16: foo",
+    },
+
+    # ====================================================
+    # Array(UInt32)
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -610,6 +769,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--array-uint32", "foo"],
+      exception_message: "Invalid UInt32: foo",
+    },
+
+    # ====================================================
+    # Array(UInt64)
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
@@ -631,6 +798,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--array-uint64", "foo"],
+      exception_message: "Invalid UInt64: foo",
+    },
+
+    # ====================================================
+    # Array(Float32)
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -651,6 +826,14 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:              ["--array-float32", "foo"],
+      exception_message: "Invalid Float32: foo",
+    },
+
+    # ====================================================
+    # Array(Float64)
+    # ====================================================
+    {
       argv:        [] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
@@ -670,6 +853,14 @@ spec(
       },
       expect_args: [] of String,
     },
+    {
+      argv:              ["--array-float64", "foo"],
+      exception_message: "Invalid Float64: foo",
+    },
+
+    # ====================================================
+    # Array(String)
+    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},

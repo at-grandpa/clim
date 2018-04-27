@@ -17,7 +17,7 @@ class Clim
       start_parse(argv)
     rescue ex : ClimException
       puts "ERROR: #{ex.message}"
-    rescue ex : ClimInvalidOptionException
+    rescue ex : ClimInvalidOptionException | ClimInvalidTypeCastException
       puts "ERROR: #{ex.message}"
       puts ""
       puts "Please see the `--help`."
