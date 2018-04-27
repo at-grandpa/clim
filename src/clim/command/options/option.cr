@@ -119,13 +119,7 @@ class Clim
             {% elsif type.id == String.id %}
               @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == Bool.id %}
-              @value = arg.try do |obj|
-                next true if obj.empty?
-                unless obj === "true" || obj == "false"
-                  raise ClimException.new "Bool arguments accept only \"true\" or \"false\". Input: [#{obj}]"
-                end
-                obj === "true"
-              end
+              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(Int8)".id %}
               @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             {% elsif type.id == "Array(Int16)".id %}
