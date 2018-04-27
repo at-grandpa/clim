@@ -15,10 +15,10 @@ class Clim
         private def display_default
           default_value = @default.dup
           {% begin %}
-            {% support_types_number = SUPPORT_TYPES_ALL_HASH.map { |k, v| v[:type] == "number" ? k : nil }.reject(&.==(nil)) %}
-            {% support_types_string = SUPPORT_TYPES_ALL_HASH.map { |k, v| v[:type] == "string" ? k : nil }.reject(&.==(nil)) %}
-            {% support_types_bool = SUPPORT_TYPES_ALL_HASH.map { |k, v| v[:type] == "bool" ? k : nil }.reject(&.==(nil)) %}
-            {% support_types_array = SUPPORT_TYPES_ALL_HASH.map { |k, v| v[:type] == "array" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_number = SUPPORT_TYPES.map { |k, v| v[:type] == "number" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_string = SUPPORT_TYPES.map { |k, v| v[:type] == "string" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_bool = SUPPORT_TYPES.map { |k, v| v[:type] == "bool" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_array = SUPPORT_TYPES.map { |k, v| v[:type] == "array" ? k : nil }.reject(&.==(nil)) %}
             case default_value
             when Nil
               "nil"
@@ -51,8 +51,8 @@ class Clim
             {% default_type = type.stringify.id %}
           {% elsif default == nil && required == true %}
             {% value_type = type.stringify.id %}
-            {% value_default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
-            {% value_default_assign = SUPPORT_TYPES_ALL_HASH[type][:default] %}
+            {% value_default_value = SUPPORT_TYPES[type][:default] %}
+            {% value_default_assign = SUPPORT_TYPES[type][:default] %}
             {% default_type = (type.stringify + "?").id %}
           {% elsif default == nil && required == false %}
             {% value_type = (type.stringify + "?").id %}
@@ -83,8 +83,8 @@ class Clim
           end
 
           def set_value(arg : String)
-            {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES_ALL_HASH.keys.includes?(type) %}
-            @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
+            {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES.keys.includes?(type) %}
+            @value = {{SUPPORT_TYPES[type][:convert_arg_process].id}}
             @set_value = true
           end
 

@@ -1,6 +1,6 @@
 class Clim
   module Types
-    SUPPORT_TYPES_ALL_HASH = {
+    SUPPORT_TYPES = {
       Int8 => {
         type:                "number",
         default:             0,
