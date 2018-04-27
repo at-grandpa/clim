@@ -96,55 +96,8 @@ class Clim
           end
 
           def set_value(arg : String)
-            {% if type.id == Int8.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == Int16.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == Int32.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == Int64.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == UInt8.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == UInt16.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == UInt32.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == UInt64.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == Float32.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == Float64.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == String.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == Bool.id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(Int8)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(Int16)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(Int32)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(Int64)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(UInt8)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(UInt16)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(UInt32)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(UInt64)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(Float32)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(Float64)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% elsif type.id == "Array(String)".id %}
-              @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
-            {% else %}
-              {% raise "Type [#{type}] is not supported on option." %}
-            {% end %}
+            {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES_ALL_HASH.keys.includes?(type) %}
+            @value = {{SUPPORT_TYPES_ALL_HASH[type][:convert_arg_process].id}}
             @set_value = true
           end
 
