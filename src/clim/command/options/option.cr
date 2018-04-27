@@ -66,7 +66,7 @@ class Clim
           property set_value : Bool = false
 
           def initialize(@short : String, @long : String, @desc : String, @default : {{default_type}}, @required : Bool)
-              @value = {{value_default_assign}}
+            @value = {{value_default_assign}}
           end
 
           def initialize(@short : String, @desc : String, @default : {{default_type}}, @required : Bool)

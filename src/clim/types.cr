@@ -60,14 +60,14 @@ class Clim
         type:                "bool",
         default:             false,
         convert_arg_process: <<-PROCESS
-      arg.try do |obj|
-        next true if obj.empty?
-        unless obj === "true" || obj == "false"
-          raise ClimException.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
+        arg.try do |obj|
+          next true if obj.empty?
+          unless obj === "true" || obj == "false"
+            raise ClimException.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
+          end
+          obj === "true"
         end
-        obj === "true"
-      end
-      PROCESS,
+        PROCESS,
       },
       Array(Int8) => {
         type:                "array",
