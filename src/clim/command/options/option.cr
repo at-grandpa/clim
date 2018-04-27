@@ -43,33 +43,33 @@ class Clim
             {% value_type = type.stringify.id %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
-            {% default_type = type.stringify %}
+            {% default_type = type.stringify.id %}
           {% elsif default != nil && required == false %}
             {% value_type = type.stringify.id %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
-            {% default_type = type.stringify %}
+            {% default_type = type.stringify.id %}
           {% elsif default == nil && required == true %}
             {% value_type = type.stringify.id %}
             {% value_default_value = SUPPORT_TYPES_ALL_HASH[type][:default] %}
             {% value_default_assign = SUPPORT_TYPES_ALL_HASH[type][:default] %}
-            {% default_type = type.stringify + "?" %}
+            {% default_type = (type.stringify + "?").id %}
           {% elsif default == nil && required == false %}
             {% value_type = (type.stringify + "?").id %}
             {% value_default_value = default %}
             {% value_default_assign = "default".id %}
-            {% default_type = type.stringify + "?" %}
+            {% default_type = (type.stringify + "?").id %}
           {% end %}
 
           property value : {{value_type}} = {{value_default_value}}
-          property default : {{default_type.id}} = {{default}}
+          property default : {{default_type}} = {{default}}
           property set_value : Bool = false
 
-          def initialize(@short : String, @long : String, @desc : String, @default : {{default_type.id}}, @required : Bool)
+          def initialize(@short : String, @long : String, @desc : String, @default : {{default_type}}, @required : Bool)
               @value = {{value_default_assign}}
           end
 
-          def initialize(@short : String, @desc : String, @default : {{default_type.id}}, @required : Bool)
+          def initialize(@short : String, @desc : String, @default : {{default_type}}, @required : Bool)
             @long = nil
             @value = {{value_default_assign}}
           end
