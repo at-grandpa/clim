@@ -132,7 +132,6 @@ class Clim
         end
 
         {% default = false if type.id.stringify == "Bool" %}
-        # おかしい
         {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
 
         {% if default == nil %}
