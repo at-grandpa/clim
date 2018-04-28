@@ -586,166 +586,166 @@ spec(
       expect_args: [] of String,
     },
 
-#    # ====================================================
-#    # Array(Int8)
-#    # ====================================================
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int8),
-#        "method" => "array_int8",
-#        "expect_value" => [] of Int8,
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:        ["--array-int8", "1", "--array-int8", "2"],
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int8),
-#        "method" => "array_int8",
-#        "expect_value" => [1_i8, 2_i8],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:              ["--array-int8", "foo"],
-#      exception_message: "Invalid Int8: foo",
-#    },
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int8),
-#        "method" => "array_int8_default",
-#        "expect_value" => [] of Int8,
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:        ["--array-int8-default", "1", "--array-int8-default", "2"],
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int8),
-#        "method" => "array_int8_default",
-#        "expect_value" => [1_i8, 2_i8],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:              ["--array-int8-default", "foo"],
-#      exception_message: "Invalid Int8: foo",
-#    },
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int8),
-#        "method" => "array_int8_default_value",
-#        "expect_value" => [1_i8, 2_i8, 3_i8],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:        ["--array-int8-default-value", "8", "--array-int8-default-value", "9"],
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int8),
-#        "method" => "array_int8_default_value",
-#        "expect_value" => [8_i8, 9_i8],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:              ["--array-int8-default-value", "foo"],
-#      exception_message: "Invalid Int8: foo",
-#    },
-#
-#    # ====================================================
-#    # Array(Int16)
-#    # ====================================================
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int16),
-#        "method" => "array_int16",
-#        "expect_value" => [] of Int16,
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:        ["--array-int16", "1", "--array-int16", "2"],
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int16),
-#        "method" => "array_int16",
-#        "expect_value" => [1_i16, 2_i16],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:              ["--array-int16", "foo"],
-#      exception_message: "Invalid Int16: foo",
-#    },
-#
-#    # ====================================================
-#    # Array(Int32)
-#    # ====================================================
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int32),
-#        "method" => "array_int32",
-#        "expect_value" => [] of Int32,
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:        ["--array-int32", "1", "--array-int32", "2"],
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int32),
-#        "method" => "array_int32",
-#        "expect_value" => [1_i32, 2_i32],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:              ["--array-int32", "foo"],
-#      exception_message: "Invalid Int32: foo",
-#    },
-#
-#    # ====================================================
-#    # Array(Int64)
-#    # ====================================================
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int64),
-#        "method" => "array_int64",
-#        "expect_value" => [] of Int64,
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:        ["--array-int64", "1", "--array-int64", "2"],
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Int64),
-#        "method" => "array_int64",
-#        "expect_value" => [1_i64, 2_i64],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:              ["--array-int64", "foo"],
-#      exception_message: "Invalid Int64: foo",
-#    },
-#
+    # ====================================================
+    # Array(Int8)
+    # ====================================================
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8",
+        "expect_value" => [] of Int8,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int8", "1", "--array-int8", "2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8",
+        "expect_value" => [1_i8, 2_i8],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-int8", "foo"],
+      exception_message: "Invalid Int8: foo",
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8_default",
+        "expect_value" => [] of Int8,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int8-default", "1", "--array-int8-default", "2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8_default",
+        "expect_value" => [1_i8, 2_i8],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-int8-default", "foo"],
+      exception_message: "Invalid Int8: foo",
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8_default_value",
+        "expect_value" => [1_i8, 2_i8, 3_i8],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int8-default-value", "8", "--array-int8-default-value", "9"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int8),
+        "method" => "array_int8_default_value",
+        "expect_value" => [8_i8, 9_i8],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-int8-default-value", "foo"],
+      exception_message: "Invalid Int8: foo",
+    },
+
+    # ====================================================
+    # Array(Int16)
+    # ====================================================
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int16),
+        "method" => "array_int16",
+        "expect_value" => [] of Int16,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int16", "1", "--array-int16", "2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int16),
+        "method" => "array_int16",
+        "expect_value" => [1_i16, 2_i16],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-int16", "foo"],
+      exception_message: "Invalid Int16: foo",
+    },
+
+    # ====================================================
+    # Array(Int32)
+    # ====================================================
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int32),
+        "method" => "array_int32",
+        "expect_value" => [] of Int32,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int32", "1", "--array-int32", "2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int32),
+        "method" => "array_int32",
+        "expect_value" => [1_i32, 2_i32],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-int32", "foo"],
+      exception_message: "Invalid Int32: foo",
+    },
+
+    # ====================================================
+    # Array(Int64)
+    # ====================================================
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int64),
+        "method" => "array_int64",
+        "expect_value" => [] of Int64,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-int64", "1", "--array-int64", "2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Int64),
+        "method" => "array_int64",
+        "expect_value" => [1_i64, 2_i64],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-int64", "foo"],
+      exception_message: "Invalid Int64: foo",
+    },
+
 #    # ====================================================
 #    # Array(UInt8)
 #    # ====================================================
