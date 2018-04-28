@@ -53,7 +53,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.2.2
+    version: 0.3.0
 ```
 
 ## Minimum sample
@@ -363,18 +363,45 @@ class MyCli < Clim
 end
 ```
 
-If default is not specified, it is nilable.
+The type of the option is determined by the `default` and `required` patterns.
 
-```crystal
-class MyCli < Clim
-  main_command do
-    option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings."
-    run do |options, arguments|
-      puts typeof(options.greeting) # => (String | Nil)
-    end
-  end
-end
-```
+*Number*
+
+For example `Int8`.
+
+ `default` | `required` | Type
+---------|----------|---------
+ exist | `true` | `Int8` (default: Your specified value.) |
+ exist | `false` | `Int8` (default: Your specified value.) |
+ not exist | `true` | `Int8` |
+ not exist | `false` | `Int8 \| Nil` |
+
+*String*
+
+ `default` | `required` | Type
+---------|----------|---------
+ exist | `true` | `String` (default: Your specified value.) |
+ exist | `false` | `String` (default: Your specified value.) |
+ not exist | `true` | `String` |
+ not exist | `false` | `String \| Nil` |
+
+*Bool*
+
+ `default` | `required` | Type
+---------|----------|---------
+ exist | `true` | `Bool` (default: Your specified value.) |
+ exist | `false` | `Bool` (default: Your specified value.) |
+ not exist | `true` | `Bool` |
+ not exist | `false` | `Bool` (default: `false`) |
+
+*Array*
+
+ `default` | `required` | Type
+---------|----------|---------
+ exist | `true` | `Array(T)` (default: Your specified value.) |
+ exist | `false` | `Array(T)` (default: Your specified value.) |
+ not exist | `true` | `Array(T)` |
+ not exist | `false` | `Array(T)` (default: `[] of T`) |
 
 For Bool, you do not need to specify arguments for short or long.
 
@@ -432,4 +459,4 @@ $ make spec
 
 ## Contributors
 
-- [at-grandpa](https://github.com/at-grandpa) at-grandpa - creator, maintainer
+- [at-grandpa](https://github.com/at-grandpa) - creator, maintainer

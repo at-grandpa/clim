@@ -8,25 +8,29 @@ class Clim
         property required : Bool = false
         property array_set_flag : Bool = false
 
-        def required_set? : Bool
-          @required && @value.nil?
+        def required_not_set? : Bool
+          @required && !set_value?
         end
 
         private def display_default
           default_value = @default.dup
           {% begin %}
+            {% support_types_number = SUPPORT_TYPES.map { |k, v| v[:type] == "number" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_string = SUPPORT_TYPES.map { |k, v| v[:type] == "string" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_bool = SUPPORT_TYPES.map { |k, v| v[:type] == "bool" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_array = SUPPORT_TYPES.map { |k, v| v[:type] == "array" ? k : nil }.reject(&.==(nil)) %}
             case default_value
             when Nil
               "nil"
-            when {{*SUPPORT_TYPES_BOOL}}
+            when {{*support_types_bool}}
               default_value
-            when {{*SUPPORT_TYPES_STRING}}
+            when {{*support_types_string}}
               default_value.empty? ? "\"\"" : "\"#{default_value}\""
-            when {{*(SUPPORT_TYPES_INT + SUPPORT_TYPES_UINT + SUPPORT_TYPES_FLOAT)}}
+            when {{*support_types_number}}
               default_value
-            {% for type in (SUPPORT_TYPES_INT + SUPPORT_TYPES_UINT + SUPPORT_TYPES_FLOAT + SUPPORT_TYPES_STRING) %}
-            when Array({{type}})
-              default_value.empty? ? "[] of {{type}}" : default
+            {% for type in support_types_array %}
+            when {{type}}
+              default_value.empty? ? "[] of {{type.type_vars.first}}" : default
             {% end %}
             else
               raise ClimException.new "[#{typeof(default)}] is not supported."
@@ -34,91 +38,62 @@ class Clim
           {% end %}
         end
 
-        macro define_option_macro(type, default)
-          {% value_type = default == nil ? type.stringify + "?" : type.stringify %}
-          property default : {{value_type.id}} = {{default}}
-          property value : {{value_type.id}} = {{default}}
+        macro define_option_macro(type, default, required)
+          {% if default != nil %}
+            {% value_type    = type.stringify.id %}
+            {% value_default = default %}
+            {% value_assign  = "default".id %}
+            {% default_type  = type.stringify.id %}
+          {% elsif default == nil && required == true %}
+            {% value_type    = type.stringify.id %}
+            {% value_default = SUPPORT_TYPES[type][:default] %}
+            {% value_assign  = SUPPORT_TYPES[type][:default] %}
+            {% default_type  = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+          {% elsif default == nil && required == false %}
+            {% value_type    = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_default = SUPPORT_TYPES[type][:nilable] ? default                   : SUPPORT_TYPES[type][:default] %}
+            {% value_assign  = SUPPORT_TYPES[type][:nilable] ? "default".id              : SUPPORT_TYPES[type][:default] %}
+            {% default_type  = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+          {% end %}
 
-          def initialize(@short : String, @long : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
-            @value = default
+          property value : {{value_type}} = {{value_default}}
+          property default : {{default_type}} = {{ SUPPORT_TYPES[type][:nilable] ? default : SUPPORT_TYPES[type][:default] }}
+          property set_value : Bool = false
+
+          def initialize(@short : String, @long : String, @desc : String, @default : {{default_type}}, @required : Bool)
+            @value = {{value_assign}}
           end
 
-          def initialize(@short : String, @desc : String, @default : {{value_type.id}}, @required : Bool)
+          def initialize(@short : String, @desc : String, @default : {{default_type}}, @required : Bool)
             @long = nil
-            @value = default
+            @value = {{value_assign}}
           end
 
           def desc
             desc = @desc
             desc = desc + " [type:#{{{type}}.to_s}]"
-            desc = desc + " [default:#{display_default}]" unless default.nil?
+            desc = desc + " [default:#{display_default}]" unless {{(default == nil).id}}
             desc = desc + " [required]" if required
             desc
           end
 
           def set_value(arg : String)
-            {% if type.id == Int8.id %}
-              @value = arg.to_i8
-            {% elsif type.id == Int16.id %}
-              @value = arg.to_i16
-            {% elsif type.id == Int32.id %}
-              @value = arg.to_i32
-            {% elsif type.id == Int64.id %}
-              @value = arg.to_i64
-            {% elsif type.id == UInt8.id %}
-              @value = arg.to_u8
-            {% elsif type.id == UInt16.id %}
-              @value = arg.to_u16
-            {% elsif type.id == UInt32.id %}
-              @value = arg.to_u32
-            {% elsif type.id == UInt64.id %}
-              @value = arg.to_u64
-            {% elsif type.id == Float32.id %}
-              @value = arg.to_f32
-            {% elsif type.id == Float64.id %}
-              @value = arg.to_f64
-            {% elsif type.id == String.id %}
-              @value = arg.to_s
-            {% elsif type.id == Bool.id %}
-              @value = arg.try do |obj|
-                next true if obj.empty?
-                unless obj === "true" || obj == "false"
-                  raise ClimException.new "Bool arguments accept only \"true\" or \"false\". Input: [#{obj}]"
-                end
-                obj === "true"
-              end
-            {% elsif type.id == "Array(Int8)".id %}
-              add_array_value(Int8, to_i8)
-            {% elsif type.id == "Array(Int16)".id %}
-              add_array_value(Int16, to_i16)
-            {% elsif type.id == "Array(Int32)".id %}
-              add_array_value(Int32, to_i32)
-            {% elsif type.id == "Array(Int64)".id %}
-              add_array_value(Int64, to_i64)
-            {% elsif type.id == "Array(UInt8)".id %}
-              add_array_value(UInt8, to_u8)
-            {% elsif type.id == "Array(UInt16)".id %}
-              add_array_value(UInt16, to_u16)
-            {% elsif type.id == "Array(UInt32)".id %}
-              add_array_value(UInt32, to_u32)
-            {% elsif type.id == "Array(UInt64)".id %}
-              add_array_value(UInt64, to_u64)
-            {% elsif type.id == "Array(Float32)".id %}
-              add_array_value(Float32, to_f32)
-            {% elsif type.id == "Array(Float64)".id %}
-              add_array_value(Float64, to_f64)
-            {% elsif type.id == "Array(String)".id %}
-              add_array_value(String, to_s)
-            {% else %}
-              {% raise "Type [#{type}] is not supported on option." %}
-            {% end %}
+            {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES.keys.includes?(type) %}
+            @value = {{SUPPORT_TYPES[type][:convert_arg_process].id}}
+            @set_value = true
+          rescue ex
+            raise ClimInvalidTypeCastException.new ex.message
+          end
+
+          def set_value?
+            @set_value
           end
         end
 
-        macro add_array_value(type, cast_method)
+        macro add_array_value(type, casted_arg)
           @value = [] of {{type}} if @array_set_flag == false
           @array_set_flag = true
-          @value = @value.nil? ? [arg.{{cast_method}}] : @value.try &.<<(arg.{{cast_method}})
+          @value.nil? ? [{{casted_arg}}] : @value.try &.<<({{casted_arg}})
         end
       end
     end
