@@ -536,6 +536,40 @@ spec(
       expect_help: {{main_help_message}},
       expect_opts: {
         "type" => Bool,
+        "method" => "bool_equal",
+        "expect_value" => false,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool-equal=false"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool_equal",
+        "expect_value" => false,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool-equal=true"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool_equal",
+        "expect_value" => true,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--bool-equal=foo"],
+      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [foo]",
+    },
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Bool,
         "method" => "bool_default",
         "expect_value" => false,
       },
