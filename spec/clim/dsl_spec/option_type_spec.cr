@@ -858,62 +858,62 @@ spec(
       exception_message: "Invalid UInt64: foo",
     },
 
-#    # ====================================================
-#    # Array(Float32)
-#    # ====================================================
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Float32),
-#        "method" => "array_float32",
-#        "expect_value" => [] of Float32,
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:        ["--array-float32", "1.1", "--array-float32", "2.2"],
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Float32),
-#        "method" => "array_float32",
-#        "expect_value" => [1.1_f32, 2.2_f32],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:              ["--array-float32", "foo"],
-#      exception_message: "Invalid Float32: foo",
-#    },
-#
-#    # ====================================================
-#    # Array(Float64)
-#    # ====================================================
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Float64),
-#        "method" => "array_float64",
-#        "expect_value" => [] of Float64,
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:        ["--array-float64", "1.1", "--array-float64", "2.2"],
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(Float64),
-#        "method" => "array_float64",
-#        "expect_value" => [1.1_f64, 2.2_f64],
-#      },
-#      expect_args: [] of String,
-#    },
-#    {
-#      argv:              ["--array-float64", "foo"],
-#      exception_message: "Invalid Float64: foo",
-#    },
-#
+    # ====================================================
+    # Array(Float32)
+    # ====================================================
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Float32),
+        "method" => "array_float32",
+        "expect_value" => [] of Float32,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-float32", "1.1", "--array-float32", "2.2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Float32),
+        "method" => "array_float32",
+        "expect_value" => [1.1_f32, 2.2_f32],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-float32", "foo"],
+      exception_message: "Invalid Float32: foo",
+    },
+
+    # ====================================================
+    # Array(Float64)
+    # ====================================================
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Float64),
+        "method" => "array_float64",
+        "expect_value" => [] of Float64,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--array-float64", "1.1", "--array-float64", "2.2"],
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(Float64),
+        "method" => "array_float64",
+        "expect_value" => [1.1_f64, 2.2_f64],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:              ["--array-float64", "foo"],
+      exception_message: "Invalid Float64: foo",
+    },
+
 #    # ====================================================
 #    # Array(String)
 #    # ====================================================
