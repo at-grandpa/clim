@@ -459,4 +459,4 @@ $ make spec
 
 ## Contributors
 
-- [at-grandpa](https://github.com/at-grandpa) at-grandpa - creator, maintainer
+- [at-grandpa](https://github.com/at-grandpa) - creator, maintainer
