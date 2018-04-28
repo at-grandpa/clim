@@ -371,8 +371,8 @@ For example `Int8`.
 
  `default` | `required` | Type
 ---------|----------|---------
- exist | `true` | `Int8` |
- exist | `false` | `Int8` |
+ exist | `true` | `Int8` (default: Your specified value.) |
+ exist | `false` | `Int8` (default: Your specified value.) |
  not exist | `true` | `Int8` |
  not exist | `false` | `Int8 \| Nil` |
 
@@ -380,8 +380,8 @@ For example `Int8`.
 
  `default` | `required` | Type
 ---------|----------|---------
- exist | `true` | `String` |
- exist | `false` | `String` |
+ exist | `true` | `String` (default: Your specified value.) |
+ exist | `false` | `String` (default: Your specified value.) |
  not exist | `true` | `String` |
  not exist | `false` | `String \| Nil` |
 
@@ -389,8 +389,8 @@ For example `Int8`.
 
  `default` | `required` | Type
 ---------|----------|---------
- exist | `true` | `Bool` |
- exist | `false` | `Bool` |
+ exist | `true` | `Bool` (default: Your specified value.) |
+ exist | `false` | `Bool` (default: Your specified value.) |
  not exist | `true` | `Bool` |
  not exist | `false` | `Bool` (default: `false`) |
 
@@ -400,8 +400,8 @@ For example `Array(String)`.
 
  `default` | `required` | Type
 ---------|----------|---------
- exist | `true` | `Array(String)` |
- exist | `false` | `Array(String)` |
+ exist | `true` | `Array(String)` (default: Your specified value.) |
+ exist | `false` | `Array(String)` (default: Your specified value.) |
  not exist | `true` | `Array(String)` |
  not exist | `false` | `Array(String)` (default: `[] of String`) |
 
