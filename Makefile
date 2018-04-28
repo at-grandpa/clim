@@ -1,4 +1,5 @@
-SPEC_FILES := $(shell find spec -name '*_spec.cr' -print)
+#SPEC_FILES := $(shell find spec -name '*_spec.cr' -print)
+SPEC_FILES := spec/clim/dsl_spec/option_type_spec.cr
 
 spec: $(SPEC_FILES)
 
