@@ -532,6 +532,16 @@ spec(
       expect_args: [] of String,
     },
     {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool_default",
+        "expect_value" => false,
+      },
+      expect_args: [] of String,
+    },
+    {
       argv:        ["--bool-default"] of String,
       expect_help: {{main_help_message}},
       expect_opts: {
