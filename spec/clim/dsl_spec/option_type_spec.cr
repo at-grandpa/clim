@@ -29,6 +29,7 @@ require "../dsl_spec"
                           --float64=VALUE                  Option description. [type:Float64]
                           --string=VALUE                   Option description. [type:String]
                           --bool                           Option description. [type:Bool]
+                          --bool-equal=BOOL                Option description. [type:Bool]
                           --bool-default                   Option description. [type:Bool] [default:false]
                           --array-int8=VALUE               Option description. [type:Array(Int8)]
                           --array-int16=VALUE              Option description. [type:Array(Int16)]
@@ -75,6 +76,7 @@ spec(
     "option \"--float64=VALUE\", type: Float64",
     "option \"--string=VALUE\", type: String",
     "option \"--bool\", type: Bool",
+    "option \"--bool-equal=BOOL\", type: Bool",
     "option \"--bool-default\", type: Bool, default: false",
     "option \"--array-int8=VALUE\", type: Array(Int8)",
     "option \"--array-int16=VALUE\", type: Array(Int16)",
@@ -525,6 +527,16 @@ spec(
       expect_opts: {
         "type" => Bool,
         "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["--bool-default"] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool_default",
         "expect_value" => true,
       },
       expect_args: [] of String,
