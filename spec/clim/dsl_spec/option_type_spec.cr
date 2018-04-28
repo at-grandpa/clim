@@ -914,19 +914,19 @@ spec(
       exception_message: "Invalid Float64: foo",
     },
 
-#    # ====================================================
-#    # Array(String)
-#    # ====================================================
-#    {
-#      argv:        [] of String,
-#      expect_help: {{main_help_message}},
-#      expect_opts: {
-#        "type" => Array(String),
-#        "method" => "array_string",
-#        "expect_value" => [] of String,
-#      },
-#      expect_args: [] of String,
-#    },
+    # ====================================================
+    # Array(String)
+    # ====================================================
+    {
+      argv:        [] of String,
+      expect_help: {{main_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array_string",
+        "expect_value" => [] of String,
+      },
+      expect_args: [] of String,
+    },
 #    {
 #      argv:        ["--array-string", "array1", "--array-string", "array2"],
 #      expect_help: {{main_help_message}},
