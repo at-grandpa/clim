@@ -363,7 +363,7 @@ class MyCli < Clim
 end
 ```
 
-Option's type with `default` and `required` patterns.
+The type of the option is determined by the `default` and `required` patterns.
 
 *Number*
 
