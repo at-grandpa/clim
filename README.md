@@ -396,14 +396,12 @@ For example `Int8`.
 
 *Array*
 
-For example `Array(String)`.
-
  `default` | `required` | Type
 ---------|----------|---------
- exist | `true` | `Array(String)` (default: Your specified value.) |
- exist | `false` | `Array(String)` (default: Your specified value.) |
- not exist | `true` | `Array(String)` |
- not exist | `false` | `Array(String)` (default: `[] of String`) |
+ exist | `true` | `Array(T)` (default: Your specified value.) |
+ exist | `false` | `Array(T)` (default: Your specified value.) |
+ not exist | `true` | `Array(T)` |
+ not exist | `false` | `Array(T)` (default: `[] of T`) |
 
 For Bool, you do not need to specify arguments for short or long.
 
