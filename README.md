@@ -363,18 +363,47 @@ class MyCli < Clim
 end
 ```
 
-If default is not specified, it is nilable.
+Option's type with `default` and `required` patterns.
 
-```crystal
-class MyCli < Clim
-  main_command do
-    option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings."
-    run do |options, arguments|
-      puts typeof(options.greeting) # => (String | Nil)
-    end
-  end
-end
-```
+*Number*
+
+For example `Int8`.
+
+ `default` | `required` | Type
+---------|----------|---------|------|------
+ exist | `true` | `Int8` |
+ exist | `false` | `Int8` |
+ not exist | `true` | `Int8` |
+ not exist | `false` | `Int8 | Nil` |
+
+*String*
+
+ `default` | `required` | Type
+---------|----------|---------|------|------
+ exist | `true` | `String` |
+ exist | `false` | `String` |
+ not exist | `true` | `String` |
+ not exist | `false` | `String | Nil` |
+
+*Bool*
+
+ `default` | `required` | Type
+---------|----------|---------|------|------
+ exist | `true` | `Bool` |
+ exist | `false` | `Bool` |
+ not exist | `true` | `Bool` |
+ not exist | `false` | `Bool` (default: `false`) |
+
+*Array*
+
+For example `Array(String)`.
+
+ `default` | `required` | Type
+---------|----------|---------|------|------
+ exist | `true` | `Array(String)` |
+ exist | `false` | `Array(String)` |
+ not exist | `true` | `Array(String)` |
+ not exist | `false` | `Array(String)` (default: `[] of String`) |
 
 For Bool, you do not need to specify arguments for short or long.
 
