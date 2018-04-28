@@ -374,7 +374,7 @@ For example `Int8`.
  exist | `true` | `Int8` |
  exist | `false` | `Int8` |
  not exist | `true` | `Int8` |
- not exist | `false` | `Int8 | Nil` |
+ not exist | `false` | `Int8 \| Nil` |
 
 *String*
 
@@ -383,7 +383,7 @@ For example `Int8`.
  exist | `true` | `String` |
  exist | `false` | `String` |
  not exist | `true` | `String` |
- not exist | `false` | `String | Nil` |
+ not exist | `false` | `String \| Nil` |
 
 *Bool*
 
