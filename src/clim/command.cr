@@ -61,6 +61,17 @@ class Clim
     def define_version(parser)
     end
 
+    macro custom_help(&block)
+      def custom_help : String
+        options_help = ["a", "b", "c"]
+        Proc(String, String, Array(String), String).new {{ block.id }} .call(desc, usage, options_help)
+      end
+    end
+
+    def custom_help : String
+      Help.new(self).display
+    end
+
     macro main_command
       {% raise "Can not be declared 'main_command' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
     end
@@ -113,7 +124,7 @@ class Clim
     end
 
     private def help
-      Help.new(self).display
+      custom_help
     end
 
     private def display_help? : Bool
