@@ -7,9 +7,9 @@ require "../../dsl_spec"
                       command usage: main_command_of_clim_library [options] [arguments]
 
                       options:
-                      a
-                      b
-                      c
+                          --uint8=VALUE                    Option description. [type:UInt8]
+                          --uint16=VALUE                   Option description. [type:UInt16]
+                          --help                           Show this help.
 
                       HELP_MESSAGE
 %}
@@ -24,10 +24,12 @@ spec(
       command usage: \#{usage}
 
       options:
-      \#{options_help.join("\n")}
+      \#{options_help}
       MY_HELP
     end
     CUSTOM_HELP,
+    "option \"--uint8=VALUE\", type: UInt8",
+    "option \"--uint16=VALUE\", type: UInt16",
   ],
   spec_desc: "option type spec,",
   spec_cases: [

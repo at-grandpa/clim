@@ -63,8 +63,7 @@ class Clim
 
     macro custom_help(&block)
       def custom_help : String
-        options_help = ["a", "b", "c"]
-        Proc(String, String, Array(String), String).new {{ block.id }} .call(desc, usage, options_help)
+        Proc(String, String, String, String).new {{ block.id }} .call(desc, usage, self.parser.to_s)
       end
     end
 
@@ -125,6 +124,21 @@ class Clim
 
     private def help
       custom_help
+    end
+
+    def sub_cmds_help_lines
+      @sub_commands.map do |cmd|
+        name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
+        "    #{name}   #{cmd.desc}"
+      end
+    end
+
+    def max_name_length
+      @sub_commands.empty? ? 0 : @sub_commands.map { |cmd| name_and_alias_name(cmd).size }.max
+    end
+
+    def name_and_alias_name(cmd)
+      ([cmd.name] + cmd.alias_name).join(", ")
     end
 
     private def display_help? : Bool
