@@ -62,12 +62,12 @@ class Clim
     end
 
     macro custom_help(&block)
-      def custom_help : String
+      def custom_help_def : String
         Proc(String, String, String, String).new {{ block.id }} .call(desc, usage, self.parser.to_s)
       end
     end
 
-    def custom_help : String
+    def custom_help_def : String
       Help.new(self).display
     end
 
@@ -123,7 +123,7 @@ class Clim
     end
 
     private def help
-      custom_help
+      custom_help_def
     end
 
     def sub_cmds_help_lines
