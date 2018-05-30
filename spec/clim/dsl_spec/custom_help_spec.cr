@@ -3,8 +3,8 @@ require "../../dsl_spec"
 {% begin %}
 {%
   main_help_message = <<-HELP_MESSAGE
-                      command description: Command Line Interface Tool.
-                      command usage: main_command_of_clim_library [options] [arguments]
+                      command description: my desc message.
+                      command usage: my usage message.
 
                       options:
                           --uint8=VALUE                    Option description. [type:UInt8]
@@ -28,6 +28,8 @@ spec(
       MY_HELP
     end
     CUSTOM_HELP,
+    "desc \"my desc message.\"",
+    "usage \"my usage message.\"",
     "option \"--uint8=VALUE\", type: UInt8",
     "option \"--uint16=VALUE\", type: UInt16",
   ],
