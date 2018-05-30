@@ -445,11 +445,11 @@ class MyCli < Clim
     option "--my-age", type: Int32, desc: "age."
     custom_help do |desc, usage, options_help|
       <<-MY_HELP
-      command description: \#{desc}
-      command usage: \#{usage}
+      command description: #{desc}
+      command usage: #{usage}
 
       options:
-      \#{options_help}
+      #{options_help}
       MY_HELP
     end
     run do |options, arguments|
@@ -457,6 +457,17 @@ class MyCli < Clim
     end
   end
 end
+```
+
+```console
+$ crystal run src/custom_help_test.cr
+command description: my desc message.
+command usage: my usage message.
+
+options:
+    -n                               name. [type:String]
+    --my-age                         age. [type:Int32]
+    --help                           Show this help.
 ```
 
 ### help string

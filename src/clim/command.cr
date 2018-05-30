@@ -126,21 +126,6 @@ class Clim
       custom_help_def
     end
 
-    def sub_cmds_help_lines
-      @sub_commands.map do |cmd|
-        name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
-        "    #{name}   #{cmd.desc}"
-      end
-    end
-
-    def max_name_length
-      @sub_commands.empty? ? 0 : @sub_commands.map { |cmd| name_and_alias_name(cmd).size }.max
-    end
-
-    def name_and_alias_name(cmd)
-      ([cmd.name] + cmd.alias_name).join(", ")
-    end
-
     private def display_help? : Bool
       @display_help_flag
     end
