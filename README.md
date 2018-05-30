@@ -41,6 +41,7 @@ _"clim" = "cli" + "slim"_
 - [x] Required flag for option
 - [x] Nested sub commands
 - [x] `--help` option
+- [x] Customizable help message
 - [x] `version` macro
 - [x] Command name alias
 
@@ -426,6 +427,33 @@ class MyCli < Clim
     run do |options, arguments|
       puts typeof(options.n)      # => (String | Nil)
       puts typeof(options.my_age) # => (Int32 | Nil)
+    end
+  end
+end
+```
+
+#### custom_help
+
+You can customize the help message. In the `custom_help` block, you need to return a `String`.
+
+```crystal
+class MyCli < Clim
+  main_command do
+    desc "my desc message."
+    usage "my usage message."
+    option "-n", type: String, desc: "name."
+    option "--my-age", type: Int32, desc: "age."
+    custom_help do |desc, usage, options_help|
+      <<-MY_HELP
+      command description: \#{desc}
+      command usage: \#{usage}
+
+      options:
+      \#{options_help}
+      MY_HELP
+    end
+    run do |options, arguments|
+      puts options.help
     end
   end
 end
