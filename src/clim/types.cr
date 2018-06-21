@@ -79,7 +79,7 @@ class Clim
           end
           obj === "true"
         end
-        PROCESS,
+        PROCESS
       },
       Array(Int8) => {
         type:                "array",

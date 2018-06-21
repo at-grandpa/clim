@@ -17,6 +17,10 @@ require "../../dsl_spec"
 spec(
   spec_class_name: OptionTypeSpec,
   spec_dsl_lines: [
+    "desc \"my desc message.\"",
+    "usage \"my usage message.\"",
+    "option \"--uint8=VALUE\", type: UInt8",
+    "option \"--uint16=VALUE\", type: UInt16",
     <<-CUSTOM_HELP
     custom_help do |desc, usage, options_help|
       <<-MY_HELP
@@ -27,11 +31,7 @@ spec(
       \#{options_help}
       MY_HELP
     end
-    CUSTOM_HELP,
-    "desc \"my desc message.\"",
-    "usage \"my usage message.\"",
-    "option \"--uint8=VALUE\", type: UInt8",
-    "option \"--uint16=VALUE\", type: UInt16",
+    CUSTOM_HELP
   ],
   spec_desc: "option type spec,",
   spec_cases: [
