@@ -81,4 +81,14 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "sub command with custom_help." do
+    `crystal run spec/clim/compile_time_error_spec/files/sub_command_with_custom_help.cr --no-color 2>&1`.should eq <<-ERROR
+    Error in spec/clim/compile_time_error_spec/files/sub_command_with_custom_help.cr:8: Can not be declared 'custom_help' as sub command.
+
+          custom_help do |desc, usage, options_help|
+          ^~~~~~~~~~~
+
+
+    ERROR
+  end
 end
