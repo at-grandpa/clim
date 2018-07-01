@@ -64,7 +64,8 @@ class Clim
     macro custom_help(&block)
       {% raise "Can not be declared 'custom_help' as sub command." unless @type.id.stringify.split("::").last == "Command_Main_command_of_clim_library" %}
       def custom_help_def : String
-        Proc(String, String, String, String).new {{ block.id }} .call(desc, usage, self.parser.to_s)
+        help = Help.new(self)
+        Proc(String, String, String, String, String).new {{ block.id }} .call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
       end
     end
 
