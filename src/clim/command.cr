@@ -3,11 +3,41 @@ require "./command/*"
 
 class Clim
   abstract class Command
+    DEAFULT_HELP_TEMPLATE = Proc(String, String, String, String, String).new do |desc, usage, options_help, sub_commands|
+      base_help = <<-HELP_MESSAGE
+
+        #{desc}
+
+        Usage:
+
+          #{usage}
+
+        Options:
+
+      #{options_help}
+
+
+      HELP_MESSAGE
+
+      sub_commands_help = <<-HELP_MESSAGE
+        Sub Commands:
+
+      #{sub_commands}
+
+
+      HELP_MESSAGE
+      sub_commands.empty? ? base_help : base_help + sub_commands_help
+    end
+
     property name : String = ""
     property alias_name : Array(String) = [] of String
     property parser : OptionParser = OptionParser.new
     property arguments : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
+    property help_string_proc : Proc(String, String, String, String, String) = DEAFULT_HELP_TEMPLATE
+
+    def initialize(@help_string_proc = DEAFULT_HELP_TEMPLATE)
+    end
 
     macro desc(description)
       def desc : String
@@ -65,37 +95,14 @@ class Clim
       {% raise "Can not be declared 'custom_help' as sub command." unless @type.id.stringify.split("::").last == "Command_Main_command_of_clim_library" %}
       def custom_help_def : String
         help = Help.new(self)
-        Proc(String, String, String, String, String).new {{ block.id }} .call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
+        @help_string_proc = Proc(String, String, String, String, String).new {{ block.id }}
+        @help_string_proc.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
       end
     end
 
     def custom_help_def : String
       help = Help.new(self)
-      Proc(String, String, String, String, String).new do |desc, usage, options_help, sub_commands|
-        base_help = <<-HELP_MESSAGE
-
-          #{desc}
-
-          Usage:
-
-            #{usage}
-
-          Options:
-
-        #{options_help}
-
-
-        HELP_MESSAGE
-
-        sub_commands_help = <<-HELP_MESSAGE
-          Sub Commands:
-
-        #{sub_commands}
-
-
-        HELP_MESSAGE
-        sub_commands.empty? ? base_help : base_help + sub_commands_help
-      end.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
+      @help_string_proc.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
     end
 
     macro main_command
@@ -224,7 +231,7 @@ class Clim
           @options = OptionsForEachCommand.new
           @options.setup_parser(@parser)
           \{% for command_class in @type.constants.select{|c| @type.constant(c).superclass.id.stringify == "Clim::Command"} %}
-            @sub_commands << \{{ command_class.id }}.new
+            @sub_commands << \{{ command_class.id }}.new(@help_string_proc)
           \{% end %}
         end
 
