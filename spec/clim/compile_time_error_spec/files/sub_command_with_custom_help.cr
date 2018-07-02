@@ -5,13 +5,16 @@ class MyCli < Clim
     run do |opts, args|
     end
     sub_command "sub_command" do
-      custom_help do |desc, usage, options_help|
+      custom_help do |desc, usage, options_help, sub_commands|
         <<-MY_HELP
         command description: \#{desc}
         command usage: \#{usage}
 
         options:
         \#{options_help}
+
+        sub_commands:
+        \#{sub_commands}
         MY_HELP
       end
       run do |opts, args|
