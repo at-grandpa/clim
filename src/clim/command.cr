@@ -70,7 +70,32 @@ class Clim
     end
 
     def custom_help_def : String
-      Help.new(self).display
+      help = Help.new(self)
+      Proc(String, String, String, String, String).new do |desc, usage, options_help, sub_commands|
+        base_help = <<-HELP_MESSAGE
+
+          #{desc}
+
+          Usage:
+
+            #{usage}
+
+          Options:
+
+        #{options_help}
+
+
+        HELP_MESSAGE
+
+        sub_commands_help = <<-HELP_MESSAGE
+          Sub Commands:
+
+        #{sub_commands}
+
+
+        HELP_MESSAGE
+        sub_commands.empty? ? base_help : base_help + sub_commands_help
+      end.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
     end
 
     macro main_command
