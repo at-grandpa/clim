@@ -432,7 +432,7 @@ class MyCli < Clim
 end
 ```
 
-#### help_template
+### help_template
 
 You can customize the help message. The `help_template` block must be placed before `main_command`. Also it needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options_help : String` and `sub_commands_help : String`.
 
