@@ -1,34 +1,5 @@
 require "../dsl_spec"
 
-macro spec_for_sub_commands(spec_class_name, spec_cases)
-  {% for spec_case, index in spec_cases %}
-    {% class_name = (spec_class_name.stringify + index.stringify).id %}
-
-    # define dsl
-    class {{class_name}} < Clim
-      main_command do
-        run do |opts, args|
-          assert_opts_and_args({{spec_case}})
-        end
-        sub_command "sub_command" do
-          desc "Sub command with desc."
-          usage "sub_command with usage [options] [arguments]"
-          run do |opts, args|
-            assert_opts_and_args({{spec_case}})
-          end
-        end
-      end
-    end
-
-    # spec
-    describe "sub command with desc and usage," do
-      describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
-        it_blocks({{class_name}}, {{spec_case}})
-      end
-    end
-  {% end %}
-end
-
 {% begin %}
 {%
   main_help_message = <<-HELP_MESSAGE
@@ -66,8 +37,19 @@ end
                    HELP_MESSAGE
 %}
 
-spec_for_sub_commands(
+spec(
   spec_class_name: SubCommandWithDescAndUsage,
+  spec_sub_command_lines: [
+    <<-SUB_COMMAND,
+    sub_command "sub_command" do
+      desc "Sub command with desc."
+      usage "sub_command with usage [options] [arguments]"
+      run do |options, arguments|
+      end
+    end
+    SUB_COMMAND
+  ],
+  spec_desc: "option type spec,",
   spec_cases: [
     {
       argv:        [] of String,

@@ -25,6 +25,10 @@ class Clim
         HELP_MESSAGE
       end
 
+      delegate desc, to: @command
+      delegate usage, to: @command
+      delegate parser, to: @command
+
       def sub_cmds_help
         <<-HELP_MESSAGE
           Sub Commands:
@@ -40,6 +44,10 @@ class Clim
           name = name_and_alias_name(cmd) + "#{" " * (max_name_length - name_and_alias_name(cmd).size)}"
           "    #{name}   #{cmd.desc}"
         end
+      end
+
+      def sub_cmds_help_display
+        sub_cmds_help_lines.join("\n")
       end
 
       def max_name_length

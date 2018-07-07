@@ -432,42 +432,56 @@ class MyCli < Clim
 end
 ```
 
-#### custom_help
+### help_template
 
-You can customize the help message. In the `custom_help` block, you need to return a `String`.
+You can customize the help message. The `help_template` block must be placed before `main_command`. Also it needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options_help : String` and `sub_commands_help : String`.
 
 ```crystal
 class MyCli < Clim
-  main_command do
-    desc "my desc message."
-    usage "my usage message."
-    option "-n", type: String, desc: "name."
-    option "--my-age", type: Int32, desc: "age."
-    custom_help do |desc, usage, options_help|
-      <<-MY_HELP
+  help_template do |desc, usage, options_help, sub_commands_help|
+    <<-MY_HELP
+
       command description: #{desc}
-      command usage: #{usage}
+      command usage:       #{usage}
 
       options:
-      #{options_help}
-      MY_HELP
+    #{options_help}
+
+      sub_commands:
+    #{sub_commands_help}
+
+
+    MY_HELP
+  end
+  main_command do
+    desc "foo command."
+    usage "foo [options] [arguments]"
+    option "--site=SITE", type: String, desc: "Site URL."
+    run do |opts, args|
     end
-    run do |options, arguments|
-      puts options.help
+    sub_command "sub_command" do
+      desc "this is sub_comand."
+      option "-n NUM", type: Int32, desc: "Number.", default: 0
+      run do |opts, args|
+      end
     end
   end
 end
 ```
 
 ```console
-$ crystal run src/custom_help_test.cr
-command description: my desc message.
-command usage: my usage message.
+$ crystal run src/help_template_test.cr -- --help
 
-options:
-    -n                               name. [type:String]
-    --my-age                         age. [type:Int32]
+  command description: foo command.
+  command usage:       foo [options] [arguments]
+
+  options:
+    --site=SITE                      Site URL. [type:String]
     --help                           Show this help.
+
+  sub_commands:
+    sub_command   this is sub_comand.
+
 ```
 
 ### help string
