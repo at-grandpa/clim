@@ -34,10 +34,6 @@ class Clim
     property parser : OptionParser = OptionParser.new
     property arguments : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
-    property help_string_proc : Proc(String, String, String, String, String) = DEAFULT_HELP_TEMPLATE
-
-    def initialize
-    end
 
     macro desc(description)
       def desc : String
@@ -91,21 +87,6 @@ class Clim
     def define_version(parser)
     end
 
-    # def custom_help_def : String
-    # help = Help.new(self)
-    # DEAFULT_HELP_TEMPLATE.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
-    # end
-    #
-    # macro custom_help(&block)
-    # {% raise "Can not be declared 'custom_help' as sub command." unless @type.id.stringify.split("::").last == "Command_Main_command_of_clim_library" %}
-    # class self
-    # def custom_help_def : String
-    # help = Help.new(self)
-    # Proc(String, String, String, String, String).new {{ block.id }} .call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
-    # end
-    # end
-    # end
-
     macro main_command
       {% raise "Can not be declared 'main_command' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
     end
@@ -158,7 +139,7 @@ class Clim
     end
 
     private def help
-      custom_help_def(self)
+      custom_help_def
     end
 
     private def display_help? : Bool
