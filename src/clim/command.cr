@@ -36,7 +36,7 @@ class Clim
     property sub_commands : Array(Command) = [] of Command
     property help_string_proc : Proc(String, String, String, String, String) = DEAFULT_HELP_TEMPLATE
 
-    def initialize(@help_string_proc = DEAFULT_HELP_TEMPLATE)
+    def initialize
     end
 
     macro desc(description)
@@ -91,19 +91,20 @@ class Clim
     def define_version(parser)
     end
 
-    macro custom_help(&block)
-      {% raise "Can not be declared 'custom_help' as sub command." unless @type.id.stringify.split("::").last == "Command_Main_command_of_clim_library" %}
-      def custom_help_def : String
-        help = Help.new(self)
-        @help_string_proc = Proc(String, String, String, String, String).new {{ block.id }}
-        @help_string_proc.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
-      end
-    end
-
-    def custom_help_def : String
-      help = Help.new(self)
-      @help_string_proc.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
-    end
+    # def custom_help_def : String
+    # help = Help.new(self)
+    # DEAFULT_HELP_TEMPLATE.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
+    # end
+    #
+    # macro custom_help(&block)
+    # {% raise "Can not be declared 'custom_help' as sub command." unless @type.id.stringify.split("::").last == "Command_Main_command_of_clim_library" %}
+    # class self
+    # def custom_help_def : String
+    # help = Help.new(self)
+    # Proc(String, String, String, String, String).new {{ block.id }} .call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
+    # end
+    # end
+    # end
 
     macro main_command
       {% raise "Can not be declared 'main_command' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
@@ -157,7 +158,7 @@ class Clim
     end
 
     private def help
-      custom_help_def
+      custom_help_def(self)
     end
 
     private def display_help? : Bool
@@ -231,7 +232,7 @@ class Clim
           @options = OptionsForEachCommand.new
           @options.setup_parser(@parser)
           \{% for command_class in @type.constants.select{|c| @type.constant(c).superclass.id.stringify == "Clim::Command"} %}
-            @sub_commands << \{{ command_class.id }}.new(@help_string_proc)
+            @sub_commands << \{{ command_class.id }}.new
           \{% end %}
         end
 

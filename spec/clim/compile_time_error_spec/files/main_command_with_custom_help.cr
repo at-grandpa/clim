@@ -1,19 +1,22 @@
 require "./../../../../src/clim"
 
 class MyCli < Clim
-  main_command do
-    custom_help do |desc, usage, options_help, sub_commands|
-      <<-MY_HELP
-      command description: \#{desc}
-      command usage: \#{usage}
+  custom_help do |desc, usage, options_help, sub_commands|
+    <<-MY_HELP
+
+      command description: #{desc}
+      command usage: #{usage}
 
       options:
-      \#{options_help}
+    #{options_help}
 
       sub_commands:
-      \#{sub_commands}
-      MY_HELP
-    end
+    #{sub_commands}
+
+
+    MY_HELP
+  end
+  main_command do
     run do |opts, args|
     end
     sub_command "sub_command" do

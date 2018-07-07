@@ -3,9 +3,25 @@ require "./clim/*"
 class Clim
   include Types
 
+  class Clim::Command
+    def custom_help_def(command : Clim::Command) : String
+      help = Help.new(command)
+      DEAFULT_HELP_TEMPLATE.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
+    end
+  end
+
+  macro custom_help(&block)
+    class Clim::Command
+      def custom_help_def(command : Clim::Command) : String
+        help = Help.new(command)
+        Proc(String, String, String, String, String).new {{ block.stringify.id }} .call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
+      end
+    end
+  end
+
   macro main_command(&block)
 
-    Command.command "main_command_of_clim_library" do
+    Clim::Command.command "main_command_of_clim_library" do
       {{ yield }}
     end
 
