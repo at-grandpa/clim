@@ -1,8 +1,8 @@
 require "./../../spec_helper"
 
 describe "STDOUT spec, " do
-  it "display sub_command help when main command with custom_help." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_custom_help.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
+  it "display sub_command help when main command with help_template." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
 
       command description: sub_comand.
       command usage: sub_command [options] [arguments]

@@ -2,8 +2,9 @@ require "./clim/*"
 
 class Clim
   include Types
+  alias HelpTemplateType = Proc(String, String, String, String, String)
 
-  DEAFULT_HELP_TEMPLATE = Proc(String, String, String, String, String).new do |desc, usage, options_help, sub_commands_help|
+  DEAFULT_HELP_TEMPLATE = HelpTemplateType.new do |desc, usage, options_help, sub_commands_help|
     base_help_template = <<-HELP_MESSAGE
 
       #{desc}
@@ -30,15 +31,15 @@ class Clim
   end
 
   class Clim::Command
-    def custom_help_def
+    def help_template_def
       help = Help.new(self)
       DEAFULT_HELP_TEMPLATE.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
     end
   end
 
-  macro custom_help(&block)
+  macro help_template(&block)
     class Clim::Command
-      def custom_help_def
+      def help_template_def
         help = Help.new(self)
         Proc(String, String, String, String, String).new {{ block.stringify.id }} .call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
       end

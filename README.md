@@ -432,9 +432,9 @@ class MyCli < Clim
 end
 ```
 
-#### custom_help
+#### help_template
 
-You can customize the help message. In the `custom_help` block, you need to return a `String`.
+You can customize the help message. In the `help_template` block, you need to return a `String`.
 
 ```crystal
 class MyCli < Clim
@@ -443,7 +443,7 @@ class MyCli < Clim
     usage "my usage message."
     option "-n", type: String, desc: "name."
     option "--my-age", type: Int32, desc: "age."
-    custom_help do |desc, usage, options_help|
+    help_template do |desc, usage, options_help|
       <<-MY_HELP
       command description: #{desc}
       command usage: #{usage}
@@ -460,7 +460,7 @@ end
 ```
 
 ```console
-$ crystal run src/custom_help_test.cr
+$ crystal run src/help_template_test.cr
 command description: my desc message.
 command usage: my usage message.
 

@@ -114,7 +114,7 @@ class Clim
     end
 
     private def help
-      custom_help_def
+      help_template_def
     end
 
     private def display_help? : Bool
