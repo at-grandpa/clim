@@ -3,6 +3,32 @@ require "./clim/*"
 class Clim
   include Types
 
+  DEAFULT_HELP_TEMPLATE = Proc(String, String, String, String, String).new do |desc, usage, options_help, sub_commands_help|
+    base_help_template = <<-HELP_MESSAGE
+
+      #{desc}
+
+      Usage:
+
+        #{usage}
+
+      Options:
+
+    #{options_help}
+
+
+    HELP_MESSAGE
+
+    sub_commands_help_template = <<-HELP_MESSAGE
+      Sub Commands:
+
+    #{sub_commands_help}
+
+
+    HELP_MESSAGE
+    sub_commands_help.empty? ? base_help_template : base_help_template + sub_commands_help_template
+  end
+
   class Clim::Command
     def custom_help_def
       help = Help.new(self)

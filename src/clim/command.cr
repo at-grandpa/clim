@@ -3,31 +3,6 @@ require "./command/*"
 
 class Clim
   abstract class Command
-    DEAFULT_HELP_TEMPLATE = Proc(String, String, String, String, String).new do |desc, usage, options_help, sub_commands|
-      base_help = <<-HELP_MESSAGE
-
-        #{desc}
-
-        Usage:
-
-          #{usage}
-
-        Options:
-
-      #{options_help}
-
-
-      HELP_MESSAGE
-
-      sub_commands_help = <<-HELP_MESSAGE
-        Sub Commands:
-
-      #{sub_commands}
-
-
-      HELP_MESSAGE
-      sub_commands.empty? ? base_help : base_help + sub_commands_help
-    end
 
     property name : String = ""
     property alias_name : Array(String) = [] of String

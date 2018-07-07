@@ -1,7 +1,7 @@
 require "./../../../../src/clim"
 
 class MyCli < Clim
-  custom_help do |desc, usage, options_help, sub_commands|
+  custom_help do |desc, usage, options_help, sub_commands_help|
     <<-MY_HELP
 
       command description: #{desc}
@@ -11,7 +11,7 @@ class MyCli < Clim
     #{options_help}
 
       sub_commands:
-    #{sub_commands}
+    #{sub_commands_help}
 
 
     MY_HELP
