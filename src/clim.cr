@@ -2,6 +2,7 @@ require "./clim/*"
 
 class Clim
   include Types
+
   alias HelpTemplateType = Proc(String, String, String, String, String)
 
   DEAFULT_HELP_TEMPLATE = HelpTemplateType.new do |desc, usage, options_help, sub_commands_help|
