@@ -47,6 +47,12 @@ class Clim
     end
   end
 
+  macro main(&block)
+    main_command do
+      {{ yield }}
+    end
+  end
+
   macro main_command(&block)
 
     Clim::Command.command "main_command_of_clim_library" do

@@ -33,7 +33,7 @@ describe "Compile time spec, " do
   end
   it "duplicate 'main_command' in sub command." do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr --no-color 2>&1`.should eq <<-ERROR
-    Error in spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr:7: Can not be declared 'main_command' as sub command.
+    Error in spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr:7: Can not be declared 'main_command' or 'main' as sub command.
 
         main_command do
         ^~~~~~~~~~~~
