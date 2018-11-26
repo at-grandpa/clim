@@ -65,9 +65,9 @@ dependencies:
 require "clim"
 
 class MyCli < Clim
-  main_command do
-    run do |options, arguments|
-      puts "#{arguments.join(", ")}!"
+  main do
+    run do |opts, args|
+      puts "#{args.join(", ")}!"
     end
   end
 end
@@ -90,15 +90,15 @@ require "clim"
 
 module Hello
   class Cli < Clim
-    main_command do
+    main do
       desc "Hello CLI tool."
       usage "hello [options] [arguments] ..."
       version "Version 0.1.0"
       option "-g WORDS", "--greeting=WORDS", type: String,        desc: "Words of greetings.", default: "Hello"
       option "-n NAME",  "--name=NAME",      type: Array(String), desc: "Target name.",        default: ["Taro"]
-      run do |options, arguments|
-        print "#{options.greeting}, "
-        print "#{options.name.join(", ")}!"
+      run do |opts, args|
+        print "#{opts.greeting}, "
+        print "#{opts.name.join(", ")}!"
         print "\n"
       end
     end
@@ -138,30 +138,30 @@ require "clim"
 
 module FakeCrystalCommand
   class Cli < Clim
-    main_command do
+    main do
       desc "Fake Crystal command."
       usage "fcrystal [sub_command] [arguments]"
-      run do |options, arguments|
-        puts options.help # => help string.
+      run do |opts, args|
+        puts opts.help # => help string.
       end
-      sub_command "tool" do
+      sub "tool" do
         desc "run a tool"
         usage "fcrystal tool [tool] [arguments]"
-        run do |options, arguments|
+        run do |opts, args|
           puts "Fake Crystal tool!!"
         end
-        sub_command "format" do
+        sub "format" do
           desc "format project, directories and/or files"
           usage "fcrystal tool format [options] [file or directory]"
-          run do |options, arguments|
+          run do |opts, args|
             puts "Fake Crystal tool format!!"
           end
         end
       end
-      sub_command "spec" do
+      sub "spec" do
         desc "build and run specs"
         usage "fcrystal spec [options] [files]"
-        run do |options, arguments|
+        run do |opts, args|
           puts "Fake Crystal spec!!"
         end
       end
@@ -245,9 +245,9 @@ Description of the command. It is displayed in Help.
 
 ```crystal
 class MyCli < Clim
-  main_command do
+  main do
     desc "My Command Line Interface."
-    run do |options, arguments|
+    run do |opts, args|
       # ...
     end
   end
@@ -260,9 +260,9 @@ Usage of the command. It is displayed in Help.
 
 ```crystal
 class MyCli < Clim
-  main_command do
+  main do
     usage  "mycli [sub-command] [options] ..."
-    run do |options, arguments|
+    run do |opts, args|
       # ...
     end
   end
@@ -275,13 +275,13 @@ An alias for the command. It can be specified only for subcommand.
 
 ```crystal
 class MyCli < Clim
-  main_command do
-    run do |options, arguments|
+  main do
+    run do |opts, args|
       # ...
     end
-    sub_command "sub" do
+    sub "sub" do
       alias_name  "alias1", "alias2"
-      run do |options, arguments|
+      run do |opts, args|
         puts "sub_command run!!"
       end
     end
@@ -304,9 +304,9 @@ You can specify the string to be displayed with `--version`.
 
 ```crystal
 class MyCli < Clim
-  main_command do
+  main do
     version "mycli version: 1.0.1"
-    run do |options, arguments|
+    run do |opts, args|
       # ...
     end
   end
@@ -322,9 +322,9 @@ If you want to display it even with `-v`, add ` short: "-v" `.
 
 ```crystal
 class MyCli < Clim
-  main_command do
+  main do
     version "mycli version: 1.0.1", short: "-v"
-    run do |options, arguments|
+    run do |opts, args|
       # ...
     end
   end
@@ -353,12 +353,12 @@ You can specify multiple options for the command.
 
 ```crystal
 class MyCli < Clim
-  main_command do
+  main do
     option "--greeting=WORDS", desc: "Words of greetings.", default: "Hello"
     option "-n NAME", "--name=NAME", type: Array(String), desc: "Target name.", default: ["Taro"]
-    run do |options, arguments|
-      puts typeof(options.greeting) # => String
-      puts typeof(options.name)     # => Array(String)
+    run do |opts, args|
+      puts typeof(opts.greeting) # => String
+      puts typeof(opts.name)     # => Array(String)
     end
   end
 end
@@ -408,10 +408,10 @@ For Bool, you do not need to specify arguments for short or long.
 
 ```crystal
 class MyCli < Clim
-  main_command do
+  main do
     option "-v", "--verbose", type: Bool, desc: "Verbose."
-    run do |options, arguments|
-      puts typeof(options.verbose) # => Bool
+    run do |opts, args|
+      puts typeof(opts.verbose) # => Bool
     end
   end
 end
@@ -421,12 +421,12 @@ Option method names are long name if there is a long, and short name if there is
 
 ```crystal
 class MyCli < Clim
-  main_command do
+  main do
     option "-n", type: String, desc: "name."  # => short name only.
     option "--my-age", type: Int32, desc: "age." # => long name only.
-    run do |options, arguments|
-      puts typeof(options.n)      # => (String | Nil)
-      puts typeof(options.my_age) # => (Int32 | Nil)
+    run do |opts, args|
+      puts typeof(opts.n)      # => (String | Nil)
+      puts typeof(opts.my_age) # => (Int32 | Nil)
     end
   end
 end
@@ -434,7 +434,7 @@ end
 
 ### help_template
 
-You can customize the help message. The `help_template` block must be placed before `main_command`. Also it needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options_help : String` and `sub_commands_help : String`.
+You can customize the help message. The `help_template` block must be placed before `main`. Also it needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options_help : String` and `sub_commands_help : String`.
 
 ```crystal
 class MyCli < Clim
@@ -453,13 +453,13 @@ class MyCli < Clim
 
     MY_HELP
   end
-  main_command do
+  main do
     desc "foo command."
     usage "foo [options] [arguments]"
     option "--site=SITE", type: String, desc: "Site URL."
     run do |opts, args|
     end
-    sub_command "sub_command" do
+    sub "sub_command" do
       desc "this is sub_comand."
       option "-n NUM", type: Int32, desc: "Number.", default: 0
       run do |opts, args|
@@ -488,9 +488,9 @@ $ crystal run src/help_template_test.cr -- --help
 
 ```crystal
 class MyCli < Clim
-  main_command do
-    run do |options, arguments|
-      options.help # => help string
+  main do
+    run do |opts, args|
+      opts.help # => help string
     end
   end
 end
