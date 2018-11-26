@@ -3,7 +3,6 @@ require "./command/*"
 
 class Clim
   abstract class Command
-
     property name : String = ""
     property alias_name : Array(String) = [] of String
     property parser : OptionParser = OptionParser.new
@@ -62,8 +61,18 @@ class Clim
     def define_version(parser)
     end
 
+    macro main
+      main_command
+    end
+
     macro main_command
-      {% raise "Can not be declared 'main_command' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
+      {% raise "Can not be declared 'main_command' or 'main' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
+    end
+
+    macro sub(name, &block)
+      sub_command({{name}}) do
+        {{ yield }}
+      end
     end
 
     macro sub_command(name, &block)
