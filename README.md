@@ -94,8 +94,8 @@ module Hello
       desc "Hello CLI tool."
       usage "hello [options] [arguments] ..."
       version "Version 0.1.0"
-      option "-g WORDS", "--greeting=WORDS", type: String,        desc: "Words of greetings.", default: "Hello"
-      option "-n NAME",  "--name=NAME",      type: Array(String), desc: "Target name.",        default: ["Taro"]
+      option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings.", default: "Hello"
+      option "-n NAME", "--name=NAME", type: Array(String), desc: "Target name.", default: ["Taro"]
       run do |opts, args|
         print "#{opts.greeting}, "
         print "#{opts.name.join(", ")}!"
