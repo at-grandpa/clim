@@ -30,7 +30,7 @@ class SpecCommandNoSubCommands < Clim
     desc "main command."
     usage "main [sub_command] [arguments]"
     option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings.", default: "Hello"
-    option "-n NAME", "--name=NAME", type: Array(String), desc: "Target name.", default: ["Taro"]
+    option "-n NAME", type: Array(String), desc: "Target name.", default: ["Taro"], required: true
     run do |opts, args|
     end
   end
@@ -51,7 +51,7 @@ describe Clim::Command::Help do
         Options:
 
           -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
-          -n NAME, --name=NAME             Target name. [type:Array(String)] [default:[\"Taro\"]]
+          -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
 
         Sub Commands:
 
@@ -74,7 +74,7 @@ describe Clim::Command::Help do
         Options:
 
           -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
-          -n NAME, --name=NAME             Target name. [type:Array(String)] [default:[\"Taro\"]]
+          -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
 
 
       OPTIONS
@@ -97,7 +97,7 @@ describe Clim::Command::Help do
       help = Clim::Command::Help.new(SpecCommand.command)
       help.parser.to_s.should eq <<-OPTIONS
           -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
-          -n NAME, --name=NAME             Target name. [type:Array(String)] [default:[\"Taro\"]]
+          -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
       OPTIONS
     end
   end
@@ -141,24 +141,51 @@ describe Clim::Command::Help do
     end
   end
   describe "#options_info" do
-    it "returns option names." do
+    it "returns options info." do
       help = Clim::Command::Help.new(SpecCommand.command)
-      help.options_info.should eq [
-        {
-          name:     ["-g WORDS", "--greeting=WORDS"],
-          type:     String,
-          desc:     "Words of greetings.",
-          default:  "Hello",
-          required: false,
-        },
-        {
-          name:     ["-n NAME"],
-          type:     Array(String),
-          desc:     "Target name.",
-          default:  ["Taro"],
-          required: true,
-        },
-      ]
+      help.options_info.should eq ({
+        help: [
+          "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
+          "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
+        ],
+        info: [
+          {
+            name:     ["-g WORDS", "--greeting=WORDS"],
+            type:     String,
+            desc:     "Words of greetings.",
+            default:  "Hello",
+            required: false,
+          },
+          {
+            name:     ["-n NAME"],
+            type:     Array(String),
+            desc:     "Target name.",
+            default:  ["Taro"],
+            required: true,
+          },
+        ],
+      })
+    end
+  end
+  describe "#sub_commands_info" do
+    it "returns sub commands info." do
+      help = Clim::Command::Help.new(SpecCommand.command)
+      help.sub_commands_info.should eq ({
+        help: [
+          "    abc, def, ghi            abc command.",
+          "    abcdef, ghijkl, mnopqr   abcdef command.",
+        ],
+        info: [
+          {
+            name: ["abc", "def", "ghi"],
+            desc: "abc command.",
+          },
+          {
+            name: ["abcdef", "ghijkl", "mnopqr"],
+            desc: "abcdef command.",
+          },
+        ],
+      })
     end
   end
 end

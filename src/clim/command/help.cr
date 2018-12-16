@@ -60,7 +60,23 @@ class Clim
       end
 
       def options_info
-        @command.options_info
+        {
+          help: @command.parser.to_s.split("\n"),
+          info: @command.options_info,
+        }
+      end
+
+      def sub_commands_info
+        sub_commands_info = @command.sub_commands.map do |cmd|
+          {
+            name: sub_commands_name_and_alias_name(cmd),
+            desc: cmd.desc,
+          }
+        end
+        {
+          help: sub_cmds_help_lines,
+          info: sub_commands_info,
+        }
       end
     end
   end
