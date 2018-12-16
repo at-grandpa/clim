@@ -8,6 +8,17 @@ class Clim
         property required : Bool = false
         property array_set_flag : Bool = false
 
+        def to_named_tuple
+          long_name = long
+          {
+            name:     long_name.nil? ? [short] : [short, long_name],
+            type:     default.class,
+            desc:     @desc,
+            default:  default,
+            required: required,
+          }
+        end
+
         def required_not_set? : Bool
           @required && !set_value?
         end
@@ -40,20 +51,20 @@ class Clim
 
         macro define_option_macro(type, default, required)
           {% if default != nil %}
-            {% value_type    = type.stringify.id %}
+            {% value_type = type.stringify.id %}
             {% value_default = default %}
-            {% value_assign  = "default".id %}
-            {% default_type  = type.stringify.id %}
+            {% value_assign = "default".id %}
+            {% default_type = type.stringify.id %}
           {% elsif default == nil && required == true %}
-            {% value_type    = type.stringify.id %}
+            {% value_type = type.stringify.id %}
             {% value_default = SUPPORT_TYPES[type][:default] %}
-            {% value_assign  = SUPPORT_TYPES[type][:default] %}
-            {% default_type  = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_assign = SUPPORT_TYPES[type][:default] %}
+            {% default_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% elsif default == nil && required == false %}
-            {% value_type    = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
-            {% value_default = SUPPORT_TYPES[type][:nilable] ? default                   : SUPPORT_TYPES[type][:default] %}
-            {% value_assign  = SUPPORT_TYPES[type][:nilable] ? "default".id              : SUPPORT_TYPES[type][:default] %}
-            {% default_type  = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_default = SUPPORT_TYPES[type][:nilable] ? default : SUPPORT_TYPES[type][:default] %}
+            {% value_assign = SUPPORT_TYPES[type][:nilable] ? "default".id : SUPPORT_TYPES[type][:default] %}
+            {% default_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% end %}
 
           property value : {{value_type}} = {{value_default}}

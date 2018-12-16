@@ -201,6 +201,10 @@ class Clim
           \{% end %}
         end
 
+        def options_info
+          @options.info
+        end
+
         private def required_validate!
           raise "Required options. \"#{@options.invalid_required_names.join("\", \"")}\"" unless @options.invalid_required_names.empty?
         end

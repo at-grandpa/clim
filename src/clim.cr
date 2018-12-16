@@ -59,6 +59,10 @@ class Clim
       {{ yield }}
     end
 
+    def self.command
+      Command_Main_command_of_clim_library.new
+    end
+
     def self.start_parse(argv, io : IO = STDOUT)
       Command_Main_command_of_clim_library.new.parse(argv).run(io)
     end
