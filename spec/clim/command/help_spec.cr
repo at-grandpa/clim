@@ -143,49 +143,41 @@ describe Clim::Command::Help do
   describe "#options" do
     it "returns options info." do
       help = Clim::Command::Help.new(SpecCommand.command)
-      help.options.should eq ({
-        help_lines: [
-          "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
-          "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
-        ],
-        info: [
-          {
-            name:     ["-g WORDS", "--greeting=WORDS"],
-            type:     String,
-            desc:     "Words of greetings.",
-            default:  "Hello",
-            required: false,
-          },
-          {
-            name:     ["-n NAME"],
-            type:     Array(String),
-            desc:     "Target name.",
-            default:  ["Taro"],
-            required: true,
-          },
-        ],
-      })
+      help.options.should eq [
+        {
+          name:      ["-g WORDS", "--greeting=WORDS"],
+          type:      String,
+          desc:      "Words of greetings.",
+          default:   "Hello",
+          required:  false,
+          help_line: "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
+        },
+        {
+          name:      ["-n NAME"],
+          type:      Array(String),
+          desc:      "Target name.",
+          default:   ["Taro"],
+          required:  true,
+          help_line: "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
+        },
+      ]
     end
   end
   describe "#sub_commands" do
     it "returns sub commands info." do
       help = Clim::Command::Help.new(SpecCommand.command)
-      help.sub_commands.should eq ({
-        help_lines: [
-          "    abc, def, ghi            abc command.",
-          "    abcdef, ghijkl, mnopqr   abcdef command.",
-        ],
-        info: [
-          {
-            name: ["abc", "def", "ghi"],
-            desc: "abc command.",
-          },
-          {
-            name: ["abcdef", "ghijkl", "mnopqr"],
-            desc: "abcdef command.",
-          },
-        ],
-      })
+      help.sub_commands.should eq [
+        {
+          name:      ["abc", "def", "ghi"],
+          desc:      "abc command.",
+          help_line: "    abc, def, ghi            abc command.",
+        },
+        {
+          name:      ["abcdef", "ghijkl", "mnopqr"],
+          desc:      "abcdef command.",
+          help_line: "    abcdef, ghijkl, mnopqr   abcdef command.",
+        },
+      ]
     end
     it "returns sub commands info without sub commands." do
       help = Clim::Command::Help.new(SpecCommandNoSubCommands.command)
