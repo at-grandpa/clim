@@ -41,10 +41,14 @@ class Clim
 
       def sub_cmds_help_lines
         @command.sub_commands.map do |cmd|
-          name = sub_commands_name_and_alias_name(cmd).join(", ") +
-                 "#{" " * (max_name_length - sub_commands_name_and_alias_name(cmd).join(", ").size)}"
-          "    #{name}   #{cmd.desc}"
+          sub_cmds_help_line(cmd)
         end
+      end
+
+      def sub_cmds_help_line(cmd)
+        name = sub_commands_name_and_alias_name(cmd).join(", ") +
+               "#{" " * (max_name_length - sub_commands_name_and_alias_name(cmd).join(", ").size)}"
+        "    #{name}   #{cmd.desc}"
       end
 
       def sub_cmds_help_display
@@ -69,14 +73,11 @@ class Clim
       def sub_commands
         sub_commands_info = @command.sub_commands.map do |cmd|
           {
-            name: sub_commands_name_and_alias_name(cmd),
-            desc: cmd.desc,
+            name:       sub_commands_name_and_alias_name(cmd),
+            desc:       cmd.desc,
+            help_lines: sub_cmds_help_line(cmd),
           }
         end
-        {
-          help_lines: sub_cmds_help_lines,
-          info:       sub_commands_info,
-        }
       end
     end
   end
