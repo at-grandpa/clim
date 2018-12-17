@@ -3,9 +3,15 @@ require "./clim/*"
 class Clim
   include Types
 
-  alias HelpTemplateType = Proc(String, String, String, String, String)
+  {% begin %}
+  {% support_types = SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
+  alias HelpOptionsInfoType = Array(NamedTuple(name: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool))
+  {% end %}
+  alias HelpOptionsType = NamedTuple(help_lines: Array(String), info: HelpOptionsInfoType)
+  alias HelpSubCommandsType = NamedTuple(help_lines: Array(String), info: Array(NamedTuple(name: Array(String), desc: String)))
+  alias HelpTemplateType = Proc(String, String, HelpOptionsType, HelpSubCommandsType, String)
 
-  DEAFULT_HELP_TEMPLATE = HelpTemplateType.new do |desc, usage, options_help, sub_commands_help|
+  DEAFULT_HELP_TEMPLATE = HelpTemplateType.new do |desc, usage, options, sub_commands|
     base_help_template = <<-HELP_MESSAGE
 
       #{desc}
@@ -16,7 +22,7 @@ class Clim
 
       Options:
 
-    #{options_help}
+    #{options[:help_lines].join("\n")}
 
 
     HELP_MESSAGE
@@ -24,17 +30,17 @@ class Clim
     sub_commands_help_template = <<-HELP_MESSAGE
       Sub Commands:
 
-    #{sub_commands_help}
+    #{sub_commands[:help_lines].join("\n")}
 
 
     HELP_MESSAGE
-    sub_commands_help.empty? ? base_help_template : base_help_template + sub_commands_help_template
+    sub_commands[:help_lines].empty? ? base_help_template : base_help_template + sub_commands_help_template
   end
 
   class Clim::Command
     def help_template_def
       help = Help.new(self)
-      DEAFULT_HELP_TEMPLATE.call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
+      DEAFULT_HELP_TEMPLATE.call(help.desc, help.usage, help.options, help.sub_commands)
     end
   end
 
@@ -42,7 +48,7 @@ class Clim
     class Clim::Command
       def help_template_def
         help = Help.new(self)
-        Proc(String, String, String, String, String).new {{ block.stringify.id }} .call(help.desc, help.usage, help.parser.to_s, help.sub_cmds_help_display)
+        HelpTemplateType.new {{ block.stringify.id }} .call(help.desc, help.usage, help.options, help.sub_commands)
       end
     end
   end

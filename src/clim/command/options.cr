@@ -27,11 +27,11 @@ class Clim
 
       def info
         {% begin %}
-        {% support_types = SUPPORT_TYPES.map { |k, _| k } %}
-        array = [] of NamedTuple(name: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool)
-        {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help" } %}
-          array << {{iv}}.to_named_tuple
-        {% end %}
+          {% support_types = SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
+          array = [] of NamedTuple(name: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool)
+          {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help" } %}
+            array << {{iv}}.to_named_tuple
+          {% end %}
         {% end %}
       end
     end

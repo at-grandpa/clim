@@ -140,11 +140,11 @@ describe Clim::Command::Help do
       help.sub_commands_name_and_alias_name(sub_command2).should eq ["abcdef", "ghijkl", "mnopqr"]
     end
   end
-  describe "#options_info" do
+  describe "#options" do
     it "returns options info." do
       help = Clim::Command::Help.new(SpecCommand.command)
-      help.options_info.should eq ({
-        help: [
+      help.options.should eq ({
+        help_lines: [
           "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
           "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
         ],
@@ -167,11 +167,11 @@ describe Clim::Command::Help do
       })
     end
   end
-  describe "#sub_commands_info" do
+  describe "#sub_commands" do
     it "returns sub commands info." do
       help = Clim::Command::Help.new(SpecCommand.command)
-      help.sub_commands_info.should eq ({
-        help: [
+      help.sub_commands.should eq ({
+        help_lines: [
           "    abc, def, ghi            abc command.",
           "    abcdef, ghijkl, mnopqr   abcdef command.",
         ],
@@ -185,6 +185,13 @@ describe Clim::Command::Help do
             desc: "abcdef command.",
           },
         ],
+      })
+    end
+    it "returns sub commands info without sub commands." do
+      help = Clim::Command::Help.new(SpecCommandNoSubCommands.command)
+      help.sub_commands.should eq ({
+        help_lines: [] of String,
+        info:       [] of Array(NamedTuple(name: Array(String), desc: String)),
       })
     end
   end

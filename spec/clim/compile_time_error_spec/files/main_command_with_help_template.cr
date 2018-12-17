@@ -1,17 +1,17 @@
 require "./../../../../src/clim"
 
 class MyCli < Clim
-  help_template do |desc, usage, options_help, sub_commands_help|
+  help_template do |desc, usage, options, sub_commands|
     <<-MY_HELP
 
       command description: #{desc}
       command usage: #{usage}
 
       options:
-    #{options_help}
+    #{options[:help_lines].join("\n")}
 
       sub_commands:
-    #{sub_commands_help}
+    #{sub_commands[:help_lines].join("\n")}
 
 
     MY_HELP
