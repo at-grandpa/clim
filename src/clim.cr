@@ -5,13 +5,14 @@ class Clim
 
   {% begin %}
   {% support_types = SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
-  alias HelpOptionsInfoType = Array(NamedTuple(name: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool))
+  alias HelpOptionsType = Array(NamedTuple(name: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool, help_line: String))
   {% end %}
-  alias HelpOptionsType = NamedTuple(help_lines: Array(String), info: HelpOptionsInfoType)
-  alias HelpSubCommandsType = NamedTuple(help_lines: Array(String), info: Array(NamedTuple(name: Array(String), desc: String)))
+  alias HelpSubCommandsType = Array(NamedTuple(name: Array(String), desc: String, help_line: String))
   alias HelpTemplateType = Proc(String, String, HelpOptionsType, HelpSubCommandsType, String)
 
   DEAFULT_HELP_TEMPLATE = HelpTemplateType.new do |desc, usage, options, sub_commands|
+    options_lines = options.map(&.[](:help_line))
+    sub_commands_lines = sub_commands.map(&.[](:help_line))
     base_help_template = <<-HELP_MESSAGE
 
       #{desc}
@@ -22,7 +23,7 @@ class Clim
 
       Options:
 
-    #{options[:help_lines].join("\n")}
+    #{options_lines.join("\n")}
 
 
     HELP_MESSAGE
@@ -30,11 +31,11 @@ class Clim
     sub_commands_help_template = <<-HELP_MESSAGE
       Sub Commands:
 
-    #{sub_commands[:help_lines].join("\n")}
+    #{sub_commands_lines.join("\n")}
 
 
     HELP_MESSAGE
-    sub_commands[:help_lines].empty? ? base_help_template : base_help_template + sub_commands_help_template
+    sub_commands_lines.empty? ? base_help_template : base_help_template + sub_commands_help_template
   end
 
   class Clim::Command

@@ -64,18 +64,21 @@ class Clim
       end
 
       def options
-        {
-          help_lines: @command.parser.to_s.split("\n"),
-          info:       @command.options_info,
-        }
+        @command.parser.@flags.map do |flag|
+          info = @command.options_info.find do |info|
+            !!flag.match(/\A\s+?#{info[:name].join(", ")}/)
+          end
+          next nil if info.nil?
+          info.merge({help_line: flag})
+        end.compact
       end
 
       def sub_commands
         sub_commands_info = @command.sub_commands.map do |cmd|
           {
-            name:       sub_commands_name_and_alias_name(cmd),
-            desc:       cmd.desc,
-            help_lines: sub_cmds_help_line(cmd),
+            name:      sub_commands_name_and_alias_name(cmd),
+            desc:      cmd.desc,
+            help_line: sub_cmds_help_line(cmd),
           }
         end
       end

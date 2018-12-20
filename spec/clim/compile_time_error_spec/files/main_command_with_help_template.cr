@@ -8,10 +8,10 @@ class MyCli < Clim
       command usage: #{usage}
 
       options:
-    #{options[:help_lines].join("\n")}
+    #{options.map(&.[](:help_line)).join("\n")}
 
       sub_commands:
-    #{sub_commands[:help_lines].join("\n")}
+    #{sub_commands.map(&.[](:help_line)).join("\n")}
 
 
     MY_HELP
