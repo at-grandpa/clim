@@ -83,9 +83,8 @@ class Clim
 
     macro run(&block)
       def run(io : IO)
-        if @display_help_flag
-          RunProc.new { io.puts help }.call(@options, @arguments)
-        elsif @display_version_flag
+        return RunProc.new { io.puts help }.call(@options, @arguments) if @options.help == true
+        if @display_version_flag
           RunProc.new { io.puts version_str }.call(@options, @arguments)
         else
           RunProc.new {{ block.id }} .call(@options, @arguments)
@@ -138,7 +137,7 @@ class Clim
       {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
       class OptionsForEachCommand
         class Option_{{option_name}} < Option
-          define_option_macro({{type}}, {{default}}, {{required}})
+          define_option_macro({{option_name}}, {{type}}, {{default}}, {{required}})
         end
 
         {% default = false if type.id.stringify == "Bool" %}
@@ -179,14 +178,14 @@ class Clim
         alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
 
         private def parse_by_parser(argv)
-          @parser.on("--help", "Show this help.") { @display_help_flag = true }
+          # @parser.on("--help", "Show this help.") { @display_help_flag = true }
           define_version(@parser)
           @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
           @parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
           @parser.unknown_args { |unknown_args| @arguments = unknown_args }
           @parser.parse(argv.dup)
           required_validate! unless display_help?
-          @options.help = help
+          @options.help_str = help_template_def
           self
         end
 
@@ -210,6 +209,8 @@ class Clim
         end
 
         {{ yield }}
+
+        option "--help", type: Bool, desc: "Show this help.", default: false
 
         alias RunProc = Proc(OptionsForEachCommand, Array(String), Nil)
         property options : OptionsForEachCommand = OptionsForEachCommand.new

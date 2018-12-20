@@ -49,7 +49,7 @@ class Clim
           {% end %}
         end
 
-        macro define_option_macro(type, default, required)
+        macro define_option_macro(option_name, type, default, required)
           {% if default != nil %}
             {% value_type = type.stringify.id %}
             {% value_default = default %}
@@ -82,6 +82,7 @@ class Clim
 
           def desc
             desc = @desc
+            return desc if ["help", "version"].includes?({{option_name.stringify}})
             desc = desc + " [type:#{{{type}}.to_s}]"
             desc = desc + " [default:#{display_default}]" unless {{(default == nil).id}}
             desc = desc + " [required]" if required
