@@ -83,7 +83,7 @@ class Clim
 
     macro run(&block)
       def run(io : IO)
-        return RunProc.new { io.puts help }.call(@options, @arguments) if @options.help == true
+        return RunProc.new { io.puts help_template_def }.call(@options, @arguments) if @options.help == true
         if @display_version_flag
           RunProc.new { io.puts version_str }.call(@options, @arguments)
         else
@@ -119,14 +119,6 @@ class Clim
       return parse_by_parser(argv) if argv.empty?
       return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
       find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
-    end
-
-    private def help
-      help_template_def
-    end
-
-    private def display_help? : Bool
-      @display_help_flag
     end
 
     macro option_base(short, long, type, desc, default, required)
@@ -178,19 +170,19 @@ class Clim
         alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
 
         private def parse_by_parser(argv)
-          # @parser.on("--help", "Show this help.") { @display_help_flag = true }
           define_version(@parser)
-          @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
+          @parser.invalid_option do |opt_name|
+            raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\""
+          end
           @parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
           @parser.unknown_args { |unknown_args| @arguments = unknown_args }
           @parser.parse(argv.dup)
-          required_validate! unless display_help?
+          required_validate! if @options.help == false
           @options.help_str = help_template_def
           self
         end
 
         def initialize
-          @display_help_flag = false
           @display_version_flag = false
           @parser = OptionParser.new
           @options = OptionsForEachCommand.new
