@@ -15,7 +15,30 @@ class Clim
       end
 
       def setup_parser(parser)
-        {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help_str" } %}
+        # options
+        {% for iv in @type.instance_vars.reject { |iv| ["help_str", "help_instance", "version_instance"].includes?(iv.stringify) } %}
+          long = {{iv}}.long
+          if long.nil?
+            parser.on({{iv}}.short, {{iv}}.desc) {|arg| {{iv}}.set_value(arg) }
+          else
+            parser.on({{iv}}.short, long, {{iv}}.desc) {|arg| {{iv}}.set_value(arg) }
+          end
+        {% end %}
+
+        # help
+        {% if @type.instance_vars.map(&.stringify).includes?("help_instance") %}
+          {% iv = @type.instance_vars.find(&.stringify.==("help_instance")) %}
+          long = {{iv}}.long
+          if long.nil?
+            parser.on({{iv}}.short, {{iv}}.desc) {|arg| {{iv}}.set_value(arg) }
+          else
+            parser.on({{iv}}.short, long, {{iv}}.desc) {|arg| {{iv}}.set_value(arg) }
+          end
+        {% end %}
+
+        # version
+        {% if @type.instance_vars.map(&.stringify).includes?("version_instance") %}
+          {% iv = @type.instance_vars.find(&.stringify.==("version_instance")) %}
           long = {{iv}}.long
           if long.nil?
             parser.on({{iv}}.short, {{iv}}.desc) {|arg| {{iv}}.set_value(arg) }

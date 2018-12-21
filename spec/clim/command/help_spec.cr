@@ -52,6 +52,7 @@ describe Clim::Command::Help do
 
           -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
           -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
+          --help                           Show this help.
 
         Sub Commands:
 
@@ -75,6 +76,7 @@ describe Clim::Command::Help do
 
           -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
           -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
+          --help                           Show this help.
 
 
       OPTIONS
@@ -98,6 +100,7 @@ describe Clim::Command::Help do
       help.parser.to_s.should eq <<-OPTIONS
           -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
           -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
+          --help                           Show this help.
       OPTIONS
     end
   end
@@ -160,6 +163,14 @@ describe Clim::Command::Help do
           required:  true,
           help_line: "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
         },
+        {
+          name:      ["--help"],
+          type:      Bool,
+          desc:      "Show this help.",
+          default:   false,
+          required:  false,
+          help_line: "    --help                           Show this help.",
+        },
       ]
     end
   end
@@ -181,10 +192,7 @@ describe Clim::Command::Help do
     end
     it "returns sub commands info without sub commands." do
       help = Clim::Command::Help.new(SpecCommandNoSubCommands.command)
-      help.sub_commands.should eq ({
-        help_lines: [] of String,
-        info:       [] of Array(NamedTuple(name: Array(String), desc: String)),
-      })
+      help.sub_commands.should eq [] of Array(NamedTuple(name: Array(String), desc: String, help_line: String))
     end
   end
 end

@@ -41,24 +41,19 @@ class Clim
     end
 
     macro version(version_str, short = nil)
+      {% if short == nil %}
+        option "--version", type: Bool, desc: "Show version.", default: false
+      {% else %}
+        option {{short.id.stringify}}, "--version", type: Bool, desc: "Show version.", default: false
+      {% end %}
+
       def version_str : String
         {{ version_str }}
       end
-
-      def define_version(parser)
-        {% if short == nil %}
-          parser.on("--version", "Show version.") { @display_version_flag = true }
-        {% else %}
-          parser.on({{short.id.stringify}}, "--version", "Show version.") { @display_version_flag = true }
-        {% end %}
-      end
     end
 
-    def version_str
+    def version_str : String
       ""
-    end
-
-    def define_version(parser)
     end
 
     macro main
@@ -84,11 +79,11 @@ class Clim
     macro run(&block)
       def run(io : IO)
         return RunProc.new { io.puts help_template_def }.call(@options, @arguments) if @options.help == true
-        if @display_version_flag
-          RunProc.new { io.puts version_str }.call(@options, @arguments)
-        else
-          RunProc.new {{ block.id }} .call(@options, @arguments)
+        options = @options
+        if options.responds_to?(:version)
+          return RunProc.new { io.puts version_str }.call(@options, @arguments) if options.version == true
         end
+        RunProc.new {{ block.id }} .call(@options, @arguments)
       end
     end
 
@@ -170,10 +165,7 @@ class Clim
         alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
 
         private def parse_by_parser(argv)
-          define_version(@parser)
-          @parser.invalid_option do |opt_name|
-            raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\""
-          end
+          @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
           @parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
           @parser.unknown_args { |unknown_args| @arguments = unknown_args }
           @parser.parse(argv.dup)
