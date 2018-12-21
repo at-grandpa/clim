@@ -763,27 +763,27 @@ spec_for_alias_name(
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "--help"],
-      expect_help: {{sub_1_help_message}},
+      expect_help: {{sub_sub_1_help_message}},
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "--help"],
-      expect_help: {{sub_1_help_message}},
+      expect_help: {{sub_sub_1_help_message}},
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "--help", "ignore-arg"],
-      expect_help: {{sub_1_help_message}},
+      expect_help: {{sub_sub_1_help_message}},
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "--help", "ignore-arg"],
-      expect_help: {{sub_1_help_message}},
+      expect_help: {{sub_sub_1_help_message}},
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "ignore-arg", "--help"],
-      expect_help: {{sub_1_help_message}},
+      expect_help: {{sub_sub_1_help_message}},
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "ignore-arg", "--help"],
-      expect_help: {{sub_1_help_message}},
+      expect_help: {{sub_sub_1_help_message}},
     },
 
     # sub_command_2
