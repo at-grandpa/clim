@@ -12,11 +12,14 @@ macro spec_for_alias_name(spec_class_name, spec_cases)
         end
         sub_command "sub_command_1" do
           alias_name "alias_sub_command_1"
+          option "-a ARG", "--array=ARG", desc: "Option test.", type: Array(String), default: ["default string"]
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
           sub_command "sub_sub_command_1" do
+            option "-b", "--bool", type: Bool, desc: "Bool test."
             run do |opts, args|
+              assert_opts_and_args({{spec_case}})
             end
           end
         end
@@ -70,6 +73,7 @@ end
 
                          Options:
 
+                           -a ARG, --array=ARG              Option test. [type:Array(String)] [default:[\"default string\"]]
                            --help                           Show this help.
 
                          Sub Commands:
@@ -78,6 +82,22 @@ end
 
 
                        HELP_MESSAGE
+
+  sub_sub_1_help_message = <<-HELP_MESSAGE
+
+                             Command Line Interface Tool.
+
+                             Usage:
+
+                               sub_sub_command_1 [options] [arguments]
+
+                             Options:
+
+                               -b, --bool                       Bool test. [type:Bool]
+                               --help                           Show this help.
+
+
+                           HELP_MESSAGE
 
   sub_2_help_message = <<-HELP_MESSAGE
 
@@ -183,6 +203,226 @@ spec_for_alias_name(
       expect_args: ["arg1", "arg2", "arg3"],
     },
     {
+      argv:        ["sub_command_1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["default string"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["default string"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "arg1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["default string"],
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "arg1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["default string"],
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "-a", "array1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "-a", "array1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "-a", "array1", "arg1", "-a", "array2"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1", "array2"],
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "-a", "array1", "arg1", "-a", "array2"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1", "array2"],
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "-aarray1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "-aarray1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "--array", "array1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "--array", "array1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "--array=array1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "--array=array1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "-a", "array1", "arg1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "-a", "array1", "arg1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "arg1", "-a", "array1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "arg1", "-a", "array1"],
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["array1"],
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "-array"], # Unintended case.
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["rray"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "-array"], # Unintended case.
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["rray"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "-a=array1"], # Unintended case.
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["=array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "-a=array1"], # Unintended case.
+      expect_help: {{sub_1_help_message}},
+      expect_opts: {
+        "type" => Array(String),
+        "method" => "array",
+        "expect_value" => ["=array1"],
+      },
+      expect_args: [] of String,
+    },
+    {
       argv:              ["sub_command_1", "--help", "-ignore-option"],
       exception_message: "Undefined option. \"-ignore-option\"",
     },
@@ -262,6 +502,291 @@ spec_for_alias_name(
       argv:        ["alias_sub_command_1", "ignore-arg", "--help"],
       expect_help: {{sub_1_help_message}},
     },
+
+    # sub_sub_command1
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "arg1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "arg2"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_args: ["arg1", "arg2"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "arg2"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_args: ["arg1", "arg2"],
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "arg2", "arg3"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_args: ["arg1", "arg2", "arg3"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "arg2", "arg3"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_args: ["arg1", "arg2", "arg3"],
+    },
+
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => false,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => false,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "arg1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => false,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => false,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "-b"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "-b"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "--bool"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "--bool"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: [] of String,
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "-b", "arg1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "-b", "arg1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "--bool", "arg1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "--bool", "arg1"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "-b"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "-b"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "--bool"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "--bool"],
+      expect_help: {{sub_sub_1_help_message}},
+      expect_opts: {
+        "type" => Bool,
+        "method" => "bool",
+        "expect_value" => true,
+      },
+      expect_args: ["arg1"],
+    },
+    {
+      argv:              ["sub_command_1", "sub_sub_command_1", "--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["alias_sub_command_1", "sub_sub_command_1", "--help", "-ignore-option"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["sub_command_1", "sub_sub_command_1", "-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["alias_sub_command_1", "sub_sub_command_1", "-ignore-option", "--help"],
+      exception_message: "Undefined option. \"-ignore-option\"",
+    },
+    {
+      argv:              ["sub_command_1", "sub_sub_command_1", "-m"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["alias_sub_command_1", "sub_sub_command_1", "-m"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["sub_command_1", "sub_sub_command_1", "--missing-option"],
+      exception_message: "Undefined option. \"--missing-option\"",
+    },
+    {
+      argv:              ["alias_sub_command_1", "sub_sub_command_1", "--missing-option"],
+      exception_message: "Undefined option. \"--missing-option\"",
+    },
+    {
+      argv:              ["sub_command_1", "sub_sub_command_1", "-m", "arg1"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["alias_sub_command_1", "sub_sub_command_1", "-m", "arg1"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["sub_command_1", "sub_sub_command_1", "arg1", "-m"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["alias_sub_command_1", "sub_sub_command_1", "arg1", "-m"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["sub_command_1", "sub_sub_command_1", "-m", "-d"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:              ["alias_sub_command_1", "sub_sub_command_1", "-m", "-d"],
+      exception_message: "Undefined option. \"-m\"",
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "--help"],
+      expect_help: {{sub_1_help_message}},
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "--help"],
+      expect_help: {{sub_1_help_message}},
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "--help", "ignore-arg"],
+      expect_help: {{sub_1_help_message}},
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "--help", "ignore-arg"],
+      expect_help: {{sub_1_help_message}},
+    },
+    {
+      argv:        ["sub_command_1", "sub_sub_command_1", "ignore-arg", "--help"],
+      expect_help: {{sub_1_help_message}},
+    },
+    {
+      argv:        ["alias_sub_command_1", "sub_sub_command_1", "ignore-arg", "--help"],
+      expect_help: {{sub_1_help_message}},
+    },
+
+    # sub_command_2
     {
       argv:        ["sub_command_2"],
       expect_help: {{sub_2_help_message}},
