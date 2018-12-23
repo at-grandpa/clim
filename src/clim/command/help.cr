@@ -66,7 +66,7 @@ class Clim
       def options
         @command.parser.@flags.map do |flag|
           info = @command.options_info.find do |info|
-            !!flag.match(/\A\s+?#{info[:name].join(", ")}/)
+            !!flag.match(/\A\s+?#{info[:names].join(", ")}/)
           end
           next nil if info.nil?
           info.merge({help_line: flag})
@@ -76,7 +76,7 @@ class Clim
       def sub_commands
         sub_commands_info = @command.sub_commands.map do |cmd|
           {
-            name:      sub_commands_name_and_alias_name(cmd),
+            names:     sub_commands_name_and_alias_name(cmd),
             desc:      cmd.desc,
             help_line: sub_cmds_help_line(cmd),
           }

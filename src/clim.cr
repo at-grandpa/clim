@@ -5,9 +5,9 @@ class Clim
 
   {% begin %}
   {% support_types = SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
-  alias HelpOptionsType = Array(NamedTuple(name: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool, help_line: String))
+  alias HelpOptionsType = Array(NamedTuple(names: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool, help_line: String))
   {% end %}
-  alias HelpSubCommandsType = Array(NamedTuple(name: Array(String), desc: String, help_line: String))
+  alias HelpSubCommandsType = Array(NamedTuple(names: Array(String), desc: String, help_line: String))
   alias HelpTemplateType = Proc(String, String, HelpOptionsType, HelpSubCommandsType, String)
 
   DEAFULT_HELP_TEMPLATE = HelpTemplateType.new do |desc, usage, options, sub_commands|

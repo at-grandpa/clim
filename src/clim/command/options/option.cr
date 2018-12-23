@@ -11,7 +11,7 @@ class Clim
         def to_named_tuple
           long_name = long
           {
-            name:     long_name.nil? ? [short] : [short, long_name],
+            names:    long_name.nil? ? [short] : [short, long_name],
             type:     default.class,
             desc:     @desc,
             default:  default,

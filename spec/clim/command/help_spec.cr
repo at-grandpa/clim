@@ -148,7 +148,7 @@ describe Clim::Command::Help do
       help = Clim::Command::Help.new(SpecCommand.command)
       help.options.should eq [
         {
-          name:      ["-g WORDS", "--greeting=WORDS"],
+          names:     ["-g WORDS", "--greeting=WORDS"],
           type:      String,
           desc:      "Words of greetings.",
           default:   "Hello",
@@ -156,7 +156,7 @@ describe Clim::Command::Help do
           help_line: "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
         },
         {
-          name:      ["-n NAME"],
+          names:     ["-n NAME"],
           type:      Array(String),
           desc:      "Target name.",
           default:   ["Taro"],
@@ -164,7 +164,7 @@ describe Clim::Command::Help do
           help_line: "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
         },
         {
-          name:      ["--help"],
+          names:     ["--help"],
           type:      Bool,
           desc:      "Show this help.",
           default:   false,
@@ -179,12 +179,12 @@ describe Clim::Command::Help do
       help = Clim::Command::Help.new(SpecCommand.command)
       help.sub_commands.should eq [
         {
-          name:      ["abc", "def", "ghi"],
+          names:     ["abc", "def", "ghi"],
           desc:      "abc command.",
           help_line: "    abc, def, ghi            abc command.",
         },
         {
-          name:      ["abcdef", "ghijkl", "mnopqr"],
+          names:     ["abcdef", "ghijkl", "mnopqr"],
           desc:      "abcdef command.",
           help_line: "    abcdef, ghijkl, mnopqr   abcdef command.",
         },
@@ -192,7 +192,7 @@ describe Clim::Command::Help do
     end
     it "returns sub commands info without sub commands." do
       help = Clim::Command::Help.new(SpecCommandNoSubCommands.command)
-      help.sub_commands.should eq [] of Array(NamedTuple(name: Array(String), desc: String, help_line: String))
+      help.sub_commands.should eq [] of Array(NamedTuple(names: Array(String), desc: String, help_line: String))
     end
   end
 end

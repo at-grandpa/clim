@@ -3,7 +3,7 @@ require "./../../../../src/clim"
 class MyCli < Clim
   help_template do |desc, usage, options, sub_commands|
     options_help_lines = options.map do |option|
-      option[:name].join(", ") + "\n" + "    #{option[:desc]}"
+      option[:names].join(", ") + "\n" + "    #{option[:desc]}"
     end
     base = <<-BASE_HELP
     #{usage}
