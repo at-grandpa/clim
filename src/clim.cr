@@ -67,11 +67,11 @@ class Clim
     end
 
     def self.command
-      Command_Main_command_of_clim_library.new
+      Command_Main_command_of_clim_library.create
     end
 
     def self.start_parse(argv, io : IO = STDOUT)
-      Command_Main_command_of_clim_library.new.parse(argv).run(io)
+      Command_Main_command_of_clim_library.create.parse(argv).run(io)
     end
 
     def self.start(argv)

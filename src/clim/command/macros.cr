@@ -111,13 +111,15 @@ class Clim
 
           alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
 
-          def initialize
-            @display_version_flag = false
+          def self.create
+            self.new(OptionsForEachCommand.new)
+          end
+
+          def initialize(@options : Options)
             @parser = OptionParser.new
-            @options = OptionsForEachCommand.new
             @options.setup_parser(@parser)
             \{% for command_class in @type.constants.select { |c| @type.constant(c).superclass.id.stringify == "Clim::Command" } %}
-              @sub_commands << \{{ command_class.id }}.new
+              @sub_commands << \{{ command_class.id }}.create
             \{% end %}
           end
 
