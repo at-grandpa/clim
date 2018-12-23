@@ -51,10 +51,6 @@ class Clim
         "    #{names}   #{cmd.desc}"
       end
 
-      def sub_cmds_help_display
-        sub_commands_help_lines.join("\n")
-      end
-
       def max_name_length
         @command.sub_commands.empty? ? 0 : @command.sub_commands.map { |cmd| names_of(cmd).join(", ").size }.max
       end
