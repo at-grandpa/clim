@@ -117,10 +117,10 @@ describe Clim::Command::Help do
       HELP_STRING
     end
   end
-  describe "#sub_cmds_help_lines" do
+  describe "#sub_commands_help_lines" do
     it "returns sub commands help lines." do
       help = Clim::Command::Help.new(SpecCommand.command)
-      help.sub_cmds_help_lines.should eq [
+      help.sub_commands_help_lines.should eq [
         "    abc, def, ghi            abc command.",
         "    abcdef, ghijkl, mnopqr   abcdef command.",
       ]
@@ -132,15 +132,15 @@ describe Clim::Command::Help do
       help.max_name_length.should eq 22
     end
   end
-  describe "#sub_commands_name_and_alias_name" do
+  describe "#names_of" do
     it "returns name and alias_name of sub commands." do
       help = Clim::Command::Help.new(SpecCommand.command)
 
       sub_command1 = SpecCommand.command.sub_commands[0]
-      help.sub_commands_name_and_alias_name(sub_command1).should eq ["abc", "def", "ghi"]
+      help.names_of(sub_command1).should eq ["abc", "def", "ghi"]
 
       sub_command2 = SpecCommand.command.sub_commands[1]
-      help.sub_commands_name_and_alias_name(sub_command2).should eq ["abcdef", "ghijkl", "mnopqr"]
+      help.names_of(sub_command2).should eq ["abcdef", "ghijkl", "mnopqr"]
     end
   end
   describe "#options" do
