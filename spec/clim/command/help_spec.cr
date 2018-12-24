@@ -97,7 +97,7 @@ describe Clim::Command::Help do
   describe "#parser.to_s" do
     it "returns string of parser options." do
       help = Clim::Command::Help.new(SpecCommand.command)
-      help.parser.to_s.should eq <<-OPTIONS
+      help.parser.option_parser.to_s.should eq <<-OPTIONS
           -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
           -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
           --help                           Show this help.

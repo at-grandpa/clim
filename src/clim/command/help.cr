@@ -19,7 +19,7 @@ class Clim
 
           Options:
 
-        #{@command.parser}
+        #{@command.parser.option_parser}
 
 
         HELP_MESSAGE
@@ -60,7 +60,7 @@ class Clim
       end
 
       def options
-        @command.parser.@flags.map do |flag|
+        @command.parser.option_parser.@flags.map do |flag|
           info = @command.options_info.find do |info|
             !!flag.match(/\A\s+?#{info[:names].join(", ")}/)
           end

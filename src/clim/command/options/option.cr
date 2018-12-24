@@ -1,7 +1,7 @@
 class Clim
   abstract class Command
     class Options
-      class Option
+      abstract class Option
         property short : String = ""
         property long : String? = ""
         property desc : String = ""
@@ -22,6 +22,8 @@ class Clim
         def required_not_set? : Bool
           @required && !set_value?
         end
+
+        abstract def method_name
 
         private def display_default
           default_value = @default.dup

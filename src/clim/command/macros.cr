@@ -54,12 +54,12 @@ class Clim
 
       macro run(&block)
         def run(io : IO)
-          return RunProc.new { io.puts help_template_def }.call(@options, @arguments) if @options.help == true
-          options = @options
+          return RunProc.new { io.puts help_template_def }.call(@parser.options, @parser.arguments) if @parser.options.help == true
+          options = @parser.options
           if options.responds_to?(:version)
-            return RunProc.new { io.puts version_str }.call(options, @arguments) if options.version == true
+            return RunProc.new { io.puts version_str }.call(options, @parser.arguments) if options.version == true
           end
-          RunProc.new {{ block.id }} .call(@options, @arguments)
+          RunProc.new {{ block.id }} .call(@parser.options, @parser.arguments)
         end
       end
 
@@ -72,6 +72,10 @@ class Clim
         class OptionsForEachCommand
           class Option_{{option_name}} < Option
             define_option_macro({{option_name}}, {{type}}, {{default}}, {{required}})
+
+            def method_name
+              {{option_name.stringify}}
+            end
           end
 
           {% default = false if type.id.stringify == "Bool" %}
@@ -112,33 +116,35 @@ class Clim
           alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
 
           def self.create
-            self.new(OptionsForEachCommand.new)
+            self.new(Parser(OptionsForEachCommand).new(OptionsForEachCommand.new))
           end
 
-          def initialize(@options : Options)
-            @parser = OptionParser.new
-            @options.setup_parser(@parser)
+          def initialize(@parser : Parser(OptionsForEachCommand))
             \{% for command_class in @type.constants.select { |c| @type.constant(c).superclass.id.stringify == "Clim::Command" } %}
               @sub_commands << \{{ command_class.id }}.create
             \{% end %}
           end
 
+          def parser
+            @parser
+          end
+
           def options_info
-            @options.info
+            @parser.options.info
           end
 
           private def parse_by_parser(argv)
-            @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
-            @parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-            @parser.unknown_args { |unknown_args| @arguments = unknown_args }
             @parser.parse(argv.dup)
-            required_validate! if @options.help == false
-            @options.help_str = help_template_def
+            opts = @parser.options
+            if opts.responds_to?(:help)
+              required_validate! if opts.help == false
+            end
+            @parser.options.help_str = help_template_def
             self
           end
 
           private def required_validate!
-            raise "Required options. \"#{@options.invalid_required_names.join("\", \"")}\"" unless @options.invalid_required_names.empty?
+            raise "Required options. \"#{@parser.options.invalid_required_names.join("\", \"")}\"" unless @parser.options.invalid_required_names.empty?
           end
 
           {{ yield }}

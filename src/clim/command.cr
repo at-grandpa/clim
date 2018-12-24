@@ -5,8 +5,6 @@ class Clim
   abstract class Command
     property name : String = ""
     property alias_name : Array(String) = [] of String
-    property parser : OptionParser = OptionParser.new
-    property arguments : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
 
     include Clim::Command::Macros
