@@ -77,19 +77,9 @@ class Clim
 
     abstract def run(io : IO)
 
-    private def find_sub_cmds_by(name)
-      @sub_commands.select do |cmd|
-        cmd.name == name || cmd.alias_name.includes?(name)
-      end
-    end
-
     def parse(argv)
-      opts_validate!
-      recursive_parse(argv)
-    end
-
-    private def opts_validate!
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
+      recursive_parse(argv)
     end
 
     private def duplicate_names
@@ -106,17 +96,19 @@ class Clim
 
     private def parse_by_parser(argv)
       parser.parse(argv.dup)
-      required_validate! unless parser.display_help?
-      parser.options.help_str = help_template_def
+      parser.required_validate!
+      parser.set_help_string(help_template_def)
       self
     end
 
-    def options_info
-      parser.options.info
+    private def find_sub_cmds_by(name)
+      @sub_commands.select do |cmd|
+        cmd.name == name || cmd.alias_name.includes?(name)
+      end
     end
 
-    private def required_validate!
-      raise "Required options. \"#{parser.options.invalid_required_names.join("\", \"")}\"" unless parser.options.invalid_required_names.empty?
+    def options_info
+      parser.options_info
     end
 
     abstract def initialize

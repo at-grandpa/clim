@@ -3,6 +3,7 @@ class Clim
     class Parser(T)
       property option_parser : OptionParser = OptionParser.new
       property arguments : Array(String) = [] of String
+      property options : T
 
       def initialize(@options : T)
         @option_parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
@@ -21,56 +22,44 @@ class Clim
         options.help
       end
 
-      def options
-        @options
+      def set_help_string(str)
+        @options.help_str = str
+      end
+
+      def options_info
+        @options.info
+      end
+
+      def required_validate!
+        unless display_help?
+          raise "Required options. \"#{options.invalid_required_names.join("\", \"")}\"" unless options.invalid_required_names.empty?
+        end
       end
 
       def setup_option_parser(option_parser)
         # options
         options = @options.to_a
-        options.to_a.reject { |o| ["help", "version"].includes?(o.method_name) }.each do |option|
-          long = option.long
-          if long.nil?
-            option_parser.on(option.short, option.desc) { |arg| option.set_value(arg) }
-          else
-            option_parser.on(option.short, long, option.desc) { |arg| option.set_value(arg) }
-          end
+        options.reject { |o| ["help", "version"].includes?(o.method_name) }.each do |option|
+          on(option)
         end
 
         # help
-        option_found = options.to_a.find { |o| ["help"].includes?(o.method_name) }
-        if option_found.nil?
-          return nil
-        else
-          option_help : Clim::Command::Options::Option = option_found
-        end
-        long = option_help.long
-        if long.nil?
-          option_parser.on(option_help.short, option_help.desc) do |arg|
-            option_help.set_value(arg)
-          end
-        else
-          option_parser.on(option_help.short, long, option_help.desc) do |arg|
-            option_help.set_value(arg)
-          end
-        end
+        option_help = options.find { |o| ["help"].includes?(o.method_name) }
+        raise ClimException.new("Help option setting is required.") if option_help.nil?
+        on(option_help)
 
         # version
-        option_found = options.to_a.find { |o| ["version"].includes?(o.method_name) }
-        if option_found.nil?
-          return nil
-        else
-          option_version : Clim::Command::Options::Option = option_found
-        end
-        long = option_version.long
+        option_version = options.find { |o| ["version"].includes?(o.method_name) }
+        return nil if option_version.nil?
+        on(option_version)
+      end
+
+      def on(option)
+        long = option.long
         if long.nil?
-          option_parser.on(option_version.short, option_version.desc) do |arg|
-            option_version.set_value(arg)
-          end
+          option_parser.on(option.short, option.desc) { |arg| option.set_value(arg) }
         else
-          option_parser.on(option_version.short, long, option_version.desc) do |arg|
-            option_version.set_value(arg)
-          end
+          option_parser.on(option.short, long, option.desc) { |arg| option.set_value(arg) }
         end
       end
     end
