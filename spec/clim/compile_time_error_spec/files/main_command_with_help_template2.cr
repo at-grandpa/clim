@@ -1,29 +1,29 @@
 require "./../../../../src/clim"
 
 class MyCli < Clim
-  help_template do |desc, usage, options, sub_commands|
-    options_help_lines = options.map do |option|
-      option[:names].join(", ") + "\n" + "    #{option[:desc]}"
-    end
-    base = <<-BASE_HELP
-    #{usage}
-
-    #{desc}
-
-    options:
-    #{options_help_lines.join("\n")}
-
-    BASE_HELP
-
-    sub = <<-SUB_COMMAND_HELP
-
-    sub commands:
-    #{sub_commands.map(&.[](:help_line)).join("\n")}
-    SUB_COMMAND_HELP
-
-    sub_commands.empty? ? base : base + sub
-  end
   main_command do
+    help_template do |desc, usage, options, sub_commands|
+      options_help_lines = options.map do |option|
+        option[:names].join(", ") + "\n" + "    #{option[:desc]}"
+      end
+      base = <<-BASE_HELP
+      #{usage}
+
+      #{desc}
+
+      options:
+      #{options_help_lines.join("\n")}
+
+      BASE_HELP
+
+      sub = <<-SUB_COMMAND_HELP
+
+      sub commands:
+      #{sub_commands.map(&.[](:help_line)).join("\n")}
+      SUB_COMMAND_HELP
+
+      sub_commands.empty? ? base : base + sub
+    end
     desc "Your original command line interface tool."
     usage <<-USAGE
     usage: my_cli [--version] [--help] [-P PORT|--port=PORT]

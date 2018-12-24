@@ -15,6 +15,12 @@ class Clim
         @option_parser.parse(argv.dup)
       end
 
+      def display_help?
+        options = @options
+        return false unless options.responds_to?(:help)
+        options.help
+      end
+
       def options
         @options
       end

@@ -32,6 +32,15 @@ class Clim
         end
       end
 
+      macro help_template(&block)
+        class Clim::Command
+          def help_template_def
+            help = Help.new(self)
+            HelpTemplateType.new {{ block.stringify.id }} .call(help.desc, help.usage, help.options, help.sub_commands)
+          end
+        end
+      end
+
       macro main
         main_command
       end
@@ -54,11 +63,15 @@ class Clim
 
       macro run(&block)
         def run(io : IO)
-          return RunProc.new { io.puts help_template_def }.call(@parser.options, @parser.arguments) if @parser.options.help == true
+          if @parser.options.help == true
+            return RunProc.new { io.puts help_template_def }.call(@parser.options, @parser.arguments)
+          end
+
           options = @parser.options
           if options.responds_to?(:version)
             return RunProc.new { io.puts version_str }.call(options, @parser.arguments) if options.version == true
           end
+
           RunProc.new {{ block.id }} .call(@parser.options, @parser.arguments)
         end
       end
@@ -108,16 +121,16 @@ class Clim
         {% end %}
 
         class Command_{{ name.id.capitalize }} < Command
-          property name : String = {{name.id.stringify}}
 
           class Options_{{ name.id.capitalize }} < Options
           end
 
           alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
+          alias RunProc = Proc(OptionsForEachCommand, Array(String), Nil)
 
-          def self.create
-            self.new(Parser(OptionsForEachCommand).new(OptionsForEachCommand.new))
-          end
+          property parser : Parser(OptionsForEachCommand)
+          property name : String = {{name.id.stringify}}
+          property options : OptionsForEachCommand = OptionsForEachCommand.new
 
           def initialize(@parser : Parser(OptionsForEachCommand))
             \{% for command_class in @type.constants.select { |c| @type.constant(c).superclass.id.stringify == "Clim::Command" } %}
@@ -125,37 +138,14 @@ class Clim
             \{% end %}
           end
 
-          def parser
-            @parser
-          end
-
-          def options_info
-            @parser.options.info
-          end
-
-          private def parse_by_parser(argv)
-            @parser.parse(argv.dup)
-            opts = @parser.options
-            if opts.responds_to?(:help)
-              required_validate! if opts.help == false
-            end
-            @parser.options.help_str = help_template_def
-            self
-          end
-
-          private def required_validate!
-            raise "Required options. \"#{@parser.options.invalid_required_names.join("\", \"")}\"" unless @parser.options.invalid_required_names.empty?
+          def self.create
+            self.new(Parser(OptionsForEachCommand).new(OptionsForEachCommand.new))
           end
 
           {{ yield }}
 
           option "--help", type: Bool, desc: "Show this help.", default: false
 
-          alias RunProc = Proc(OptionsForEachCommand, Array(String), Nil)
-          property options : OptionsForEachCommand = OptionsForEachCommand.new
-
-          class OptionsForEachCommand
-          end
         end
       end
     end
