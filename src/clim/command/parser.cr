@@ -23,7 +23,7 @@ class Clim
       end
 
       def set_help_string(str)
-        @options.help_str = str
+        @options.help_string = str
       end
 
       def required_validate!

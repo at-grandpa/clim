@@ -1,7 +1,7 @@
 require "./../spec_helper"
 
 macro assert_opts_and_args(spec_case)
-    opts.help_str.should eq {{spec_case["expect_help"]}}
+    opts.help_string.should eq {{spec_case["expect_help"]}}
     {% if spec_case.keys.includes?("expect_opts".id) %}
       if opts.responds_to?(:{{spec_case["expect_opts"]["method"].id}})
         typeof(opts.{{spec_case["expect_opts"]["method"].id}}).should eq {{spec_case["expect_opts"]["type"]}}
