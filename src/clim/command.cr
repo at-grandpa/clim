@@ -1,10 +1,9 @@
 require "option_parser"
-require "./types"
 require "./command/*"
 
 class Clim
   abstract class Command
-    include Clim::Command::Macros
+    include Macros
 
     property name : String = ""
     property alias_name : Array(String) = [] of String

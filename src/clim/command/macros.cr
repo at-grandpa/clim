@@ -44,6 +44,7 @@ class Clim
               required: Bool,
               help_line: String))
           {% end %}
+
           alias HelpSubCommandsType = Array(NamedTuple(
             names: Array(String),
             desc: String,
@@ -81,9 +82,7 @@ class Clim
 
       macro run(&block)
         def run(io : IO)
-          if @parser.options.help == true
-            return RunProc.new { io.puts help_template }.call(@parser.options, @parser.arguments)
-          end
+          return RunProc.new { io.puts help_template }.call(@parser.options, @parser.arguments) if @parser.options.help == true
 
           options = @parser.options
           if options.responds_to?(:version)
