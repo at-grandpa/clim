@@ -3,111 +3,63 @@ require "./command/*"
 
 class Clim
   abstract class Command
+    include Macros
+
     property name : String = ""
     property alias_name : Array(String) = [] of String
-    property parser : OptionParser = OptionParser.new
-    property arguments : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
 
-    macro desc(description)
-      def desc : String
-        {{ description }}
-      end
-    end
+    abstract def initialize
 
     def desc : String
       "Command Line Interface Tool."
-    end
-
-    macro usage(usage)
-      def usage : String
-        {{ usage }}
-      end
     end
 
     def usage : String
       "#{name} [options] [arguments]"
     end
 
-    macro alias_name(*names)
-      {% raise "'alias_name' is not supported on main command." if @type == Command_Main_command_of_clim_library %}
-      def alias_name : Array(String)
-        {{ names }}.to_a
-      end
-    end
-
     def alias_name(*names) : Array(String)
       [] of String
     end
 
-    macro version(version_str, short = nil)
-      def version_str : String
-        {{ version_str }}
-      end
-
-      def define_version(parser)
-        {% if short == nil %}
-          parser.on("--version", "Show version.") { @display_version_flag = true }
-        {% else %}
-          parser.on({{short.id.stringify}}, "--version", "Show version.") { @display_version_flag = true }
-        {% end %}
-      end
-    end
-
-    def version_str
+    def version_str : String
       ""
     end
 
-    def define_version(parser)
-    end
+    def help_template
+      options_lines = options_help_info.map(&.[](:help_line))
+      sub_commands_lines = sub_commands_help_info.map(&.[](:help_line))
+      base_help_template = <<-HELP_MESSAGE
 
-    macro main
-      main_command
-    end
+        #{desc}
 
-    macro main_command
-      {% raise "Can not be declared 'main_command' or 'main' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
-    end
+        Usage:
 
-    macro sub(name, &block)
-      sub_command({{name}}) do
-        {{ yield }}
-      end
-    end
+          #{usage}
 
-    macro sub_command(name, &block)
-      command({{name}}) do
-        {{ yield }}
-      end
-    end
+        Options:
 
-    macro run(&block)
-      def run(io : IO)
-        if @display_help_flag
-          RunProc.new { io.puts help }.call(@options, @arguments)
-        elsif @display_version_flag
-          RunProc.new { io.puts version_str }.call(@options, @arguments)
-        else
-          RunProc.new {{ block.id }} .call(@options, @arguments)
-        end
-      end
+      #{options_lines.join("\n")}
+
+
+      HELP_MESSAGE
+
+      sub_commands_help_template = <<-HELP_MESSAGE
+        Sub Commands:
+
+      #{sub_commands_lines.join("\n")}
+
+
+      HELP_MESSAGE
+      sub_commands_lines.empty? ? base_help_template : base_help_template + sub_commands_help_template
     end
 
     abstract def run(io : IO)
 
-    private def find_sub_cmds_by(name)
-      @sub_commands.select do |cmd|
-        cmd.name == name || cmd.alias_name.includes?(name)
-      end
-    end
-
     def parse(argv)
-      opts_validate!
-      recursive_parse(argv)
-    end
-
-    private def opts_validate!
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
+      recursive_parse(argv)
     end
 
     private def duplicate_names
@@ -118,101 +70,49 @@ class Clim
 
     def recursive_parse(argv)
       return parse_by_parser(argv) if argv.empty?
-      return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
-      find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
+      return parse_by_parser(argv) if find_sub_commands_by(argv.first).empty?
+      find_sub_commands_by(argv.first).first.recursive_parse(argv[1..-1])
     end
 
-    private def help
-      help_template_def
+    private def parse_by_parser(argv)
+      parser.parse(argv.dup)
+      parser.required_validate!
+      parser.set_help_string(help_template)
+      self
     end
 
-    private def display_help? : Bool
-      @display_help_flag
-    end
-
-    macro option_base(short, long, type, desc, default, required)
-      {% raise "Empty option name." if short.empty? %}
-      {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES.keys.includes?(type) %}
-
-      {% base_option_name = long == nil ? short : long %}
-      {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-      class OptionsForEachCommand
-        class Option_{{option_name}} < Option
-          define_option_macro({{type}}, {{default}}, {{required}})
-        end
-
-        {% default = false if type.id.stringify == "Bool" %}
-        {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
-
-        {% if default == nil %}
-          {% default_value = SUPPORT_TYPES[type][:nilable] ? default : SUPPORT_TYPES[type][:default] %}
-        {% else %}
-          {% default_value = default %}
-        {% end %}
-
-        property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default_value }}, {{ required }})
-        def {{ option_name }}
-          {{ option_name }}_instance.@value
-        end
+    private def find_sub_commands_by(name)
+      @sub_commands.select do |cmd|
+        cmd.name == name || cmd.alias_name.includes?(name)
       end
     end
 
-    macro option(short, long, type = String, desc = "Option description.", default = nil, required = false)
-      option_base({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
+    def options_help_info
+      parser.options_help_info
     end
 
-    macro option(short, type = String, desc = "Option description.", default = nil, required = false)
-      option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
-    end
-
-    macro command(name, &block)
-      {% if @type.constants.map(&.id.stringify).includes?("Command_" + name.id.capitalize.stringify) %}
-        {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
-      {% end %}
-
-      class Command_{{ name.id.capitalize }} < Command
-        property name : String = {{name.id.stringify}}
-
-        class Options_{{ name.id.capitalize }} < Options
-        end
-
-        alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
-
-        private def parse_by_parser(argv)
-          @parser.on("--help", "Show this help.") { @display_help_flag = true }
-          define_version(@parser)
-          @parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
-          @parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-          @parser.unknown_args { |unknown_args| @arguments = unknown_args }
-          @parser.parse(argv.dup)
-          required_validate! unless display_help?
-          @options.help = help
-          self
-        end
-
-        def initialize
-          @display_help_flag = false
-          @display_version_flag = false
-          @parser = OptionParser.new
-          @options = OptionsForEachCommand.new
-          @options.setup_parser(@parser)
-          \{% for command_class in @type.constants.select{|c| @type.constant(c).superclass.id.stringify == "Clim::Command"} %}
-            @sub_commands << \{{ command_class.id }}.new
-          \{% end %}
-        end
-
-        private def required_validate!
-          raise "Required options. \"#{@options.invalid_required_names.join("\", \"")}\"" unless @options.invalid_required_names.empty?
-        end
-
-        {{ yield }}
-
-        alias RunProc = Proc(OptionsForEachCommand, Array(String), Nil)
-        property options : OptionsForEachCommand = OptionsForEachCommand.new
-
-        class OptionsForEachCommand
-        end
+    def sub_commands_help_info
+      sub_commands_info = @sub_commands.map do |cmd|
+        {
+          names:     cmd.names,
+          desc:      cmd.desc,
+          help_line: help_line_of(cmd),
+        }
       end
+    end
+
+    def help_line_of(cmd)
+      names_and_spaces = cmd.names.join(", ") +
+                         "#{" " * (max_sub_command_name_length - cmd.names.join(", ").size)}"
+      "    #{names_and_spaces}   #{cmd.desc}"
+    end
+
+    def max_sub_command_name_length
+      @sub_commands.empty? ? 0 : @sub_commands.map(&.names.join(", ").size).max
+    end
+
+    def names
+      ([name] + alias_name)
     end
   end
 end

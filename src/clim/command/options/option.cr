@@ -1,16 +1,29 @@
 class Clim
   abstract class Command
     class Options
-      class Option
+      abstract class Option
         property short : String = ""
         property long : String? = ""
         property desc : String = ""
         property required : Bool = false
         property array_set_flag : Bool = false
 
+        def to_named_tuple
+          long_name = long
+          {
+            names:    long_name.nil? ? [short] : [short, long_name],
+            type:     default.class,
+            desc:     @desc,
+            default:  default,
+            required: required,
+          }
+        end
+
         def required_not_set? : Bool
           @required && !set_value?
         end
+
+        abstract def method_name
 
         private def display_default
           default_value = @default.dup
@@ -38,22 +51,22 @@ class Clim
           {% end %}
         end
 
-        macro define_option_macro(type, default, required)
+        macro define_option_macro(option_name, type, default, required)
           {% if default != nil %}
-            {% value_type    = type.stringify.id %}
+            {% value_type = type.stringify.id %}
             {% value_default = default %}
-            {% value_assign  = "default".id %}
-            {% default_type  = type.stringify.id %}
+            {% value_assign = "default".id %}
+            {% default_type = type.stringify.id %}
           {% elsif default == nil && required == true %}
-            {% value_type    = type.stringify.id %}
+            {% value_type = type.stringify.id %}
             {% value_default = SUPPORT_TYPES[type][:default] %}
-            {% value_assign  = SUPPORT_TYPES[type][:default] %}
-            {% default_type  = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_assign = SUPPORT_TYPES[type][:default] %}
+            {% default_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% elsif default == nil && required == false %}
-            {% value_type    = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
-            {% value_default = SUPPORT_TYPES[type][:nilable] ? default                   : SUPPORT_TYPES[type][:default] %}
-            {% value_assign  = SUPPORT_TYPES[type][:nilable] ? "default".id              : SUPPORT_TYPES[type][:default] %}
-            {% default_type  = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_default = SUPPORT_TYPES[type][:nilable] ? default : SUPPORT_TYPES[type][:default] %}
+            {% value_assign = SUPPORT_TYPES[type][:nilable] ? "default".id : SUPPORT_TYPES[type][:default] %}
+            {% default_type = SUPPORT_TYPES[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% end %}
 
           property value : {{value_type}} = {{value_default}}
@@ -71,6 +84,7 @@ class Clim
 
           def desc
             desc = @desc
+            return desc if ["help", "version"].includes?({{option_name.stringify}})
             desc = desc + " [type:#{{{type}}.to_s}]"
             desc = desc + " [default:#{display_default}]" unless {{(default == nil).id}}
             desc = desc + " [required]" if required

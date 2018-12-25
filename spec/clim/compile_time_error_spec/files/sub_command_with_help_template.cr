@@ -2,24 +2,24 @@ require "./../../../../src/clim"
 
 class MyCli < Clim
   main_command do
-    help_template do |desc, usage, options, sub_commands|
-      <<-MY_HELP
-
-        command description: #{desc}
-        command usage: #{usage}
-
-        options:
-      #{options.map(&.[](:help_line)).join("\n")}
-
-        sub_commands:
-      #{sub_commands.map(&.[](:help_line)).join("\n")}
-
-
-      MY_HELP
-    end
     run do |opts, args|
     end
     sub_command "sub_command" do
+      help_template do |desc, usage, options, sub_commands|
+        <<-MY_HELP
+
+          command description: #{desc}
+          command usage: #{usage}
+
+          options:
+        #{options.map(&.[](:help_line)).join("\n")}
+
+          sub_commands:
+        #{sub_commands.map(&.[](:help_line)).join("\n")}
+
+
+        MY_HELP
+      end
       desc "sub_comand."
       option "-n NUM", type: Int32, desc: "Number.", default: 0
       run do |opts, args|

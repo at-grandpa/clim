@@ -1,10 +1,12 @@
 require "./../spec_helper"
 
 macro assert_opts_and_args(spec_case)
-    opts.help.should eq {{spec_case["expect_help"]}}
+    opts.help_string.should eq {{spec_case["expect_help"]}}
     {% if spec_case.keys.includes?("expect_opts".id) %}
-      typeof(opts.{{spec_case["expect_opts"]["method"].id}}).should eq {{spec_case["expect_opts"]["type"]}}
-      opts.{{spec_case["expect_opts"]["method"].id}}.should eq {{spec_case["expect_opts"]["expect_value"]}}
+      if opts.responds_to?(:{{spec_case["expect_opts"]["method"].id}})
+        typeof(opts.{{spec_case["expect_opts"]["method"].id}}).should eq {{spec_case["expect_opts"]["type"]}}
+        opts.{{spec_case["expect_opts"]["method"].id}}.should eq {{spec_case["expect_opts"]["expect_value"]}}
+      end
     {% end %}
     args.should eq {{spec_case["expect_args"]}}
 end
@@ -31,6 +33,12 @@ macro it_blocks(class_name, spec_case)
       io = IO::Memory.new
       {{class_name}}.start_parse({{spec_case["argv"]}}, io)
       io.to_s.should eq {{spec_case["expect_help"]}}
+    end
+  {% elsif spec_case.keys.includes?("expect_version".id) %}
+    it "display version." do
+      io = IO::Memory.new
+      {{class_name}}.start_parse({{spec_case["argv"]}}, io)
+      io.to_s.should eq {{spec_case["expect_version"]}}
     end
   {% else %}
     it "output." do

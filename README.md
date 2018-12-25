@@ -54,7 +54,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.4.1
+    version: 0.5.0
 ```
 
 ## Minimum sample
@@ -142,7 +142,7 @@ module FakeCrystalCommand
       desc "Fake Crystal command."
       usage "fcrystal [sub_command] [arguments]"
       run do |opts, args|
-        puts opts.help # => help string.
+        puts opts.help_string # => help string.
       end
       sub "tool" do
         desc "run a tool"
@@ -434,54 +434,154 @@ end
 
 ### help_template
 
-You can customize the help message. The `help_template` block must be placed before `main`. Also it needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options_help : String` and `sub_commands_help : String`.
+You can customize the help message. The `help_template` block needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options : HelpOptionsType` and `sub_commands : HelpSubCommandsType`.
+
+*help_template_test.cr*
 
 ```crystal
-class MyCli < Clim
-  help_template do |desc, usage, options_help, sub_commands_help|
-    <<-MY_HELP
+require "clim"
 
-      command description: #{desc}
-      command usage:       #{usage}
+class MyCli < Clim
+  main do
+    help_template do |desc, usage, options, sub_commands|
+      options_help_lines = options.map do |option|
+        option[:names].join(", ") + "\n" + "    #{option[:desc]}"
+      end
+      base = <<-BASE_HELP
+      #{usage}
+
+      #{desc}
 
       options:
-    #{options_help}
+      #{options_help_lines.join("\n")}
 
-      sub_commands:
-    #{sub_commands_help}
+      BASE_HELP
 
+      sub = <<-SUB_COMMAND_HELP
 
-    MY_HELP
-  end
-  main do
-    desc "foo command."
-    usage "foo [options] [arguments]"
-    option "--site=SITE", type: String, desc: "Site URL."
+      sub commands:
+      #{sub_commands.map(&.[](:help_line)).join("\n")}
+      SUB_COMMAND_HELP
+
+      sub_commands.empty? ? base : base + sub
+    end
+    desc "Your original command line interface tool."
+    usage <<-USAGE
+    usage: my_cli [--version] [--help] [-P PORT|--port=PORT]
+                  [-h HOST|--host=HOST] [-p PASSWORD|--password=PASSWORD]
+    USAGE
+    version "version 1.0.0"
+    option "-P PORT", "--port=PORT", type: Int32, desc: "Port number.", default: 3306
+    option "-h HOST", "--host=HOST", type: String, desc: "Host name.", default: "localhost"
+    option "-p PASSWORD", "--password=PASSWORD", type: String, desc: "Password."
     run do |opts, args|
     end
     sub "sub_command" do
-      desc "this is sub_comand."
-      option "-n NUM", type: Int32, desc: "Number.", default: 0
+      desc "my_cli's sub_comand."
+      usage <<-USAGE
+      usage: my_cli sub_command [--help] [-t|--tree]
+                                [--html-path=PATH]
+      USAGE
+      option "-t", "--tree", type: Bool, desc: "Tree."
+      option "--html-path=PATH", type: String, desc: "Html path."
       run do |opts, args|
       end
     end
   end
 end
+
+MyCli.start(ARGV)
 ```
 
 ```console
 $ crystal run src/help_template_test.cr -- --help
+usage: my_cli [--version] [--help] [-P PORT|--port=PORT]
+              [-h HOST|--host=HOST] [-p PASSWORD|--password=PASSWORD]
 
-  command description: foo command.
-  command usage:       foo [options] [arguments]
+Your original command line interface tool.
 
-  options:
-    --site=SITE                      Site URL. [type:String]
-    --help                           Show this help.
+options:
+-P PORT, --port=PORT
+    Port number.
+-h HOST, --host=HOST
+    Host name.
+-p PASSWORD, --password=PASSWORD
+    Password.
+--help
+    Show this help.
+--version
+    Show version.
 
-  sub_commands:
-    sub_command   this is sub_comand.
+sub commands:
+    sub_command   my_cli's sub_comand.
 
+```
+
+options:
+
+```crystal
+# `options` type
+alias HelpOptionsType = Array(NamedTuple(
+    names:     Array(String),
+    type:      Int8.class | Int32.class | ... | String.class | Bool.clsss, # => Support Types
+    desc:      String,
+    default:   Int8 | Int32 | ... | String | Bool, # => Support Types,
+    required:  Bool,
+    help_line: String
+))
+
+# `options` example
+[
+  {
+    names:     ["-g WORDS", "--greeting=WORDS"],
+    type:      String,
+    desc:      "Words of greetings.",
+    default:   "Hello",
+    required:  false,
+    help_line: "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
+  },
+  {
+    names:     ["-n NAME"],
+    type:      Array(String),
+    desc:      "Target name.",
+    default:   ["Taro"],
+    required:  true,
+    help_line: "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
+  },
+  {
+    names:     ["--help"],
+    type:      Bool,
+    desc:      "Show this help.",
+    default:   false,
+    required:  false,
+    help_line: "    --help                           Show this help.",
+  },
+]
+```
+
+sub_commands:
+
+```crystal
+# `sub_commands` type
+alias HelpSubCommandsType = Array(NamedTuple(
+    names:     Array(String),
+    desc:      String,
+    help_line: String
+))
+
+# `sub_commands` example
+[
+  {
+    names:     ["abc", "def", "ghi"],
+    desc:      "abc command.",
+    help_line: "    abc, def, ghi            abc command.",
+  },
+  {
+    names:     ["abcdef", "ghijkl", "mnopqr"],
+    desc:      "abcdef command.",
+    help_line: "    abcdef, ghijkl, mnopqr   abcdef command.",
+  },
+]
 ```
 
 ### help string
@@ -490,7 +590,7 @@ $ crystal run src/help_template_test.cr -- --help
 class MyCli < Clim
   main do
     run do |opts, args|
-      opts.help # => help string
+      opts.help_string # => help string
     end
   end
 end
