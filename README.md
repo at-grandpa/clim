@@ -440,7 +440,7 @@ For example:
 
 ```crystal
 class MyCli < Clim
-  main_command do
+  main do
     help_template do |desc, usage, options, sub_commands|
       options_help_lines = options.map do |option|
         option[:names].join(", ") + "\n" + "    #{option[:desc]}"
@@ -474,7 +474,7 @@ class MyCli < Clim
     option "-p PASSWORD", "--password=PASSWORD", type: String, desc: "Password."
     run do |opts, args|
     end
-    sub_command "sub_command" do
+    sub "sub_command" do
       desc "my_cli's sub_comand."
       usage <<-USAGE
       usage: my_cli sub_command [--help] [-t|--tree]
