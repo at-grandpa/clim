@@ -26,10 +26,6 @@ class Clim
         @options.help_str = str
       end
 
-      def options_info
-        @options.info
-      end
-
       def required_validate!
         unless display_help?
           raise "Required options. \"#{options.invalid_required_names.join("\", \"")}\"" unless options.invalid_required_names.empty?
@@ -61,6 +57,16 @@ class Clim
         else
           option_parser.on(option.short, long, option.desc) { |arg| option.set_value(arg) }
         end
+      end
+
+      def options_help_info
+        option_parser.@flags.map do |flag|
+          info = options.info.find do |info|
+            !!flag.match(/\A\s+?#{info[:names].join(", ")}/)
+          end
+          next nil if info.nil?
+          info.merge({help_line: flag})
+        end.compact
       end
     end
   end

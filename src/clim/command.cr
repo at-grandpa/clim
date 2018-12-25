@@ -10,25 +10,27 @@ class Clim
     property alias_name : Array(String) = [] of String
     property sub_commands : Array(Command) = [] of Command
 
-    {% begin %}
-    {% support_types = Clim::Types::SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
-    alias HelpOptionsType = Array(NamedTuple(
-        names: Array(String),
-        type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }},
-        desc: String,
-        default: {{ support_types.join(" | ").id }},
-        required: Bool,
-        help_line: String))
-    {% end %}
-    alias HelpSubCommandsType = Array(NamedTuple(
-      names: Array(String),
-      desc: String,
-      help_line: String))
-    alias HelpTemplateType = Proc(String, String, HelpOptionsType, HelpSubCommandsType, String)
+    abstract def initialize
 
-    DEAFULT_HELP_TEMPLATE = HelpTemplateType.new do |desc, usage, options, sub_commands|
-      options_lines = options.map(&.[](:help_line))
-      sub_commands_lines = sub_commands.map(&.[](:help_line))
+    def desc : String
+      "Command Line Interface Tool."
+    end
+
+    def usage : String
+      "#{name} [options] [arguments]"
+    end
+
+    def alias_name(*names) : Array(String)
+      [] of String
+    end
+
+    def version_str : String
+      ""
+    end
+
+    def help_template
+      options_lines = options_help_info.map(&.[](:help_line))
+      sub_commands_lines = sub_commands_help_info.map(&.[](:help_line))
       base_help_template = <<-HELP_MESSAGE
 
         #{desc}
@@ -54,27 +56,6 @@ class Clim
       sub_commands_lines.empty? ? base_help_template : base_help_template + sub_commands_help_template
     end
 
-    def desc : String
-      "Command Line Interface Tool."
-    end
-
-    def usage : String
-      "#{name} [options] [arguments]"
-    end
-
-    def alias_name(*names) : Array(String)
-      [] of String
-    end
-
-    def version_str : String
-      ""
-    end
-
-    def help_template_def
-      help = Help.new(self)
-      DEAFULT_HELP_TEMPLATE.call(help.desc, help.usage, help.options, help.sub_commands)
-    end
-
     abstract def run(io : IO)
 
     def parse(argv)
@@ -90,27 +71,49 @@ class Clim
 
     def recursive_parse(argv)
       return parse_by_parser(argv) if argv.empty?
-      return parse_by_parser(argv) if find_sub_cmds_by(argv.first).empty?
-      find_sub_cmds_by(argv.first).first.recursive_parse(argv[1..-1])
+      return parse_by_parser(argv) if find_sub_commands_by(argv.first).empty?
+      find_sub_commands_by(argv.first).first.recursive_parse(argv[1..-1])
     end
 
     private def parse_by_parser(argv)
       parser.parse(argv.dup)
       parser.required_validate!
-      parser.set_help_string(help_template_def)
+      parser.set_help_string(help_template)
       self
     end
 
-    private def find_sub_cmds_by(name)
+    private def find_sub_commands_by(name)
       @sub_commands.select do |cmd|
         cmd.name == name || cmd.alias_name.includes?(name)
       end
     end
 
-    def options_info
-      parser.options_info
+    def options_help_info
+      parser.options_help_info
     end
 
-    abstract def initialize
+    def sub_commands_help_info
+      sub_commands_info = @sub_commands.map do |cmd|
+        {
+          names:     cmd.names,
+          desc:      cmd.desc,
+          help_line: help_line_of(cmd),
+        }
+      end
+    end
+
+    def help_line_of(cmd)
+      names_and_spaces = cmd.names.join(", ") +
+                         "#{" " * (max_sub_command_name_length - cmd.names.join(", ").size)}"
+      "    #{names_and_spaces}   #{cmd.desc}"
+    end
+
+    def max_sub_command_name_length
+      @sub_commands.empty? ? 0 : @sub_commands.map(&.names.join(", ").size).max
+    end
+
+    def names
+      ([name] + alias_name)
+    end
   end
 end

@@ -36,11 +36,10 @@ class SpecCommandNoSubCommands < Clim
   end
 end
 
-describe Clim::Command::Help do
-  describe "#display" do
+describe Clim::Command do
+  describe "#help_template" do
     it "returns help string with sub commands." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.display.should eq <<-OPTIONS
+      SpecCommand.command.help_template.should eq <<-OPTIONS
 
         main command.
 
@@ -63,8 +62,7 @@ describe Clim::Command::Help do
       OPTIONS
     end
     it "returns help string without sub commands." do
-      help = Clim::Command::Help.new(SpecCommandNoSubCommands.command)
-      help.display.should eq <<-OPTIONS
+      SpecCommandNoSubCommands.command.help_template.should eq <<-OPTIONS
 
         main command.
 
@@ -84,69 +82,37 @@ describe Clim::Command::Help do
   end
   describe "#desc" do
     it "returns desc." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.desc.should eq "main command."
+      SpecCommand.command.desc.should eq "main command."
     end
   end
   describe "#usage" do
     it "returns usage." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.usage.should eq "main [sub_command] [arguments]"
+      SpecCommand.command.usage.should eq "main [sub_command] [arguments]"
     end
   end
   describe "#parser.to_s" do
     it "returns string of parser options." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.parser.option_parser.to_s.should eq <<-OPTIONS
+      SpecCommand.command.parser.option_parser.to_s.should eq <<-OPTIONS
           -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
           -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
           --help                           Show this help.
       OPTIONS
     end
   end
-  describe "#sub_cmds_help" do
-    it "returns sub commands help." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.sub_cmds_help.should eq <<-HELP_STRING
-        Sub Commands:
-
-          abc, def, ghi            abc command.
-          abcdef, ghijkl, mnopqr   abcdef command.
-
-
-      HELP_STRING
-    end
-  end
-  describe "#sub_commands_help_lines" do
-    it "returns sub commands help lines." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.sub_commands_help_lines.should eq [
-        "    abc, def, ghi            abc command.",
-        "    abcdef, ghijkl, mnopqr   abcdef command.",
-      ]
-    end
-  end
-  describe "#max_name_length" do
+  describe "#max_sub_command_name_length" do
     it "returns max name length of sub commands." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.max_name_length.should eq 22
+      SpecCommand.command.max_sub_command_name_length.should eq 22
     end
   end
-  describe "#names_of" do
+  describe "#names" do
     it "returns name and alias_name of sub commands." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-
-      sub_command1 = SpecCommand.command.sub_commands[0]
-      help.names_of(sub_command1).should eq ["abc", "def", "ghi"]
-
-      sub_command2 = SpecCommand.command.sub_commands[1]
-      help.names_of(sub_command2).should eq ["abcdef", "ghijkl", "mnopqr"]
+      SpecCommand.command.sub_commands[0].names.should eq ["abc", "def", "ghi"]
+      SpecCommand.command.sub_commands[1].names.should eq ["abcdef", "ghijkl", "mnopqr"]
     end
   end
-  describe "#options" do
-    it "returns options info." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.options.should eq [
+  describe "#options_help_info" do
+    it "returns options help info." do
+      SpecCommand.command.options_help_info.should eq [
         {
           names:     ["-g WORDS", "--greeting=WORDS"],
           type:      String,
@@ -174,10 +140,9 @@ describe Clim::Command::Help do
       ]
     end
   end
-  describe "#sub_commands" do
-    it "returns sub commands info." do
-      help = Clim::Command::Help.new(SpecCommand.command)
-      help.sub_commands.should eq [
+  describe "#sub_commands_help_info" do
+    it "returns sub commands help info." do
+      SpecCommand.command.sub_commands_help_info.should eq [
         {
           names:     ["abc", "def", "ghi"],
           desc:      "abc command.",
@@ -191,8 +156,7 @@ describe Clim::Command::Help do
       ]
     end
     it "returns sub commands info without sub commands." do
-      help = Clim::Command::Help.new(SpecCommandNoSubCommands.command)
-      help.sub_commands.should eq [] of Array(NamedTuple(names: Array(String), desc: String, help_line: String))
+      SpecCommandNoSubCommands.command.sub_commands_help_info.should eq [] of Array(NamedTuple(names: Array(String), desc: String, help_line: String))
     end
   end
 end

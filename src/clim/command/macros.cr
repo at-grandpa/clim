@@ -34,9 +34,27 @@ class Clim
 
       macro help_template(&block)
         class Clim::Command
-          def help_template_def
-            help = Help.new(self)
-            HelpTemplateType.new {{ block.stringify.id }} .call(help.desc, help.usage, help.options, help.sub_commands)
+          {% begin %}
+          {% support_types = Clim::Types::SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
+          alias HelpOptionsType = Array(NamedTuple(
+              names: Array(String),
+              type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }},
+              desc: String,
+              default: {{ support_types.join(" | ").id }},
+              required: Bool,
+              help_line: String))
+          {% end %}
+          alias HelpSubCommandsType = Array(NamedTuple(
+            names: Array(String),
+            desc: String,
+            help_line: String))
+
+          def help_template
+            Proc(String, String, HelpOptionsType, HelpSubCommandsType, String).new {{ block.stringify.id }} .call(
+              desc,
+              usage,
+              options_help_info,
+              sub_commands_help_info)
           end
         end
       end
@@ -64,7 +82,7 @@ class Clim
       macro run(&block)
         def run(io : IO)
           if @parser.options.help == true
-            return RunProc.new { io.puts help_template_def }.call(@parser.options, @parser.arguments)
+            return RunProc.new { io.puts help_template }.call(@parser.options, @parser.arguments)
           end
 
           options = @parser.options
