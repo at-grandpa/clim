@@ -81,4 +81,14 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "help_template in sub_command." do
+    `crystal run spec/clim/compile_time_error_spec/files/sub_command_with_help_template.cr --no-color 2>&1`.should eq <<-ERROR
+    Error in spec/clim/compile_time_error_spec/files/sub_command_with_help_template.cr:8: Can not be declared 'help_template' as sub command.
+
+          help_template do |desc, usage, options, sub_commands|
+          ^~~~~~~~~~~~~
+
+
+    ERROR
+  end
 end

@@ -33,6 +33,8 @@ class Clim
       end
 
       macro help_template(&block)
+        {% raise "Can not be declared 'help_template' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
+
         class Clim::Command
           {% begin %}
           {% support_types = Clim::Types::SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
