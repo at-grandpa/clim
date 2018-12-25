@@ -142,7 +142,7 @@ module FakeCrystalCommand
       desc "Fake Crystal command."
       usage "fcrystal [sub_command] [arguments]"
       run do |opts, args|
-        puts opts.help # => help string.
+        puts opts.help_string # => help string.
       end
       sub "tool" do
         desc "run a tool"
@@ -436,9 +436,11 @@ end
 
 You can customize the help message. The `help_template` block needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options : HelpOptionsType` and `sub_commands : HelpSubCommandsType`.
 
-For example:
+*help_template_test.cr*
 
 ```crystal
+require "clim"
+
 class MyCli < Clim
   main do
     help_template do |desc, usage, options, sub_commands|
