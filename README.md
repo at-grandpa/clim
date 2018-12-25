@@ -434,7 +434,7 @@ end
 
 ### help_template
 
-You can customize the help message. The `help_template` block needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options : HelpOptionsType` and `sub_commands : HelpSubCommandsType`.
+You can customize the help message by `help_template` block. It must be placed in main block. Also it needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options : HelpOptionsType` and `sub_commands : HelpSubCommandsType`.
 
 *help_template_test.cr*
 
