@@ -436,73 +436,6 @@ end
 
 You can customize the help message. The `help_template` block needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options : HelpOptionsType` and `sub_commands : HelpSubCommandsType`.
 
-options:
-
-```crystal
-# `options` type
-alias HelpOptionsType = Array(NamedTuple(
-    names:     Array(String),
-    type:      Int8.class | Int32.class | ... | String.class | Bool.clsss, # => Support Types
-    desc:      String,
-    default:   Int8 | Int32 | ... | String | Bool, # => Support Types,
-    required:  Bool,
-    help_line: String
-))
-
-# `options` example
-[
-  {
-    names:     ["-g WORDS", "--greeting=WORDS"],
-    type:      String,
-    desc:      "Words of greetings.",
-    default:   "Hello",
-    required:  false,
-    help_line: "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
-  },
-  {
-    names:     ["-n NAME"],
-    type:      Array(String),
-    desc:      "Target name.",
-    default:   ["Taro"],
-    required:  true,
-    help_line: "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
-  },
-  {
-    names:     ["--help"],
-    type:      Bool,
-    desc:      "Show this help.",
-    default:   false,
-    required:  false,
-    help_line: "    --help                           Show this help.",
-  },
-]
-```
-
-sub_commands:
-
-```crystal
-# `sub_commands` type
-alias HelpSubCommandsType = Array(NamedTuple(
-    names:     Array(String),
-    desc:      String,
-    help_line: String
-))
-
-# `sub_commands` example
-[
-  {
-    names:     ["abc", "def", "ghi"],
-    desc:      "abc command.",
-    help_line: "    abc, def, ghi            abc command.",
-  },
-  {
-    names:     ["abcdef", "ghijkl", "mnopqr"],
-    desc:      "abcdef command.",
-    help_line: "    abcdef, ghijkl, mnopqr   abcdef command.",
-  },
-]
-```
-
 For example:
 
 ```crystal
@@ -580,6 +513,73 @@ options:
 sub commands:
     sub_command   my_cli's sub_comand.
 
+```
+
+options:
+
+```crystal
+# `options` type
+alias HelpOptionsType = Array(NamedTuple(
+    names:     Array(String),
+    type:      Int8.class | Int32.class | ... | String.class | Bool.clsss, # => Support Types
+    desc:      String,
+    default:   Int8 | Int32 | ... | String | Bool, # => Support Types,
+    required:  Bool,
+    help_line: String
+))
+
+# `options` example
+[
+  {
+    names:     ["-g WORDS", "--greeting=WORDS"],
+    type:      String,
+    desc:      "Words of greetings.",
+    default:   "Hello",
+    required:  false,
+    help_line: "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
+  },
+  {
+    names:     ["-n NAME"],
+    type:      Array(String),
+    desc:      "Target name.",
+    default:   ["Taro"],
+    required:  true,
+    help_line: "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
+  },
+  {
+    names:     ["--help"],
+    type:      Bool,
+    desc:      "Show this help.",
+    default:   false,
+    required:  false,
+    help_line: "    --help                           Show this help.",
+  },
+]
+```
+
+sub_commands:
+
+```crystal
+# `sub_commands` type
+alias HelpSubCommandsType = Array(NamedTuple(
+    names:     Array(String),
+    desc:      String,
+    help_line: String
+))
+
+# `sub_commands` example
+[
+  {
+    names:     ["abc", "def", "ghi"],
+    desc:      "abc command.",
+    help_line: "    abc, def, ghi            abc command.",
+  },
+  {
+    names:     ["abcdef", "ghijkl", "mnopqr"],
+    desc:      "abcdef command.",
+    help_line: "    abcdef, ghijkl, mnopqr   abcdef command.",
+  },
+]
 ```
 
 ### help string
