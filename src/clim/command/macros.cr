@@ -33,7 +33,7 @@ class Clim
       end
 
       macro help_template(&block)
-        {% raise "Can not be declared 'help_template' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
+        {% raise "Can not be declared 'help_template' as sub command." unless @type == Command_Main_command_of_clim_library %}
 
         class Clim::Command
           {% begin %}
