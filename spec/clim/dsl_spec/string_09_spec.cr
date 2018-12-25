@@ -155,7 +155,7 @@ spec(
       exception_message: "Option that requires an argument. \"--string\"",
     },
     {
-      argv:q       ["--help"],
+      argv:        ["--help"],
       expect_help: {{main_help_message}},
     },
     {
