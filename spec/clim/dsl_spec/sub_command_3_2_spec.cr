@@ -77,48 +77,6 @@ require "./sub_command_alias"
 spec_for_alias_name(
   spec_class_name: SubSubCommandWithAliasName,
   spec_cases: [
-    # sub_sub_command1
-    {
-      argv:        ["sub_command_1", "sub_sub_command_1"],
-      expect_help: {{sub_sub_1_help_message}},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["alias_sub_command_1", "sub_sub_command_1"],
-      expect_help: {{sub_sub_1_help_message}},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["sub_command_1", "sub_sub_command_1", "arg1"],
-      expect_help: {{sub_sub_1_help_message}},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1"],
-      expect_help: {{sub_sub_1_help_message}},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "arg2"],
-      expect_help: {{sub_sub_1_help_message}},
-      expect_args: ["arg1", "arg2"],
-    },
-    {
-      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "arg2"],
-      expect_help: {{sub_sub_1_help_message}},
-      expect_args: ["arg1", "arg2"],
-    },
-    {
-      argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "arg2", "arg3"],
-      expect_help: {{sub_sub_1_help_message}},
-      expect_args: ["arg1", "arg2", "arg3"],
-    },
-    {
-      argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "arg2", "arg3"],
-      expect_help: {{sub_sub_1_help_message}},
-      expect_args: ["arg1", "arg2", "arg3"],
-    },
-
     {
       argv:        ["sub_command_1", "sub_sub_command_1"],
       expect_help: {{sub_sub_1_help_message}},
@@ -278,86 +236,6 @@ spec_for_alias_name(
         "expect_value" => true,
       },
       expect_args: ["arg1"],
-    },
-    {
-      argv:              ["sub_command_1", "sub_sub_command_1", "--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["alias_sub_command_1", "sub_sub_command_1", "--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["sub_command_1", "sub_sub_command_1", "-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["alias_sub_command_1", "sub_sub_command_1", "-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
-    },
-    {
-      argv:              ["sub_command_1", "sub_sub_command_1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              ["alias_sub_command_1", "sub_sub_command_1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              ["sub_command_1", "sub_sub_command_1", "--missing-option"],
-      exception_message: "Undefined option. \"--missing-option\"",
-    },
-    {
-      argv:              ["alias_sub_command_1", "sub_sub_command_1", "--missing-option"],
-      exception_message: "Undefined option. \"--missing-option\"",
-    },
-    {
-      argv:              ["sub_command_1", "sub_sub_command_1", "-m", "arg1"],
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              ["alias_sub_command_1", "sub_sub_command_1", "-m", "arg1"],
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              ["sub_command_1", "sub_sub_command_1", "arg1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              ["alias_sub_command_1", "sub_sub_command_1", "arg1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              ["sub_command_1", "sub_sub_command_1", "-m", "-d"],
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:              ["alias_sub_command_1", "sub_sub_command_1", "-m", "-d"],
-      exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:        ["sub_command_1", "sub_sub_command_1", "--help"],
-      expect_help: {{sub_sub_1_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_1", "sub_sub_command_1", "--help"],
-      expect_help: {{sub_sub_1_help_message}},
-    },
-    {
-      argv:        ["sub_command_1", "sub_sub_command_1", "--help", "ignore-arg"],
-      expect_help: {{sub_sub_1_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_1", "sub_sub_command_1", "--help", "ignore-arg"],
-      expect_help: {{sub_sub_1_help_message}},
-    },
-    {
-      argv:        ["sub_command_1", "sub_sub_command_1", "ignore-arg", "--help"],
-      expect_help: {{sub_sub_1_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_1", "sub_sub_command_1", "ignore-arg", "--help"],
-      expect_help: {{sub_sub_1_help_message}},
     },
   ]
 )

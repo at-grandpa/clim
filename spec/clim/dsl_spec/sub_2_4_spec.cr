@@ -1,4 +1,42 @@
-require "./sub_command_alias"
+require "../dsl_spec"
+
+macro spec_for_alias_name(spec_class_name, spec_cases)
+  {% for spec_case, index in spec_cases %}
+    {% class_name = (spec_class_name.stringify + index.stringify).id %}
+
+    # define dsl
+    class {{class_name}} < Clim
+      main_command do
+        run do |opts, args|
+          assert_opts_and_args({{spec_case}})
+        end
+        sub "sub_command_1" do
+          alias_name "alias_sub_command_1"
+          run do |opts, args|
+            assert_opts_and_args({{spec_case}})
+          end
+          sub "sub_sub_command_1" do
+            run do |opts, args|
+            end
+          end
+        end
+        sub "sub_command_2" do
+          alias_name "alias_sub_command_2", "alias_sub_command_2_second"
+          run do |opts, args|
+            assert_opts_and_args({{spec_case}})
+          end
+        end
+      end
+    end
+
+    # spec
+    describe "alias name case," do
+      describe "if argv is " + {{spec_case["argv"].stringify}} + "," do
+        it_blocks({{class_name}}, {{spec_case}})
+      end
+    end
+  {% end %}
+end
 
 {% begin %}
 {%
@@ -32,7 +70,6 @@ require "./sub_command_alias"
 
                          Options:
 
-                           -a ARG, --array=ARG              Option test. [type:Array(String)] [default:[\"default string\"]]
                            --help                           Show this help.
 
                          Sub Commands:
@@ -41,22 +78,6 @@ require "./sub_command_alias"
 
 
                        HELP_MESSAGE
-
-  sub_sub_1_help_message = <<-HELP_MESSAGE
-
-                             Command Line Interface Tool.
-
-                             Usage:
-
-                               sub_sub_command_1 [options] [arguments]
-
-                             Options:
-
-                               -b, --bool                       Bool test. [type:Bool]
-                               --help                           Show this help.
-
-
-                           HELP_MESSAGE
 
   sub_2_help_message = <<-HELP_MESSAGE
 
@@ -75,69 +96,8 @@ require "./sub_command_alias"
 %}
 
 spec_for_alias_name(
-  spec_class_name: SubCommand2WithAliasName,
+  spec_class_name: SubCommandWithAliasName,
   spec_cases: [
-    # sub_command_2
-    {
-      argv:        ["sub_command_2"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["alias_sub_command_2"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["alias_sub_command_2_second"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: [] of String,
-    },
-    {
-      argv:        ["sub_command_2", "arg1"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["alias_sub_command_2", "arg1"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["alias_sub_command_2_second", "arg1"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1"],
-    },
-    {
-      argv:        ["sub_command_2", "arg1", "arg2"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1", "arg2"],
-    },
-    {
-      argv:        ["alias_sub_command_2", "arg1", "arg2"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1", "arg2"],
-    },
-    {
-      argv:        ["alias_sub_command_2_second", "arg1", "arg2"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1", "arg2"],
-    },
-    {
-      argv:        ["sub_command_2", "arg1", "arg2", "arg3"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1", "arg2", "arg3"],
-    },
-    {
-      argv:        ["alias_sub_command_2", "arg1", "arg2", "arg3"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1", "arg2", "arg3"],
-    },
-    {
-      argv:        ["alias_sub_command_2_second", "arg1", "arg2", "arg3"],
-      expect_help: {{sub_2_help_message}},
-      expect_args: ["arg1", "arg2", "arg3"],
-    },
     {
       argv:              ["sub_command_2", "--help", "-ignore-option"],
       exception_message: "Undefined option. \"-ignore-option\"",
@@ -221,42 +181,6 @@ spec_for_alias_name(
     {
       argv:              ["alias_sub_command_2_second", "-m", "-d"],
       exception_message: "Undefined option. \"-m\"",
-    },
-    {
-      argv:        ["sub_command_2", "--help"],
-      expect_help: {{sub_2_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_2", "--help"],
-      expect_help: {{sub_2_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_2_second", "--help"],
-      expect_help: {{sub_2_help_message}},
-    },
-    {
-      argv:        ["sub_command_2", "--help", "ignore-arg"],
-      expect_help: {{sub_2_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_2", "--help", "ignore-arg"],
-      expect_help: {{sub_2_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_2_second", "--help", "ignore-arg"],
-      expect_help: {{sub_2_help_message}},
-    },
-    {
-      argv:        ["sub_command_2", "ignore-arg", "--help"],
-      expect_help: {{sub_2_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_2", "ignore-arg", "--help"],
-      expect_help: {{sub_2_help_message}},
-    },
-    {
-      argv:        ["alias_sub_command_2_second", "ignore-arg", "--help"],
-      expect_help: {{sub_2_help_message}},
     },
   ]
 )
