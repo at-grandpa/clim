@@ -43,7 +43,7 @@ describe "Compile time spec, " do
   end
   it "'main_command' is not defined." do
     `crystal run spec/clim/compile_time_error_spec/files/main_command_is_not_defined.cr --no-color 2>&1`.should eq <<-ERROR
-    Error in spec/clim/compile_time_error_spec/files/main_command_is_not_defined.cr:4: undefined local variable or method 'sub_command'
+    Error in spec/clim/compile_time_error_spec/files/main_command_is_not_defined.cr:4: undefined local variable or method 'sub_command' for MyCli.class
 
       sub_command do
       ^~~~~~~~~~~

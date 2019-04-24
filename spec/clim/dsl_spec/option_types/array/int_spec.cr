@@ -17,7 +17,7 @@ require "../../../dsl_spec"
                           --array-int32=VALUE              Option description. [type:Array(Int32)]
                           --array-int64=VALUE              Option description. [type:Array(Int64)]
                           --array-int8-default=VALUE       Option description. [type:Array(Int8)] [default:[] of Int8]
-                          --array-int8-default-value=VALUE Option description. [type:Array(Int8)] [default:[1_i8, 2_i8, 3_i8]]
+                          --array-int8-default-value=VALUE Option description. [type:Array(Int8)] [default:[1, 2, 3]]
                           --array-int16-default=VALUE      Option description. [type:Array(Int16)] [default:[] of Int16]
                           --array-int32-default=VALUE      Option description. [type:Array(Int32)] [default:[] of Int32]
                           --array-int64-default=VALUE      Option description. [type:Array(Int64)] [default:[] of Int64]
