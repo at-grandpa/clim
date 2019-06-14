@@ -1,4 +1,4 @@
-require "./../../spec_helper"
+require "../spec_helper"
 
 class SpecCommand < Clim
   main do

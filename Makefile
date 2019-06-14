@@ -5,4 +5,7 @@ spec: $(SPEC_FILES)
 $(SPEC_FILES):
 	crystal spec $@ $(SPEC_OPTS)
 
-.PHONY: spec $(SPEC_FILES)
+format-check:
+	crystal tool format --check
+
+.PHONY: spec $(SPEC_FILES) format
