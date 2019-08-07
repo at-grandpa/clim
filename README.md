@@ -54,7 +54,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.7.0
+    version: 0.8.0
 ```
 
 ## Minimum sample
@@ -342,14 +342,14 @@ mycli version: 1.0.1
 
 You can specify multiple options for the command.
 
- Argument | Description | Example | Required | Default
----------|----------|---------|------|------
- First argument | short or long name | `-t TIMES`, `--times TIMES` | true | -
- Second argument | long name | `--times TIMES` | false | -
- `type` | option type | `type: Array(Float32)` | false | `String`
- `desc` | option description | `desc: "option description."` | false | `"Option description."`
- `default` | default value | `default: [1.1_f32, 2.2_f32]` | false | `nil`
- `required` | required flag | `required: true` | false | `false`
+ | Argument        | Description        | Example                       | Required | Default                 |
+ | --------------- | ------------------ | ----------------------------- | -------- | ----------------------- |
+ | First argument  | short or long name | `-t TIMES`, `--times TIMES`   | true     | -                       |
+ | Second argument | long name          | `--times TIMES`               | false    | -                       |
+ | `type`          | option type        | `type: Array(Float32)`        | false    | `String`                |
+ | `desc`          | option description | `desc: "option description."` | false    | `"Option description."` |
+ | `default`       | default value      | `default: [1.1_f32, 2.2_f32]` | false    | `nil`                   |
+ | `required`      | required flag      | `required: true`              | false    | `false`                 |
 
 ```crystal
 class MyCli < Clim
@@ -370,39 +370,39 @@ The type of the option is determined by the `default` and `required` patterns.
 
 For example `Int8`.
 
- `default` | `required` | Type
----------|----------|---------
- exist | `true` | `Int8` (default: Your specified value.) |
- exist | `false` | `Int8` (default: Your specified value.) |
- not exist | `true` | `Int8` |
- not exist | `false` | `Int8 \| Nil` |
+ | `default` | `required` | Type                                    |
+ | --------- | ---------- | --------------------------------------- |
+ | exist     | `true`     | `Int8` (default: Your specified value.) |
+ | exist     | `false`    | `Int8` (default: Your specified value.) |
+ | not exist | `true`     | `Int8`                                  |
+ | not exist | `false`    | `Int8 \| Nil`                           |
 
 *String*
 
- `default` | `required` | Type
----------|----------|---------
- exist | `true` | `String` (default: Your specified value.) |
- exist | `false` | `String` (default: Your specified value.) |
- not exist | `true` | `String` |
- not exist | `false` | `String \| Nil` |
+ | `default` | `required` | Type                                      |
+ | --------- | ---------- | ----------------------------------------- |
+ | exist     | `true`     | `String` (default: Your specified value.) |
+ | exist     | `false`    | `String` (default: Your specified value.) |
+ | not exist | `true`     | `String`                                  |
+ | not exist | `false`    | `String \| Nil`                           |
 
 *Bool*
 
- `default` | `required` | Type
----------|----------|---------
- exist | `true` | `Bool` (default: Your specified value.) |
- exist | `false` | `Bool` (default: Your specified value.) |
- not exist | `true` | `Bool` |
- not exist | `false` | `Bool` (default: `false`) |
+ | `default` | `required` | Type                                    |
+ | --------- | ---------- | --------------------------------------- |
+ | exist     | `true`     | `Bool` (default: Your specified value.) |
+ | exist     | `false`    | `Bool` (default: Your specified value.) |
+ | not exist | `true`     | `Bool`                                  |
+ | not exist | `false`    | `Bool` (default: `false`)               |
 
 *Array*
 
- `default` | `required` | Type
----------|----------|---------
- exist | `true` | `Array(T)` (default: Your specified value.) |
- exist | `false` | `Array(T)` (default: Your specified value.) |
- not exist | `true` | `Array(T)` |
- not exist | `false` | `Array(T)` (default: `[] of T`) |
+ | `default` | `required` | Type                                        |
+ | --------- | ---------- | ------------------------------------------- |
+ | exist     | `true`     | `Array(T)` (default: Your specified value.) |
+ | exist     | `false`    | `Array(T)` (default: Your specified value.) |
+ | not exist | `true`     | `Array(T)`                                  |
+ | not exist | `false`    | `Array(T)` (default: `[] of T`)             |
 
 For Bool, you do not need to specify arguments for short or long.
 
