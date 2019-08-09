@@ -341,6 +341,7 @@ mycli version: 1.0.1
 #### Short version for help
 
 If you want help to appear by specifying `-h` , specify `help short: "-h"` .
+
 (However, it should not conflict with other options.)
 
 ```crystal
