@@ -338,9 +338,9 @@ $ ./mycli -v
 mycli version: 1.0.1
 ```
 
-#### Short version for help
+#### Short option for help
 
-If you want help to appear by specifying `-h` , specify `help short: "-h"` .
+The short help option is not set by default. If you want help to appear by specifying `-h` , specify `help short: "-h"` .
 
 (However, it should not conflict with other options.)
 
