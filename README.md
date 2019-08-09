@@ -54,7 +54,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.8.0
+    version: 0.8.1
 ```
 
 ## Minimum sample
@@ -337,6 +337,54 @@ mycli version: 1.0.1
 $ ./mycli -v
 mycli version: 1.0.1
 ```
+
+#### Short option for help
+
+The short help option is not set by default. If you want help to appear by specifying `-h` , specify `help short: "-h"` .
+
+(However, it should not conflict with other options.)
+
+```crystal
+class MyCli < Clim
+  main do
+    desc "help directive test."
+    usage "mycli [options] [arguments]"
+    help short: "-h"
+    run do |opts, args|
+      # ...
+    end
+  end
+end
+```
+
+```console
+$ ./mycli -h
+
+  help directive test.
+
+  Usage:
+
+    mycli [options] [arguments]
+
+  Options:
+
+    -h, --help                       Show this help.
+
+$ ./mycli --help
+
+  help directive test.
+
+  Usage:
+
+    mycli [options] [arguments]
+
+  Options:
+
+    -h, --help                       Show this help.
+
+```
+
+In addition to `-h`, you can specify any single character. For example, `help short: "-a"` .
 
 #### option
 
