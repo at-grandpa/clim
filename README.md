@@ -338,6 +338,53 @@ $ ./mycli -v
 mycli version: 1.0.1
 ```
 
+#### Short version for help
+
+If you want help to appear by specifying `-h` , specify `help short: "-h"` .
+(However, it should not conflict with other options.)
+
+```crystal
+class MyCli < Clim
+  main do
+    desc "help directive test."
+    usage "mycli [options] [arguments]"
+    help short: "-h"
+    run do |opts, args|
+      # ...
+    end
+  end
+end
+```
+
+```console
+$ ./mycli -h
+
+  help directive test.
+
+  Usage:
+
+    mycli [options] [arguments]
+
+  Options:
+
+    -h, --help                       Show this help.
+
+$ ./mycli --help
+
+  help directive test.
+
+  Usage:
+
+    mycli [options] [arguments]
+
+  Options:
+
+    -h, --help                       Show this help.
+
+```
+
+In addition to `-h`, you can specify any single character. For example, `help short: "-a"` .
+
 #### option
 
 You can specify multiple options for the command.
