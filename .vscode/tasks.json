@@ -27,7 +27,7 @@
                 "reveal": "always",
                 "panel": "new"
             },
-            "command": "crystal spec ${relativeFile}"
+            "command": "crystal spec ${relativeFile} --error-trace"
         },
         {
             "label": "crystal spec current line",
@@ -40,7 +40,20 @@
                 "reveal": "always",
                 "panel": "new"
             },
-            "command": "crystal spec ${relativeFile}:${lineNumber}"
+            "command": "crystal spec ${relativeFile}:${lineNumber} --error-trace"
+        },
+        {
+            "label": "crystal tool expand",
+            "type": "shell",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "command": "crystal tool expand -c ${relativeFile}:${lineNumber}:1 ${relativeFile}"
         }
     ]
 }
