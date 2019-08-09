@@ -109,4 +109,16 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "'help' directive does not have a 'short' argument." do
+    `crystal run spec/clim/compile_time_error_spec/files/help_directive_does_not_have_a_short_argument_for_main.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/help_directive_does_not_have_a_short_argument_for_main.cr:5:5
+
+     5 | help
+         ^---
+    Error: The 'help' directive requires the 'short' argument. (ex 'help short: "-h"'
+
+    ERROR
+  end
 end

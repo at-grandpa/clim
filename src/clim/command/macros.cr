@@ -32,6 +32,13 @@ class Clim
         end
       end
 
+      macro help(short = nil)
+        {% raise "The 'help' directive requires the 'short' argument. (ex 'help short: \"-h\"'" if short == nil %}
+        macro help_macro
+          option {{short.id.stringify}}, "--help", type: Bool, desc: "Show this help.", default: false
+        end
+      end
+
       macro help_template(&block)
         {% raise "Can not be declared 'help_template' as sub command." unless @type == Command_Main_command_of_clim_library %}
 
@@ -161,9 +168,13 @@ class Clim
             self.new(Parser(OptionsForEachCommand).new(OptionsForEachCommand.new))
           end
 
+          macro help_macro
+            option "--help", type: Bool, desc: "Show this help.", default: false
+          end
+
           {{ yield }}
 
-          option "--help", type: Bool, desc: "Show this help.", default: false
+          help_macro
 
         end
       end
