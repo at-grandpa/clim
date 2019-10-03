@@ -54,7 +54,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.8.1
+    version: 0.8.2
 ```
 
 ## Minimum sample
