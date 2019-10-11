@@ -644,6 +644,24 @@ class MyCli < Clim
 end
 ```
 
+### `io` in run block
+
+You can receive `io` in a run block by passing it as the second argument to the start method.
+
+```crystal
+class IoCommand < Clim
+  main do
+    run do |opts, args, io|
+      io.puts "in main_command"
+    end
+  end
+end
+
+io = IO::Memory.new
+IoCommand.start([] of String, io: io)
+io.to_s # => "in main_command\n"
+```
+
 ## Development
 
 ```
