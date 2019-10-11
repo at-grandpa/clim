@@ -23,8 +23,8 @@ class Clim
       command.parse(argv).run(io)
     end
 
-    def self.start(argv)
-      start_parse(argv)
+    def self.start(argv, io : IO = STDOUT)
+      start_parse(argv, io)
     rescue ex : ClimException
       puts "ERROR: #{ex.message}"
     rescue ex : ClimInvalidOptionException | ClimInvalidTypeCastException
