@@ -5,10 +5,10 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/bool_with_required_true.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/bool_with_required_true.cr:6:5
+    In spec/clim/compile_time_error_spec/files/bool_with_required_true.cr:6:3
 
      6 | option \"-b\", type: Bool, desc: \"your bool.\", required: true
-         ^
+       ^
     Error: You can not specify 'required: true' for Bool option.
 
     ERROR
@@ -29,11 +29,11 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_sub_command.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_sub_command.cr:12:5
+    In spec/clim/compile_time_error_spec/files/duplicate_sub_command.cr:11:3
 
-     12 | command \"sub_command\" do
-          ^------
-    Error: Command \"sub_command\" is already defined.
+     11 | # Duplicate name.
+        ^------
+    Error: Command "sub_command" is already defined.
 
     ERROR
   end
@@ -41,10 +41,10 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr:7:5
+    In spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr:7:3
 
      7 | main_command do
-         ^-----------
+       ^-----------
     Error: Can not be declared 'main_command' or 'main' as sub command.
 
     ERROR
