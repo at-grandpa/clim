@@ -34,7 +34,7 @@ spec(
         "method" => "bool",
         "expect_value" => false,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["arg1"],
@@ -44,7 +44,7 @@ spec(
         "method" => "bool",
         "expect_value" => false,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["--bool"],
@@ -54,7 +54,7 @@ spec(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--bool", "arg1"],
@@ -64,7 +64,7 @@ spec(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["arg1", "--bool"],
@@ -74,7 +74,7 @@ spec(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:              ["-h"],

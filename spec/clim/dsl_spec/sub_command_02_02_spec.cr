@@ -85,7 +85,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["default string"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1"],
@@ -95,7 +95,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["default string"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "arg1"],
@@ -105,7 +105,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["default string"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "arg1"],
@@ -115,7 +115,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["default string"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "-a", "array1"],
@@ -125,7 +125,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "-a", "array1"],
@@ -135,7 +135,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "-a", "array1", "arg1", "-a", "array2"],
@@ -145,7 +145,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1", "array2"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "-a", "array1", "arg1", "-a", "array2"],
@@ -155,7 +155,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1", "array2"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "-aarray1"],
@@ -165,7 +165,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "-aarray1"],
@@ -175,7 +175,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "--array", "array1"],
@@ -185,7 +185,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "--array", "array1"],
@@ -195,7 +195,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "--array=array1"],
@@ -205,7 +205,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "--array=array1"],
@@ -215,7 +215,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "-a", "array1", "arg1"],
@@ -225,7 +225,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "-a", "array1", "arg1"],
@@ -235,7 +235,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "arg1", "-a", "array1"],
@@ -245,7 +245,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "arg1", "-a", "array1"],
@@ -255,7 +255,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "-array"], # Unintended case.
@@ -265,7 +265,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["rray"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "-array"], # Unintended case.
@@ -275,7 +275,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["rray"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "-a=array1"], # Unintended case.
@@ -285,7 +285,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["=array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "-a=array1"], # Unintended case.
@@ -295,7 +295,7 @@ spec_for_alias_name(
         "method" => "array",
         "expect_value" => ["=array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
   ]
 )

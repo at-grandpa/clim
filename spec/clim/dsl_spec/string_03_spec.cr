@@ -34,7 +34,7 @@ spec(
         "method" => "string",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["arg1"],
@@ -44,7 +44,7 @@ spec(
         "method" => "string",
         "expect_value" => nil,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["--string=string1"],
@@ -54,7 +54,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--string", "string1"],
@@ -64,7 +64,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--string", "string1", "arg1"],
@@ -74,7 +74,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["arg1", "--string", "string1"],
@@ -84,7 +84,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:              ["-h"],

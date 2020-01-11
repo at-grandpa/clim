@@ -34,7 +34,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-sstring1"],
@@ -44,7 +44,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--string", "string1"],
@@ -54,7 +54,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--string=string1"],
@@ -64,7 +64,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-s", "string1", "arg1"],
@@ -74,7 +74,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["arg1", "-s", "string1"],
@@ -84,7 +84,7 @@ spec(
         "method" => "string",
         "expect_value" => "string1",
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["-string"], # Unintended case.
@@ -94,7 +94,7 @@ spec(
         "method" => "string",
         "expect_value" => "tring",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-s=string1"], # Unintended case.
@@ -104,7 +104,7 @@ spec(
         "method" => "string",
         "expect_value" => "=string1",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              [] of String,

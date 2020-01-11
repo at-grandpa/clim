@@ -39,7 +39,7 @@ spec(
         "method" => "array_float32",
         "expect_value" => [] of Float32,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-float32", "1.1", "--array-float32", "2.2"],
@@ -49,7 +49,7 @@ spec(
         "method" => "array_float32",
         "expect_value" => [1.1_f32, 2.2_f32],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-float32", "foo"],
@@ -67,7 +67,7 @@ spec(
         "method" => "array_float64",
         "expect_value" => [] of Float64,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-float64", "1.1", "--array-float64", "2.2"],
@@ -77,7 +77,7 @@ spec(
         "method" => "array_float64",
         "expect_value" => [1.1_f64, 2.2_f64],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-float64", "foo"],

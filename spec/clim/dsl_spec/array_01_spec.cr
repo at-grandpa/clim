@@ -34,7 +34,7 @@ spec(
         "method" => "array",
         "expect_value" => [] of String,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["arg1"],
@@ -44,7 +44,7 @@ spec(
         "method" => "array",
         "expect_value" => [] of String,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["-a", "array1"],
@@ -54,7 +54,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-a", "array1", "arg1", "-a", "array2"],
@@ -64,7 +64,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1", "array2"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["-aarray1"],
@@ -74,7 +74,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array", "array1"],
@@ -84,7 +84,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array=array1"],
@@ -94,7 +94,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-a", "array1", "arg1"],
@@ -104,7 +104,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["arg1", "-a", "array1"],
@@ -114,7 +114,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["-array"], # Unintended case.
@@ -124,7 +124,7 @@ spec(
         "method" => "array",
         "expect_value" => ["rray"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-a=array1"], # Unintended case.
@@ -134,7 +134,7 @@ spec(
         "method" => "array",
         "expect_value" => ["=array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["-h"],
@@ -214,7 +214,7 @@ spec(
         "method" => "a",
         "expect_value" => [] of String,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["arg1"],
@@ -224,7 +224,7 @@ spec(
         "method" => "a",
         "expect_value" => [] of String,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["-a", "array1"],
@@ -234,7 +234,7 @@ spec(
         "method" => "a",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-aarray1"],
@@ -244,7 +244,7 @@ spec(
         "method" => "a",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-a", "array1", "arg1"],
@@ -254,7 +254,7 @@ spec(
         "method" => "a",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["arg1", "-a", "array1"],
@@ -264,7 +264,7 @@ spec(
         "method" => "a",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["-array"], # Unintended case.
@@ -274,7 +274,7 @@ spec(
         "method" => "a",
         "expect_value" => ["rray"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-a=array1"], # Unintended case.
@@ -284,7 +284,7 @@ spec(
         "method" => "a",
         "expect_value" => ["=array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["-h"],
@@ -372,7 +372,7 @@ spec(
         "method" => "array",
         "expect_value" => [] of String,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["arg1"],
@@ -382,7 +382,7 @@ spec(
         "method" => "array",
         "expect_value" => [] of String,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["--array", "array1"],
@@ -392,7 +392,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array=array1"],
@@ -402,7 +402,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array", "array1", "arg1"],
@@ -412,7 +412,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["arg1", "--array", "array1"],
@@ -422,7 +422,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:              ["-h"],
@@ -551,7 +551,7 @@ spec(
         "method" => "array",
         "expect_value" => ["default value"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["arg1"],
@@ -561,7 +561,7 @@ spec(
         "method" => "array",
         "expect_value" => ["default value"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["-a", "array1"],
@@ -571,7 +571,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-aarray1"],
@@ -581,7 +581,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array", "array1"],
@@ -591,7 +591,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array=array1"],
@@ -601,7 +601,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-a", "array1", "arg1"],
@@ -611,7 +611,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["arg1", "-a", "array1"],
@@ -621,7 +621,7 @@ spec(
         "method" => "array",
         "expect_value" => ["array1"],
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["-array"], # Unintended case.
@@ -631,7 +631,7 @@ spec(
         "method" => "array",
         "expect_value" => ["rray"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-a=array1"], # Unintended case.
@@ -641,7 +641,7 @@ spec(
         "method" => "array",
         "expect_value" => ["=array1"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["-h"],

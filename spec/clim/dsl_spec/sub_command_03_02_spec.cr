@@ -85,7 +85,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => false,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1"],
@@ -95,7 +95,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => false,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "arg1"],
@@ -105,7 +105,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => false,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1"],
@@ -115,7 +115,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => false,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "-b"],
@@ -125,7 +125,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "-b"],
@@ -135,7 +135,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "--bool"],
@@ -145,7 +145,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "--bool"],
@@ -155,7 +155,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "-b", "arg1"],
@@ -165,7 +165,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "-b", "arg1"],
@@ -175,7 +175,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "--bool", "arg1"],
@@ -185,7 +185,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "--bool", "arg1"],
@@ -195,7 +195,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "-b"],
@@ -205,7 +205,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "-b"],
@@ -215,7 +215,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "--bool"],
@@ -225,7 +225,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "--bool"],
@@ -235,7 +235,7 @@ spec_for_alias_name(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: ["arg1"],
+      expect_args_value: ["arg1"],
     },
   ]
 )

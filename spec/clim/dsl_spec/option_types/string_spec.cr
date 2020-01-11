@@ -37,7 +37,7 @@ spec(
         "method" => "string",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--string", "5"] of String,
@@ -47,7 +47,7 @@ spec(
         "method" => "string",
         "expect_value" => "5",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
   ]
 )

@@ -10,7 +10,7 @@ macro assert_opts_and_args(spec_case)
         raise "undefined method '#{{{spec_case["expect_opts"]["method"].stringify}}}' for #{typeof(opts).to_s}."
       end
     {% end %}
-    args.should eq {{spec_case["expect_args"]}}
+    args.should eq {{spec_case["expect_args_value"]}}
 end
 
 macro expand_lines(lines)
@@ -20,7 +20,7 @@ macro expand_lines(lines)
 end
 
 macro it_blocks(class_name, spec_case)
-  {% if spec_case.keys.includes?("expect_args".id) %}
+  {% if spec_case.keys.includes?("expect_args_value".id) %}
     it "opts and args are given as arguments of run block." do
       {{class_name}}.start_parse({{spec_case["argv"]}})
     end

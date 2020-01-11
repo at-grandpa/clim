@@ -45,7 +45,7 @@ spec(
         "method" => "int8",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-i", "5"] of String,
@@ -55,7 +55,7 @@ spec(
         "method" => "int8",
         "expect_value" => 5_i8,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["-i", "foo"],
@@ -69,7 +69,7 @@ spec(
         "method" => "int8",
         "expect_value" => 5_i8,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--int8", "foo"],
@@ -83,7 +83,7 @@ spec(
         "method" => "int8_default",
         "expect_value" => 1_i8,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--int8-default", "5"] of String,
@@ -93,7 +93,7 @@ spec(
         "method" => "int8_default",
         "expect_value" => 5_i8,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--int8-default", "foo"],
@@ -111,7 +111,7 @@ spec(
         "method" => "int16",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--int16", "5"] of String,
@@ -121,7 +121,7 @@ spec(
         "method" => "int16",
         "expect_value" => 5_i16,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--int16", "foo"],
@@ -139,7 +139,7 @@ spec(
         "method" => "int32",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--int32", "5"] of String,
@@ -149,7 +149,7 @@ spec(
         "method" => "int32",
         "expect_value" => 5_i32,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--int32", "foo"],
@@ -167,7 +167,7 @@ spec(
         "method" => "int64",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--int64", "5"] of String,
@@ -177,7 +177,7 @@ spec(
         "method" => "int64",
         "expect_value" => 5_i64,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--int64", "foo"],

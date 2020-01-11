@@ -53,7 +53,7 @@ spec(
         "method" => "array_int8",
         "expect_value" => [] of Int8,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-int8", "1", "--array-int8", "2"],
@@ -63,7 +63,7 @@ spec(
         "method" => "array_int8",
         "expect_value" => [1_i8, 2_i8],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-int8", "foo"],
@@ -77,7 +77,7 @@ spec(
         "method" => "array_int8_default",
         "expect_value" => [] of Int8,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-int8-default", "1", "--array-int8-default", "2"],
@@ -87,7 +87,7 @@ spec(
         "method" => "array_int8_default",
         "expect_value" => [1_i8, 2_i8],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-int8-default", "foo"],
@@ -101,7 +101,7 @@ spec(
         "method" => "array_int8_default_value",
         "expect_value" => [1_i8, 2_i8, 3_i8],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-int8-default-value", "8", "--array-int8-default-value", "9"],
@@ -111,7 +111,7 @@ spec(
         "method" => "array_int8_default_value",
         "expect_value" => [8_i8, 9_i8],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-int8-default-value", "foo"],
@@ -129,7 +129,7 @@ spec(
         "method" => "array_int16",
         "expect_value" => [] of Int16,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-int16", "1", "--array-int16", "2"],
@@ -139,7 +139,7 @@ spec(
         "method" => "array_int16",
         "expect_value" => [1_i16, 2_i16],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-int16", "foo"],
@@ -157,7 +157,7 @@ spec(
         "method" => "array_int32",
         "expect_value" => [] of Int32,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-int32", "1", "--array-int32", "2"],
@@ -167,7 +167,7 @@ spec(
         "method" => "array_int32",
         "expect_value" => [1_i32, 2_i32],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-int32", "foo"],
@@ -185,7 +185,7 @@ spec(
         "method" => "array_int64",
         "expect_value" => [] of Int64,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-int64", "1", "--array-int64", "2"],
@@ -195,7 +195,7 @@ spec(
         "method" => "array_int64",
         "expect_value" => [1_i64, 2_i64],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-int64", "foo"],
