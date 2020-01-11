@@ -11,6 +11,12 @@ macro assert_opts_and_args(spec_case)
       end
     {% end %}
     args.should eq {{spec_case["expect_args_value"]}}
+    {% if spec_case.keys.includes?("expect_args".id) %}
+      if args.responds_to?(:{{spec_case["expect_args"]["method"].id}})
+        typeof(args.{{spec_case["expect_args"]["method"].id}}).should eq {{spec_case["expect_args"]["type"]}}
+        args.{{spec_case["expect_args"]["method"].id}}.should eq {{spec_case["expect_args"]["expect_value"]}}
+      end
+    {% end %}
 end
 
 macro expand_lines(lines)
