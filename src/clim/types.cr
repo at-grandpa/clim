@@ -1,6 +1,6 @@
 class Clim
   module Types
-    SUPPORT_TYPES = {
+    SUPPORTED_TYPES_OF_OPTION = {
       Int8 => {
         type:                "number",
         default:             0,

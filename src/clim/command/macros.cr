@@ -44,7 +44,7 @@ class Clim
 
         class Clim::Command
           {% begin %}
-          {% support_types = Clim::Types::SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
+          {% support_types = Clim::Types::SUPPORTED_TYPES_OF_OPTION.map { |k, _| k } + [Nil] %}
           alias HelpOptionsType = Array(NamedTuple(
               names: Array(String),
               type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }},
@@ -93,7 +93,7 @@ class Clim
         def run(io : IO)
           options = @parser.options
           return RunProc.new { io.puts help_template }.call(options, @parser.arguments, io) if options.help == true
-          
+
           if options.responds_to?(:version)
             return RunProc.new { io.puts version_str }.call(options, @parser.arguments, io) if options.version == true
           end
@@ -104,7 +104,7 @@ class Clim
 
       macro option_base(short, long, type, desc, default, required)
         {% raise "Empty option name." if short.empty? %}
-        {% raise "Type [#{type}] is not supported on option." unless SUPPORT_TYPES.keys.includes?(type) %}
+        {% raise "Type [#{type}] is not supported on option." unless SUPPORTED_TYPES_OF_OPTION.keys.includes?(type) %}
 
         {% base_option_name = long == nil ? short : long %}
         {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
@@ -121,7 +121,7 @@ class Clim
           {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
 
           {% if default == nil %}
-            {% default_value = SUPPORT_TYPES[type][:nilable] ? default : SUPPORT_TYPES[type][:default] %}
+            {% default_value = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] %}
           {% else %}
             {% default_value = default %}
           {% end %}

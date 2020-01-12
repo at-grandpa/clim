@@ -16,7 +16,7 @@ class Clim
 
       def info
         {% begin %}
-          {% support_types = SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
+          {% support_types = SUPPORTED_TYPES_OF_OPTION.map { |k, _| k } + [Nil] %}
           array = [] of NamedTuple(names: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool)
           {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help_string" } %}
             array << {{iv}}.to_named_tuple
@@ -26,7 +26,7 @@ class Clim
 
       def to_a
         {% begin %}
-          {% support_types = SUPPORT_TYPES.map { |k, _| k } + [Nil] %}
+          {% support_types = SUPPORTED_TYPES_OF_OPTION.map { |k, _| k } + [Nil] %}
           array = [] of Option
           {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help_string" } %}
             array << {{iv}}
