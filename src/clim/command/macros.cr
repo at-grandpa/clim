@@ -141,6 +141,36 @@ class Clim
         option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
       end
 
+      macro argument(name, type, desc, default, required)
+        {% raise "Empty argument name." if name.empty? %}
+        {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_ARGUMENT.keys.includes?(type) %}
+
+        {% argument_name = name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
+        class ArgumentsForEachCommand
+          class Argument_{{argument_name}} < Argument
+            define_argument_macro({{argument_name}}, {{type}}, {{default}}, {{required}})
+
+            def method_name
+              {{argument_name.stringify}}
+            end
+          end
+
+          {% default = false if type.id.stringify == "Bool" %}
+          {% raise "You can not specify 'required: true' for Bool argument." if type.id.stringify == "Bool" && required == true %}
+
+          {% if default == nil %}
+            {% default_value = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
+          {% else %}
+            {% default_value = default %}
+          {% end %}
+
+          property {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name }} {{ desc }}, {{ default_value }}, {{ required }})
+          def {{ argument_name }}
+            {{ argument_name }}_instance.@value
+          end
+        end
+      end
+
       macro command(name, &block)
         {% if @type.constants.map(&.id.stringify).includes?("Command_" + name.id.capitalize.stringify) %}
           {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
@@ -151,21 +181,26 @@ class Clim
           class Options_{{ name.id.capitalize }} < Options
           end
 
-          alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
-          alias RunProc = Proc(OptionsForEachCommand, Array(String), IO, Nil)
+          class Arguments_{{ name.id.capitalize }} < Arguments
+          end
 
-          property parser : Parser(OptionsForEachCommand)
+          alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
+          alias ArgumentsForEachCommand = Arguments_{{ name.id.capitalize }}
+          alias RunProc = Proc(OptionsForEachCommand, ArgumentsForEachCommand, IO, Nil)
+
+          property parser : Parser(OptionsForEachCommand, ArgumentsForEachCommand)
           property name : String = {{name.id.stringify}}
           property options : OptionsForEachCommand = OptionsForEachCommand.new
+          property arguments : ArgumentsForEachCommand = ArgumentsForEachCommand.new
 
-          def initialize(@parser : Parser(OptionsForEachCommand))
+          def initialize(@parser : Parser(OptionsForEachCommand, ArgumentsForEachCommand))
             \{% for command_class in @type.constants.select { |c| @type.constant(c).superclass.id.stringify == "Clim::Command" } %}
               @sub_commands << \{{ command_class.id }}.create
             \{% end %}
           end
 
           def self.create
-            self.new(Parser(OptionsForEachCommand).new(OptionsForEachCommand.new))
+            self.new(Parser(OptionsForEachCommand, ArgumentsForEachCommand).new(OptionsForEachCommand.new, ArgumentsForEachCommand.new))
           end
 
           macro help_macro
