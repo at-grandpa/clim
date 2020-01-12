@@ -2,7 +2,7 @@ class Clim
   abstract class Command
     class Arguments
       abstract class Argument
-        property name: String = ""
+        property name : String = ""
         property desc : String = ""
         property required : Bool = false
 
@@ -25,9 +25,9 @@ class Clim
         private def display_default
           default_value = @default.dup
           {% begin %}
-            {% support_types_number = SUPPORTED_TYPES_OF_OPTION.map { |k, v| v[:type] == "number" ? k : nil }.reject(&.==(nil)) %}
-            {% support_types_string = SUPPORTED_TYPES_OF_OPTION.map { |k, v| v[:type] == "string" ? k : nil }.reject(&.==(nil)) %}
-            {% support_types_bool = SUPPORTED_TYPES_OF_OPTION.map { |k, v| v[:type] == "bool" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_number = SUPPORTED_TYPES_OF_ARGUMENT.map { |k, v| v[:type] == "number" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_string = SUPPORTED_TYPES_OF_ARGUMENT.map { |k, v| v[:type] == "string" ? k : nil }.reject(&.==(nil)) %}
+            {% support_types_bool = SUPPORTED_TYPES_OF_ARGUMENT.map { |k, v| v[:type] == "bool" ? k : nil }.reject(&.==(nil)) %}
             case default_value
             when Nil
               "nil"
@@ -51,18 +51,18 @@ class Clim
             {% default_type = type.stringify.id %}
           {% elsif default == nil && required == true %}
             {% value_type = type.stringify.id %}
-            {% value_default = SUPPORTED_TYPES_OF_OPTION[type][:default] %}
-            {% value_assign = SUPPORTED_TYPES_OF_OPTION[type][:default] %}
-            {% default_type = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_default = SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
+            {% value_assign = SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
+            {% default_type = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% elsif default == nil && required == false %}
-            {% value_type = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
-            {% value_default = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] %}
-            {% value_assign = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? "default".id : SUPPORTED_TYPES_OF_OPTION[type][:default] %}
-            {% default_type = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_type = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
+            {% value_default = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
+            {% value_assign = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? "default".id : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
+            {% default_type = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% end %}
 
           property value : {{value_type}} = {{value_default}}
-          property default : {{default_type}} = {{ SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] }}
+          property default : {{default_type}} = {{ SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] }}
           property set_value : Bool = false
 
           def initialize(@name: String, @desc : String, @default : {{default_type}}, @required : Bool)
@@ -79,8 +79,8 @@ class Clim
           end
 
           def set_value(arg : String)
-            {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_OPTION.keys.includes?(type) %}
-            @value = {{SUPPORTED_TYPES_OF_OPTION[type][:convert_arg_process].id}}
+            {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_ARGUMENT.keys.includes?(type) %}
+            @value = {{SUPPORTED_TYPES_OF_ARGUMENT[type][:convert_arg_process].id}}
             @set_value = true
           rescue ex
             raise ClimInvalidTypeCastException.new ex.message
