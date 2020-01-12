@@ -2,8 +2,16 @@ require "./arguments/*"
 
 class Clim
   abstract class Command
-    class Arguments
+    class Arguments < Array(String)
       property help_string : String = ""
+      property command_args : Array(String) = [] of String
+
+      def update_command_args(command_args)
+        self.clear
+        command_args.each do |element|
+          self << element
+        end
+      end
 
       def invalid_required_names
         ret = [] of String | Nil
