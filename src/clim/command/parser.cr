@@ -1,14 +1,16 @@
+require "option_parser"
+
 class Clim
   abstract class Command
-    class Parser(T)
+    class Parser(O, A)
       property option_parser : OptionParser = OptionParser.new
-      property arguments : Array(String) = [] of String
-      property options : T
+      property options : O
+      property arguments : A
 
-      def initialize(@options : T)
+      def initialize(@options : O, @arguments : A)
         @option_parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
         @option_parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-        @option_parser.unknown_args { |unknown_args| @arguments = unknown_args }
+        @option_parser.unknown_args { |unknown_args| @arguments.update_command_args(unknown_args) }
         setup_option_parser(@option_parser)
       end
 
