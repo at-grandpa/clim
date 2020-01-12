@@ -1,6 +1,6 @@
 class Clim
   abstract class Command
-    class Arguments
+    class Arguments < Array(String)
       abstract class Argument
         property name : String = ""
         property desc : String = ""
