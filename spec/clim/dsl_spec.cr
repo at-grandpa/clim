@@ -10,12 +10,15 @@ macro assert_opts_and_args(spec_case)
         raise "undefined method '#{{{spec_case["expect_opts"]["method"].stringify}}}' for #{typeof(opts).to_s}."
       end
     {% end %}
-    args.list.should eq {{spec_case["expect_args_value"]}}
     {% if spec_case.keys.includes?("expect_args".id) %}
-      if args.responds_to?(:{{spec_case["expect_args"]["method"].id}})
-        typeof(args.{{spec_case["expect_args"]["method"].id}}).should eq {{spec_case["expect_args"]["type"]}}
-        args.{{spec_case["expect_args"]["method"].id}}.should eq {{spec_case["expect_args"]["expect_value"]}}
-      end
+      {% for expect_args_spec_case in spec_case["expect_args"] %}
+        if args.responds_to?(:{{expect_args_spec_case["method"].id}})
+          typeof(args.{{expect_args_spec_case["method"].id}}).should eq {{expect_args_spec_case["type"]}}
+          args.{{expect_args_spec_case["method"].id}}.should eq {{expect_args_spec_case["expect_value"]}}
+        else
+          raise "undefined method '#{{{expect_args_spec_case["method"].stringify}}}' for #{typeof(args).to_s}."
+        end
+      {% end %}
     {% end %}
 end
 
@@ -26,7 +29,7 @@ macro expand_lines(lines)
 end
 
 macro it_blocks(class_name, spec_case)
-  {% if spec_case.keys.includes?("expect_args_value".id) %}
+  {% if spec_case.keys.includes?("expect_args".id) || spec_case.keys.includes?("expect_args_value".id) %}
     it "opts and args are given as arguments of run block." do
       {{class_name}}.start_parse({{spec_case["argv"]}})
     end
