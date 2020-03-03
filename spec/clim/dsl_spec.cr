@@ -6,6 +6,8 @@ macro assert_opts_and_args(spec_case)
       if opts.responds_to?(:{{spec_case["expect_opts"]["method"].id}})
         typeof(opts.{{spec_case["expect_opts"]["method"].id}}).should eq {{spec_case["expect_opts"]["type"]}}
         opts.{{spec_case["expect_opts"]["method"].id}}.should eq {{spec_case["expect_opts"]["expect_value"]}}
+      else
+        raise "undefined method '#{{{spec_case["expect_opts"]["method"].stringify}}}' for #{typeof(opts).to_s}."
       end
     {% end %}
     args.should eq {{spec_case["expect_args"]}}
