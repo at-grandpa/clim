@@ -7,6 +7,7 @@ class Clim
       property command_args : Array(String) = [] of String
 
       def update_command_args(command_args)
+        # ここでArgumentの配列を作る
         tmp = [] of String
         command_args.each do |element|
           tmp << element

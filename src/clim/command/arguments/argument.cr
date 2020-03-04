@@ -65,7 +65,7 @@ class Clim
           property default : {{default_type}} = {{ SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] }}
           property set_value : Bool = false
 
-          def initialize(@name: String, @desc : String, @default : {{default_type}}, @required : Bool)
+          def initialize(@name : String, @desc : String, @default : {{default_type}}, @required : Bool)
             @value = {{value_assign}}
           end
 

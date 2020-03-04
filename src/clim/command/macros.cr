@@ -141,7 +141,7 @@ class Clim
         option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
       end
 
-      macro argument(name, type, desc, default, required)
+      macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
         {% raise "Empty argument name." if name.empty? %}
         {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_ARGUMENT.keys.includes?(type) %}
 
@@ -164,7 +164,7 @@ class Clim
             {% default_value = default %}
           {% end %}
 
-          property {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name }} {{ desc }}, {{ default_value }}, {{ required }})
+          property {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
           def {{ argument_name }}
             {{ argument_name }}_instance.@value
           end

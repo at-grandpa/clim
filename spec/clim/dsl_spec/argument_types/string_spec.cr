@@ -14,6 +14,7 @@ require "../../dsl_spec"
 
                           --help                           Show this help.
 
+
                       HELP_MESSAGE
 %}
 
@@ -30,12 +31,24 @@ spec(
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
-      expect_args_value: [] of String,
-      expect_args: {
-        "type" => String?,
-        "method" => "arg1",
-        "expect_value" => nil,
-      },
+      expect_args: [
+        {
+          "type" => String?,
+          "method" => "arg1",
+          "expect_value" => nil,
+        },
+      ],
+    },
+    {
+      argv:        ["value1"],
+      expect_help: {{main_help_message}},
+      expect_args: [
+        {
+          "type" => String?,
+          "method" => "arg1",
+          "expect_value" => "value1",
+        },
+      ],
     },
   ]
 )
