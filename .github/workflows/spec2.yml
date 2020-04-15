@@ -1,12 +1,12 @@
-name: clim CI
+name: clim spec2
 
 on: [push]
 
 jobs:
-  spec2:
+  spec:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
       uses: actions/checkout@v2
-    - name: make spec/2 NUM_OF_JOBS=5
+    - name: spec
       run: make spec/2 NUM_OF_JOBS=5
