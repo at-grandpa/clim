@@ -18,7 +18,6 @@ format-check:
 spec/%:
 	docker run \
 		--rm \
-		-it \
 		-v $(PWD):/workdir \
 		-w /workdir \
 		crystallang/crystal:latest \
