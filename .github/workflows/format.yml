@@ -3,7 +3,7 @@ name: clim CI
 on: [push]
 
 jobs:
-  spec:
+  format-check:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
