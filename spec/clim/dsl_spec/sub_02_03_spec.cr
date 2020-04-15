@@ -74,7 +74,7 @@ end
 
                          Sub Commands:
 
-                           sub_sub_command_1   Command Line Interface Tool.
+                           sub_sub_command_1   Command Line Interface Tool
 
 
                        HELP_MESSAGE
