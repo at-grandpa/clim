@@ -1,4 +1,4 @@
-name: clim CI
+name: clim format-check
 
 on: [push]
 
@@ -8,5 +8,5 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v2
-    - name: make format-check
+    - name: format-check
       run: make format-check
