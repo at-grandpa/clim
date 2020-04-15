@@ -1,0 +1,12 @@
+name: clim CI
+
+on: [push]
+
+jobs:
+  spec:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: make format-check
+      run: make format-check
