@@ -3,11 +3,12 @@ SPEC_FILES := $(shell find spec -name '*_spec.cr' -print | sort -n)
 SPEC_TARGETS := $(shell seq -s " " -f "spec/%g" $(NUM_OF_JOBS))
 
 spec:
-	make -j $(SPEC_TARGETS)
+	make -j $(SPEC_TARGETS) DOCKER_OPTIONS=-it
 
 format-check:
 	docker run \
 		--rm \
+		$(DOCKER_OPTIONS) \
 		-v $(PWD):/workdir \
 		-w /workdir \
 		crystallang/crystal:latest \
@@ -18,6 +19,7 @@ format-check:
 spec/%:
 	docker run \
 		--rm \
+		$(DOCKER_OPTIONS) \
 		-v $(PWD):/workdir \
 		-w /workdir \
 		crystallang/crystal:latest \
