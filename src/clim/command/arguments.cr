@@ -40,7 +40,7 @@ class Clim
       def info
         {% begin %}
           {% support_types = SUPPORTED_TYPES_OF_ARGUMENT.map { |k, _| k } + [Nil] %}
-          array = [] of NamedTuple(names: Array(String), type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool)
+          array = [] of NamedTuple(name: String, type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool)
           {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help_string" || iv.stringify == "command_args" || iv.stringify == "unknown_args" } %}
             array << {{iv}}.to_named_tuple
           {% end %}

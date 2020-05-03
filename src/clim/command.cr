@@ -29,6 +29,7 @@ class Clim
 
     def help_template
       options_lines = options_help_info.map(&.[](:help_line))
+      arguments_lines = arguments_help_info.map(&.[](:help_line))
       sub_commands_lines = sub_commands_help_info.map(&.[](:help_line))
       base_help_template = <<-HELP_MESSAGE
 
@@ -45,6 +46,14 @@ class Clim
 
       HELP_MESSAGE
 
+      arguments_help_template = <<-HELP_MESSAGE
+        Arguments:
+
+      #{arguments_lines.join("\n")}
+
+
+      HELP_MESSAGE
+
       sub_commands_help_template = <<-HELP_MESSAGE
         Sub Commands:
 
@@ -52,7 +61,16 @@ class Clim
 
 
       HELP_MESSAGE
-      sub_commands_lines.empty? ? base_help_template : base_help_template + sub_commands_help_template
+
+      if sub_commands_lines.empty? && arguments_lines.empty?
+        base_help_template
+      elsif sub_commands_lines.empty? && !arguments_lines.empty?
+        base_help_template + arguments_help_template
+      elsif !sub_commands_lines.empty? && arguments_lines.empty?
+        base_help_template + sub_commands_help_template
+      else
+        base_help_template + arguments_help_template + sub_commands_help_template
+      end
     end
 
     abstract def run(io : IO)
@@ -89,6 +107,10 @@ class Clim
 
     def options_help_info
       parser.options_help_info
+    end
+
+    def arguments_help_info
+      parser.arguments_help_info
     end
 
     def sub_commands_help_info

@@ -15,6 +15,12 @@ require "../../dsl_spec"
                           -a ARG, --array=ARG              Option description. [type:Array(String)]
                           --help                           Show this help.
 
+                        Arguments:
+
+                          01. arg1a        first argument. [type:String]
+                          02. arg2ab       second argument. [type:String]
+                          03. arg3abc      third argument. [type:String]
+
 
                       HELP_MESSAGE
 %}
@@ -22,9 +28,9 @@ require "../../dsl_spec"
 spec(
   spec_class_name: ArgumentTypeSpec,
   spec_dsl_lines: [
-    "argument \"arg1\", type: String",
-    "argument \"arg2\", type: String",
-    "argument \"arg3\", type: String",
+    "argument \"arg1a\", type: String, desc: \"first argument.\"",
+    "argument \"arg2ab\", type: String, desc: \"second argument.\"",
+    "argument \"arg3abc\", type: String, desc: \"third argument.\"",
     "option \"-a ARG\", \"--array=ARG\", type: Array(String)",
   ],
   spec_desc: "argument type spec,",
@@ -38,17 +44,17 @@ spec(
       expect_args: [
         {
           "type" => String?,
-          "method" => "arg1",
+          "method" => "arg1a",
           "expect_value" => nil,
         },
         {
           "type" => String?,
-          "method" => "arg2",
+          "method" => "arg2ab",
           "expect_value" => nil,
         },
         {
           "type" => String?,
-          "method" => "arg3",
+          "method" => "arg3abc",
           "expect_value" => nil,
         },
       ],
@@ -59,17 +65,17 @@ spec(
       expect_args: [
         {
           "type" => String?,
-          "method" => "arg1",
+          "method" => "arg1a",
           "expect_value" => "value1",
         },
         {
           "type" => String?,
-          "method" => "arg2",
+          "method" => "arg2ab",
           "expect_value" => nil,
         },
         {
           "type" => String?,
-          "method" => "arg3",
+          "method" => "arg3abc",
           "expect_value" => nil,
         },
       ],
@@ -80,17 +86,17 @@ spec(
       expect_args: [
         {
           "type" => String?,
-          "method" => "arg1",
+          "method" => "arg1a",
           "expect_value" => "value1",
         },
         {
           "type" => String?,
-          "method" => "arg2",
+          "method" => "arg2ab",
           "expect_value" => "value2",
         },
         {
           "type" => String?,
-          "method" => "arg3",
+          "method" => "arg3abc",
           "expect_value" => nil,
         },
       ],
@@ -101,17 +107,17 @@ spec(
       expect_args: [
         {
           "type" => String?,
-          "method" => "arg1",
+          "method" => "arg1a",
           "expect_value" => "value1",
         },
         {
           "type" => String?,
-          "method" => "arg2",
+          "method" => "arg2ab",
           "expect_value" => "value2",
         },
         {
           "type" => String?,
-          "method" => "arg3",
+          "method" => "arg3abc",
           "expect_value" => "value3",
         },
       ],
@@ -122,17 +128,17 @@ spec(
       expect_args: [
         {
           "type" => String?,
-          "method" => "arg1",
+          "method" => "arg1a",
           "expect_value" => "value1",
         },
         {
           "type" => String?,
-          "method" => "arg2",
+          "method" => "arg2ab",
           "expect_value" => "value2",
         },
         {
           "type" => String?,
-          "method" => "arg3",
+          "method" => "arg3abc",
           "expect_value" => "value3",
         },
         {
@@ -148,17 +154,17 @@ spec(
       expect_args: [
         {
           "type" => String?,
-          "method" => "arg1",
+          "method" => "arg1a",
           "expect_value" => "value1",
         },
         {
           "type" => String?,
-          "method" => "arg2",
+          "method" => "arg2ab",
           "expect_value" => "value2",
         },
         {
           "type" => String?,
-          "method" => "arg3",
+          "method" => "arg3abc",
           "expect_value" => "value3",
         },
         {

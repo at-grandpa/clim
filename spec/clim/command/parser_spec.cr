@@ -6,6 +6,8 @@ class SpecCommand < Clim
     usage "main [sub_command] [arguments]"
     option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings.", default: "Hello"
     option "-n NAME", type: Array(String), desc: "Target name.", default: ["Taro"], required: true
+    argument "argument1", type: String, desc: "first argument.", default: "default value", required: true
+    argument "argument2foo", type: Int32, desc: "second argument.", default: 1, required: false
     run do |opts, args|
     end
     sub "abc" do
@@ -29,6 +31,7 @@ class SpecCommandNoOptions < Clim
   main do
     desc "main command."
     usage "main [sub_command] [arguments]"
+    argument "argument3", type: String, desc: "third argument.", default: "default value", required: true
     run do |opts, args|
     end
   end
@@ -74,7 +77,40 @@ describe Clim::Command::Parser do
           required:  false,
           help_line: "    --help                           Show this help.",
         },
-
+      ]
+    end
+  end
+  describe "#arguments_help_info" do
+    it "returns arguments help info." do
+      SpecCommand.command.parser.arguments_help_info.should eq [
+        {
+          name:      "argument1",
+          type:      String,
+          desc:      "first argument.",
+          default:   "default value",
+          required:  true,
+          help_line: "    01. argument1         first argument. [type:String] [default:\"default value\"] [required]",
+        },
+        {
+          name:      "argument2foo",
+          type:      Int32,
+          desc:      "second argument.",
+          default:   1,
+          required:  false,
+          help_line: "    02. argument2foo      second argument. [type:Int32] [default:1]",
+        },
+      ]
+    end
+    it "returns arguments help info without sub commands." do
+      SpecCommandNoOptions.command.parser.arguments_help_info.should eq [
+        {
+          name:      "argument3",
+          type:      String,
+          desc:      "third argument.",
+          default:   "default value",
+          required:  true,
+          help_line: "    01. argument3      third argument. [type:String] [default:\"default value\"] [required]",
+        },
       ]
     end
   end
