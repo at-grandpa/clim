@@ -8,8 +8,8 @@ macro spec_for_sub(spec_class_name, spec_cases)
     class {{class_name}} < Clim
       main do
         version "version 1.0.0", short: "-v"
-        option "-a ARG", "--array=ARG", desc: "Option test.", type: Array(String), default: ["default string"]
         argument "arg-1", type: String, default: "default argument"
+        option "-a ARG", "--array=ARG", desc: "Option test.", type: Array(String), default: ["default string"]
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end

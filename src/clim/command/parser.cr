@@ -10,7 +10,8 @@ class Clim
       def initialize(@options : O, @arguments : A)
         @option_parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
         @option_parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-        @option_parser.unknown_args { |unknown_args|
+        @option_parser.unknown_args { |ua|
+          unknown_args = ua.dup
           args_array = @arguments.to_a
           defined_args_size = args_array.size
           unknown_args_size = unknown_args.size
