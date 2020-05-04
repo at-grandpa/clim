@@ -16,7 +16,6 @@ class Clim
       end
 
       def update_command_args(command_args)
-        # ここでArgumentの配列を作る
         tmp = [] of String
         command_args.each do |element|
           tmp << element
@@ -31,8 +30,8 @@ class Clim
       def invalid_required_names
         ret = [] of String | Nil
         {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help_string" || iv.stringify == "command_args" || iv.stringify == "unknown_args" } %}
-          short_or_nil = {{iv}}.required_not_set? ? {{iv}}.short : nil
-          ret << short_or_nil
+          name_or_nil = {{iv}}.required_not_set? ? {{iv}}.name : nil
+          ret << name_or_nil
         {% end %}
         ret.compact
       end

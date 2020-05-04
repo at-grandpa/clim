@@ -11,8 +11,6 @@ class Clim
         @option_parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
         @option_parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
         @option_parser.unknown_args { |unknown_args|
-          # p unknown_args
-          # @arguments.update_command_args(unknown_args)
           args_array = @arguments.to_a
           defined_args_size = args_array.size
           unknown_args_size = unknown_args.size
@@ -57,6 +55,7 @@ class Clim
       def required_validate!
         unless display_help?
           raise "Required options. \"#{options.invalid_required_names.join("\", \"")}\"" unless options.invalid_required_names.empty?
+          raise "Required arguments. \"#{arguments.invalid_required_names.join("\", \"")}\"" unless arguments.invalid_required_names.empty?
         end
       end
 

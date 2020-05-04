@@ -155,9 +155,6 @@ class Clim
             end
           end
 
-          {% default = false if type.id.stringify == "Bool" %}
-          {% raise "You can not specify 'required: true' for Bool argument." if type.id.stringify == "Bool" && required == true %}
-
           {% if default == nil %}
             {% default_value = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
           {% else %}

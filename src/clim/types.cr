@@ -219,7 +219,7 @@ class Clim
       Bool => {
         type:                "bool",
         default:             false,
-        nilable:             false,
+        nilable:             true,
         convert_arg_process: <<-PROCESS
         arg.try do |obj|
           next true if obj.empty?
