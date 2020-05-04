@@ -1,4 +1,4 @@
-require "../../dsl_spec"
+require "../../../dsl_spec"
 
 {% begin %}
 {%
@@ -37,9 +37,6 @@ spec(
   ],
   spec_desc: "argument type spec,",
   spec_cases: [
-    # ====================================================
-    # Int
-    # ====================================================
     {
       argv:        [] of String,
       expect_help: {{main_help_message}},
