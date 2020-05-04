@@ -8,6 +8,9 @@ class SpecCommand < Clim
     option "-n NAME", type: Array(String), desc: "Target name.", default: ["Taro"], required: true
     argument "argument1", type: String, desc: "first argument.", default: "default value", required: true
     argument "argument2foo", type: Int32, desc: "second argument.", default: 1, required: false
+    argument "kebab-case-name", type: Int32, desc: "kebab-case-name argument.", default: 1, required: false
+    argument "snake_case_name", type: Int32, desc: "snake_case_name argument.", default: 1, required: false
+    argument "camelCaseName", type: Int32, desc: "camelCaseName argument.", default: 1, required: false
     run do |opts, args|
     end
     sub "abc" do
@@ -84,32 +87,62 @@ describe Clim::Command::Parser do
     it "returns arguments help info." do
       SpecCommand.command.parser.arguments_help_info.should eq [
         {
-          name:      "argument1",
-          type:      String,
-          desc:      "first argument.",
-          default:   "default value",
-          required:  true,
-          help_line: "    01. argument1         first argument. [type:String] [default:\"default value\"] [required]",
+          method_name:  "argument1",
+          display_name: "argument1",
+          type:         String,
+          desc:         "first argument.",
+          default:      "default value",
+          required:     true,
+          help_line:    "    01. argument1            first argument. [type:String] [default:\"default value\"] [required]",
         },
         {
-          name:      "argument2foo",
-          type:      Int32,
-          desc:      "second argument.",
-          default:   1,
-          required:  false,
-          help_line: "    02. argument2foo      second argument. [type:Int32] [default:1]",
+          method_name:  "argument2foo",
+          display_name: "argument2foo",
+          type:         Int32,
+          desc:         "second argument.",
+          default:      1,
+          required:     false,
+          help_line:    "    02. argument2foo         second argument. [type:Int32] [default:1]",
+        },
+        {
+          method_name:  "kebab_case_name",
+          display_name: "kebab-case-name",
+          type:         Int32,
+          desc:         "kebab-case-name argument.",
+          default:      1,
+          required:     false,
+          help_line:    "    03. kebab-case-name      kebab-case-name argument. [type:Int32] [default:1]",
+        },
+        {
+          method_name:  "snake_case_name",
+          display_name: "snake_case_name",
+          type:         Int32,
+          desc:         "snake_case_name argument.",
+          default:      1,
+          required:     false,
+          help_line:    "    04. snake_case_name      snake_case_name argument. [type:Int32] [default:1]",
+        },
+        {
+          method_name:  "camelCaseName",
+          display_name: "camelCaseName",
+          type:         Int32,
+          desc:         "camelCaseName argument.",
+          default:      1,
+          required:     false,
+          help_line:    "    05. camelCaseName        camelCaseName argument. [type:Int32] [default:1]",
         },
       ]
     end
     it "returns arguments help info without sub commands." do
       SpecCommandNoOptions.command.parser.arguments_help_info.should eq [
         {
-          name:      "argument3",
-          type:      String,
-          desc:      "third argument.",
-          default:   "default value",
-          required:  true,
-          help_line: "    01. argument3      third argument. [type:String] [default:\"default value\"] [required]",
+          method_name:  "argument3",
+          display_name: "argument3",
+          type:         String,
+          desc:         "third argument.",
+          default:      "default value",
+          required:     true,
+          help_line:    "    01. argument3      third argument. [type:String] [default:\"default value\"] [required]",
         },
       ]
     end
