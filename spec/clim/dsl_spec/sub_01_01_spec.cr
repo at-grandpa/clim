@@ -1,4 +1,4 @@
-require "../dsl_spec"
+require "./sub"
 
 {% begin %}
 {%
@@ -13,43 +13,40 @@ require "../dsl_spec"
                       Options:
 
                         --help                           Show this help.
+                        -v, --version                    Show version.
 
                       Sub Commands:
 
-                        sub_command   Sub command with desc.
+                        sub_1   Command Line Interface Tool.
+                        sub_2   Command Line Interface Tool.
 
 
                     HELP_MESSAGE
 
-  sub_help_message = <<-HELP_MESSAGE
+  sub_1_help_message = <<-HELP_MESSAGE
 
-                     Sub command with desc.
+                      Command Line Interface Tool.
 
-                     Usage:
+                      Usage:
 
-                       sub_command with usage [options] [arguments]
+                        sub_1 [options] [arguments]
 
-                     Options:
+                      Options:
 
-                       --help                           Show this help.
+                        -a ARG, --array=ARG              Option test. [type:Array(String)] [default:[\"default string\"]]
+                        --help                           Show this help.
+                        -v, --version                    Show version.
+
+                      Sub Commands:
+
+                        sub_sub_1   Command Line Interface Tool.
 
 
-                   HELP_MESSAGE
+                    HELP_MESSAGE
 %}
 
-spec(
+spec_for_sub(
   spec_class_name: SubCommandWithDescAndUsage,
-  spec_sub_command_lines: [
-    <<-SUB_COMMAND,
-    sub "sub_command" do
-      desc "Sub command with desc."
-      usage "sub_command with usage [options] [arguments]"
-      run do |options, arguments|
-      end
-    end
-    SUB_COMMAND
-  ],
-  spec_desc: "option type spec,",
   spec_cases: [
     {
       argv:        [] of String,
@@ -96,64 +93,64 @@ spec(
       expect_help: {{main_help_message}},
     },
     {
-      argv:        ["sub_command"],
-      expect_help: {{sub_help_message}},
+      argv:        ["sub_1"],
+      expect_help: {{sub_1_help_message}},
       expect_args_value: [] of String,
     },
     {
-      argv:        ["sub_command", "arg1"],
-      expect_help: {{sub_help_message}},
+      argv:        ["sub_1", "arg1"],
+      expect_help: {{sub_1_help_message}},
       expect_args_value: ["arg1"],
     },
     {
-      argv:        ["sub_command", "arg1", "arg2"],
-      expect_help: {{sub_help_message}},
+      argv:        ["sub_1", "arg1", "arg2"],
+      expect_help: {{sub_1_help_message}},
       expect_args_value: ["arg1", "arg2"],
     },
     {
-      argv:        ["sub_command", "arg1", "arg2", "arg3"],
-      expect_help: {{sub_help_message}},
+      argv:        ["sub_1", "arg1", "arg2", "arg3"],
+      expect_help: {{sub_1_help_message}},
       expect_args_value: ["arg1", "arg2", "arg3"],
     },
     {
-      argv:              ["sub_command", "--help", "-ignore-option"],
+      argv:              ["sub_1", "--help", "-ignore-option"],
       exception_message: "Undefined option. \"-ignore-option\"",
     },
     {
-      argv:              ["sub_command", "-ignore-option", "--help"],
+      argv:              ["sub_1", "-ignore-option", "--help"],
       exception_message: "Undefined option. \"-ignore-option\"",
     },
     {
-      argv:              ["sub_command", "-m"],
+      argv:              ["sub_1", "-m"],
       exception_message: "Undefined option. \"-m\"",
     },
     {
-      argv:              ["sub_command", "--missing-option"],
+      argv:              ["sub_1", "--missing-option"],
       exception_message: "Undefined option. \"--missing-option\"",
     },
     {
-      argv:              ["sub_command", "-m", "arg1"],
+      argv:              ["sub_1", "-m", "arg1"],
       exception_message: "Undefined option. \"-m\"",
     },
     {
-      argv:              ["sub_command", "arg1", "-m"],
+      argv:              ["sub_1", "arg1", "-m"],
       exception_message: "Undefined option. \"-m\"",
     },
     {
-      argv:              ["sub_command", "-m", "-d"],
+      argv:              ["sub_1", "-m", "-d"],
       exception_message: "Undefined option. \"-m\"",
     },
     {
-      argv:        ["sub_command", "--help"],
-      expect_help: {{sub_help_message}},
+      argv:        ["sub_1", "--help"],
+      expect_help: {{sub_1_help_message}},
     },
     {
-      argv:        ["sub_command", "--help", "ignore-arg"],
-      expect_help: {{sub_help_message}},
+      argv:        ["sub_1", "--help", "ignore-arg"],
+      expect_help: {{sub_1_help_message}},
     },
     {
-      argv:        ["sub_command", "ignore-arg", "--help"],
-      expect_help: {{sub_help_message}},
+      argv:        ["sub_1", "ignore-arg", "--help"],
+      expect_help: {{sub_1_help_message}},
     },
   ]
 )
@@ -169,7 +166,7 @@ macro spec_for_sub_sub_commands(spec_class_name, spec_cases)
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
-        sub "sub_command" do
+        sub "sub_1" do
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end

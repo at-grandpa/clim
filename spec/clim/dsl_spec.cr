@@ -20,6 +20,9 @@ macro assert_opts_and_args(spec_case)
         end
       {% end %}
     {% end %}
+    {% if spec_case.keys.includes?("expect_args_value".id) %}
+      args.unknown_args.should eq {{spec_case["expect_args_value"]}}
+    {% end %}
 end
 
 macro expand_lines(lines)
