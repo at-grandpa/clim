@@ -97,15 +97,15 @@ class Clim
       end
 
       def arguments_help_info
-        tmp_array = arguments.to_a.map(&.name.size)
+        tmp_array = arguments.to_a.map(&.display_name.size)
         max_name_size = tmp_array.empty? ? nil : tmp_array.max
         arguments.to_a.map_with_index(offset = 1) do |argument, i|
           info = arguments.info.find do |info|
-            !!argument.name.match(/\A#{info[:name]}\z/)
+            !!argument.display_name.match(/\A#{info[:display_name]}\z/)
           end
           next nil if info.nil?
           next nil if max_name_size.nil?
-          info.merge({help_line: "    %02d. %-#{max_name_size}s      %s" % [i, argument.name, argument.desc]})
+          info.merge({help_line: "    %02d. %-#{max_name_size}s      %s" % [i, argument.display_name.to_s, argument.desc]})
         end.compact
       end
     end

@@ -2,17 +2,19 @@ class Clim
   abstract class Command
     class Arguments
       abstract class Argument
-        property name : String = ""
+        property method_name : String = ""
+        property display_name : String = ""
         property desc : String = ""
         property required : Bool = false
 
         def to_named_tuple
           {
-            name:     @name,
-            type:     default.class,
-            desc:     @desc,
-            default:  default,
-            required: required,
+            method_name:  @method_name,
+            display_name: @display_name,
+            type:         default.class,
+            desc:         @desc,
+            default:      default,
+            required:     required,
           }
         end
 
@@ -43,7 +45,7 @@ class Clim
           {% end %}
         end
 
-        macro define_argument_macro(argument_name, type, default, required)
+        macro define_argument_macro(type, default, required)
           {% if default != nil %}
             {% value_type = type.stringify.id %}
             {% value_default = default %}
@@ -65,13 +67,12 @@ class Clim
           property default : {{default_type}} = {{ SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] }}
           property set_value : Bool = false
 
-          def initialize(@name : String, @desc : String, @default : {{default_type}}, @required : Bool)
+          def initialize(@method_name : String, @display_name : String, @desc : String, @default : {{default_type}}, @required : Bool)
             @value = {{value_assign}}
           end
 
           def desc
             desc = @desc
-            return desc if ["help", "version"].includes?({{argument_name.stringify}})
             desc = desc + " [type:#{{{type}}.to_s}]"
             desc = desc + " [default:#{display_default}]" unless {{(default == nil).id}}
             desc = desc + " [required]" if required

@@ -146,9 +146,10 @@ class Clim
         {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_ARGUMENT.keys.includes?(type) %}
 
         {% argument_name = name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
+        {% display_name = name.id %}
         class ArgumentsForEachCommand
           class Argument_{{argument_name}} < Argument
-            define_argument_macro({{argument_name}}, {{type}}, {{default}}, {{required}})
+            define_argument_macro({{type}}, {{default}}, {{required}})
 
             def method_name
               {{argument_name.stringify}}
@@ -161,7 +162,7 @@ class Clim
             {% default_value = default %}
           {% end %}
 
-          property {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
+          property {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name.stringify }}, {{ display_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
           def {{ argument_name }}
             {{ argument_name }}_instance.@value
           end

@@ -30,7 +30,7 @@ class Clim
       def invalid_required_names
         ret = [] of String | Nil
         {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help_string" || iv.stringify == "command_args" || iv.stringify == "unknown_args" } %}
-          name_or_nil = {{iv}}.required_not_set? ? {{iv}}.name : nil
+          name_or_nil = {{iv}}.required_not_set? ? {{iv}}.display_name : nil
           ret << name_or_nil
         {% end %}
         ret.compact
@@ -39,7 +39,7 @@ class Clim
       def info
         {% begin %}
           {% support_types = SUPPORTED_TYPES_OF_ARGUMENT.map { |k, _| k } + [Nil] %}
-          array = [] of NamedTuple(name: String, type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool)
+          array = [] of NamedTuple(method_name: String, display_name: String, type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool)
           {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help_string" || iv.stringify == "command_args" || iv.stringify == "unknown_args" } %}
             array << {{iv}}.to_named_tuple
           {% end %}
