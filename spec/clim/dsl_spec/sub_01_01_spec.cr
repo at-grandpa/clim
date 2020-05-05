@@ -651,7 +651,7 @@ spec_for_sub(
         {
           "type" => Array(String),
           "method" => "unknown_args",
-          "expect_value" => ["222"],
+          "expect_value" => ["22"],
         },
       ],
     },
