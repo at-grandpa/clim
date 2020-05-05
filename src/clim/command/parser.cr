@@ -6,36 +6,12 @@ class Clim
       property option_parser : OptionParser = OptionParser.new
       property options : O
       property arguments : A
+      property unknown_args_property : Array(String) = [] of String
 
       def initialize(@options : O, @arguments : A)
         @option_parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
         @option_parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-        @option_parser.unknown_args { |ua|
-          unknown_args = ua.dup
-          args_array = @arguments.to_a
-          defined_args_size = args_array.size
-          unknown_args_size = unknown_args.size
-
-          if defined_args_size < unknown_args_size
-            defined_args_values = unknown_args.shift(defined_args_size)
-            defined_args_values.each_with_index do |value, i|
-              args_array[i].set_value(value)
-            end
-            @arguments.set_unknown_args(unknown_args)
-          elsif defined_args_size == unknown_args_size
-            defined_args_values = unknown_args.shift(defined_args_size)
-            defined_args_values.each_with_index do |value, i|
-              args_array[i].set_value(value)
-            end
-            @arguments.set_unknown_args(unknown_args)
-          elsif unknown_args_size < defined_args_size
-            defined_args_values = unknown_args.shift(defined_args_size)
-            defined_args_values.each_with_index do |value, i|
-              args_array[i].set_value(value)
-            end
-            @arguments.set_unknown_args(unknown_args)
-          end
-        }
+        @option_parser.unknown_args { |ua| @unknown_args_property = ua }
         setup_option_parser(@option_parser)
       end
 
@@ -47,6 +23,33 @@ class Clim
         options = @options
         return false unless options.responds_to?(:help)
         options.help
+      end
+
+      def set_arguments
+        unknown_args = @unknown_args_property.dup
+        args_array = @arguments.to_a
+        defined_args_size = args_array.size
+        unknown_args_size = unknown_args.size
+
+        if defined_args_size < unknown_args_size
+          defined_args_values = unknown_args.shift(defined_args_size)
+          defined_args_values.each_with_index do |value, i|
+            args_array[i].set_value(value)
+          end
+          @arguments.set_unknown_args(unknown_args)
+        elsif defined_args_size == unknown_args_size
+          defined_args_values = unknown_args.shift(defined_args_size)
+          defined_args_values.each_with_index do |value, i|
+            args_array[i].set_value(value)
+          end
+          @arguments.set_unknown_args(unknown_args)
+        elsif unknown_args_size < defined_args_size
+          defined_args_values = unknown_args.shift(defined_args_size)
+          defined_args_values.each_with_index do |value, i|
+            args_array[i].set_value(value)
+          end
+          @arguments.set_unknown_args(unknown_args)
+        end
       end
 
       def set_help_string(str)

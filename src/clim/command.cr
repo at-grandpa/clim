@@ -94,6 +94,7 @@ class Clim
 
     private def parse_by_parser(argv)
       parser.parse(argv.dup)
+      parser.set_arguments
       parser.required_validate!
       parser.set_help_string(help_template)
       self

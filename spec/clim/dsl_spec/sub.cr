@@ -7,30 +7,41 @@ macro spec_for_sub(spec_class_name, spec_cases)
     # define dsl
     class {{class_name}} < Clim
       main do
+        desc "main command"
+        usage "main [options] [arguments]"
         version "version 1.0.0", short: "-v"
-        option "-a ARG", "--array=ARG", desc: "Option test.", type: Array(String), default: ["default string"]
+        option "-s ARG", "--string=ARG", desc: "Option test.", type: String, default: "default string"
         argument "arg-1", type: String, default: "default argument"
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
         sub "sub_1" do
-          version "version 1.0.0", short: "-v"
-          option "-a ARG", "--array=ARG", desc: "Option test.", type: Array(String), default: ["default string"]
-          argument "arg-sub-1-1", type: String, default: "default value1"
-          argument "arg-sub-1-2", type: String, default: "default value2"
+          desc "sub_1 command"
+          usage "sub_1 [options] [arguments]"
+          version "version 1.1.0", short: "-v"
+          argument "arg-sub-1-1", type: String, default: "default argument1"
+          option "-s ARG", "--string=ARG", desc: "Option test.", type: String, default: "default string"
+          argument "arg-sub-1-2", type: String, default: "default argument2"
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
           sub "sub_sub_1" do
+            desc "sub_sub_1 command"
+            usage "sub_sub_1 [options] [arguments]"
+            version "version 1.1.1", short: "-v"
+            option "-s ARG", "--string=ARG", desc: "Option test.", type: String, default: "default string"
             argument "arg-sub-sub-1", type: Bool, default: false
-            option "-b", "--bool", type: Bool, desc: "Bool test."
             run do |opts, args|
               assert_opts_and_args({{spec_case}})
             end
           end
         end
         sub "sub_2" do
-          argument "arg-sub-2", type: String, default: "foo"
+          desc "sub_2 command"
+          usage "sub_2 [options] [arguments]"
+          version "version 1.2.0", short: "-v"
+          argument "arg-sub-2", type: Int32, default: 99
+          option "-n ARG", "--number=ARG", desc: "Option test.", type: Int32, default: 1
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
