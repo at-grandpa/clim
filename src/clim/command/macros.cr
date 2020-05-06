@@ -1,18 +1,6 @@
 class Clim
   abstract class Command
     module Macros
-      macro version(version_str, short = nil)
-        {% if short == nil %}
-          option "--version", type: Bool, desc: "Show version.", default: false
-        {% else %}
-          option {{short.id.stringify}}, "--version", type: Bool, desc: "Show version.", default: false
-        {% end %}
-
-        def version_str : String
-          {{ version_str }}
-        end
-      end
-
       macro help(short = nil)
         {% raise "The 'help' directive requires the 'short' argument. (ex 'help short: \"-h\"'" if short == nil %}
         macro help_macro
@@ -76,7 +64,7 @@ class Clim
           return RunProc.new { io.puts help_template }.call(options, @parser.arguments, io) if options.help == true
 
           if options.responds_to?(:version)
-            return RunProc.new { io.puts version_str }.call(options, @parser.arguments, io) if options.version == true
+            return RunProc.new { io.puts version }.call(options, @parser.arguments, io) if options.version == true
           end
 
           RunProc.new {{ block.id }} .call(options, @parser.arguments, io)
@@ -176,6 +164,7 @@ class Clim
 
           property parser : Parser(OptionsForEachCommand, ArgumentsForEachCommand)
           property name : String = {{name.id.stringify}}
+          getter usage : String = "#{ {{name.id.stringify}} } [options] [arguments]"
           property options : OptionsForEachCommand = OptionsForEachCommand.new
           property arguments : ArgumentsForEachCommand = ArgumentsForEachCommand.new
 

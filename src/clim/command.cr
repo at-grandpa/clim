@@ -9,7 +9,8 @@ class Clim
     getter alias_name : Array(String) = [] of String
     getter sub_commands : Array(Command) = [] of Command
     getter desc : String = "Command Line Interface Tool."
-    getter usage : String = "#{name} [options] [arguments]"
+    getter usage : String = "command [options] [arguments]"
+    getter version : String = ""
 
     abstract def initialize
 
@@ -23,13 +24,17 @@ class Clim
 
     macro alias_name(*names)
       {% raise "'alias_name' is not supported on main command." if @type == Command_Main_command_of_clim_library %}
-      def alias_name : Array(String)
-        {{ names }}.to_a
-      end
+      getter alias_name : Array(String) = {{ names }}.to_a
     end
 
-    def version_str : String
-      ""
+    macro version(version_str, short = nil)
+      {% if short == nil %}
+        option "--version", type: Bool, desc: "Show version.", default: false
+      {% else %}
+        option {{short.id.stringify}}, "--version", type: Bool, desc: "Show version.", default: false
+      {% end %}
+
+      getter version : String = {{ version_str }}
     end
 
     def help_template
