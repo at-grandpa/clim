@@ -1,7 +1,6 @@
 class Clim
   abstract class Command
     module Macros
-
       macro version(version_str, short = nil)
         {% if short == nil %}
           option "--version", type: Bool, desc: "Show version.", default: false

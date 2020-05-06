@@ -22,7 +22,7 @@ class Clim
     end
 
     macro alias_name(*names)
-      {% raise "'alias_name' is not supported on main command." if @type == Clim::Command_Main_command_of_clim_library %}
+      {% raise "'alias_name' is not supported on main command." if @type == Command_Main_command_of_clim_library %}
       def alias_name : Array(String)
         {{ names }}.to_a
       end
