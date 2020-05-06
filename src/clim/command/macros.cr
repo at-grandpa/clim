@@ -148,6 +148,11 @@ class Clim
         {% argument_name = name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
         {% display_name = name.id %}
         class ArgumentsForEachCommand
+
+          \{% if @type.constants.map(&.id.stringify).includes?("Argument_" + {{argument_name.stringify}}.id.stringify) %}
+            \{% raise "Argument \"" + {{argument_name.stringify}}.id.stringify + "\" is already defined." %}
+          \{% end %}
+
           class Argument_{{argument_name}} < Argument
             define_argument_macro({{type}}, {{default}}, {{required}})
 
@@ -166,6 +171,8 @@ class Clim
           def {{ argument_name }}
             {{ argument_name }}_instance.@value
           end
+
+
         end
       end
 
