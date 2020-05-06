@@ -34,9 +34,17 @@ class Clim
       def info
         {% begin %}
           {% support_types = SUPPORTED_TYPES_OF_ARGUMENT.map { |k, _| k } + [Nil] %}
-          array = [] of NamedTuple(method_name: String, display_name: String, type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }}, desc: String, default: {{ support_types.join(" | ").id }}, required: Bool)
-          {% for iv in @type.instance_vars.reject { |iv| iv.stringify == "help_string" || iv.stringify == "argv" || iv.stringify == "unknown_args" } %}
-            array << {{iv}}.to_named_tuple
+          array = [] of NamedTuple(
+            method_name: String,
+            display_name: String,
+            type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }},
+            desc: String,
+            default: {{ support_types.join(" | ").id }},
+            required: Bool,
+            sequence_number: Int32
+          )
+          {% for iv, index in @type.instance_vars.reject { |iv| iv.stringify == "help_string" || iv.stringify == "argv" || iv.stringify == "unknown_args" } %}
+            array << {{iv}}.to_named_tuple.merge({sequence_number: {{index}} + 1 })
           {% end %}
         {% end %}
       end
