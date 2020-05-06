@@ -39,7 +39,7 @@ spec(
         "method" => "float32",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--float32", "5.5"] of String,
@@ -49,7 +49,7 @@ spec(
         "method" => "float32",
         "expect_value" => 5.5_f32,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--float32", "foo"],
@@ -67,7 +67,7 @@ spec(
         "method" => "float64",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--float64", "5.5"] of String,
@@ -77,7 +77,7 @@ spec(
         "method" => "float64",
         "expect_value" => 5.5_f64,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--float64", "foo"],

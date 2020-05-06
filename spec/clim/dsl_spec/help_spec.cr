@@ -55,22 +55,22 @@ spec_for_help(
   {
     argv:        [] of String,
     expect_help: {{main_help_message}},
-    expect_args: [] of String,
+    expect_args_value: [] of String,
   },
   {
     argv:        ["arg1"],
     expect_help: {{main_help_message}},
-    expect_args: ["arg1"],
+    expect_args_value: ["arg1"],
   },
   {
     argv:        ["arg1", "arg2"],
     expect_help: {{main_help_message}},
-    expect_args: ["arg1", "arg2"],
+    expect_args_value: ["arg1", "arg2"],
   },
   {
     argv:        ["arg1", "arg2", "arg3"],
     expect_help: {{main_help_message}},
-    expect_args: ["arg1", "arg2", "arg3"],
+    expect_args_value: ["arg1", "arg2", "arg3"],
   },
   {
     argv:              ["--help", "-ignore-option"],
@@ -148,22 +148,22 @@ spec_for_help(
   {
     argv:        [] of String,
     expect_help: {{main_help_message}},
-    expect_args: [] of String,
+    expect_args_value: [] of String,
   },
   {
     argv:        ["arg1"],
     expect_help: {{main_help_message}},
-    expect_args: ["arg1"],
+    expect_args_value: ["arg1"],
   },
   {
     argv:        ["arg1", "arg2"],
     expect_help: {{main_help_message}},
-    expect_args: ["arg1", "arg2"],
+    expect_args_value: ["arg1", "arg2"],
   },
   {
     argv:        ["arg1", "arg2", "arg3"],
     expect_help: {{main_help_message}},
-    expect_args: ["arg1", "arg2", "arg3"],
+    expect_args_value: ["arg1", "arg2", "arg3"],
   },
   {
     argv:              ["-h"],

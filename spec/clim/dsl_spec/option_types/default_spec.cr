@@ -39,7 +39,7 @@ spec(
         "method" => "d",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["-d", "foo", "bar"],
@@ -49,7 +49,7 @@ spec(
         "method" => "d",
         "expect_value" => "foo",
       },
-      expect_args: ["bar"]
+      expect_args_value: ["bar"]
     },
     {
       argv:        [] of String,
@@ -59,7 +59,7 @@ spec(
         "method" => "default_type",
         "expect_value" => nil,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--default-type", "foo", "bar"],
@@ -69,7 +69,7 @@ spec(
         "method" => "default_type",
         "expect_value" => "foo",
       },
-      expect_args: ["bar"]
+      expect_args_value: ["bar"]
     },
     {
       argv:        [] of String,
@@ -79,7 +79,7 @@ spec(
         "method" => "default_type_default",
         "expect_value" => "Default String!",
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--default-type-default", "foo", "bar"],
@@ -89,7 +89,7 @@ spec(
         "method" => "default_type_default",
         "expect_value" => "foo",
       },
-      expect_args: ["bar"]
+      expect_args_value: ["bar"]
     },
   ]
 )

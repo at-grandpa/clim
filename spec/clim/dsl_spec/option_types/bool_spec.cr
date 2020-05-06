@@ -41,7 +41,7 @@ spec(
         "method" => "bool",
         "expect_value" => false,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--bool"] of String,
@@ -51,7 +51,7 @@ spec(
         "method" => "bool",
         "expect_value" => true,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        [] of String,
@@ -61,7 +61,7 @@ spec(
         "method" => "bool_equal",
         "expect_value" => false,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--bool-equal=false"] of String,
@@ -71,7 +71,7 @@ spec(
         "method" => "bool_equal",
         "expect_value" => false,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--bool-equal=true"] of String,
@@ -81,7 +81,7 @@ spec(
         "method" => "bool_equal",
         "expect_value" => true,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--bool-equal=foo"],
@@ -95,7 +95,7 @@ spec(
         "method" => "bool_default",
         "expect_value" => false,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--bool-default"] of String,
@@ -105,7 +105,7 @@ spec(
         "method" => "bool_default",
         "expect_value" => true,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
   ]
 )

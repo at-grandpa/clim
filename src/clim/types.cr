@@ -1,6 +1,6 @@
 class Clim
   module Types
-    SUPPORT_TYPES = {
+    SUPPORTED_TYPES_OF_OPTION = {
       Int8 => {
         type:                "number",
         default:             0,
@@ -146,6 +146,89 @@ class Clim
         default:             [] of String,
         nilable:             false,
         convert_arg_process: "add_array_value(String, arg.to_s)",
+      },
+    }
+
+    SUPPORTED_TYPES_OF_ARGUMENT = {
+      Int8 => {
+        type:                "number",
+        default:             0,
+        nilable:             true,
+        convert_arg_process: "arg.to_i8",
+      },
+      Int16 => {
+        type:                "number",
+        default:             0,
+        nilable:             true,
+        convert_arg_process: "arg.to_i16",
+      },
+      Int32 => {
+        type:                "number",
+        default:             0,
+        nilable:             true,
+        convert_arg_process: "arg.to_i32",
+      },
+      Int64 => {
+        type:                "number",
+        default:             0,
+        nilable:             true,
+        convert_arg_process: "arg.to_i64",
+      },
+      UInt8 => {
+        type:                "number",
+        default:             0,
+        nilable:             true,
+        convert_arg_process: "arg.to_u8",
+      },
+      UInt16 => {
+        type:                "number",
+        default:             0,
+        nilable:             true,
+        convert_arg_process: "arg.to_u16",
+      },
+      UInt32 => {
+        type:                "number",
+        default:             0,
+        nilable:             true,
+        convert_arg_process: "arg.to_u32",
+      },
+      UInt64 => {
+        type:                "number",
+        default:             0,
+        nilable:             true,
+        convert_arg_process: "arg.to_u64",
+      },
+      Float32 => {
+        type:                "number",
+        default:             0.0,
+        nilable:             true,
+        convert_arg_process: "arg.to_f32",
+      },
+      Float64 => {
+        type:                "number",
+        default:             0.0,
+        nilable:             true,
+        convert_arg_process: "arg.to_f64",
+      },
+      String => {
+        type:                "string",
+        default:             "",
+        nilable:             true,
+        convert_arg_process: "arg.to_s",
+      },
+      Bool => {
+        type:                "bool",
+        default:             false,
+        nilable:             true,
+        convert_arg_process: <<-PROCESS
+        arg.try do |obj|
+          next true if obj.empty?
+          unless obj === "true" || obj == "false"
+            raise ClimException.new "Bool arguments accept only \\"true\\" or \\"false\\". Input: [\#{obj}]"
+          end
+          obj === "true"
+        end
+        PROCESS
       },
     }
   end

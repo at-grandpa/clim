@@ -3,14 +3,30 @@ require "./../spec_helper"
 macro assert_opts_and_args(spec_case)
     opts.help_string.should eq {{spec_case["expect_help"]}}
     {% if spec_case.keys.includes?("expect_opts".id) %}
-      if opts.responds_to?(:{{spec_case["expect_opts"]["method"].id}})
-        typeof(opts.{{spec_case["expect_opts"]["method"].id}}).should eq {{spec_case["expect_opts"]["type"]}}
-        opts.{{spec_case["expect_opts"]["method"].id}}.should eq {{spec_case["expect_opts"]["expect_value"]}}
-      else
-        raise "undefined method '#{{{spec_case["expect_opts"]["method"].stringify}}}' for #{typeof(opts).to_s}."
-      end
+      {% expect_opts = spec_case["expect_opts"] %}
+      {% opts_spec_cases = expect_opts.is_a?(ArrayLiteral) ? expect_opts : [expect_opts] %}
+      {% for expect_opts_spec_case in opts_spec_cases %}
+        if opts.responds_to?(:{{expect_opts_spec_case["method"].id}})
+          typeof(opts.{{expect_opts_spec_case["method"].id}}).should eq {{expect_opts_spec_case["type"]}}
+          opts.{{expect_opts_spec_case["method"].id}}.should eq {{expect_opts_spec_case["expect_value"]}}
+        else
+          raise "undefined method '#{{{expect_opts_spec_case["method"].stringify}}}' for #{typeof(opts).to_s}."
+        end
+      {% end %}
     {% end %}
-    args.should eq {{spec_case["expect_args"]}}
+    {% if spec_case.keys.includes?("expect_args".id) %}
+      {% for expect_args_spec_case in spec_case["expect_args"] %}
+        if args.responds_to?(:{{expect_args_spec_case["method"].id}})
+          typeof(args.{{expect_args_spec_case["method"].id}}).should eq {{expect_args_spec_case["type"]}}
+          args.{{expect_args_spec_case["method"].id}}.should eq {{expect_args_spec_case["expect_value"]}}
+        else
+          raise "undefined method '#{{{expect_args_spec_case["method"].stringify}}}' for #{typeof(args).to_s}."
+        end
+      {% end %}
+    {% end %}
+    {% if spec_case.keys.includes?("expect_args_value".id) %}
+      args.unknown_args.should eq {{spec_case["expect_args_value"]}}
+    {% end %}
 end
 
 macro expand_lines(lines)
@@ -20,7 +36,7 @@ macro expand_lines(lines)
 end
 
 macro it_blocks(class_name, spec_case)
-  {% if spec_case.keys.includes?("expect_args".id) %}
+  {% if spec_case.keys.includes?("expect_args".id) || spec_case.keys.includes?("expect_args_value".id) %}
     it "opts and args are given as arguments of run block." do
       {{class_name}}.start_parse({{spec_case["argv"]}})
     end

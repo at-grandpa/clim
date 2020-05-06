@@ -37,7 +37,7 @@ spec(
         "method" => "array_string",
         "expect_value" => [] of String,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-string", "array1", "--array-string", "array2"],
@@ -47,7 +47,7 @@ spec(
         "method" => "array_string",
         "expect_value" => ["array1", "array2"],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
   ]
 )

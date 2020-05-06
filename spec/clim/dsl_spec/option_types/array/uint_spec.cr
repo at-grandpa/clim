@@ -51,7 +51,7 @@ spec(
         "method" => "array_uint8",
         "expect_value" => [] of UInt8,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-uint8", "1", "--array-uint8", "2"],
@@ -61,7 +61,7 @@ spec(
         "method" => "array_uint8",
         "expect_value" => [1_u8, 2_u8],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-uint8", "foo"],
@@ -79,7 +79,7 @@ spec(
         "method" => "array_uint16",
         "expect_value" => [] of UInt16,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-uint16", "1", "--array-uint16", "2"],
@@ -89,7 +89,7 @@ spec(
         "method" => "array_uint16",
         "expect_value" => [1_u16, 2_u16],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-uint16", "foo"],
@@ -107,7 +107,7 @@ spec(
         "method" => "array_uint32",
         "expect_value" => [] of UInt32,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-uint32", "1", "--array-uint32", "2"],
@@ -117,7 +117,7 @@ spec(
         "method" => "array_uint32",
         "expect_value" => [1_u32, 2_u32],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-uint32", "foo"],
@@ -135,7 +135,7 @@ spec(
         "method" => "array_uint64",
         "expect_value" => [] of UInt64,
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:        ["--array-uint64", "1", "--array-uint64", "2"],
@@ -145,7 +145,7 @@ spec(
         "method" => "array_uint64",
         "expect_value" => [1_u64, 2_u64],
       },
-      expect_args: [] of String,
+      expect_args_value: [] of String,
     },
     {
       argv:              ["--array-uint64", "foo"],

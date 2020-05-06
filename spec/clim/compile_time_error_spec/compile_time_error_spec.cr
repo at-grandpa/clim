@@ -73,15 +73,27 @@ describe "Compile time spec, " do
 
     ERROR
   end
-  it "not supported type." do
-    `crystal run spec/clim/compile_time_error_spec/files/not_supported_type.cr --no-color 2>&1`.should eq <<-ERROR
+  it "not supported option type." do
+    `crystal run spec/clim/compile_time_error_spec/files/not_supported_option_type.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/not_supported_type.cr:6:5
+    In spec/clim/compile_time_error_spec/files/not_supported_option_type.cr:6:5
 
      6 | option \"-n\", type: BigInt, desc: \"my big int.\", default: 0
          ^
     Error: Type [BigInt] is not supported on option.
+
+    ERROR
+  end
+  it "not supported argument type." do
+    `crystal run spec/clim/compile_time_error_spec/files/not_supported_argument_type.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/not_supported_argument_type.cr:6:5
+
+     6 | argument "not", type: BigInt, desc: "my big int.", default: 0
+         ^-------
+    Error: Type [BigInt] is not supported on argument.
 
     ERROR
   end
@@ -94,6 +106,18 @@ describe "Compile time spec, " do
      6 | option \"\", type: String, desc: \"empty option name.\"
          ^
     Error: Empty option name.
+
+    ERROR
+  end
+  it "empty argument name." do
+    `crystal run spec/clim/compile_time_error_spec/files/empty_argument_name.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/empty_argument_name.cr:6:5
+
+     6 | argument "", type: String, desc: "empty option name."
+         ^-------
+    Error: Empty argument name.
 
     ERROR
   end
@@ -118,6 +142,54 @@ describe "Compile time spec, " do
      5 | help
          ^---
     Error: The 'help' directive requires the 'short' argument. (ex 'help short: "-h"'
+
+    ERROR
+  end
+  it "duplicate argument name. (main command)" do
+    `crystal run spec/clim/compile_time_error_spec/files/duplicate_argument_name_main.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/duplicate_argument_name_main.cr:7:3
+
+     7 | argument "foo" # duplicate
+       ^
+    Error: Argument "foo" is already defined.
+
+    ERROR
+  end
+  it "duplicate argument name. (sub command)" do
+    `crystal run spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub.cr:12:3
+
+     12 | argument "foo" # duplicate
+      ^
+    Error: Argument "foo" is already defined.
+
+    ERROR
+  end
+  it "duplicate argument name. (sub sub command)" do
+    `crystal run spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_sub.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_sub.cr:17:3
+
+     17 | argument "foo" # duplicate
+    ^
+    Error: Argument "foo" is already defined.
+
+    ERROR
+  end
+  it "duplicate argument name. (sub 2 command)" do
+    `crystal run spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_2.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_2.cr:24:3
+
+     24 | argument "foo" # deplicate
+      ^
+    Error: Argument "foo" is already defined.
 
     ERROR
   end

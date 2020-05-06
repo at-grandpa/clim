@@ -1,14 +1,17 @@
+require "option_parser"
+
 class Clim
   abstract class Command
-    class Parser(T)
+    class Parser(O, A)
       property option_parser : OptionParser = OptionParser.new
-      property arguments : Array(String) = [] of String
-      property options : T
+      property options : O
+      property arguments : A
+      property unknown_args_property : Array(String) = [] of String
 
-      def initialize(@options : T)
+      def initialize(@options : O, @arguments : A)
         @option_parser.invalid_option { |opt_name| raise ClimInvalidOptionException.new "Undefined option. \"#{opt_name}\"" }
         @option_parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
-        @option_parser.unknown_args { |unknown_args| @arguments = unknown_args }
+        @option_parser.unknown_args { |ua| @unknown_args_property = ua }
         setup_option_parser(@option_parser)
       end
 
@@ -22,6 +25,33 @@ class Clim
         options.help
       end
 
+      def set_arguments
+        unknown_args = @unknown_args_property.dup
+        args_array = @arguments.to_a
+        defined_args_size = args_array.size
+        unknown_args_size = unknown_args.size
+
+        if defined_args_size < unknown_args_size
+          defined_args_values = unknown_args.shift(defined_args_size)
+          defined_args_values.each_with_index do |value, i|
+            args_array[i].set_value(value)
+          end
+          @arguments.set_unknown_args(unknown_args)
+        elsif defined_args_size == unknown_args_size
+          defined_args_values = unknown_args.shift(defined_args_size)
+          defined_args_values.each_with_index do |value, i|
+            args_array[i].set_value(value)
+          end
+          @arguments.set_unknown_args(unknown_args)
+        elsif unknown_args_size < defined_args_size
+          defined_args_values = unknown_args.shift(defined_args_size)
+          defined_args_values.each_with_index do |value, i|
+            args_array[i].set_value(value)
+          end
+          @arguments.set_unknown_args(unknown_args)
+        end
+      end
+
       def set_help_string(str)
         @options.help_string = str
       end
@@ -29,6 +59,7 @@ class Clim
       def required_validate!
         unless display_help?
           raise "Required options. \"#{options.invalid_required_names.join("\", \"")}\"" unless options.invalid_required_names.empty?
+          raise "Required arguments. \"#{arguments.invalid_required_names.join("\", \"")}\"" unless arguments.invalid_required_names.empty?
         end
       end
 
@@ -66,6 +97,19 @@ class Clim
           end
           next nil if info.nil?
           info.merge({help_line: flag})
+        end.compact
+      end
+
+      def arguments_help_info
+        tmp_array = arguments.to_a.map(&.display_name.size)
+        max_name_size = tmp_array.empty? ? nil : tmp_array.max
+        arguments.to_a.map_with_index(offset = 1) do |argument, i|
+          info = arguments.info.find do |info|
+            !!argument.display_name.match(/\A#{info[:display_name]}\z/)
+          end
+          next nil if info.nil?
+          next nil if max_name_size.nil?
+          info.merge({help_line: "    %02d. %-#{max_name_size}s      %s" % [i, argument.display_name.to_s, argument.desc]})
         end.compact
       end
     end
