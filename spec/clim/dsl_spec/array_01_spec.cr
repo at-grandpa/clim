@@ -34,13 +34,7 @@ spec(
         "method" => "array",
         "expect_value" => [] of String,
       },
-      expect_args: [
-        {
-          "type" => Array(String),
-          "method" => "list",
-          "expect_value" => [] of String,
-        },
-      ],
+      expect_args_value: [] of String,
     },
     {
       argv:        ["arg1"],
