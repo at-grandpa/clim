@@ -1,24 +1,6 @@
 class Clim
   abstract class Command
     module Macros
-      macro desc(description)
-        def desc : String
-          {{ description }}
-        end
-      end
-
-      macro usage(usage)
-        def usage : String
-          {{ usage }}
-        end
-      end
-
-      macro alias_name(*names)
-        {% raise "'alias_name' is not supported on main command." if @type == Command_Main_command_of_clim_library %}
-        def alias_name : Array(String)
-          {{ names }}.to_a
-        end
-      end
 
       macro version(version_str, short = nil)
         {% if short == nil %}

@@ -5,22 +5,27 @@ class Clim
   abstract class Command
     include Macros
 
-    property name : String = ""
-    property alias_name : Array(String) = [] of String
-    property sub_commands : Array(Command) = [] of Command
+    getter name : String = ""
+    getter alias_name : Array(String) = [] of String
+    getter sub_commands : Array(Command) = [] of Command
+    getter desc : String = "Command Line Interface Tool."
+    getter usage : String = "#{name} [options] [arguments]"
 
     abstract def initialize
 
-    def desc : String
-      "Command Line Interface Tool."
+    macro desc(description)
+      getter desc : String = {{ description }}
     end
 
-    def usage : String
-      "#{name} [options] [arguments]"
+    macro usage(usage)
+      getter usage : String = {{ usage }}
     end
 
-    def alias_name(*names) : Array(String)
-      [] of String
+    macro alias_name(*names)
+      {% raise "'alias_name' is not supported on main command." if @type == Clim::Command_Main_command_of_clim_library %}
+      def alias_name : Array(String)
+        {{ names }}.to_a
+      end
     end
 
     def version_str : String
@@ -136,7 +141,7 @@ class Clim
     end
 
     def names
-      ([name] + alias_name)
+      ([name] + @alias_name)
     end
   end
 end
