@@ -6,11 +6,11 @@ class Clim
     include Macros
 
     getter name : String = ""
-    getter alias_name : Array(String) = [] of String
-    getter sub_commands : Array(Command) = [] of Command
     getter desc : String = "Command Line Interface Tool."
     getter usage : String = "command [options] [arguments]"
+    getter alias_name : Array(String) = [] of String
     getter version : String = ""
+    getter sub_commands : Array(Command) = [] of Command
 
     abstract def initialize
 
@@ -35,6 +35,43 @@ class Clim
       {% end %}
 
       getter version : String = {{ version_str }}
+    end
+
+    macro help(short = nil)
+      {% raise "The 'help' directive requires the 'short' argument. (ex 'help short: \"-h\"'" if short == nil %}
+      macro help_macro
+        option {{short.id.stringify}}, "--help", type: Bool, desc: "Show this help.", default: false
+      end
+    end
+
+    macro help_template(&block)
+      {% raise "Can not be declared 'help_template' as sub command." unless @type == Command_Main_command_of_clim_library %}
+
+      class Clim::Command
+        {% begin %}
+        {% support_types = Clim::Types::SUPPORTED_TYPES_OF_OPTION.map { |k, _| k } + [Nil] %}
+        alias HelpOptionsType = Array(NamedTuple(
+            names: Array(String),
+            type: {{ support_types.map(&.stringify.+(".class")).join(" | ").id }},
+            desc: String,
+            default: {{ support_types.join(" | ").id }},
+            required: Bool,
+            help_line: String))
+        {% end %}
+
+        alias HelpSubCommandsType = Array(NamedTuple(
+          names: Array(String),
+          desc: String,
+          help_line: String))
+
+        def help_template
+          Proc(String, String, HelpOptionsType, HelpSubCommandsType, String).new {{ block.stringify.id }} .call(
+            desc,
+            usage,
+            options_help_info,
+            sub_commands_help_info)
+        end
+      end
     end
 
     def help_template
