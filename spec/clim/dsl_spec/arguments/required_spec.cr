@@ -89,6 +89,11 @@ spec(
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["value1", "value2", "value3", "value4"],
+        },
       ],
     },
     {
@@ -125,6 +130,11 @@ spec(
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["value1", "value2", "value3", "value4", "value5"],
+        },
       ],
     },
     {
@@ -160,6 +170,11 @@ spec(
           "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["value6", "value7"],
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["value1", "value2", "--array", "array_value", "value3", "value4", "value5", "value6", "value7"],
         },
       ],
     },

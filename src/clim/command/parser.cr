@@ -52,6 +52,10 @@ class Clim
         end
       end
 
+      def set_arguments_argv(argv : Array(String))
+        @arguments.set_argv(argv)
+      end
+
       def set_help_string(str)
         @options.help_string = str
       end
@@ -103,13 +107,13 @@ class Clim
       def arguments_help_info
         tmp_array = arguments.to_a.map(&.display_name.size)
         max_name_size = tmp_array.empty? ? nil : tmp_array.max
-        arguments.to_a.map_with_index(offset = 1) do |argument, i|
+        arguments.to_a.map_with_index do |argument|
           info = arguments.info.find do |info|
             !!argument.display_name.match(/\A#{info[:display_name]}\z/)
           end
           next nil if info.nil?
           next nil if max_name_size.nil?
-          info.merge({help_line: "    %02d. %-#{max_name_size}s      %s" % [i, argument.display_name.to_s, argument.desc]})
+          info.merge({help_line: "    %02d. %-#{max_name_size}s      %s" % [info[:sequence_number], info[:display_name].to_s, argument.desc]})
         end.compact
       end
     end

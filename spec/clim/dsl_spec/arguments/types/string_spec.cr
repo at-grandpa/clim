@@ -54,6 +54,11 @@ spec(
           "method" => "arg3abc",
           "expect_value" => nil,
         },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => [] of String,
+        },
       ],
     },
     {
@@ -74,6 +79,11 @@ spec(
           "type" => String?,
           "method" => "arg3abc",
           "expect_value" => nil,
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["value1"],
         },
       ],
     },
@@ -96,6 +106,11 @@ spec(
           "method" => "arg3abc",
           "expect_value" => nil,
         },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["value1", "value2"],
+        },
       ],
     },
     {
@@ -116,6 +131,11 @@ spec(
           "type" => String?,
           "method" => "arg3abc",
           "expect_value" => "value3",
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["value1", "value2", "value3"],
         },
       ],
     },
@@ -143,6 +163,11 @@ spec(
           "method" => "unknown_args",
           "expect_value" => ["value4"],
         },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["value1", "value2", "value3", "value4"],
+        },
       ],
     },
     {
@@ -168,6 +193,11 @@ spec(
           "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["value4", "value5"],
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["value1", "value2", "--array", "array_value", "value3", "value4", "value5"],
         },
       ],
     },
