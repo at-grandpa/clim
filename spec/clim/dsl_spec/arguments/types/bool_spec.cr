@@ -54,6 +54,16 @@ spec(
           "method" => "arg3abc",
           "expect_value" => nil,
         },
+        {
+          "type" => Array(String),
+          "method" => "unknown_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => [] of String,
+        },
       ],
     },
     {
@@ -74,6 +84,16 @@ spec(
           "type" => Bool?,
           "method" => "arg3abc",
           "expect_value" => nil,
+        },
+        {
+          "type" => Array(String),
+          "method" => "unknown_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["true"],
         },
       ],
     },
@@ -96,6 +116,16 @@ spec(
           "method" => "arg3abc",
           "expect_value" => nil,
         },
+        {
+          "type" => Array(String),
+          "method" => "unknown_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["true", "false"],
+        },
       ],
     },
     {
@@ -116,6 +146,16 @@ spec(
           "type" => Bool?,
           "method" => "arg3abc",
           "expect_value" => true,
+        },
+        {
+          "type" => Array(String),
+          "method" => "unknown_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["true", "false", "true"],
         },
       ],
     },
@@ -143,6 +183,11 @@ spec(
           "method" => "unknown_args",
           "expect_value" => ["value4"],
         },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["false", "true", "false", "value4"],
+        },
       ],
     },
     {
@@ -168,6 +213,11 @@ spec(
           "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["value4", "value5"],
+        },
+        {
+          "type" => Array(String),
+          "method" => "argv",
+          "expect_value" => ["true", "false", "--array", "array_value", "true", "value4", "value5"],
         },
       ],
     },

@@ -52,6 +52,10 @@ class Clim
         end
       end
 
+      def set_arguments_argv(argv : Array(String))
+        @arguments.set_argv(argv)
+      end
+
       def set_help_string(str)
         @options.help_string = str
       end
