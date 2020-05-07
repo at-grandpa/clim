@@ -315,7 +315,7 @@ class Clim
       end
     end
 
-    def sub_commands_help_info
+    private def sub_commands_help_info
       sub_commands_info = @sub_commands.map do |cmd|
         {
           names:     cmd.names,
@@ -325,13 +325,13 @@ class Clim
       end
     end
 
-    def help_line_of(cmd)
+    private def help_line_of(cmd)
       names_and_spaces = cmd.names.join(", ") +
                          "#{" " * (max_sub_command_name_length - cmd.names.join(", ").size)}"
       "    #{names_and_spaces}   #{cmd.desc}"
     end
 
-    def max_sub_command_name_length
+    private def max_sub_command_name_length
       @sub_commands.empty? ? 0 : @sub_commands.map(&.names.join(", ").size).max
     end
 
