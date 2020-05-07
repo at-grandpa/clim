@@ -3,8 +3,6 @@ require "./command/*"
 
 class Clim
   abstract class Command
-    include Macros
-
     getter name : String = ""
     getter desc : String = "Command Line Interface Tool."
     getter usage : String = "command [options] [arguments]"
