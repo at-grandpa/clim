@@ -284,14 +284,9 @@ class Clim
     end
 
     def parse(argv)
+      duplicate_names = (@sub_commands.map(&.name) + @sub_commands.map(&.alias_name).flatten).duplicate_value
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
       recursive_parse(argv)
-    end
-
-    private def duplicate_names
-      names = @sub_commands.map(&.name)
-      alias_names = @sub_commands.map(&.alias_name).flatten
-      (names + alias_names).duplicate_value
     end
 
     def recursive_parse(argv)
