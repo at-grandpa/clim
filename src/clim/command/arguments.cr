@@ -59,7 +59,7 @@ class Clim
         ret.compact
       end
 
-      def arguments_help_info
+      def help_info
         tmp_array = to_a.map(&.display_name.size)
         max_name_size = tmp_array.empty? ? nil : tmp_array.max
         to_a.map_with_index do |argument|

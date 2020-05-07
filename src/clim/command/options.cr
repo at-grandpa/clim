@@ -73,7 +73,7 @@ class Clim
         ret.compact
       end
 
-      def options_help_info
+      def help_info
         @option_parser.@flags.map do |flag|
           found_info = info.find do |info_element|
             !!flag.match(/\A\s+?#{info_element[:names].join(", ")}/)

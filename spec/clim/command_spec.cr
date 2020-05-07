@@ -103,7 +103,7 @@ describe Clim::Command do
   end
   describe "#options_help_info" do
     it "returns options help info." do
-      SpecCommand.command.options_help_info.should eq [
+      SpecCommand.command.@options.help_info.should eq [
         {
           names:     ["-g WORDS", "--greeting=WORDS"],
           type:      String,

@@ -9,7 +9,6 @@ class Clim
     getter alias_name : Array(String) = [] of String
     getter version : String = ""
     getter sub_commands : Array(Command) = [] of Command
-    getter parser : Parser = Parser.new(OptionParser.new)
 
     @options : Options
     @arguments : Arguments
@@ -50,8 +49,8 @@ class Clim
     end
 
     def help_template_str : String
-      options_lines = options_help_info.map(&.[](:help_line))
-      arguments_lines = arguments_help_info.map(&.[](:help_line))
+      options_lines = @options.help_info.map(&.[](:help_line))
+      arguments_lines = @arguments.help_info.map(&.[](:help_line))
       sub_commands_lines = sub_commands_help_info.map(&.[](:help_line))
       base_help_template = <<-HELP_MESSAGE
 
@@ -130,8 +129,8 @@ class Clim
           Proc(String, String, HelpOptionsType, HelpArgumentsType, HelpSubCommandsType, String).new {{ block.stringify.id }} .call(
             desc,
             usage,
-            options_help_info,
-            arguments_help_info,
+            @options.help_info,
+            @arguments.help_info,
             sub_commands_help_info)
         end
       end
@@ -314,14 +313,6 @@ class Clim
       @sub_commands.select do |cmd|
         cmd.name == name || cmd.alias_name.includes?(name)
       end
-    end
-
-    def options_help_info
-      @options.options_help_info
-    end
-
-    def arguments_help_info
-      @arguments.arguments_help_info
     end
 
     def sub_commands_help_info
