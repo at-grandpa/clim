@@ -7,6 +7,7 @@ class MyCli < Clim
     sub_command "sub_command" do
       desc "sub_comand."
       option "-n NUM", type: Int32, desc: "Number.", default: 0
+      argument "arg1", type: Bool, desc: "argument1"
       run do |opts, args|
       end
       sub_command "sub_sub_command" do
