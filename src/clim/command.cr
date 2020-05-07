@@ -44,7 +44,7 @@ class Clim
       end
     end
 
-    def help_template
+    def help_template_str
       options_lines = options_help_info.map(&.[](:help_line))
       arguments_lines = arguments_help_info.map(&.[](:help_line))
       sub_commands_lines = sub_commands_help_info.map(&.[](:help_line))
@@ -90,7 +90,62 @@ class Clim
       end
     end
 
+    macro help_template(&block)
+      {% raise "Can not be declared 'help_template' as sub command." unless @type == Command_Main_command_of_clim_library %}
+
+      class Clim::Command
+        {% begin %}
+          {% support_types_of_option = Clim::Types::SUPPORTED_TYPES_OF_OPTION.map { |k, _| k } + [Nil] %}
+          alias HelpOptionsType = Array(NamedTuple(
+              names: Array(String),
+              type: {{ support_types_of_option.map(&.stringify.+(".class")).join(" | ").id }},
+              desc: String,
+              default: {{ support_types_of_option.join(" | ").id }},
+              required: Bool,
+              help_line: String))
+
+          {% support_types_of_argument = Clim::Types::SUPPORTED_TYPES_OF_ARGUMENT.map { |k, _| k } + [Nil] %}
+          alias HelpArgumentsType = Array(NamedTuple(
+              method_name: String,
+              display_name: String,
+              type: {{ support_types_of_argument.map(&.stringify.+(".class")).join(" | ").id }},
+              desc: String,
+              default: {{ support_types_of_argument.join(" | ").id }},
+              required: Bool,
+              sequence_number: Int32,
+              help_line: String))
+        {% end %}
+
+        alias HelpSubCommandsType = Array(NamedTuple(
+          names: Array(String),
+          desc: String,
+          help_line: String))
+
+        def help_template_str
+          Proc(String, String, HelpOptionsType, HelpArgumentsType, HelpSubCommandsType, String).new {{ block.stringify.id }} .call(
+            desc,
+            usage,
+            options_help_info,
+            arguments_help_info,
+            sub_commands_help_info)
+        end
+      end
+    end
+
     abstract def run(io : IO)
+
+    macro run(&block)
+      def run(io : IO)
+        options = @parser.options
+        return RunProc.new { io.puts help_template_str }.call(options, @parser.arguments, io) if options.help == true
+
+        if options.responds_to?(:version)
+          return RunProc.new { io.puts version }.call(options, @parser.arguments, io) if options.version == true
+        end
+
+        RunProc.new {{ block.id }} .call(options, @parser.arguments, io)
+      end
+    end
 
     def parse(argv)
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
@@ -114,7 +169,7 @@ class Clim
       parser.set_arguments
       parser.set_arguments_argv(argv.dup)
       parser.required_validate!
-      parser.set_help_string(help_template)
+      parser.set_help_string(help_template_str)
       self
     end
 

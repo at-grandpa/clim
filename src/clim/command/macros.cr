@@ -1,47 +1,6 @@
 class Clim
   abstract class Command
     module Macros
-      macro help_template(&block)
-      {% raise "Can not be declared 'help_template' as sub command." unless @type == Command_Main_command_of_clim_library %}
-
-        class Clim::Command
-          {% begin %}
-            {% support_types_of_option = Clim::Types::SUPPORTED_TYPES_OF_OPTION.map { |k, _| k } + [Nil] %}
-            alias HelpOptionsType = Array(NamedTuple(
-                names: Array(String),
-                type: {{ support_types_of_option.map(&.stringify.+(".class")).join(" | ").id }},
-                desc: String,
-                default: {{ support_types_of_option.join(" | ").id }},
-                required: Bool,
-                help_line: String))
-
-            {% support_types_of_argument = Clim::Types::SUPPORTED_TYPES_OF_ARGUMENT.map { |k, _| k } + [Nil] %}
-            alias HelpArgumentsType = Array(NamedTuple(
-                method_name: String,
-                display_name: String,
-                type: {{ support_types_of_argument.map(&.stringify.+(".class")).join(" | ").id }},
-                desc: String,
-                default: {{ support_types_of_argument.join(" | ").id }},
-                required: Bool,
-                sequence_number: Int32,
-                help_line: String))
-          {% end %}
-
-          alias HelpSubCommandsType = Array(NamedTuple(
-            names: Array(String),
-            desc: String,
-            help_line: String))
-
-          def help_template
-            Proc(String, String, HelpOptionsType, HelpArgumentsType, HelpSubCommandsType, String).new {{ block.stringify.id }} .call(
-              desc,
-              usage,
-              options_help_info,
-              arguments_help_info,
-              sub_commands_help_info)
-          end
-        end
-      end
 
       macro main
         main_command
@@ -63,18 +22,6 @@ class Clim
         end
       end
 
-      macro run(&block)
-        def run(io : IO)
-          options = @parser.options
-          return RunProc.new { io.puts help_template }.call(options, @parser.arguments, io) if options.help == true
-
-          if options.responds_to?(:version)
-            return RunProc.new { io.puts version }.call(options, @parser.arguments, io) if options.version == true
-          end
-
-          RunProc.new {{ block.id }} .call(options, @parser.arguments, io)
-        end
-      end
 
       macro option_base(short, long, type, desc, default, required)
         {% raise "Empty option name." if short.empty? %}

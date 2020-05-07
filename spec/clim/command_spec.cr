@@ -39,7 +39,7 @@ end
 describe Clim::Command do
   describe "#help_template" do
     it "returns help string with sub commands." do
-      SpecCommand.command.help_template.should eq <<-OPTIONS
+      SpecCommand.command.help_template_str.should eq <<-OPTIONS
 
         main command.
 
@@ -62,7 +62,7 @@ describe Clim::Command do
       OPTIONS
     end
     it "returns help string without sub commands." do
-      SpecCommandNoSubCommands.command.help_template.should eq <<-OPTIONS
+      SpecCommandNoSubCommands.command.help_template_str.should eq <<-OPTIONS
 
         main command.
 
