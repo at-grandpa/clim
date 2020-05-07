@@ -10,6 +10,8 @@ class Clim
     getter version : String = ""
     getter sub_commands : Array(Command) = [] of Command
 
+    alias RunProc = Proc(Options, Arguments, IO, Nil)
+
     abstract def initialize
 
     macro desc(description)
@@ -42,7 +44,7 @@ class Clim
       end
     end
 
-    def help_template_str
+    def help_template_str : String
       options_lines = options_help_info.map(&.[](:help_line))
       arguments_lines = arguments_help_info.map(&.[](:help_line))
       sub_commands_lines = sub_commands_help_info.map(&.[](:help_line))
@@ -119,7 +121,7 @@ class Clim
           desc: String,
           help_line: String))
 
-        def help_template_str
+        def help_template_str : String
           Proc(String, String, HelpOptionsType, HelpArgumentsType, HelpSubCommandsType, String).new {{ block.stringify.id }} .call(
             desc,
             usage,
@@ -175,7 +177,7 @@ class Clim
         class Option_{{option_name}} < Option
           define_option_macro({{option_name}}, {{type}}, {{default}}, {{required}})
 
-          def method_name
+          def method_name : String
             {{option_name.stringify}}
           end
         end
@@ -235,7 +237,6 @@ class Clim
           {{ argument_name }}_instance.@value
         end
 
-
       end
     end
 
@@ -254,7 +255,6 @@ class Clim
 
         alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
         alias ArgumentsForEachCommand = Arguments_{{ name.id.capitalize }}
-        alias RunProc = Proc(OptionsForEachCommand, ArgumentsForEachCommand, IO, Nil)
 
         property parser : Parser(OptionsForEachCommand, ArgumentsForEachCommand)
         property name : String = {{name.id.stringify}}
@@ -283,19 +283,19 @@ class Clim
       end
     end
 
-    def parse(argv)
+    def parse(argv) : Command
       duplicate_names = (@sub_commands.map(&.name) + @sub_commands.map(&.alias_name).flatten).duplicate_value
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
       recursive_parse(argv)
     end
 
-    def recursive_parse(argv)
+    def recursive_parse(argv) : Command
       return parse_by_parser(argv) if argv.empty?
       return parse_by_parser(argv) if find_sub_commands_by(argv.first).empty?
       find_sub_commands_by(argv.first).first.recursive_parse(argv[1..-1])
     end
 
-    private def parse_by_parser(argv)
+    private def parse_by_parser(argv) : Command
       parser.parse(argv.dup)
       parser.set_arguments
       parser.set_arguments_argv(argv.dup)
@@ -304,7 +304,7 @@ class Clim
       self
     end
 
-    private def find_sub_commands_by(name)
+    private def find_sub_commands_by(name) : Array(Command)
       @sub_commands.select do |cmd|
         cmd.name == name || cmd.alias_name.includes?(name)
       end
