@@ -13,7 +13,6 @@ class Clim
         @option_parser.missing_option { |opt_name| raise ClimInvalidOptionException.new "Option that requires an argument. \"#{opt_name}\"" }
         @option_parser.unknown_args { |ua| @unknown_args = ua }
       end
-
     end
   end
 end
