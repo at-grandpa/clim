@@ -9,10 +9,15 @@ class Clim
     getter alias_name : Array(String) = [] of String
     getter version : String = ""
     getter sub_commands : Array(Command) = [] of Command
+    getter parser : Parser = Parser.new(OptionParser.new)
+
+    @options : Options
+    @arguments : Arguments
 
     alias RunProc = Proc(Options, Arguments, IO, Nil)
 
-    abstract def initialize
+    def initialize(@options : Options, @arguments : Arguments)
+    end
 
     macro desc(description)
       getter desc : String = {{ description }}
@@ -39,7 +44,7 @@ class Clim
 
     macro help(short = nil)
       {% raise "The 'help' directive requires the 'short' argument. (ex 'help short: \"-h\"'" if short == nil %}
-      private macro help_macro
+      macro help_macro
         option {{short.id.stringify}}, "--help", type: Bool, desc: "Show this help.", default: false
       end
     end
@@ -136,14 +141,17 @@ class Clim
 
     macro run(&block)
       def run(io : IO)
-        options = @parser.options
-        return RunProc.new { io.puts help_template_str }.call(options, @parser.arguments, io) if options.help == true
+        opt = @options
 
-        if options.responds_to?(:version)
-          return RunProc.new { io.puts version }.call(options, @parser.arguments, io) if options.version == true
+        if opt.responds_to?(:help)
+          return RunProc.new { io.puts help_template_str }.call(@options, @arguments, io) if opt.help == true
         end
 
-        RunProc.new {{ block.id }} .call(options, @parser.arguments, io)
+        if opt.responds_to?(:version)
+          return RunProc.new { io.puts version }.call(@options, @arguments, io) if opt.version == true
+        end
+
+        RunProc.new {{ block.id }} .call(@options, @arguments, io)
       end
     end
 
@@ -256,20 +264,17 @@ class Clim
         alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
         alias ArgumentsForEachCommand = Arguments_{{ name.id.capitalize }}
 
-        property parser : Parser(OptionsForEachCommand, ArgumentsForEachCommand)
         property name : String = {{name.id.stringify}}
         getter usage : String = "#{ {{name.id.stringify}} } [options] [arguments]"
-        property options : OptionsForEachCommand = OptionsForEachCommand.new
-        property arguments : ArgumentsForEachCommand = ArgumentsForEachCommand.new
 
-        def initialize(@parser : Parser(OptionsForEachCommand, ArgumentsForEachCommand))
+        def initialize(@options : Options, @arguments : Arguments)
           \{% for command_class in @type.constants.select { |c| @type.constant(c).superclass.id.stringify == "Clim::Command" } %}
             @sub_commands << \{{ command_class.id }}.create
           \{% end %}
         end
 
         def self.create
-          self.new(Parser(OptionsForEachCommand, ArgumentsForEachCommand).new(OptionsForEachCommand.new, ArgumentsForEachCommand.new))
+          self.new(OptionsForEachCommand.new, ArgumentsForEachCommand.new)
         end
 
         macro help_macro
@@ -296,11 +301,12 @@ class Clim
     end
 
     private def parse_by_parser(argv) : Command
-      parser.parse(argv.dup)
-      parser.set_arguments
-      parser.set_arguments_argv(argv.dup)
-      parser.required_validate!
-      parser.set_help_string(help_template_str)
+      @options.parse(argv.dup)
+      @options.required_validate!
+      @options.set_help_string(help_template_str)
+      @arguments.set_values_by_input_argument(@options.unknown_args)
+      @arguments.set_argv(argv.dup)
+      @arguments.required_validate!(@options)
       self
     end
 
@@ -311,11 +317,11 @@ class Clim
     end
 
     def options_help_info
-      parser.options_help_info
+      @options.options_help_info
     end
 
     def arguments_help_info
-      parser.arguments_help_info
+      @arguments.arguments_help_info
     end
 
     def sub_commands_help_info

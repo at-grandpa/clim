@@ -90,15 +90,6 @@ describe Clim::Command do
       SpecCommand.command.usage.should eq "main [sub_command] [arguments]"
     end
   end
-  describe "#parser.to_s" do
-    it "returns string of parser options." do
-      SpecCommand.command.parser.option_parser.to_s.should eq <<-OPTIONS
-          -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
-          -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
-          --help                           Show this help.
-      OPTIONS
-    end
-  end
   describe "#max_sub_command_name_length" do
     it "returns max name length of sub commands." do
       SpecCommand.command.max_sub_command_name_length.should eq 22
