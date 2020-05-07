@@ -37,7 +37,7 @@ class Clim
 
     macro help(short = nil)
       {% raise "The 'help' directive requires the 'short' argument. (ex 'help short: \"-h\"'" if short == nil %}
-      macro help_macro
+      private macro help_macro
         option {{short.id.stringify}}, "--help", type: Bool, desc: "Show this help.", default: false
       end
     end
@@ -165,7 +165,7 @@ class Clim
       end
     end
 
-    macro option_base(short, long, type, desc, default, required)
+    private macro option_base(short, long, type, desc, default, required)
       {% raise "Empty option name." if short.empty? %}
       {% raise "Type [#{type}] is not supported on option." unless SUPPORTED_TYPES_OF_OPTION.keys.includes?(type) %}
 
