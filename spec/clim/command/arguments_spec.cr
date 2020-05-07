@@ -40,52 +40,10 @@ class SpecCommandNoOptions < Clim
   end
 end
 
-describe Clim::Command::Parser do
-  describe "#options_help_info" do
-    it "returns options help info." do
-      SpecCommand.command.parser.options_help_info.should eq [
-        {
-          names:     ["-g WORDS", "--greeting=WORDS"],
-          type:      String,
-          desc:      "Words of greetings.",
-          default:   "Hello",
-          required:  false,
-          help_line: "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
-        },
-        {
-          names:     ["-n NAME"],
-          type:      Array(String),
-          desc:      "Target name.",
-          default:   ["Taro"],
-          required:  true,
-          help_line: "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
-        },
-        {
-          names:     ["--help"],
-          type:      Bool,
-          desc:      "Show this help.",
-          default:   false,
-          required:  false,
-          help_line: "    --help                           Show this help.",
-        },
-      ]
-    end
-    it "returns options help info without sub commands." do
-      SpecCommandNoOptions.command.parser.options_help_info.should eq [
-        {
-          names:     ["--help"],
-          type:      Bool,
-          desc:      "Show this help.",
-          default:   false,
-          required:  false,
-          help_line: "    --help                           Show this help.",
-        },
-      ]
-    end
-  end
-  describe "#arguments_help_info" do
+describe Clim::Command::Arguments do
+  describe "#help_info" do
     it "returns arguments help info." do
-      SpecCommand.command.parser.arguments_help_info.should eq [
+      SpecCommand.command.@arguments.help_info.should eq [
         {
           method_name:     "argument1",
           display_name:    "argument1",
@@ -139,7 +97,7 @@ describe Clim::Command::Parser do
       ]
     end
     it "returns arguments help info without sub commands." do
-      SpecCommandNoOptions.command.parser.arguments_help_info.should eq [
+      SpecCommandNoOptions.command.@arguments.help_info.should eq [
         {
           method_name:     "argument3",
           display_name:    "argument3",

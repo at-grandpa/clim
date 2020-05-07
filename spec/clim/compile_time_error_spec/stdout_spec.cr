@@ -1,6 +1,25 @@
 require "./../../spec_helper"
 
 describe "STDOUT spec, " do
+  it "display main_command help when main command with help_template." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template.cr --no-color -- --help`.should eq <<-DISPLAY
+
+      command description: Command Line Interface Tool.
+      command usage: main_command_of_clim_library [options] [arguments]
+
+      options:
+        --help                           Show this help.
+
+      arguments:
+        01. arg1      argument1 [type:String]
+        02. arg2      argument2 [type:String]
+
+      sub_commands:
+        sub_command   sub_comand.
+
+
+    DISPLAY
+  end
   it "display sub_command help when main command with help_template." do
     `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
 
@@ -11,8 +30,32 @@ describe "STDOUT spec, " do
         -n NUM                           Number. [type:Int32] [default:0]
         --help                           Show this help.
 
+      arguments:
+        01. sub-arg1      sub-argument1 [type:Bool]
+        02. sub-arg2      sub-argument2 [type:Bool]
+
       sub_commands:
         sub_sub_command   sub_sub_comand description.
+
+
+    DISPLAY
+  end
+  it "display sub_sub_command help when main command with help_template." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template.cr --no-color -- sub_command sub_sub_command --help`.should eq <<-DISPLAY
+
+      command description: sub_sub_comand description.
+      command usage: sub_sub_command [options] [arguments]
+
+      options:
+        -p PASSWORD                      Password. [type:String] [required]
+        --help                           Show this help.
+
+      arguments:
+        01. sub-sub-arg1      sub sub argument1 [type:Int32]
+        02. sub-sub-arg2      sub sub argument2 [type:Int32]
+
+      sub_commands:
+
 
 
     DISPLAY
@@ -36,6 +79,12 @@ describe "STDOUT spec, " do
     --version
         Show version.
 
+    arguments:
+    01. arg1
+        argument1
+    02. arg2
+        argument2
+
     sub commands:
         sub_command   my_cli's sub_comand.
 
@@ -56,6 +105,12 @@ describe "STDOUT spec, " do
     --help
         Show this help.
 
+    arguments:
+    01. sub-arg1
+        sub-argument1
+    02. sub-arg2
+        sub-argument2
+
     DISPLAY
   end
   it "display main_command help." do
@@ -71,6 +126,10 @@ describe "STDOUT spec, " do
 
         -n NUM                           Number. [type:Int32] [default:0]
         --help                           Show this help.
+
+      Arguments:
+
+        01. arg1      argument1 [type:Bool]
 
       Sub Commands:
 
