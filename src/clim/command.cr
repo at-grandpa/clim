@@ -120,13 +120,13 @@ class Clim
               help_line: String))
         {% end %}
 
-        alias HelpSubCommandssType = Array(NamedTuple(
+        alias HelpSubCommandsType = Array(NamedTuple(
           names: Array(String),
           desc: String,
           help_line: String))
 
         def help_template_str : String
-          Proc(String, String, HelpOptionsType, HelpArgumentsType, HelpSubCommandssType, String).new {{ block.stringify.id }} .call(
+          Proc(String, String, HelpOptionsType, HelpArgumentsType, HelpSubCommandsType, String).new {{ block.stringify.id }} .call(
             desc,
             usage,
             @options.help_info,
