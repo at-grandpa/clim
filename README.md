@@ -93,7 +93,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.10.1
+    version: 0.11.0
 ```
 
 ## Samples
