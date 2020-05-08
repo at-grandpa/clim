@@ -92,8 +92,8 @@ describe Clim::Command do
   end
   describe "#names" do
     it "returns name and alias_name of sub commands." do
-      SpecCommand.command.@sub_commands[0].names.should eq ["abc", "def", "ghi"]
-      SpecCommand.command.@sub_commands[1].names.should eq ["abcdef", "ghijkl", "mnopqr"]
+      SpecCommand.command.@sub_commands.to_a[0].names.should eq ["abc", "def", "ghi"]
+      SpecCommand.command.@sub_commands.to_a[1].names.should eq ["abcdef", "ghijkl", "mnopqr"]
     end
   end
 end

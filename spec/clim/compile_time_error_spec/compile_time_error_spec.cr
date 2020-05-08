@@ -25,6 +25,94 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "without run block in main_command." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    There was a problem expanding macro 'main_command'
+
+    Code in macro 'main'
+
+     1 | main_command do
+         ^
+    Called macro defined in src/clim.cr:12:3
+
+     12 | macro main_command(&block)
+
+    Which expanded to:
+
+     > 1 | Clim::Command.command "main_command_of_clim_library" do
+           ^
+    Error: 'run' block is not defined.
+
+    ERROR
+  end
+  it "without run block in sub_command." do
+    `crystal run spec/clim/compile_time_error_spec/files/sub_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    There was a problem expanding macro 'sub_command'
+
+    Code in macro 'sub'
+
+     1 | sub_command("sub") do
+         ^
+    Called macro defined in src/clim/command.cr:171:5
+
+     171 | macro sub_command(name, &block)
+
+    Which expanded to:
+
+     > 1 | command("sub") do
+           ^
+    Error: 'run' block is not defined.
+
+    ERROR
+  end
+  it "without run block in sub_sub_command." do
+    `crystal run spec/clim/compile_time_error_spec/files/sub_sub_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    There was a problem expanding macro 'sub_command'
+
+    Code in macro 'sub'
+
+     1 | sub_command("sub_sub") do
+         ^
+    Called macro defined in src/clim/command.cr:171:5
+
+     171 | macro sub_command(name, &block)
+
+    Which expanded to:
+
+     > 1 | command("sub_sub") do
+           ^
+    Error: 'run' block is not defined.
+
+    ERROR
+  end
+  it "without run block in sub_2_command." do
+    `crystal run spec/clim/compile_time_error_spec/files/sub_2_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    There was a problem expanding macro 'sub_command'
+
+    Code in macro 'sub'
+
+     1 | sub_command("sub2") do
+         ^
+    Called macro defined in src/clim/command.cr:171:5
+
+     171 | macro sub_command(name, &block)
+
+    Which expanded to:
+
+     > 1 | command("sub2") do
+           ^
+    Error: 'run' block is not defined.
+
+    ERROR
+  end
   it "duplicate 'sub_command'." do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_sub_command.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.

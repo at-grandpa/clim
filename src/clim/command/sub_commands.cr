@@ -4,9 +4,22 @@ require "option_parser"
 
 class Clim
   abstract class Command
-    class SubCommands < Array(Command)
+    class SubCommands
+      @sub_commands : Array(Command)
+
+      def initialize(@sub_commands : Array(Command) = [] of Command)
+      end
+
+      def <<(command : Command)
+        @sub_commands << command
+      end
+
+      def to_a
+        @sub_commands
+      end
+
       def help_info
-        map do |cmd|
+        @sub_commands.map do |cmd|
           {
             names:     cmd.names,
             desc:      cmd.desc,
@@ -22,11 +35,11 @@ class Clim
       end
 
       private def max_name_length
-        empty? ? 0 : map(&.names.join(", ").size).max
+        @sub_commands.empty? ? 0 : @sub_commands.map(&.names.join(", ").size).max
       end
 
       def find_by_name(name) : Array(Command)
-        self.select do |cmd|
+        @sub_commands.select do |cmd|
           cmd.name == name || cmd.alias_name.includes?(name)
         end
       end

@@ -136,7 +136,7 @@ class Clim
       end
     end
 
-    abstract def run(io : IO)
+    # abstract def run(io : IO)
 
     macro run(&block)
       def run(io : IO)
@@ -282,13 +282,15 @@ class Clim
 
         {{ yield }}
 
+        \{% raise "'run' block is not defined." unless @type.methods.map(&.name.stringify).includes?("run") %}
+
         help_macro
 
       end
     end
 
     def parse(argv) : Command
-      duplicate_names = (@sub_commands.map(&.name) + @sub_commands.map(&.alias_name).flatten).duplicate_value
+      duplicate_names = (@sub_commands.to_a.map(&.name) + @sub_commands.to_a.map(&.alias_name).flatten).duplicate_value
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
       recursive_parse(argv)
     end
