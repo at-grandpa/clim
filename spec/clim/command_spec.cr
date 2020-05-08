@@ -90,64 +90,10 @@ describe Clim::Command do
       SpecCommand.command.usage.should eq "main [sub_command] [arguments]"
     end
   end
-  describe "#max_sub_command_name_length" do
-    it "returns max name length of sub commands." do
-      SpecCommand.command.max_sub_command_name_length.should eq 22
-    end
-  end
   describe "#names" do
     it "returns name and alias_name of sub commands." do
-      SpecCommand.command.sub_commands[0].names.should eq ["abc", "def", "ghi"]
-      SpecCommand.command.sub_commands[1].names.should eq ["abcdef", "ghijkl", "mnopqr"]
-    end
-  end
-  describe "#options_help_info" do
-    it "returns options help info." do
-      SpecCommand.command.@options.help_info.should eq [
-        {
-          names:     ["-g WORDS", "--greeting=WORDS"],
-          type:      String,
-          desc:      "Words of greetings.",
-          default:   "Hello",
-          required:  false,
-          help_line: "    -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]",
-        },
-        {
-          names:     ["-n NAME"],
-          type:      Array(String),
-          desc:      "Target name.",
-          default:   ["Taro"],
-          required:  true,
-          help_line: "    -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]",
-        },
-        {
-          names:     ["--help"],
-          type:      Bool,
-          desc:      "Show this help.",
-          default:   false,
-          required:  false,
-          help_line: "    --help                           Show this help.",
-        },
-      ]
-    end
-  end
-  describe "#sub_commands_help_info" do
-    it "returns sub commands help info." do
-      SpecCommand.command.sub_commands_help_info.should eq [
-        {
-          names:     ["abc", "def", "ghi"],
-          desc:      "abc command.",
-          help_line: "    abc, def, ghi            abc command.",
-        },
-        {
-          names:     ["abcdef", "ghijkl", "mnopqr"],
-          desc:      "abcdef command.",
-          help_line: "    abcdef, ghijkl, mnopqr   abcdef command.",
-        },
-      ]
-    end
-    it "returns sub commands info without sub commands." do
-      SpecCommandNoSubCommands.command.sub_commands_help_info.should eq [] of Array(NamedTuple(names: Array(String), desc: String, help_line: String))
+      SpecCommand.command.@sub_commands[0].names.should eq ["abc", "def", "ghi"]
+      SpecCommand.command.@sub_commands[1].names.should eq ["abcdef", "ghijkl", "mnopqr"]
     end
   end
 end

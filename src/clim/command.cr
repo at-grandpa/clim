@@ -8,14 +8,14 @@ class Clim
     getter usage : String = "command [options] [arguments]"
     getter alias_name : Array(String) = [] of String
     getter version : String = ""
-    getter sub_commands : Array(Command) = [] of Command
 
     @options : Options
     @arguments : Arguments
+    @sub_commands : SubCommands
 
     alias RunProc = Proc(Options, Arguments, IO, Nil)
 
-    def initialize(@options : Options, @arguments : Arguments)
+    def initialize(@options : Options, @arguments : Arguments, @sub_commands : SubCommands = SubCommands.new)
     end
 
     macro desc(description)
@@ -51,7 +51,7 @@ class Clim
     def help_template_str : String
       options_lines = @options.help_info.map(&.[](:help_line))
       arguments_lines = @arguments.help_info.map(&.[](:help_line))
-      sub_commands_lines = sub_commands_help_info.map(&.[](:help_line))
+      sub_commands_lines = @sub_commands.help_info.map(&.[](:help_line))
       base_help_template = <<-HELP_MESSAGE
 
         #{desc}
@@ -120,18 +120,18 @@ class Clim
               help_line: String))
         {% end %}
 
-        alias HelpSubCommandsType = Array(NamedTuple(
+        alias HelpSubCommandssType = Array(NamedTuple(
           names: Array(String),
           desc: String,
           help_line: String))
 
         def help_template_str : String
-          Proc(String, String, HelpOptionsType, HelpArgumentsType, HelpSubCommandsType, String).new {{ block.stringify.id }} .call(
+          Proc(String, String, HelpOptionsType, HelpArgumentsType, HelpSubCommandssType, String).new {{ block.stringify.id }} .call(
             desc,
             usage,
             @options.help_info,
             @arguments.help_info,
-            sub_commands_help_info)
+            @sub_commands.help_info)
         end
       end
     end
@@ -266,7 +266,7 @@ class Clim
         property name : String = {{name.id.stringify}}
         getter usage : String = "#{ {{name.id.stringify}} } [options] [arguments]"
 
-        def initialize(@options : Options, @arguments : Arguments)
+        def initialize(@options : Options, @arguments : Arguments, @sub_commands : SubCommands = SubCommands.new)
           \{% for command_class in @type.constants.select { |c| @type.constant(c).superclass.id.stringify == "Clim::Command" } %}
             @sub_commands << \{{ command_class.id }}.create
           \{% end %}
@@ -313,26 +313,6 @@ class Clim
       @sub_commands.select do |cmd|
         cmd.name == name || cmd.alias_name.includes?(name)
       end
-    end
-
-    def sub_commands_help_info
-      sub_commands_info = @sub_commands.map do |cmd|
-        {
-          names:     cmd.names,
-          desc:      cmd.desc,
-          help_line: help_line_of(cmd),
-        }
-      end
-    end
-
-    def help_line_of(cmd)
-      names_and_spaces = cmd.names.join(", ") +
-                         "#{" " * (max_sub_command_name_length - cmd.names.join(", ").size)}"
-      "    #{names_and_spaces}   #{cmd.desc}"
-    end
-
-    def max_sub_command_name_length
-      @sub_commands.empty? ? 0 : @sub_commands.map(&.names.join(", ").size).max
     end
 
     def names
