@@ -136,8 +136,6 @@ class Clim
       end
     end
 
-    # abstract def run(io : IO)
-
     macro run(&block)
       def run(io : IO)
         opt = @options
