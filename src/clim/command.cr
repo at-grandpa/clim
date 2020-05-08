@@ -9,15 +9,6 @@ class Clim
     getter alias_name : Array(String) = [] of String
     getter version : String = ""
 
-    # @options : Options
-    # @arguments : Arguments
-    # @sub_commands : SubCommands
-
-    abstract def initialize
-
-    # def initialize(@options : Options, @arguments : Arguments, @sub_commands : SubCommands = SubCommands.new)
-    # end
-
     macro desc(description)
       getter desc : String = {{ description }}
     end
