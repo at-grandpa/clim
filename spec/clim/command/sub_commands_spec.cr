@@ -1,4 +1,5 @@
 require "../../spec_helper"
+require "../../../src/clim/command"
 
 class SpecCommand < Clim
   main do
@@ -54,6 +55,19 @@ describe Clim::Command::SubCommands do
     end
     it "returns sub commands info without sub commands." do
       SpecCommandNoSubCommands.command.@sub_commands.help_info.should eq [] of Array(NamedTuple(names: Array(String), desc: String, help_line: String))
+    end
+  end
+  describe "#find_by_name" do
+    it "returns found sub command." do
+      actual = SpecCommand.command.@sub_commands.find_by_name("ghijkl")
+      actual.size.should eq 1
+      actual.first.name.should eq "abcdef"
+      actual.first.desc.should eq "abcdef command."
+      actual.first.usage.should eq "main abcdef [options] [files]"
+      actual.first.alias_name.should eq ["ghijkl", "mnopqr"]
+    end
+    it "returns sub commands info without sub commands." do
+      SpecCommandNoSubCommands.command.@sub_commands.find_by_name("ghijkl").should eq [] of Clim::Command
     end
   end
 end

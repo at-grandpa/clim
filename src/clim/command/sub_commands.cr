@@ -24,6 +24,12 @@ class Clim
       private def max_name_length
         empty? ? 0 : map(&.names.join(", ").size).max
       end
+
+      def find_by_name(name) : Array(Command)
+        self.select do |cmd|
+          cmd.name == name || cmd.alias_name.includes?(name)
+        end
+      end
     end
   end
 end

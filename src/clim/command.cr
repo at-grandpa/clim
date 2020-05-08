@@ -295,8 +295,8 @@ class Clim
 
     def recursive_parse(argv) : Command
       return parse_by_parser(argv) if argv.empty?
-      return parse_by_parser(argv) if find_sub_commands_by(argv.first).empty?
-      find_sub_commands_by(argv.first).first.recursive_parse(argv[1..-1])
+      return parse_by_parser(argv) if @sub_commands.find_by_name(argv.first).empty?
+      @sub_commands.find_by_name(argv.first).first.recursive_parse(argv[1..-1])
     end
 
     private def parse_by_parser(argv) : Command
@@ -307,12 +307,6 @@ class Clim
       @arguments.set_argv(argv.dup)
       @arguments.required_validate!(@options)
       self
-    end
-
-    private def find_sub_commands_by(name) : Array(Command)
-      @sub_commands.select do |cmd|
-        cmd.name == name || cmd.alias_name.includes?(name)
-      end
     end
 
     def names
