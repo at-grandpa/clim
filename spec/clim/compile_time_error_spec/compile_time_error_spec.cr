@@ -57,9 +57,9 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub") do
          ^
-    Called macro defined in src/clim/command.cr:169:5
+    Called macro defined in src/clim/command.cr:160:5
 
-     169 | macro sub_command(name, &block)
+     160 | macro sub_command(name, &block)
 
     Which expanded to:
 
@@ -79,9 +79,9 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub_sub") do
          ^
-    Called macro defined in src/clim/command.cr:169:5
+    Called macro defined in src/clim/command.cr:160:5
 
-     169 | macro sub_command(name, &block)
+     160 | macro sub_command(name, &block)
 
     Which expanded to:
 
@@ -101,9 +101,9 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub2") do
          ^
-    Called macro defined in src/clim/command.cr:169:5
+    Called macro defined in src/clim/command.cr:160:5
 
-     169 | macro sub_command(name, &block)
+     160 | macro sub_command(name, &block)
 
     Which expanded to:
 

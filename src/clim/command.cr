@@ -9,15 +9,6 @@ class Clim
     getter alias_name : Array(String) = [] of String
     getter version : String = ""
 
-    @options : Options
-    @arguments : Arguments
-    @sub_commands : SubCommands
-
-    alias RunProc = Proc(Options, Arguments, IO, Nil)
-
-    def initialize(@options : Options, @arguments : Arguments, @sub_commands : SubCommands = SubCommands.new)
-    end
-
     macro desc(description)
       getter desc : String = {{ description }}
     end
@@ -260,11 +251,16 @@ class Clim
 
         alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
         alias ArgumentsForEachCommand = Arguments_{{ name.id.capitalize }}
+        alias RunProc = Proc(OptionsForEachCommand, ArgumentsForEachCommand, IO, Nil)
 
         property name : String = {{name.id.stringify}}
         getter usage : String = "#{ {{name.id.stringify}} } [options] [arguments]"
 
-        def initialize(@options : Options, @arguments : Arguments, @sub_commands : SubCommands = SubCommands.new)
+        @options : OptionsForEachCommand
+        @arguments : ArgumentsForEachCommand
+        @sub_commands : SubCommands
+
+        def initialize(@options : OptionsForEachCommand, @arguments : ArgumentsForEachCommand, @sub_commands : SubCommands = SubCommands.new)
           \{% for command_class in @type.constants.select { |c| @type.constant(c).superclass.id.stringify == "Clim::Command" } %}
             @sub_commands << \{{ command_class.id }}.create
           \{% end %}
@@ -272,6 +268,28 @@ class Clim
 
         def self.create
           self.new(OptionsForEachCommand.new, ArgumentsForEachCommand.new)
+        end
+
+        def parse(argv) : Command
+          duplicate_names = (@sub_commands.to_a.map(&.name) + @sub_commands.to_a.map(&.alias_name).flatten).duplicate_value
+          raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
+          recursive_parse(argv)
+        end
+
+        def recursive_parse(argv) : Command
+          return parse_by_parser(argv) if argv.empty?
+          return parse_by_parser(argv) if @sub_commands.find_by_name(argv.first).empty?
+          @sub_commands.find_by_name(argv.first).first.recursive_parse(argv[1..-1])
+        end
+
+        private def parse_by_parser(argv) : Command
+          @options.parse(argv.dup)
+          @options.required_validate!
+          @options.set_help_string(help_template_str)
+          @arguments.set_values_by_input_argument(@options.unknown_args)
+          @arguments.set_argv(argv.dup)
+          @arguments.required_validate!(@options)
+          self
         end
 
         macro help_macro
@@ -285,28 +303,6 @@ class Clim
         help_macro
 
       end
-    end
-
-    def parse(argv) : Command
-      duplicate_names = (@sub_commands.to_a.map(&.name) + @sub_commands.to_a.map(&.alias_name).flatten).duplicate_value
-      raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
-      recursive_parse(argv)
-    end
-
-    def recursive_parse(argv) : Command
-      return parse_by_parser(argv) if argv.empty?
-      return parse_by_parser(argv) if @sub_commands.find_by_name(argv.first).empty?
-      @sub_commands.find_by_name(argv.first).first.recursive_parse(argv[1..-1])
-    end
-
-    private def parse_by_parser(argv) : Command
-      @options.parse(argv.dup)
-      @options.required_validate!
-      @options.set_help_string(help_template_str)
-      @arguments.set_values_by_input_argument(@options.unknown_args)
-      @arguments.set_argv(argv.dup)
-      @arguments.required_validate!(@options)
-      self
     end
 
     def names
