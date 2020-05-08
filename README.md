@@ -15,7 +15,7 @@ _"clim" = "cli" + "slim"_
   - [Minimum sample](#minimum-sample)
   - [Command information sample](#command-information-sample)
   - [Sub commands sample](#sub-commands-sample)
-- [Usage](#usage)
+- [How to use](#how-to-use)
   - [require & inherit](#require--inherit)
   - [Command Informations](#command-informations)
     - [desc](#desc)
@@ -271,7 +271,7 @@ $ ./fcrystal tool format
 Fake Crystal tool format!!
 ```
 
-## Usage
+## How to use
 
 ### require & inherit
 
