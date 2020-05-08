@@ -580,16 +580,6 @@ MyCli.start(ARGV)
 ```
 
 ```console
-$ crystal run src/argument.cr -- 000 111 222 333
-typeof(args.first_arg)    => String
-       args.first_arg     => 000
-typeof(args.second_arg)   => Int32
-       args.second_arg    => 111
-typeof(args.unknown_args) => Array(String)
-       args.unknown_args  => ["222", "333"]
-typeof(args.argv)         => Array(String)
-       args.argv          => ["000", "111", "222", "333"]
-
 $ crystal run src/argument.cr -- --help
 
   argument sample
@@ -607,6 +597,16 @@ $ crystal run src/argument.cr -- --help
 
     01. first-arg       first argument! [type:String] [default:"default value"]
     02. second-arg      second argument! [type:Int32] [default:999]
+
+$ crystal run src/argument.cr -- 000 111 222 333
+typeof(args.first_arg)    => String
+       args.first_arg     => 000
+typeof(args.second_arg)   => Int32
+       args.second_arg    => 111
+typeof(args.unknown_args) => Array(String)
+       args.unknown_args  => ["222", "333"]
+typeof(args.argv)         => Array(String)
+       args.argv          => ["000", "111", "222", "333"]
 
 ```
 
