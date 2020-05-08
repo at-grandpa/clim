@@ -20,9 +20,7 @@ class Clim
     end
 
     def self.start_parse(argv, io : IO = STDOUT)
-      selected_command = command.parse(argv)
-      raise "aaa" unless selected_command.responds_to?(:run)
-      selected_command.run(io)
+      command.parse(argv).run(io)
     end
 
     def self.start(argv, io : IO = STDOUT)
