@@ -17,11 +17,11 @@ class Clim
 
       private def help_line_of(cmd)
         names_and_spaces = cmd.names.join(", ") +
-                           "#{" " * (max_sub_command_name_length - cmd.names.join(", ").size)}"
+                           "#{" " * (max_name_length - cmd.names.join(", ").size)}"
         "    #{names_and_spaces}   #{cmd.desc}"
       end
 
-      private def max_sub_command_name_length
+      private def max_name_length
         empty? ? 0 : map(&.names.join(", ").size).max
       end
     end
