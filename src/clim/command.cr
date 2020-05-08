@@ -8,14 +8,14 @@ class Clim
     getter usage : String = "command [options] [arguments]"
     getter alias_name : Array(String) = [] of String
     getter version : String = ""
-    getter sub_commands : Array(Command) = [] of Command
 
     @options : Options
     @arguments : Arguments
+    @sub_commands : SubCommands
 
     alias RunProc = Proc(Options, Arguments, IO, Nil)
 
-    def initialize(@options : Options, @arguments : Arguments)
+    def initialize(@options : Options, @arguments : Arguments, @sub_commands : SubCommands = SubCommands.new)
     end
 
     macro desc(description)
@@ -51,7 +51,7 @@ class Clim
     def help_template_str : String
       options_lines = @options.help_info.map(&.[](:help_line))
       arguments_lines = @arguments.help_info.map(&.[](:help_line))
-      sub_commands_lines = sub_commands_help_info.map(&.[](:help_line))
+      sub_commands_lines = @sub_commands.help_info.map(&.[](:help_line))
       base_help_template = <<-HELP_MESSAGE
 
         #{desc}
@@ -131,12 +131,10 @@ class Clim
             usage,
             @options.help_info,
             @arguments.help_info,
-            sub_commands_help_info)
+            @sub_commands.help_info)
         end
       end
     end
-
-    abstract def run(io : IO)
 
     macro run(&block)
       def run(io : IO)
@@ -266,7 +264,7 @@ class Clim
         property name : String = {{name.id.stringify}}
         getter usage : String = "#{ {{name.id.stringify}} } [options] [arguments]"
 
-        def initialize(@options : Options, @arguments : Arguments)
+        def initialize(@options : Options, @arguments : Arguments, @sub_commands : SubCommands = SubCommands.new)
           \{% for command_class in @type.constants.select { |c| @type.constant(c).superclass.id.stringify == "Clim::Command" } %}
             @sub_commands << \{{ command_class.id }}.create
           \{% end %}
@@ -282,21 +280,23 @@ class Clim
 
         {{ yield }}
 
+        \{% raise "'run' block is not defined." unless @type.methods.map(&.name.stringify).includes?("run") %}
+
         help_macro
 
       end
     end
 
     def parse(argv) : Command
-      duplicate_names = (@sub_commands.map(&.name) + @sub_commands.map(&.alias_name).flatten).duplicate_value
+      duplicate_names = (@sub_commands.to_a.map(&.name) + @sub_commands.to_a.map(&.alias_name).flatten).duplicate_value
       raise ClimException.new "There are duplicate registered commands. [#{duplicate_names.join(",")}]" unless duplicate_names.empty?
       recursive_parse(argv)
     end
 
     def recursive_parse(argv) : Command
       return parse_by_parser(argv) if argv.empty?
-      return parse_by_parser(argv) if find_sub_commands_by(argv.first).empty?
-      find_sub_commands_by(argv.first).first.recursive_parse(argv[1..-1])
+      return parse_by_parser(argv) if @sub_commands.find_by_name(argv.first).empty?
+      @sub_commands.find_by_name(argv.first).first.recursive_parse(argv[1..-1])
     end
 
     private def parse_by_parser(argv) : Command
@@ -307,32 +307,6 @@ class Clim
       @arguments.set_argv(argv.dup)
       @arguments.required_validate!(@options)
       self
-    end
-
-    private def find_sub_commands_by(name) : Array(Command)
-      @sub_commands.select do |cmd|
-        cmd.name == name || cmd.alias_name.includes?(name)
-      end
-    end
-
-    def sub_commands_help_info
-      sub_commands_info = @sub_commands.map do |cmd|
-        {
-          names:     cmd.names,
-          desc:      cmd.desc,
-          help_line: help_line_of(cmd),
-        }
-      end
-    end
-
-    def help_line_of(cmd)
-      names_and_spaces = cmd.names.join(", ") +
-                         "#{" " * (max_sub_command_name_length - cmd.names.join(", ").size)}"
-      "    #{names_and_spaces}   #{cmd.desc}"
-    end
-
-    def max_sub_command_name_length
-      @sub_commands.empty? ? 0 : @sub_commands.map(&.names.join(", ").size).max
     end
 
     def names
