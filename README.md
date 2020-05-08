@@ -6,6 +6,32 @@ _"clim" = "cli" + "slim"_
 
 [![Build Status](https://travis-ci.org/at-grandpa/clim.svg?branch=master)](https://travis-ci.org/at-grandpa/clim)
 
+## TOC
+
+- [Goals](#Goals)
+- [Support](#Support)
+- [Installation](#Installation)
+- [Samples](#Samples)
+  - [Minimum sample](#Minimum\ sample)
+  - [Command information sample](#Command\ information\ sample)
+  - [Sub commands sample](#Sub\ commands\ sample)
+- [Usage](#Usage)
+  - [require & inherit](#require\ &\ inherit)
+  - [Command Informations](#Command\ Informations)
+    - [desc](#desc)
+    - [usage](#usage)
+    - [alias_name](#alias_name)
+    - [version](#version)
+    - [Short option for help](#Short\ option\ for\ help)
+    - [option](#option)
+    - [argument](#argument)
+    - [help_template](#help_template)
+  - [help string](#help\ string)
+  - [`io` in run block](#`io`\ in\ run\ block)
+- [Development](#Development)
+- [Contributing](#Contributing)
+- [Contributors](#Contributors)
+
 ## Goals
 
 * Slim implementation.
@@ -37,8 +63,21 @@ _"clim" = "cli" + "slim"_
   - [x] `Array(Float32)`
   - [x] `Array(Float64)`
   - [x] `Array(String)`
-- [x] Default values for option
-- [x] Required flag for option
+- [x] Argument types
+  - [x] `Int8`
+  - [x] `Int16`
+  - [x] `Int32`
+  - [x] `Int64`
+  - [x] `UInt8`
+  - [x] `UInt16`
+  - [x] `UInt32`
+  - [x] `UInt64`
+  - [x] `Float32`
+  - [x] `Float64`
+  - [x] `String`
+  - [x] `Bool`
+- [x] Default values for option & argument
+- [x] Required flag for option & argument
 - [x] Nested sub commands
 - [x] `--help` option
 - [x] Customizable help message
@@ -57,7 +96,9 @@ dependencies:
     version: 0.10.1
 ```
 
-## Minimum sample
+## Samples
+
+### Minimum sample
 
 *src/minimum.cr*
 
@@ -67,7 +108,7 @@ require "clim"
 class MyCli < Clim
   main do
     run do |opts, args|
-      puts "#{args.join(", ")}!"
+      puts "#{args.argv.join(", ")}!"
     end
   end
 end
@@ -81,7 +122,7 @@ $ ./minimum foo bar baz
 foo, bar, baz!
 ```
 
-## Command information sample
+### Command information sample
 
 *src/hello.cr*
 
@@ -95,10 +136,12 @@ module Hello
       usage "hello [options] [arguments] ..."
       version "Version 0.1.0"
       option "-g WORDS", "--greeting=WORDS", type: String, desc: "Words of greetings.", default: "Hello"
-      option "-n NAME", "--name=NAME", type: Array(String), desc: "Target name.", default: ["Taro"]
+      argument "first_member", type: String, desc: "first member name.", default: "member1"
+      argument "second_member", type: String, desc: "second member name.", default: "member2"
       run do |opts, args|
         print "#{opts.greeting}, "
-        print "#{opts.name.join(", ")}!"
+        print "#{args.first_member} & #{args.second_member} !\n"
+        print "And #{args.unknown_args.join(", ")} !"
         print "\n"
       end
     end
@@ -121,15 +164,20 @@ $ ./hello --help
   Options:
 
     -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:"Hello"]
-    -n NAME, --name=NAME             Target name. [type:Array(String)] [default:["Taro"]]
     --help                           Show this help.
     --version                        Show version.
 
-$ ./hello -n Ichiro -n Miko -g 'Good night'
-Good night, Ichiro, Miko!
+  Arguments:
+
+    01. first_member       first member name. [type:String] [default:"member1"]
+    02. second_member      second member name. [type:String] [default:"member2"]
+
+$ ./hello -g 'Good night' Ichiro Miko Takashi Taro
+Good night, Ichiro & Miko !
+And Takashi, Taro !
 ```
 
-## Sub commands sample
+### Sub commands sample
 
 *src/fake-crystal-command.cr*
 
@@ -480,9 +528,122 @@ class MyCli < Clim
 end
 ```
 
+#### argument
+
+You can specify multiple arguments for the command.
+
+ | Argument        | Description          | Example                         | Required | Default                   |
+ | --------------- | -------------------- | ------------------------------- | -------- | ------------------------- |
+ | First argument  | name                 | `my_argument`                   | true     | -                         |
+ | `type`          | argument type        | `type: String`                  | false    | `String`                  |
+ | `desc`          | argument description | `desc: "argument description."` | false    | `"Argument description."` |
+ | `default`       | default value        | `default: "default value"`      | false    | `nil`                     |
+ | `required`      | required flag        | `required: true`                | false    | `false`                   |
+
+The order of the arguments is related to the order in which they are defined. Also, when calling a method, hyphens in the method name of the argument are converted to underscores. There are also `unknown_args` and `argv` methods.
+
+```crystal
+require "clim"
+
+class MyCli < Clim
+  main do
+    desc "argument sample"
+    usage "command [options] [arguments]"
+
+    option "--dummy=WORDS",
+      desc: "dummy option"
+
+    argument "first-arg",
+      desc: "first argument!",
+      type: String,
+      default: "default value"
+
+    argument "second-arg",
+      desc: "second argument!",
+      type: Int32,
+      default: 999
+
+    run do |opts, args|
+      puts "typeof(args.first_arg)    => #{typeof(args.first_arg)}"
+      puts "       args.first_arg     => #{args.first_arg}"
+      puts "typeof(args.second_arg)   => #{typeof(args.second_arg)}"
+      puts "       args.second_arg    => #{args.second_arg}"
+      puts "typeof(args.unknown_args) => #{typeof(args.unknown_args)}"
+      puts "       args.unknown_args  => #{args.unknown_args}"
+      puts "typeof(args.argv)         => #{typeof(args.argv)}"
+      puts "       args.argv          => #{args.argv}"
+    end
+  end
+end
+
+MyCli.start(ARGV)
+```
+
+```console
+$ crystal run src/argument.cr -- 000 111 222 333
+typeof(args.first_arg)    => String
+       args.first_arg     => 000
+typeof(args.second_arg)   => Int32
+       args.second_arg    => 111
+typeof(args.unknown_args) => Array(String)
+       args.unknown_args  => ["222", "333"]
+typeof(args.argv)         => Array(String)
+       args.argv          => ["000", "111", "222", "333"]
+
+$ crystal run src/argument.cr -- --help
+
+  argument sample
+
+  Usage:
+
+    command [options] [arguments]
+
+  Options:
+
+    --dummy=WORDS                    dummy option [type:String]
+    --help                           Show this help.
+
+  Arguments:
+
+    01. first-arg       first argument! [type:String] [default:"default value"]
+    02. second-arg      second argument! [type:Int32] [default:999]
+
+```
+
+The type of the arguments is determined by the `default` and `required` patterns.
+
+*Number*
+
+For example `Int8`.
+
+ | `default` | `required` | Type                                    |
+ | --------- | ---------- | --------------------------------------- |
+ | exist     | `true`     | `Int8` (default: Your specified value.) |
+ | exist     | `false`    | `Int8` (default: Your specified value.) |
+ | not exist | `true`     | `Int8`                                  |
+ | not exist | `false`    | `Int8 \| Nil`                           |
+
+*String*
+
+ | `default` | `required` | Type                                      |
+ | --------- | ---------- | ----------------------------------------- |
+ | exist     | `true`     | `String` (default: Your specified value.) |
+ | exist     | `false`    | `String` (default: Your specified value.) |
+ | not exist | `true`     | `String`                                  |
+ | not exist | `false`    | `String \| Nil`                           |
+
+*Bool*
+
+ | `default` | `required` | Type                                    |
+ | --------- | ---------- | --------------------------------------- |
+ | exist     | `true`     | `Bool` (default: Your specified value.) |
+ | exist     | `false`    | `Bool` (default: Your specified value.) |
+ | not exist | `true`     | `Bool`                                  |
+ | not exist | `false`    | `Bool \| Nil`                           |
+
 ### help_template
 
-You can customize the help message by `help_template` block. It must be placed in main block. Also it needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options : HelpOptionsType` and `sub_commands : HelpSubCommandsType`.
+You can customize the help message by `help_template` block. It must be placed in main block. Also it needs to return `String`. Block arguments are `desc : String`, `usage : String`, `options : HelpOptionsType`, `argments : HelpArgumentsType` and `sub_commands : HelpSubCommandsType`.
 
 *help_template_test.cr*
 
@@ -491,10 +652,17 @@ require "clim"
 
 class MyCli < Clim
   main do
-    help_template do |desc, usage, options, sub_commands|
+    help_template do |desc, usage, options, arguments, sub_commands|
       options_help_lines = options.map do |option|
         option[:names].join(", ") + "\n" + "    #{option[:desc]}"
       end
+      arguments_help_lines = arguments.map do |argument|
+        ("%02d: " % [argument[:sequence_number]]) +
+          argument[:display_name] +
+          "\n" +
+          "      #{argument[:desc]}"
+      end
+
       base = <<-BASE_HELP
       #{usage}
 
@@ -502,6 +670,9 @@ class MyCli < Clim
 
       options:
       #{options_help_lines.join("\n")}
+
+      arguments:
+      #{arguments_help_lines.join("\n")}
 
       BASE_HELP
 
@@ -516,22 +687,18 @@ class MyCli < Clim
     desc "Your original command line interface tool."
     usage <<-USAGE
     usage: my_cli [--version] [--help] [-P PORT|--port=PORT]
-                  [-h HOST|--host=HOST] [-p PASSWORD|--password=PASSWORD]
+                  [-h HOST|--host=HOST] [-p PASSWORD|--password=PASSWORD] [arguments]
     USAGE
     version "version 1.0.0"
     option "-P PORT", "--port=PORT", type: Int32, desc: "Port number.", default: 3306
     option "-h HOST", "--host=HOST", type: String, desc: "Host name.", default: "localhost"
     option "-p PASSWORD", "--password=PASSWORD", type: String, desc: "Password."
+    argument "image_name", type: String, desc: "The name of your favorite docker image."
+    argument "container_id", type: String, desc: "The ID of the running container."
     run do |opts, args|
     end
     sub "sub_command" do
       desc "my_cli's sub_comand."
-      usage <<-USAGE
-      usage: my_cli sub_command [--help] [-t|--tree]
-                                [--html-path=PATH]
-      USAGE
-      option "-t", "--tree", type: Bool, desc: "Tree."
-      option "--html-path=PATH", type: String, desc: "Html path."
       run do |opts, args|
       end
     end
@@ -544,7 +711,7 @@ MyCli.start(ARGV)
 ```console
 $ crystal run src/help_template_test.cr -- --help
 usage: my_cli [--version] [--help] [-P PORT|--port=PORT]
-              [-h HOST|--host=HOST] [-p PASSWORD|--password=PASSWORD]
+              [-h HOST|--host=HOST] [-p PASSWORD|--password=PASSWORD] [arguments]
 
 Your original command line interface tool.
 
@@ -559,6 +726,12 @@ options:
     Show this help.
 --version
     Show version.
+
+arguments:
+01: image_name
+      The name of your favorite docker image.
+02: container_id
+      The ID of the running container.
 
 sub commands:
     sub_command   my_cli's sub_comand.
@@ -603,6 +776,45 @@ alias HelpOptionsType = Array(NamedTuple(
     default:   false,
     required:  false,
     help_line: "    --help                           Show this help.",
+  },
+]
+```
+arguments:
+
+```crystal
+# `arguments` type
+alias HelpArgumentsType = Array(NamedTuple(
+    method_name:     String,
+    display_name:    String,
+    type:            Int8.class | Int32.class | ... | String.class | Bool.clsss, # => Support Types
+    desc:            String,
+    default:         Int8 | Int32 | ... | String | Bool, # => Support Types,
+    required:        Bool,
+    sequence_number: Int32,
+    help_line:       String
+))
+
+# `arguments` example
+[
+  {
+    method_name:     "argument1",
+    display_name:    "argument1",
+    type:            String,
+    desc:            "first argument.",
+    default:         "default value",
+    required:        true,
+    sequence_number: 1,
+    help_line:       "    01. argument1            first argument. [type:String] [default:\"default value\"] [required]",
+  },
+  {
+    method_name:     "argument2foo",
+    display_name:    "argument2foo",
+    type:            Int32,
+    desc:            "second argument.",
+    default:         1,
+    required:        false,
+    sequence_number: 2,
+    help_line:       "    02. argument2foo         second argument. [type:Int32] [default:1]",
   },
 ]
 ```
