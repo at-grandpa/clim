@@ -108,7 +108,7 @@ require "clim"
 class MyCli < Clim
   main do
     run do |opts, args|
-      puts "#{args.argv.join(", ")}!"
+      puts "#{args.all_args.join(", ")}!"
     end
   end
 end
