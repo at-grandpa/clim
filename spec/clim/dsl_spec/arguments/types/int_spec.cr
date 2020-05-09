@@ -63,6 +63,11 @@ spec(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -96,6 +101,11 @@ spec(
           "type" => Int64?,
           "method" => "arg_int_64",
           "expect_value" => nil,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1"],
         },
         {
           "type" => Array(String),
@@ -135,6 +145,11 @@ spec(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1", "2"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -168,6 +183,11 @@ spec(
           "type" => Int64?,
           "method" => "arg_int_64",
           "expect_value" => nil,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1", "2", "3"],
         },
         {
           "type" => Array(String),
@@ -207,6 +227,11 @@ spec(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1", "2", "3", "4"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -240,6 +265,11 @@ spec(
           "type" => Int64?,
           "method" => "arg_int_64",
           "expect_value" => 4,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1", "2", "3", "4", "5"],
         },
         {
           "type" => Array(String),

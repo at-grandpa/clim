@@ -121,6 +121,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -146,6 +151,11 @@ spec_for_sub(
           "type" => String,
           "method" => "arg_1",
           "expect_value" => "arg1",
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["arg1"],
         },
         {
           "type" => Array(String),
@@ -177,6 +187,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["arg1", "arg2"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["arg2"],
         },
@@ -205,6 +220,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["arg1", "arg2", "arg3"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["arg2", "arg3"],
         },
@@ -230,6 +250,11 @@ spec_for_sub(
           "type" => String,
           "method" => "arg_1",
           "expect_value" => "arg1",
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["arg1", "arg2", "arg3"],
         },
         {
           "type" => Array(String),
@@ -293,6 +318,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -323,6 +353,11 @@ spec_for_sub(
           "type" => String,
           "method" => "arg_sub_1_2",
           "expect_value" => "default argument2",
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["arg1"],
         },
         {
           "type" => Array(String),
@@ -359,6 +394,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["arg1", "arg2"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -392,6 +432,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["arg1", "arg2", "arg3"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["arg3"],
         },
@@ -422,6 +467,11 @@ spec_for_sub(
           "type" => String,
           "method" => "arg_sub_1_2",
           "expect_value" => "arg2",
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["arg1", "arg2", "arg3"],
         },
         {
           "type" => Array(String),
@@ -496,6 +546,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -521,6 +576,11 @@ spec_for_sub(
           "type" => Bool,
           "method" => "arg_sub_sub_1",
           "expect_value" => true,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["true"],
         },
         {
           "type" => Array(String),
@@ -552,6 +612,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["false", "true"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["true"],
         },
@@ -577,6 +642,11 @@ spec_for_sub(
           "type" => Bool,
           "method" => "arg_sub_sub_1",
           "expect_value" => true,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["true", "false"],
         },
         {
           "type" => Array(String),
@@ -651,6 +721,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -676,6 +751,11 @@ spec_for_sub(
           "type" => Int32,
           "method" => "arg_sub_2",
           "expect_value" => 111,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["111"],
         },
         {
           "type" => Array(String),
@@ -707,6 +787,11 @@ spec_for_sub(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["111", "222"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["222"],
         },
@@ -732,6 +817,11 @@ spec_for_sub(
           "type" => Int32,
           "method" => "arg_sub_2",
           "expect_value" => 111,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["111", "222"],
         },
         {
           "type" => Array(String),

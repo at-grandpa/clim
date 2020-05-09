@@ -142,8 +142,9 @@ describe "STDOUT spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/run_block_execution.cr --no-color -- --option option_value argument_value unknown_value1 unknown_value2`.should eq <<-DISPLAY
     option       : option_value
     argument     : argument_value
-    argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
+    all_args     : ["argument_value", "unknown_value1", "unknown_value2"]
     unknown_args : ["unknown_value1", "unknown_value2"]
+    argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
 
     DISPLAY
   end
@@ -151,8 +152,9 @@ describe "STDOUT spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/run_block_execution.cr --no-color -- sub_1 --option option_value argument_value unknown_value1 unknown_value2`.should eq <<-DISPLAY
     sub_1 option       : option_value
     sub_1 argument     : argument_value
-    sub_1 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
+    sub_1 all_args     : ["argument_value", "unknown_value1", "unknown_value2"]
     sub_1 unknown_args : ["unknown_value1", "unknown_value2"]
+    sub_1 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
 
     DISPLAY
   end
@@ -160,8 +162,9 @@ describe "STDOUT spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/run_block_execution.cr --no-color -- sub_1 sub_sub_1 --option option_value argument_value unknown_value1 unknown_value2`.should eq <<-DISPLAY
     sub_sub_1 option       : option_value
     sub_sub_1 argument     : argument_value
-    sub_sub_1 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
+    sub_sub_1 all_args     : ["argument_value", "unknown_value1", "unknown_value2"]
     sub_sub_1 unknown_args : ["unknown_value1", "unknown_value2"]
+    sub_sub_1 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
 
     DISPLAY
   end
@@ -169,8 +172,9 @@ describe "STDOUT spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/run_block_execution.cr --no-color -- sub_2 --option option_value argument_value unknown_value1 unknown_value2`.should eq <<-DISPLAY
     sub_2 option       : option_value
     sub_2 argument     : argument_value
-    sub_2 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
+    sub_2 all_args     : ["argument_value", "unknown_value1", "unknown_value2"]
     sub_2 unknown_args : ["unknown_value1", "unknown_value2"]
+    sub_2 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
 
     DISPLAY
   end
