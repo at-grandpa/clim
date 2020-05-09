@@ -540,7 +540,7 @@ You can specify multiple arguments for the command.
  | `default`       | default value        | `default: "default value"`      | false    | `nil`                     |
  | `required`      | required flag        | `required: true`                | false    | `false`                   |
 
-The order of the arguments is related to the order in which they are defined. Also, when calling a method, hyphens in the method name of the argument are converted to underscores. There are also `unknown_args` and `argv` methods.
+The order of the arguments is related to the order in which they are defined. Also, when calling a method, hyphens in the method name of the argument are converted to underscores. There are also `all_args`, `unknown_args` and `argv` methods.
 
 ```crystal
 require "clim"
@@ -598,15 +598,17 @@ $ crystal run src/argument.cr -- --help
     01. first-arg       first argument! [type:String] [default:"default value"]
     02. second-arg      second argument! [type:Int32] [default:999]
 
-$ crystal run src/argument.cr -- 000 111 222 333
+$ crystal run src/argument.cr -- 000 111 --dummy dummy_words 222 333
 typeof(args.first_arg)    => String
        args.first_arg     => 000
 typeof(args.second_arg)   => Int32
        args.second_arg    => 111
+typeof(args.all_args)     => Array(String)
+       args.all_args      => ["000", "111", "222", "333"]
 typeof(args.unknown_args) => Array(String)
        args.unknown_args  => ["222", "333"]
 typeof(args.argv)         => Array(String)
-       args.argv          => ["000", "111", "222", "333"]
+       args.argv          => ["000", "111", "--dummy", "dummy_words", "222", "333"]
 
 ```
 
