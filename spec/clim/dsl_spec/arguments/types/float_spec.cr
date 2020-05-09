@@ -49,6 +49,11 @@ spec(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => [] of String,
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -72,6 +77,11 @@ spec(
           "type" => Float64?,
           "method" => "arg_float_64",
           "expect_value" => nil,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1.1"],
         },
         {
           "type" => Array(String),
@@ -101,6 +111,11 @@ spec(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1.1", "2.2"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => [] of String,
         },
@@ -127,6 +142,11 @@ spec(
         },
         {
           "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1.1", "2.2", "3.3"],
+        },
+        {
+          "type" => Array(String),
           "method" => "unknown_args",
           "expect_value" => ["3.3"] of String,
         },
@@ -150,6 +170,11 @@ spec(
           "type" => Float64?,
           "method" => "arg_float_64",
           "expect_value" => 2.2f64,
+        },
+        {
+          "type" => Array(String),
+          "method" => "all_args",
+          "expect_value" => ["1.1", "2.2", "3.3", "4.4"],
         },
         {
           "type" => Array(String),
