@@ -221,7 +221,7 @@ describe "README.md spec, " do
   end
   it "(io_in_run_block) crystal run src/io_in_run_block.cr" do
     `crystal run spec/clim/readme/files/io_in_run_block.cr --no-color -- `.should eq <<-DISPLAY
-    in main_comman
+    in main_command
 
     DISPLAY
   end
