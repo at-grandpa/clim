@@ -322,6 +322,8 @@ end
 An alias for the command. It can be specified only for subcommand.
 
 ```crystal
+require "clim"
+
 class MyCli < Clim
   main do
     run do |opts, args|
@@ -335,6 +337,8 @@ class MyCli < Clim
     end
   end
 end
+
+MyCli.start(ARGV)
 ```
 
 ```console
@@ -351,6 +355,8 @@ sub_command run!!
 You can specify the string to be displayed with `--version`.
 
 ```crystal
+require "clim"
+
 class MyCli < Clim
   main do
     version "mycli version: 1.0.1"
@@ -359,6 +365,8 @@ class MyCli < Clim
     end
   end
 end
+
+MyCli.start(ARGV)
 ```
 
 ```console
@@ -369,6 +377,8 @@ mycli version: 1.0.1
 If you want to display it even with `-v`, add ` short: "-v" `.
 
 ```crystal
+require "clim"
+
 class MyCli < Clim
   main do
     version "mycli version: 1.0.1", short: "-v"
@@ -377,6 +387,8 @@ class MyCli < Clim
     end
   end
 end
+
+MyCli.start(ARGV)
 ```
 
 ```console
@@ -393,6 +405,8 @@ The short help option is not set by default. If you want help to appear by speci
 (However, it should not conflict with other options.)
 
 ```crystal
+require "clim"
+
 class MyCli < Clim
   main do
     desc "help directive test."
@@ -403,6 +417,8 @@ class MyCli < Clim
     end
   end
 end
+
+MyCli.start(ARGV)
 ```
 
 ```console
@@ -568,6 +584,8 @@ class MyCli < Clim
       puts "       args.first_arg     => #{args.first_arg}"
       puts "typeof(args.second_arg)   => #{typeof(args.second_arg)}"
       puts "       args.second_arg    => #{args.second_arg}"
+      puts "typeof(args.all_args)     => #{typeof(args.all_args)}"
+      puts "       args.all_args      => #{args.all_args}"
       puts "typeof(args.unknown_args) => #{typeof(args.unknown_args)}"
       puts "       args.unknown_args  => #{args.unknown_args}"
       puts "typeof(args.argv)         => #{typeof(args.argv)}"
@@ -576,7 +594,6 @@ class MyCli < Clim
   end
 end
 
-MyCli.start(ARGV)
 ```
 
 ```console
@@ -863,6 +880,8 @@ end
 You can receive `io` in a run block by passing it as the second argument to the start method.
 
 ```crystal
+require "clim"
+
 class IoCommand < Clim
   main do
     run do |opts, args, io|
@@ -873,7 +892,7 @@ end
 
 io = IO::Memory.new
 IoCommand.start([] of String, io: io)
-io.to_s # => "in main_command\n"
+puts io.to_s # => "in main_command\n"
 ```
 
 ## Development
