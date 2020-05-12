@@ -68,55 +68,94 @@ spec(
     },
     {
       argv:              ["-h"],
-      exception_message: "Undefined option. \"-h\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-h\"",
+      }
     },
     {
       argv:              ["--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["-b"],
-      exception_message: "Option that requires an argument. \"-b\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Option that requires an argument. \"-b\"",
+      }
     },
     {
       argv:              ["--bool"],
-      exception_message: "Undefined option. \"--bool\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--bool\"",
+      }
     },
     {
       argv:              ["--bool", "true"],
-      exception_message: "Undefined option. \"--bool\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--bool\"",
+      }
     },
     {
       argv:              ["--bool", "false"],
-      exception_message: "Undefined option. \"--bool\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--bool\"",
+      }
     },
     {
       argv:              ["arg1", "-b"],
-      exception_message: "Option that requires an argument. \"-b\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Option that requires an argument. \"-b\"",
+      }
     },
     {
       argv:              ["arg1", "--bool"],
-      exception_message: "Undefined option. \"--bool\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--bool\"",
+      }
     },
     {
       argv:              ["-b", "arg1"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
+      }
     },
     {
       argv:              ["--bool=arg1"],
-      exception_message: "Undefined option. \"--bool=arg1\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--bool=arg1\"",
+      }
     },
     {
       argv:              ["--b"],
-      exception_message: "Undefined option. \"--b\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--b\"",
+      }
     },
     {
       argv:              ["-bool"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
+      }
     },
     {
       argv:        ["--help"],

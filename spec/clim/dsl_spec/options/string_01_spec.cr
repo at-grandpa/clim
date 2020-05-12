@@ -128,31 +128,52 @@ spec(
     },
     {
       argv:              ["-h"],
-      exception_message: "Undefined option. \"-h\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-h\"",
+      }
     },
     {
       argv:              ["--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["-s"],
-      exception_message: "Option that requires an argument. \"-s\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Option that requires an argument. \"-s\"",
+      }
     },
     {
       argv:              ["--string"],
-      exception_message: "Option that requires an argument. \"--string\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Option that requires an argument. \"--string\"",
+      }
     },
     {
       argv:              ["arg1", "-s"],
-      exception_message: "Option that requires an argument. \"-s\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Option that requires an argument. \"-s\"",
+      }
     },
     {
       argv:              ["arg1", "--string"],
-      exception_message: "Option that requires an argument. \"--string\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Option that requires an argument. \"--string\"",
+      }
     },
     {
       argv:        ["--help"],

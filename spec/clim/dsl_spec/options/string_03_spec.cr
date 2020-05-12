@@ -88,35 +88,59 @@ spec(
     },
     {
       argv:              ["-h"],
-      exception_message: "Undefined option. \"-h\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-h\"",
+      }
     },
     {
       argv:              ["--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["--string"],
-      exception_message: "Option that requires an argument. \"--string\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Option that requires an argument. \"--string\"",
+      }
     },
     {
       argv:              ["-s"],
-      exception_message: "Undefined option. \"-s\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-s\"",
+      }
     },
     {
       argv:              ["-s", "string1"],
-      exception_message: "Undefined option. \"-s\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-s\"",
+      }
     },
     {
       argv:              ["-s=string1"],
-      exception_message: "Undefined option. \"-s=string1\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-s=string1\"",
+      }
     },
     {
       argv:              ["arg1", "--string"],
-      exception_message: "Option that requires an argument. \"--string\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Option that requires an argument. \"--string\"",
+      }
     },
     {
       argv:        ["--help"],

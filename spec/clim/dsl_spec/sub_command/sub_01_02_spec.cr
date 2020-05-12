@@ -113,15 +113,24 @@ spec_for_sub_sub_commands(
     },
     {
       argv:              ["-h"],
-      exception_message: "Undefined option. \"-h\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-h\"",
+      }
     },
     {
       argv:              ["--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv: ["--help"],
@@ -157,31 +166,52 @@ spec_for_sub_sub_commands(
     },
     {
       argv:              ["sub_command", "--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_command", "-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_command", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_command", "--missing-option"],
-      exception_message: "Undefined option. \"--missing-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--missing-option\"",
+      }
     },
     {
       argv:              ["sub_command", "-m", "arg1"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_command", "arg1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_command", "-m", "-d"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:        ["sub_command", "--help"],
@@ -217,31 +247,52 @@ spec_for_sub_sub_commands(
     },
     {
       argv:              ["sub_command", "sub_sub_command", "--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_command", "sub_sub_command", "-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_command", "sub_sub_command", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_command", "sub_sub_command", "--missing-option"],
-      exception_message: "Undefined option. \"--missing-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--missing-option\"",
+      }
     },
     {
       argv:              ["sub_command", "sub_sub_command", "-m", "arg1"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_command", "sub_sub_command", "arg1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_command", "sub_sub_command", "-m", "-d"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:        ["sub_command", "sub_sub_command", "--help"],
