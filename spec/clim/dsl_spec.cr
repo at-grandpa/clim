@@ -42,7 +42,7 @@ macro it_blocks(class_name, spec_case)
     end
   {% elsif spec_case.keys.includes?("exception_message".id) %}
     it "raises an Exception." do
-      expect_raises(Exception, {{spec_case["exception_message"]}}) do
+      expect_raises({{spec_case["exception_message"]["exception"]}}, {{spec_case["exception_message"]["message"]}}) do
         {{class_name}}.start_parse({{spec_case["argv"]}})
       end
     end

@@ -270,15 +270,24 @@ spec_for_sub(
     },
     {
       argv:              ["-h"],
-      exception_message: "Undefined option. \"-h\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-h\"",
+      }
     },
     {
       argv:              ["--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:        ["--help"],
@@ -487,31 +496,52 @@ spec_for_sub(
     },
     {
       argv:              ["sub_1", "--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_1", "-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_1", "--missing-option"],
-      exception_message: "Undefined option. \"--missing-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--missing-option\"",
+      }
     },
     {
       argv:              ["sub_1", "-m", "arg1"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_1", "arg1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_1", "-m", "-d"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:        ["sub_1", "--help"],
@@ -662,39 +692,66 @@ spec_for_sub(
     },
     {
       argv:              ["sub_1", "sub_sub_1", "--help", "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "--missing-option"],
-      exception_message: "Undefined option. \"--missing-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--missing-option\"",
+      }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "-m", "arg1"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "arg1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "-m", "-d"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "--help", "ignore-arg"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ignore-arg]",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Bool arguments accept only \"true\" or \"false\". Input: [ignore-arg]",
+      }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "ignore-arg", "--help"],
-      exception_message: "Bool arguments accept only \"true\" or \"false\". Input: [ignore-arg]",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Bool arguments accept only \"true\" or \"false\". Input: [ignore-arg]",
+      }
     },
     {
       argv:        ["sub_1", "sub_sub_1", "--help"],
@@ -837,39 +894,66 @@ spec_for_sub(
     },
     {
       argv:              ["sub_2",  "-ignore-option"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_2", "-ignore-option", "--help"],
-      exception_message: "Undefined option. \"-ignore-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-ignore-option\"",
+      }
     },
     {
       argv:              ["sub_2", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_2", "--missing-option"],
-      exception_message: "Undefined option. \"--missing-option\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"--missing-option\"",
+      }
     },
     {
       argv:              ["sub_2", "-m", "arg1"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_2", "arg1", "-m"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_2", "-m", "-d"],
-      exception_message: "Undefined option. \"-m\"",
+      exception_message: {
+        exception: Clim::ClimInvalidOptionException,
+        message:   "Undefined option. \"-m\"",
+      }
     },
     {
       argv:              ["sub_2", "--help", "ignore-arg"],
-      exception_message: "Invalid Int32: ignore-arg",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int32: ignore-arg",
+      }
     },
     {
       argv:              ["sub_2", "ignore-arg", "--help"],
-      exception_message: "Invalid Int32: ignore-arg",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int32: ignore-arg",
+      }
     },
     {
       argv:        ["sub_2", "--help"],

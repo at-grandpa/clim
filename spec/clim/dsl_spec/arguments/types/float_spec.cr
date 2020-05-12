@@ -188,6 +188,20 @@ spec(
         },
       ],
     },
+    {
+      argv:              ["foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Float32: foo",
+      }
+    },
+    {
+      argv:              ["1.1", "foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Float64: foo",
+      }
+    },
   ]
 )
 {% end %}

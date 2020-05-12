@@ -283,6 +283,34 @@ spec(
         },
       ],
     },
+    {
+      argv:              ["foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int8: foo",
+      }
+    },
+    {
+      argv:              ["1", "foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int16: foo",
+      }
+    },
+    {
+      argv:              ["1", "2", "foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int32: foo",
+      }
+    },
+    {
+      argv:              ["1", "2", "3", "foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int64: foo",
+      }
+    },
   ]
 )
 {% end %}

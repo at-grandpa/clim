@@ -59,7 +59,10 @@ spec(
     },
     {
       argv:              ["-i", "foo"],
-      exception_message: "Invalid Int8: foo",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int8: foo",
+      }
     },
     {
       argv:        ["--int8", "5"] of String,
@@ -73,7 +76,10 @@ spec(
     },
     {
       argv:              ["--int8", "foo"],
-      exception_message: "Invalid Int8: foo",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int8: foo",
+      }
     },
     {
       argv:        [] of String,
@@ -97,7 +103,10 @@ spec(
     },
     {
       argv:              ["--int8-default", "foo"],
-      exception_message: "Invalid Int8: foo",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int8: foo",
+      }
     },
 
     # ====================================================
@@ -125,7 +134,10 @@ spec(
     },
     {
       argv:              ["--int16", "foo"],
-      exception_message: "Invalid Int16: foo",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int16: foo",
+      }
     },
 
     # ====================================================
@@ -153,7 +165,10 @@ spec(
     },
     {
       argv:              ["--int32", "foo"],
-      exception_message: "Invalid Int32: foo",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int32: foo",
+      }
     },
 
     # ====================================================
@@ -181,7 +196,10 @@ spec(
     },
     {
       argv:              ["--int64", "foo"],
-      exception_message: "Invalid Int64: foo",
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Invalid Int64: foo",
+      }
     },
   ]
 )

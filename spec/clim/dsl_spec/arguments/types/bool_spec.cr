@@ -251,6 +251,27 @@ spec(
         },
       ],
     },
+    {
+      argv:              ["foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Bool arguments accept only \"true\" or \"false\". Input: [foo]",
+      }
+    },
+    {
+      argv:              ["true", "foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Bool arguments accept only \"true\" or \"false\". Input: [foo]",
+      }
+    },
+    {
+      argv:              ["true", "false", "foo"],
+      exception_message: {
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Bool arguments accept only \"true\" or \"false\". Input: [foo]",
+      }
+    },
   ]
 )
 {% end %}
