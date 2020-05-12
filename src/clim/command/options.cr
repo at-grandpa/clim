@@ -61,7 +61,7 @@ class Clim
           return if opts.help
         end
         return if invalid_required_names.empty?
-        raise "Required options. \"#{invalid_required_names.join("\", \"")}\""
+        raise ClimInvalidOptionException.new "Required options. \"#{invalid_required_names.join("\", \"")}\""
       end
 
       private def invalid_required_names
