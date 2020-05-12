@@ -54,7 +54,7 @@ spec(
     {
       argv:              ["--array-float32", "foo"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Invalid Float32: foo",
       }
     },
@@ -85,7 +85,7 @@ spec(
     {
       argv:              ["--array-float64", "foo"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Invalid Float64: foo",
       }
     },

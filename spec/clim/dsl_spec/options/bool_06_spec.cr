@@ -152,7 +152,7 @@ spec(
     {
       argv:              ["--bool", "arg1"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Bool arguments accept only \"true\" or \"false\". Input: [arg1]",
       }
     },

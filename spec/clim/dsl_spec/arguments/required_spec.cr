@@ -43,22 +43,22 @@ spec(
       argv:              [] of String,
       exception_message: {
         exception: Clim::ClimInvalidOptionException,
-        message:   "Required arguments. \"arg3\",
-      } \"arg4\"",
+        message:   "Required arguments. \"arg3\", \"arg4\"",
+      },
     },
     {
       argv:              ["value1"],
       exception_message: {
         exception: Clim::ClimInvalidOptionException,
-        message:   "Required arguments. \"arg3\",
-      } \"arg4\"",
+        message:   "Required arguments. \"arg3\", \"arg4\"",
+      },
     },
     {
       argv:              ["value1", "value2"],
       exception_message: {
         exception: Clim::ClimInvalidOptionException,
-        message:   "Required arguments. \"arg3\",
-      } \"arg4\"",
+        message:   "Required arguments. \"arg3\", \"arg4\"",
+      },
     },
     {
       argv:              ["value1", "value2", "value3"],
