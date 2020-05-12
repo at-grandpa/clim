@@ -178,4 +178,28 @@ describe "STDOUT spec, " do
 
     DISPLAY
   end
+  it "exception message. (Required options)" do
+    `crystal run spec/clim/compile_time_error_spec/files/exception_message.cr --no-color -- `.should eq <<-DISPLAY
+    ERROR: Required options. "--prefix <text>"
+
+    Please see the `--help`.
+
+    DISPLAY
+  end
+  it "exception message. (Option that requires an argument)" do
+    `crystal run spec/clim/compile_time_error_spec/files/exception_message.cr --no-color -- --prefix`.should eq <<-DISPLAY
+    ERROR: Option that requires an argument. "--prefix"
+
+    Please see the `--help`.
+
+    DISPLAY
+  end
+  it "exception message. (Option that requires an argument)" do
+    `crystal run spec/clim/compile_time_error_spec/files/exception_message.cr --no-color -- --prefix=foo`.should eq <<-DISPLAY
+    ERROR: Required arguments. "arg1"
+
+    Please see the `--help`.
+
+    DISPLAY
+  end
 end
