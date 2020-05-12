@@ -742,14 +742,14 @@ spec_for_sub(
     {
       argv:              ["sub_1", "sub_sub_1", "--help", "ignore-arg"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Bool arguments accept only \"true\" or \"false\". Input: [ignore-arg]",
       }
     },
     {
       argv:              ["sub_1", "sub_sub_1", "ignore-arg", "--help"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Bool arguments accept only \"true\" or \"false\". Input: [ignore-arg]",
       }
     },
@@ -944,14 +944,14 @@ spec_for_sub(
     {
       argv:              ["sub_2", "--help", "ignore-arg"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Invalid Int32: ignore-arg",
       }
     },
     {
       argv:              ["sub_2", "ignore-arg", "--help"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Invalid Int32: ignore-arg",
       }
     },
