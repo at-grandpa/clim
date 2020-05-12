@@ -58,7 +58,7 @@ spec(
     {
       argv:              ["--uint8", "foo"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Invalid UInt8: foo",
       }
     },
@@ -89,7 +89,7 @@ spec(
     {
       argv:              ["--uint16", "foo"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Invalid UInt16: foo",
       }
     },
@@ -120,7 +120,7 @@ spec(
     {
       argv:              ["--uint32", "foo"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Invalid UInt32: foo",
       }
     },
@@ -151,7 +151,7 @@ spec(
     {
       argv:              ["--uint64", "foo"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
+        exception: Clim::ClimInvalidTypeCastException,
         message:   "Invalid UInt64: foo",
       }
     },
