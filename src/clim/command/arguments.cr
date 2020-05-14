@@ -3,10 +3,10 @@ require "./arguments/*"
 class Clim
   abstract class Command
     class Arguments
-      property help_string : String = ""
-      property all_args : Array(String) = [] of String
-      property unknown_args : Array(String) = [] of String
-      property argv : Array(String) = [] of String
+      getter help_string : String = ""
+      getter all_args : Array(String) = [] of String
+      getter unknown_args : Array(String) = [] of String
+      getter argv : Array(String) = [] of String
 
       def set_values_by_input_argument(unknown_args : Array(String))
         @all_args = unknown_args.dup
@@ -34,19 +34,7 @@ class Clim
         @unknown_args = unknown_args
       end
 
-      def all_args
-        @all_args
-      end
-
-      def unknown_args
-        @unknown_args
-      end
-
       def set_argv(@argv : Array(String))
-      end
-
-      def argv
-        @argv
       end
 
       def required_validate!(options : Options)

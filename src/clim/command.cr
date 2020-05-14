@@ -187,7 +187,7 @@ class Clim
           {% default_value = default %}
         {% end %}
 
-        property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default_value }}, {{ required }})
+        getter {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default_value }}, {{ required }})
         def {{ option_name }}
           {{ option_name }}_instance.@value
         end
@@ -228,7 +228,7 @@ class Clim
           {% default_value = default %}
         {% end %}
 
-        property {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name.stringify }}, {{ display_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
+        getter {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name.stringify }}, {{ display_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
         def {{ argument_name }}
           {{ argument_name }}_instance.@value
         end
@@ -253,7 +253,7 @@ class Clim
         alias ArgumentsForEachCommand = Arguments_{{ name.id.capitalize }}
         alias RunProc = Proc(OptionsForEachCommand, ArgumentsForEachCommand, IO, Nil)
 
-        property name : String = {{name.id.stringify}}
+        getter name : String = {{name.id.stringify}}
         getter usage : String = "#{ {{name.id.stringify}} } [options] [arguments]"
 
         @options : OptionsForEachCommand

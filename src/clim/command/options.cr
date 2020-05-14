@@ -5,7 +5,7 @@ require "option_parser"
 class Clim
   abstract class Command
     class Options
-      property help_string : String = ""
+      getter help_string : String = ""
 
       @option_parser : OptionParser
       @unknown_args : Array(String)
