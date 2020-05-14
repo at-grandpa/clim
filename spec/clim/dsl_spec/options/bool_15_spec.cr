@@ -22,7 +22,7 @@ require "../../dsl_spec"
 spec(
   spec_class_name: MainCommandWithBoolArgumentsRequiredFalseAndDefaultExists,
   spec_dsl_lines: [
-    "option \"-b ARG\", \"--bool=ARG\", type: Bool, desc: \"Bool option description.\", required: false, default: 1",
+    "option \"-b ARG\", \"--bool=ARG\", type: Bool, desc: \"Bool option description.\", required: false, default: true",
   ],
   spec_desc: "main command with Bool option,",
   spec_cases: [
