@@ -167,10 +167,6 @@ class Clim
       class OptionsForEachCommand
         class Option_{{option_name}} < Option
           define_option_macro({{option_name}}, {{type}}, {{default}}, {{required}})
-
-          def method_name : String
-            {{option_name.stringify}}
-          end
         end
 
         {% default = false if type.id.stringify == "Bool" && default == nil %}
@@ -210,11 +206,7 @@ class Clim
         \{% end %}
 
         class Argument_{{argument_name}} < Argument
-          define_argument_macro({{type}}, {{default}}, {{required}})
-
-          def method_name
-            {{argument_name.stringify}}
-          end
+          define_argument_macro({{argument_name}}, {{type}}, {{default}}, {{required}})
         end
 
         {% if default == nil %}

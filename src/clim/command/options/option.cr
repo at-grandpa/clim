@@ -69,6 +69,7 @@ class Clim
             {% default_type = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% end %}
 
+          getter method_name : String = {{option_name.stringify}}
           getter value : {{value_type}} = {{value_default}}
           getter default : {{default_type}} = {{ SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] }}
           getter set_value : Bool = false

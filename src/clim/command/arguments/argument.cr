@@ -45,7 +45,7 @@ class Clim
           {% end %}
         end
 
-        macro define_argument_macro(type, default, required)
+        macro define_argument_macro(argument_name, type, default, required)
           {% if default != nil %}
             {% value_type = type.stringify.id %}
             {% value_default = default %}
@@ -63,6 +63,7 @@ class Clim
             {% default_type = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% end %}
 
+          getter method_name : String = {{argument_name.stringify}}
           getter value : {{value_type}} = {{value_default}}
           getter default : {{default_type}} = {{ SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] }}
           getter set_value : Bool = false
