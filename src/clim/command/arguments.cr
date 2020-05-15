@@ -15,22 +15,11 @@ class Clim
         defined_args_size = args_array.size
         unknown_args_size = unknown_args.size
 
-        if defined_args_size < unknown_args_size
-          defined_args_values = unknown_args.shift(defined_args_size)
-          defined_args_values.each_with_index do |value, i|
-            args_array[i].set_value(value)
-          end
-        elsif defined_args_size == unknown_args_size
-          defined_args_values = unknown_args.shift(defined_args_size)
-          defined_args_values.each_with_index do |value, i|
-            args_array[i].set_value(value)
-          end
-        elsif unknown_args_size < defined_args_size
-          defined_args_values = unknown_args.shift(defined_args_size)
-          defined_args_values.each_with_index do |value, i|
-            args_array[i].set_value(value)
-          end
+        defined_args_values = unknown_args.shift(defined_args_size)
+        defined_args_values.each_with_index do |value, i|
+          args_array[i].set_value(value)
         end
+
         @unknown_args = unknown_args
       end
 
