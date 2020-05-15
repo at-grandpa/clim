@@ -74,15 +74,10 @@ class Clim
 
       HELP_MESSAGE
 
-      if sub_commands_lines.empty? && arguments_lines.empty?
-        base_help_template
-      elsif sub_commands_lines.empty? && !arguments_lines.empty?
-        base_help_template + arguments_help_template
-      elsif !sub_commands_lines.empty? && arguments_lines.empty?
-        base_help_template + sub_commands_help_template
-      else
-        base_help_template + arguments_help_template + sub_commands_help_template
-      end
+      return base_help_template if sub_commands_lines.empty? && arguments_lines.empty?
+      return base_help_template + arguments_help_template if sub_commands_lines.empty? && !arguments_lines.empty?
+      return base_help_template + sub_commands_help_template if !sub_commands_lines.empty? && arguments_lines.empty?
+      base_help_template + arguments_help_template + sub_commands_help_template
     end
 
     macro help_template(&block)
