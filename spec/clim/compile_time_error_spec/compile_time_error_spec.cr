@@ -143,7 +143,7 @@ describe "Compile time spec, " do
 
      7 | main do
        ^---
-    Error: Can not be declared 'main' or 'main' as sub command.
+    Error: Can not be declared 'main' as sub command.
 
     ERROR
   end
@@ -153,9 +153,9 @@ describe "Compile time spec, " do
 
     In spec/clim/compile_time_error_spec/files/main_is_not_defined.cr:4:3
 
-     4 | sub_command do
-         ^----------
-    Error: undefined local variable or method 'sub_command' for MyCli.class
+     4 | sub do
+         ^--
+    Error: undefined local variable or method 'sub' for MyCli.class
 
     ERROR
   end

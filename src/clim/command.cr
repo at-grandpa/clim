@@ -139,7 +139,7 @@ class Clim
     end
 
     macro main
-      {% raise "Can not be declared 'main' or 'main' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
+      {% raise "Can not be declared 'main' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
     end
 
     macro sub(name, &block)
