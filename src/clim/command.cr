@@ -158,39 +158,18 @@ class Clim
       end
     end
 
-    private macro option_base(short, long, type, desc, default, required)
-      {% raise "Empty option name." if short.empty? %}
-      {% raise "Type [#{type}] is not supported on option." unless SUPPORTED_TYPES_OF_OPTION.keys.includes?(type) %}
-
-      {% base_option_name = long == nil ? short : long %}
-      {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-      class OptionsForEachCommand
-        class Option_{{option_name}} < Option
-          define_option_macro({{option_name}}, {{type}}, {{default}}, {{required}})
-        end
-
-        {% default = false if type.id.stringify == "Bool" && default == nil %}
-        {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
-
-        {% if default == nil %}
-          {% default_value = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] %}
-        {% else %}
-          {% default_value = default %}
-        {% end %}
-
-        getter {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default_value }}, {{ required }})
-        def {{ option_name }}
-          {{ option_name }}_instance.@value
-        end
-      end
-    end
-
     macro option(short, long, type = String, desc = "Option description.", default = nil, required = false)
       option_base({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
     macro option(short, type = String, desc = "Option description.", default = nil, required = false)
       option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
+    end
+
+    private macro option_base(short, long, type, desc, default, required)
+      {% raise "Empty option name." if short.empty? %}
+      {% raise "Type [#{type}] is not supported on option." unless SUPPORTED_TYPES_OF_OPTION.keys.includes?(type) %}
+      Options.define_options({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
     macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)

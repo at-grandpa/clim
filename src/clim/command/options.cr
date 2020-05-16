@@ -102,6 +102,30 @@ class Clim
           {% end %}
         {% end %}
       end
+
+      macro define_options(short, long, type, desc, default, required)
+        {% base_option_name = long == nil ? short : long %}
+        {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
+        class OptionsForEachCommand
+          class Option_{{option_name}} < Option
+            Option.define_option({{option_name}}, {{type}}, {{default}}, {{required}})
+          end
+
+          {% default = false if type.id.stringify == "Bool" && default == nil %}
+          {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
+
+          {% if default == nil %}
+            {% default_value = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] %}
+          {% else %}
+            {% default_value = default %}
+          {% end %}
+
+          getter {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default_value }}, {{ required }})
+          def {{ option_name }}
+            {{ option_name }}_instance.@value
+          end
+        end
+      end
     end
   end
 end

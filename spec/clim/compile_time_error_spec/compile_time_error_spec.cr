@@ -5,10 +5,20 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/bool_with_required_true.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/bool_with_required_true.cr:6:3
+    There was a problem expanding macro 'option'
 
-     6 | option \"-b\", type: Bool, desc: \"your bool.\", required: true
+    Code in spec/clim/compile_time_error_spec/files/bool_with_required_true.cr:6:3
+
+     6 | option "-b", type: Bool, desc: "your bool.", required: true
        ^
+    Called macro defined in src/clim/command.cr:165:5
+
+     165 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
+
+    Which expanded to:
+
+     > 1 | option_base("-b", nil, Bool, "your bool.", nil, true)
+           ^
     Error: You can not specify 'required: true' for Bool option.
 
     ERROR
@@ -243,9 +253,9 @@ describe "Compile time spec, " do
 
      7 | argument "foo" # duplicate
        ^
-    Called macro defined in src/clim/command.cr:196:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     196 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -265,9 +275,9 @@ describe "Compile time spec, " do
 
      12 | argument "foo" # duplicate
       ^
-    Called macro defined in src/clim/command.cr:196:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     196 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -287,9 +297,9 @@ describe "Compile time spec, " do
 
      17 | argument "foo" # duplicate
     ^
-    Called macro defined in src/clim/command.cr:196:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     196 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -309,9 +319,9 @@ describe "Compile time spec, " do
 
      24 | argument "foo" # deplicate
       ^
-    Called macro defined in src/clim/command.cr:196:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     196 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
