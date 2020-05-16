@@ -101,7 +101,7 @@ spec_for_alias_name(
     {
       argv:        ["sub_command_1", "sub_sub_command_1", "arg1", "arg2"],
       expect_help: {{sub_sub_1_help_message}},
-      expect_args_value: ["arg1", "arg"],
+      expect_args_value: ["arg1", "arg2"],
     },
     {
       argv:        ["alias_sub_command_1", "sub_sub_command_1", "arg1", "arg2"],
