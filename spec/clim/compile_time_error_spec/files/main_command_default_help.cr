@@ -1,7 +1,7 @@
 require "./../../../../src/clim"
 
 class MyCli < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
     sub "sub_command" do

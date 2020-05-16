@@ -29,7 +29,7 @@ describe "Compile time spec, " do
 
     In spec/clim/compile_time_error_spec/files/duplicate_main_command.cr:9:3
 
-     9 | main_command do
+     9 | main do
          ^-----------
     Error: Main command is already defined.
 
@@ -43,7 +43,7 @@ describe "Compile time spec, " do
 
     Code in macro 'main'
 
-     1 | main_command do
+     1 | main do
          ^
     Called macro defined in src/clim.cr:12:3
 
@@ -141,7 +141,7 @@ describe "Compile time spec, " do
 
     In spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr:7:3
 
-     7 | main_command do
+     7 | main do
        ^-----------
     Error: Can not be declared 'main_command' or 'main' as sub command.
 

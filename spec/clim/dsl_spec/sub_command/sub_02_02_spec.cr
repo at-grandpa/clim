@@ -6,7 +6,7 @@ macro spec_for_alias_name(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command do
+      main do
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
@@ -201,7 +201,7 @@ spec_for_alias_name(
 {% end %}
 
 class SubCommandWhenDuplicateAliasNameCase1 < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
     sub "sub_command" do
@@ -221,7 +221,7 @@ describe "Call the command." do
 end
 
 class SubCommandWhenDuplicateAliasNameCase2 < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
     sub "sub_command1" do
@@ -241,7 +241,7 @@ describe "Call the command." do
 end
 
 class SubCommandWhenDuplicateAliasNameCase3 < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
     sub "sub_command1" do
