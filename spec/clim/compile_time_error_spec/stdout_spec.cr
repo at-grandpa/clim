@@ -1,11 +1,11 @@
 require "./../../spec_helper"
 
 describe "STDOUT spec, " do
-  it "display main_command help when main command with help_template." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template.cr --no-color -- --help`.should eq <<-DISPLAY
+  it "display main help when main command with help_template." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_with_help_template.cr --no-color -- --help`.should eq <<-DISPLAY
 
       command description: Command Line Interface Tool.
-      command usage: main_command_of_clim_library [options] [arguments]
+      command usage: main_of_clim_library [options] [arguments]
 
       options:
         --help                           Show this help.
@@ -21,7 +21,7 @@ describe "STDOUT spec, " do
     DISPLAY
   end
   it "display sub_command help when main command with help_template." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
+    `crystal run spec/clim/compile_time_error_spec/files/main_with_help_template.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
 
       command description: sub_comand.
       command usage: sub_command [options] [arguments]
@@ -41,7 +41,7 @@ describe "STDOUT spec, " do
     DISPLAY
   end
   it "display sub_sub_command help when main command with help_template." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template.cr --no-color -- sub_command sub_sub_command --help`.should eq <<-DISPLAY
+    `crystal run spec/clim/compile_time_error_spec/files/main_with_help_template.cr --no-color -- sub_command sub_sub_command --help`.should eq <<-DISPLAY
 
       command description: sub_sub_comand description.
       command usage: sub_sub_command [options] [arguments]
@@ -60,8 +60,8 @@ describe "STDOUT spec, " do
 
     DISPLAY
   end
-  it "display main_command help when main command with help_template part2." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template2.cr --no-color -- --help`.should eq <<-DISPLAY
+  it "display main help when main command with help_template part2." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_with_help_template2.cr --no-color -- --help`.should eq <<-DISPLAY
     usage: my_cli [--version] [--help] [-P PORT|--port=PORT]
                   [-h HOST|--host=HOST] [-p PASSWORD|--password=PASSWORD]
 
@@ -91,7 +91,7 @@ describe "STDOUT spec, " do
     DISPLAY
   end
   it "display sub_command help when main command with help_template part2." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_help_template2.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
+    `crystal run spec/clim/compile_time_error_spec/files/main_with_help_template2.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
     usage: my_cli sub_command [--help] [-t|--tree]
                               [--html-path=PATH]
 
@@ -113,8 +113,8 @@ describe "STDOUT spec, " do
 
     DISPLAY
   end
-  it "display main_command help." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_default_help.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
+  it "display main help." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_default_help.cr --no-color -- sub_command --help`.should eq <<-DISPLAY
 
       sub_comand.
 

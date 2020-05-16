@@ -35,7 +35,7 @@ end
 
                         Usage:
 
-                          main_command_of_clim_library [options] [arguments]
+                          main_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -149,7 +149,7 @@ spec_for_help(
 
                         Usage:
 
-                          main_command_of_clim_library [options] [arguments]
+                          main_of_clim_library [options] [arguments]
 
                         Options:
 

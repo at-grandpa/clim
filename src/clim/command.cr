@@ -18,7 +18,7 @@ class Clim
     end
 
     macro alias_name(*names)
-      {% raise "'alias_name' is not supported on main command." if @type == Command_Main_command_of_clim_library %}
+      {% raise "'alias_name' is not supported on main command." if @type == Command_Main_of_clim_library %}
       getter alias_name : Array(String) = {{ names }}.to_a
     end
 
@@ -81,7 +81,7 @@ class Clim
     end
 
     macro help_template(&block)
-      {% raise "Can not be declared 'help_template' as sub command." unless @type == Command_Main_command_of_clim_library %}
+      {% raise "Can not be declared 'help_template' as sub command." unless @type == Command_Main_of_clim_library %}
 
       class Clim::Command
         {% begin %}
@@ -139,7 +139,7 @@ class Clim
     end
 
     macro main
-      {% raise "Can not be declared 'main_command' or 'main' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
+      {% raise "Can not be declared 'main' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
     end
 
     macro sub(name, &block)

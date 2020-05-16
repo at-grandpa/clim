@@ -5,7 +5,7 @@ class IoCommand < Clim
     desc "main command."
     usage "main [sub_command] [arguments]"
     run do |opts, args, io|
-      io.puts "in main_command"
+      io.puts "in main"
     end
   end
 end
@@ -45,7 +45,7 @@ describe Clim do
     it "with IO::Memory in main command" do
       io = IO::Memory.new
       IoCommand.start([] of String, io: io)
-      io.to_s.should eq "in main_command\n"
+      io.to_s.should eq "in main\n"
     end
     it "with IO::Memory in sub command" do
       io = IO::Memory.new
