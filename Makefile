@@ -23,4 +23,4 @@ spec/%:
 		-v $(PWD):/workdir \
 		-w /workdir \
 		crystallang/crystal:latest \
-		/bin/sh -c "crystal eval 'array = \"$(SPEC_FILES)\".split(\" \"); puts array.in_groups_of((array.size / ($(NUM_OF_JOBS))).ceil.to_i).map(&.compact)[$* - 1].join(\" \")' | xargs -d \" \" -I{} /bin/sh -c 'echo \"\n\n=========================\n{}\"; crystal spec {}'"
+		/bin/sh -c "crystal eval 'array = \"$(SPEC_FILES)\".split(\" \"); puts array.map_with_index{|e,i| {index: i, value: e}}.group_by{|e| e[:index] % ($(NUM_OF_JOBS))}[$* - 1].map(&.[](:value)).join(\" \")' | xargs -d \" \" -I{} /bin/sh -c 'echo \"\n\n=========================\n{}\"; crystal spec {}'"
