@@ -194,6 +194,8 @@ class Clim
     end
 
     macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+      {% raise "Empty argument name." if name.empty? %}
+      {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_ARGUMENT.keys.includes?(type) %}
       Arguments.define_arguments({{name}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 

@@ -237,10 +237,20 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_argument_name_main.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_argument_name_main.cr:7:3
+    There was a problem expanding macro 'argument'
+
+    Code in spec/clim/compile_time_error_spec/files/duplicate_argument_name_main.cr:7:3
 
      7 | argument "foo" # duplicate
        ^
+    Called macro defined in src/clim/command.cr:196:5
+
+     196 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+
+    Which expanded to:
+
+       1 |       \n   2 |       \n > 3 |       Arguments.define_arguments("foo", String, "Argument description.", nil, false)
+                 ^
     Error: Argument "foo" is already defined.
 
     ERROR
@@ -249,10 +259,20 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub.cr:12:3
+    There was a problem expanding macro 'argument'
+
+    Code in spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub.cr:12:3
 
      12 | argument "foo" # duplicate
       ^
+    Called macro defined in src/clim/command.cr:196:5
+
+     196 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+
+    Which expanded to:
+
+       1 |       \n   2 |       \n > 3 |       Arguments.define_arguments("foo", String, "Argument description.", nil, false)
+                 ^
     Error: Argument "foo" is already defined.
 
     ERROR
@@ -261,10 +281,20 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_sub.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_sub.cr:17:3
+    There was a problem expanding macro 'argument'
+
+    Code in spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_sub.cr:17:3
 
      17 | argument "foo" # duplicate
     ^
+    Called macro defined in src/clim/command.cr:196:5
+
+     196 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+
+    Which expanded to:
+
+       1 |       \n   2 |       \n > 3 |       Arguments.define_arguments("foo", String, "Argument description.", nil, false)
+                 ^
     Error: Argument "foo" is already defined.
 
     ERROR
@@ -273,10 +303,20 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_2.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_2.cr:24:3
+    There was a problem expanding macro 'argument'
+
+    Code in spec/clim/compile_time_error_spec/files/duplicate_argument_name_sub_2.cr:24:3
 
      24 | argument "foo" # deplicate
       ^
+    Called macro defined in src/clim/command.cr:196:5
+
+     196 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+
+    Which expanded to:
+
+       1 |       \n   2 |       \n > 3 |       Arguments.define_arguments("foo", String, "Argument description.", nil, false)
+                 ^
     Error: Argument "foo" is already defined.
 
     ERROR

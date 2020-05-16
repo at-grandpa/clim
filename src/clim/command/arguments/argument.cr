@@ -46,8 +46,6 @@ class Clim
         end
 
         macro define_argument(name, type, default, required)
-          {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_ARGUMENT.keys.includes?(type) %}
-
           {% if default != nil %}
             {% value_type = type.stringify.id %}
             {% value_default = default %}

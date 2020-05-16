@@ -85,8 +85,6 @@ class Clim
       end
 
       macro define_arguments(name, type, desc, default, required)
-        {% raise "Empty argument name." if name.empty? %}
-
         {% method_name = name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
         {% display_name = name.id %}
         class ArgumentsForEachCommand
