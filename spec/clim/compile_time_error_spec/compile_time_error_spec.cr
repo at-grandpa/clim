@@ -11,9 +11,9 @@ describe "Compile time spec, " do
 
      6 | option "-b", type: Bool, desc: "your bool.", required: true
        ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:165:5
 
-     175 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
+     165 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -67,14 +67,14 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub") do
          ^
-    Called macro defined in src/clim/command.cr:164:5
+    Called macro defined in src/clim/command.cr:155:5
 
-     164 | macro sub_command(name, &block)
+     155 | macro sub_command(name, &block)
 
     Which expanded to:
 
-       1 |       \n > 2 |       command("sub") do
-                 ^
+     > 1 | command("sub") do
+           ^
     Error: 'run' block is not defined.
 
     ERROR
@@ -89,14 +89,14 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub_sub") do
          ^
-    Called macro defined in src/clim/command.cr:164:5
+    Called macro defined in src/clim/command.cr:155:5
 
-     164 | macro sub_command(name, &block)
+     155 | macro sub_command(name, &block)
 
     Which expanded to:
 
-       1 |       \n > 2 |       command("sub_sub") do
-                 ^
+     > 1 | command("sub_sub") do
+           ^
     Error: 'run' block is not defined.
 
     ERROR
@@ -111,14 +111,14 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub2") do
          ^
-    Called macro defined in src/clim/command.cr:164:5
+    Called macro defined in src/clim/command.cr:155:5
 
-     164 | macro sub_command(name, &block)
+     155 | macro sub_command(name, &block)
 
     Which expanded to:
 
-       1 |       \n > 2 |       command("sub2") do
-                 ^
+     > 1 | command("sub2") do
+           ^
     Error: 'run' block is not defined.
 
     ERROR
@@ -253,9 +253,9 @@ describe "Compile time spec, " do
 
      7 | argument "foo" # duplicate
        ^
-    Called macro defined in src/clim/command.cr:185:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     185 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -275,9 +275,9 @@ describe "Compile time spec, " do
 
      12 | argument "foo" # duplicate
       ^
-    Called macro defined in src/clim/command.cr:185:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     185 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -297,9 +297,9 @@ describe "Compile time spec, " do
 
      17 | argument "foo" # duplicate
     ^
-    Called macro defined in src/clim/command.cr:185:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     185 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -319,99 +319,15 @@ describe "Compile time spec, " do
 
      24 | argument "foo" # deplicate
       ^
-    Called macro defined in src/clim/command.cr:185:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     185 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
        1 |       \n   2 |       \n > 3 |       Arguments.define_arguments("foo", String, "Argument description.", nil, false)
                  ^
     Error: Argument "foo" is already defined.
-
-    ERROR
-  end
-  it "the argument type of 'desc' is not correct." do
-    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/desc.cr --no-color 2>&1`.should eq <<-ERROR
-    Showing last frame. Use --error-trace for full trace.
-
-    In spec/clim/compile_time_error_spec/files/invalid_type/desc.cr:5:5
-
-     5 | desc 1
-         ^---
-    Error: Argument type of 'desc' must be StringLiteral, not NumberLiteral.
-
-    ERROR
-  end
-  it "the argument type of 'usage' is not correct." do
-    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/usage.cr --no-color 2>&1`.should eq <<-ERROR
-    Showing last frame. Use --error-trace for full trace.
-
-    In spec/clim/compile_time_error_spec/files/invalid_type/usage.cr:5:5
-
-     5 | usage true
-         ^----
-    Error: Argument type of 'usage' must be StringLiteral, not BoolLiteral.
-
-    ERROR
-  end
-  it "the argument type of 'alias_name' is not correct." do
-    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/alias_name.cr --no-color 2>&1`.should eq <<-ERROR
-    Showing last frame. Use --error-trace for full trace.
-
-    In spec/clim/compile_time_error_spec/files/invalid_type/alias_name.cr:8:7
-
-     8 | alias_name true, "foo", 1, ["bar"], false
-         ^---------
-    Error: All 'alias_name' argument types must be StringLiteral and must not contain BoolLiteral, NumberLiteral, ArrayLiteral.
-
-    ERROR
-  end
-  it "the argument type of 'version' is not correct." do
-    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/version.cr --no-color 2>&1`.should eq <<-ERROR
-    Showing last frame. Use --error-trace for full trace.
-
-    In spec/clim/compile_time_error_spec/files/invalid_type/version.cr:5:5
-
-     5 | version true
-         ^------
-    Error: Argument type of 'version' must be StringLiteral, not BoolLiteral.
-
-    ERROR
-  end
-  it "the argument type of 'version.short' is not correct." do
-    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/version_short.cr --no-color 2>&1`.should eq <<-ERROR
-    Showing last frame. Use --error-trace for full trace.
-
-    In spec/clim/compile_time_error_spec/files/invalid_type/version_short.cr:5:5
-
-     5 | version "foo", short: 1
-         ^------
-    Error: Argument type of 'version.short' must be StringLiteral, not NumberLiteral.
-
-    ERROR
-  end
-  it "the argument type of 'help.short' is not correct." do
-    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/help_short.cr --no-color 2>&1`.should eq <<-ERROR
-    Showing last frame. Use --error-trace for full trace.
-
-    In spec/clim/compile_time_error_spec/files/invalid_type/help_short.cr:5:5
-
-     5 | help short: true
-         ^---
-    Error: Argument type of 'help.short' must be StringLiteral, not BoolLiteral.
-
-    ERROR
-  end
-  it "the argument type of 'sub' is not correct." do
-    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/sub.cr --no-color 2>&1`.should eq <<-ERROR
-    Showing last frame. Use --error-trace for full trace.
-
-    In spec/clim/compile_time_error_spec/files/invalid_type/sub.cr:7:3
-
-     7 | sub 1 do
-       ^
-    Error: Argument type of 'sub' must be StringLiteral, not NumberLiteral.
 
     ERROR
   end
