@@ -83,6 +83,35 @@ class Clim
           {% end %}
         {% end %}
       end
+
+      macro define_arguments(name, type, desc, default, required)
+        {% raise "Empty argument name." if name.empty? %}
+
+        {% method_name = name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
+        {% display_name = name.id %}
+        class ArgumentsForEachCommand
+
+          \{% if @type.constants.map(&.id.stringify).includes?("Argument_" + {{method_name.stringify}}.id.stringify) %}
+            \{% raise "Argument \"" + {{method_name.stringify}}.id.stringify + "\" is already defined." %}
+          \{% end %}
+
+          class Argument_{{method_name}} < Argument
+            Argument.define_argument({{method_name}}, {{type}}, {{default}}, {{required}})
+          end
+
+          {% if default == nil %}
+            {% default_value = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
+          {% else %}
+            {% default_value = default %}
+          {% end %}
+
+          getter {{ method_name }}_instance : Argument_{{method_name}} = Argument_{{method_name}}.new({{ method_name.stringify }}, {{ display_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
+          def {{ method_name }}
+            {{ method_name }}_instance.@value
+          end
+        end
+
+      end
     end
   end
 end

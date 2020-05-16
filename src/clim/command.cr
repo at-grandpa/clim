@@ -194,33 +194,7 @@ class Clim
     end
 
     macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
-      {% raise "Empty argument name." if name.empty? %}
-      {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_ARGUMENT.keys.includes?(type) %}
-
-      {% argument_name = name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-      {% display_name = name.id %}
-      class ArgumentsForEachCommand
-
-        \{% if @type.constants.map(&.id.stringify).includes?("Argument_" + {{argument_name.stringify}}.id.stringify) %}
-          \{% raise "Argument \"" + {{argument_name.stringify}}.id.stringify + "\" is already defined." %}
-        \{% end %}
-
-        class Argument_{{argument_name}} < Argument
-          define_argument_macro({{argument_name}}, {{type}}, {{default}}, {{required}})
-        end
-
-        {% if default == nil %}
-          {% default_value = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
-        {% else %}
-          {% default_value = default %}
-        {% end %}
-
-        getter {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name.stringify }}, {{ display_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
-        def {{ argument_name }}
-          {{ argument_name }}_instance.@value
-        end
-
-      end
+      Arguments.define_arguments({{name}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
     macro command(name, &block)
