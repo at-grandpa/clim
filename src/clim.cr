@@ -5,12 +5,12 @@ class Clim
 
   macro main(&block)
 
-    Clim::Command.command "main_command_of_clim_library" do
+    Clim::Command.command "main_of_clim_library" do
       {{ yield }}
     end
 
     def self.command
-      Command_Main_command_of_clim_library.create
+      Command_Main_of_clim_library.create
     end
 
     def self.start_parse(argv, io : IO = STDOUT)
@@ -27,7 +27,7 @@ class Clim
       puts "Please see the `--help`."
     end
 
-    {% if @type.constants.map(&.id.stringify).includes?("Command_Main_command_of_clim_library") %}
+    {% if @type.constants.map(&.id.stringify).includes?("Command_Main_of_clim_library") %}
       {% raise "Main command is already defined." %}
     {% end %}
 

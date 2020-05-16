@@ -23,11 +23,11 @@ describe "Compile time spec, " do
 
     ERROR
   end
-  it "duplicate 'main_command'." do
-    `crystal run spec/clim/compile_time_error_spec/files/duplicate_main_command.cr --no-color 2>&1`.should eq <<-ERROR
+  it "duplicate 'main'." do
+    `crystal run spec/clim/compile_time_error_spec/files/duplicate_main.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_main_command.cr:9:3
+    In spec/clim/compile_time_error_spec/files/duplicate_main.cr:9:3
 
      9 | main do
          ^---
@@ -35,13 +35,13 @@ describe "Compile time spec, " do
 
     ERROR
   end
-  it "without run block in main_command." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
+  it "without run block in main." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
     There was a problem expanding macro 'main'
 
-    Code in spec/clim/compile_time_error_spec/files/main_command_without_run_block.cr:4:3
+    Code in spec/clim/compile_time_error_spec/files/main_without_run_block.cr:4:3
 
      4 | main do
          ^
@@ -51,7 +51,7 @@ describe "Compile time spec, " do
 
     Which expanded to:
 
-     > 1 | Clim::Command.command "main_command_of_clim_library" do
+     > 1 | Clim::Command.command "main_of_clim_library" do
            ^
     Error: 'run' block is not defined.
 
@@ -135,23 +135,23 @@ describe "Compile time spec, " do
 
     ERROR
   end
-  it "duplicate 'main_command' in sub command." do
-    `crystal run spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr --no-color 2>&1`.should eq <<-ERROR
+  it "duplicate 'main' in sub command." do
+    `crystal run spec/clim/compile_time_error_spec/files/duplicate_main_in_sub_command.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr:7:3
+    In spec/clim/compile_time_error_spec/files/duplicate_main_in_sub_command.cr:7:3
 
      7 | main do
        ^---
-    Error: Can not be declared 'main_command' or 'main' as sub command.
+    Error: Can not be declared 'main' or 'main' as sub command.
 
     ERROR
   end
-  it "'main_command' is not defined." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_is_not_defined.cr --no-color 2>&1`.should eq <<-ERROR
+  it "'main' is not defined." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_is_not_defined.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/main_command_is_not_defined.cr:4:3
+    In spec/clim/compile_time_error_spec/files/main_is_not_defined.cr:4:3
 
      4 | sub_command do
          ^----------
@@ -159,11 +159,11 @@ describe "Compile time spec, " do
 
     ERROR
   end
-  it "'main_command' with alias name." do
-    `crystal run spec/clim/compile_time_error_spec/files/main_command_with_alias_name.cr --no-color 2>&1`.should eq <<-ERROR
+  it "'main' with alias name." do
+    `crystal run spec/clim/compile_time_error_spec/files/main_with_alias_name.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/main_command_with_alias_name.cr:5:5
+    In spec/clim/compile_time_error_spec/files/main_with_alias_name.cr:5:5
 
      5 | alias_name \"main2\"
          ^---------

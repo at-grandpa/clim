@@ -35,7 +35,7 @@ end
 
                         Usage:
 
-                          main_command_of_clim_library [options] [arguments]
+                          main_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -150,7 +150,7 @@ spec_for_main(
 
                         Usage:
 
-                          main_command_of_clim_library [options] [arguments]
+                          main_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -267,7 +267,7 @@ spec_for_main(
 
                         Usage:
 
-                          main_command_of_clim_library [options] [arguments]
+                          main_of_clim_library [options] [arguments]
 
                         Options:
 
@@ -386,7 +386,7 @@ spec_for_main(
 
                         Usage:
 
-                          main_command with usage [options] [arguments]
+                          main with usage [options] [arguments]
 
                         Options:
 
@@ -400,7 +400,7 @@ spec_for_main(
   spec_class_name: MainCommandWithUsage,
   spec_dsl_lines: [
     "desc \"Main command with desc.\"",
-    "usage \"main_command with usage [options] [arguments]\"",
+    "usage \"main with usage [options] [arguments]\"",
   ],
   spec_desc: "main command,",
   spec_cases: [
@@ -504,7 +504,7 @@ spec_for_main(
 
                         Usage:
 
-                          main_command with usage [options] [arguments]
+                          main with usage [options] [arguments]
 
                         Options:
 
@@ -517,7 +517,7 @@ spec_for_main(
 spec_for_main(
   spec_class_name: MainCommandWithUsageConst,
   spec_class_define_lines: [
-    "USAGE_CONST = \"main_command with usage [options] [arguments]\"",
+    "USAGE_CONST = \"main with usage [options] [arguments]\"",
   ],
   spec_dsl_lines: [
     "desc \"Main command with desc.\"",
@@ -625,7 +625,7 @@ spec_for_main(
 
                         Usage:
 
-                          main_command with usage [options] [arguments]
+                          main with usage [options] [arguments]
 
                         Options:
 
@@ -641,7 +641,7 @@ spec_for_main(
   spec_dsl_lines: [
     "version \"Version 0.9.9\"",
     "desc \"Main command with desc.\"",
-    "usage \"main_command with usage [options] [arguments]\"",
+    "usage \"main with usage [options] [arguments]\"",
   ],
   spec_desc: "main command,",
   spec_cases: [
@@ -688,7 +688,7 @@ spec_for_main(
 
                         Usage:
 
-                          main_command with usage [options] [arguments]
+                          main with usage [options] [arguments]
 
                         Options:
 
@@ -704,7 +704,7 @@ spec_for_main(
   spec_dsl_lines: [
     "version Clim::VERSION",
     "desc \"Main command with desc.\"",
-    "usage \"main_command with usage [options] [arguments]\"",
+    "usage \"main with usage [options] [arguments]\"",
   ],
   spec_desc: "main command,",
   spec_cases: [
@@ -751,7 +751,7 @@ spec_for_main(
 
                         Usage:
 
-                          main_command with usage [options] [arguments]
+                          main with usage [options] [arguments]
 
                         Options:
 
@@ -767,7 +767,7 @@ spec_for_main(
   spec_dsl_lines: [
     "version \"Version 0.9.9\", short: \"-v\"",
     "desc \"Main command with desc.\"",
-    "usage \"main_command with usage [options] [arguments]\"",
+    "usage \"main with usage [options] [arguments]\"",
   ],
   spec_desc: "main command,",
   spec_cases: [
