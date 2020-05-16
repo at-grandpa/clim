@@ -3,10 +3,10 @@ require "./arguments/*"
 class Clim
   abstract class Command
     class Arguments
-      property help_string : String = ""
-      property all_args : Array(String) = [] of String
-      property unknown_args : Array(String) = [] of String
-      property argv : Array(String) = [] of String
+      getter help_string : String = ""
+      getter all_args : Array(String) = [] of String
+      getter unknown_args : Array(String) = [] of String
+      getter argv : Array(String) = [] of String
 
       def set_values_by_input_argument(unknown_args : Array(String))
         @all_args = unknown_args.dup
@@ -15,38 +15,15 @@ class Clim
         defined_args_size = args_array.size
         unknown_args_size = unknown_args.size
 
-        if defined_args_size < unknown_args_size
-          defined_args_values = unknown_args.shift(defined_args_size)
-          defined_args_values.each_with_index do |value, i|
-            args_array[i].set_value(value)
-          end
-        elsif defined_args_size == unknown_args_size
-          defined_args_values = unknown_args.shift(defined_args_size)
-          defined_args_values.each_with_index do |value, i|
-            args_array[i].set_value(value)
-          end
-        elsif unknown_args_size < defined_args_size
-          defined_args_values = unknown_args.shift(defined_args_size)
-          defined_args_values.each_with_index do |value, i|
-            args_array[i].set_value(value)
-          end
+        defined_args_values = unknown_args.shift(defined_args_size)
+        defined_args_values.each_with_index do |value, i|
+          args_array[i].set_value(value)
         end
+
         @unknown_args = unknown_args
       end
 
-      def all_args
-        @all_args
-      end
-
-      def unknown_args
-        @unknown_args
-      end
-
       def set_argv(@argv : Array(String))
-      end
-
-      def argv
-        @argv
       end
 
       def required_validate!(options : Options)
@@ -105,6 +82,33 @@ class Clim
             array << {{iv}}
           {% end %}
         {% end %}
+      end
+
+      macro define_arguments(name, type, desc, default, required)
+        {% method_name = name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
+        {% display_name = name.id %}
+        class ArgumentsForEachCommand
+
+          \{% if @type.constants.map(&.id.stringify).includes?("Argument_" + {{method_name.stringify}}.id.stringify) %}
+            \{% raise "Argument \"" + {{method_name.stringify}}.id.stringify + "\" is already defined." %}
+          \{% end %}
+
+          class Argument_{{method_name}} < Argument
+            Argument.define_argument({{method_name}}, {{type}}, {{default}}, {{required}})
+          end
+
+          {% if default == nil %}
+            {% default_value = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
+          {% else %}
+            {% default_value = default %}
+          {% end %}
+
+          getter {{ method_name }}_instance : Argument_{{method_name}} = Argument_{{method_name}}.new({{ method_name.stringify }}, {{ display_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
+          def {{ method_name }}
+            {{ method_name }}_instance.@value
+          end
+        end
+
       end
     end
   end

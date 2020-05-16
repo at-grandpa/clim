@@ -74,15 +74,10 @@ class Clim
 
       HELP_MESSAGE
 
-      if sub_commands_lines.empty? && arguments_lines.empty?
-        base_help_template
-      elsif sub_commands_lines.empty? && !arguments_lines.empty?
-        base_help_template + arguments_help_template
-      elsif !sub_commands_lines.empty? && arguments_lines.empty?
-        base_help_template + sub_commands_help_template
-      else
-        base_help_template + arguments_help_template + sub_commands_help_template
-      end
+      return base_help_template if sub_commands_lines.empty? && arguments_lines.empty?
+      return base_help_template + arguments_help_template if sub_commands_lines.empty? && !arguments_lines.empty?
+      return base_help_template + sub_commands_help_template if !sub_commands_lines.empty? && arguments_lines.empty?
+      base_help_template + arguments_help_template + sub_commands_help_template
     end
 
     macro help_template(&block)
@@ -163,37 +158,6 @@ class Clim
       end
     end
 
-    private macro option_base(short, long, type, desc, default, required)
-      {% raise "Empty option name." if short.empty? %}
-      {% raise "Type [#{type}] is not supported on option." unless SUPPORTED_TYPES_OF_OPTION.keys.includes?(type) %}
-
-      {% base_option_name = long == nil ? short : long %}
-      {% option_name = base_option_name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-      class OptionsForEachCommand
-        class Option_{{option_name}} < Option
-          define_option_macro({{option_name}}, {{type}}, {{default}}, {{required}})
-
-          def method_name : String
-            {{option_name.stringify}}
-          end
-        end
-
-        {% default = false if type.id.stringify == "Bool" && default == nil %}
-        {% raise "You can not specify 'required: true' for Bool option." if type.id.stringify == "Bool" && required == true %}
-
-        {% if default == nil %}
-          {% default_value = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] %}
-        {% else %}
-          {% default_value = default %}
-        {% end %}
-
-        property {{ option_name }}_instance : Option_{{option_name}} = Option_{{option_name}}.new({{ short }}, {% unless long == nil %} {{ long }}, {% end %} {{ desc }}, {{ default_value }}, {{ required }})
-        def {{ option_name }}
-          {{ option_name }}_instance.@value
-        end
-      end
-    end
-
     macro option(short, long, type = String, desc = "Option description.", default = nil, required = false)
       option_base({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
@@ -202,38 +166,16 @@ class Clim
       option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
+    private macro option_base(short, long, type, desc, default, required)
+      {% raise "Empty option name." if short.empty? %}
+      {% raise "Type [#{type}] is not supported on option." unless SUPPORTED_TYPES_OF_OPTION.keys.includes?(type) %}
+      Options.define_options({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
+    end
+
     macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
       {% raise "Empty argument name." if name.empty? %}
       {% raise "Type [#{type}] is not supported on argument." unless SUPPORTED_TYPES_OF_ARGUMENT.keys.includes?(type) %}
-
-      {% argument_name = name.id.stringify.gsub(/\=/, " ").split(" ").first.id.stringify.gsub(/^-+/, "").gsub(/-/, "_").id %}
-      {% display_name = name.id %}
-      class ArgumentsForEachCommand
-
-        \{% if @type.constants.map(&.id.stringify).includes?("Argument_" + {{argument_name.stringify}}.id.stringify) %}
-          \{% raise "Argument \"" + {{argument_name.stringify}}.id.stringify + "\" is already defined." %}
-        \{% end %}
-
-        class Argument_{{argument_name}} < Argument
-          define_argument_macro({{type}}, {{default}}, {{required}})
-
-          def method_name
-            {{argument_name.stringify}}
-          end
-        end
-
-        {% if default == nil %}
-          {% default_value = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] %}
-        {% else %}
-          {% default_value = default %}
-        {% end %}
-
-        property {{ argument_name }}_instance : Argument_{{argument_name}} = Argument_{{argument_name}}.new({{ argument_name.stringify }}, {{ display_name.stringify }}, {{ desc }}, {{ default_value }}, {{ required }})
-        def {{ argument_name }}
-          {{ argument_name }}_instance.@value
-        end
-
-      end
+      Arguments.define_arguments({{name}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
     macro command(name, &block)
@@ -253,7 +195,7 @@ class Clim
         alias ArgumentsForEachCommand = Arguments_{{ name.id.capitalize }}
         alias RunProc = Proc(OptionsForEachCommand, ArgumentsForEachCommand, IO, Nil)
 
-        property name : String = {{name.id.stringify}}
+        getter name : String = {{name.id.stringify}}
         getter usage : String = "#{ {{name.id.stringify}} } [options] [arguments]"
 
         @options : OptionsForEachCommand

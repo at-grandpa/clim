@@ -2,10 +2,10 @@ class Clim
   abstract class Command
     class Arguments
       abstract class Argument
-        property method_name : String = ""
-        property display_name : String = ""
-        property desc : String = ""
-        property required : Bool = false
+        getter method_name : String = ""
+        getter display_name : String = ""
+        getter desc : String = ""
+        getter required : Bool = false
 
         def to_named_tuple
           {
@@ -45,7 +45,7 @@ class Clim
           {% end %}
         end
 
-        macro define_argument_macro(type, default, required)
+        macro define_argument(name, type, default, required)
           {% if default != nil %}
             {% value_type = type.stringify.id %}
             {% value_default = default %}
@@ -63,9 +63,10 @@ class Clim
             {% default_type = SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% end %}
 
-          property value : {{value_type}} = {{value_default}}
-          property default : {{default_type}} = {{ SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] }}
-          property set_value : Bool = false
+          getter method_name : String = {{name.stringify}}
+          getter value : {{value_type}} = {{value_default}}
+          getter default : {{default_type}} = {{ SUPPORTED_TYPES_OF_ARGUMENT[type][:nilable] ? default : SUPPORTED_TYPES_OF_ARGUMENT[type][:default] }}
+          getter set_value : Bool = false
 
           def initialize(@method_name : String, @display_name : String, @desc : String, @default : {{default_type}}, @required : Bool)
             @value = {{value_assign}}

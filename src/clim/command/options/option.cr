@@ -2,11 +2,11 @@ class Clim
   abstract class Command
     class Options
       abstract class Option
-        property short : String = ""
-        property long : String? = ""
-        property desc : String = ""
-        property required : Bool = false
-        property array_set_flag : Bool = false
+        getter short : String = ""
+        getter long : String? = ""
+        getter desc : String = ""
+        getter required : Bool = false
+        getter array_set_flag : Bool = false
 
         def to_named_tuple
           long_name = long
@@ -51,7 +51,7 @@ class Clim
           {% end %}
         end
 
-        macro define_option_macro(option_name, type, default, required)
+        macro define_option(option_name, type, default, required)
           {% if default != nil %}
             {% value_type = type.stringify.id %}
             {% value_default = default %}
@@ -69,9 +69,10 @@ class Clim
             {% default_type = SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? (type.stringify + "?").id : type.stringify.id %}
           {% end %}
 
-          property value : {{value_type}} = {{value_default}}
-          property default : {{default_type}} = {{ SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] }}
-          property set_value : Bool = false
+          getter method_name : String = {{option_name.stringify}}
+          getter value : {{value_type}} = {{value_default}}
+          getter default : {{default_type}} = {{ SUPPORTED_TYPES_OF_OPTION[type][:nilable] ? default : SUPPORTED_TYPES_OF_OPTION[type][:default] }}
+          getter set_value : Bool = false
 
           def initialize(@short : String, @long : String, @desc : String, @default : {{default_type}}, @required : Bool)
             @value = {{value_assign}}
