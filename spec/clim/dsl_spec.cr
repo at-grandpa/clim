@@ -74,7 +74,7 @@ macro spec(spec_class_name, spec_desc, spec_cases, spec_dsl_lines = [] of String
     # define dsl
     class {{class_name}} < Clim
       expand_lines({{spec_class_define_lines}})
-      main_command do
+      main do
         expand_lines({{spec_dsl_lines}})
         run do |opts, args|
           assert_opts_and_args({{spec_case}})

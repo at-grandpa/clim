@@ -139,20 +139,10 @@ class Clim
     end
 
     macro main
-      main_command
-    end
-
-    macro main_command
       {% raise "Can not be declared 'main_command' or 'main' as sub command." if @type.superclass.id.stringify == "Clim::Command" %}
     end
 
     macro sub(name, &block)
-      sub_command({{name}}) do
-        {{ yield }}
-      end
-    end
-
-    macro sub_command(name, &block)
       command({{name}}) do
         {{ yield }}
       end

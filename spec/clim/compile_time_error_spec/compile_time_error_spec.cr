@@ -11,9 +11,9 @@ describe "Compile time spec, " do
 
      6 | option "-b", type: Bool, desc: "your bool.", required: true
        ^
-    Called macro defined in src/clim/command.cr:165:5
+    Called macro defined in src/clim/command.cr:155:5
 
-     165 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
+     155 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -29,8 +29,8 @@ describe "Compile time spec, " do
 
     In spec/clim/compile_time_error_spec/files/duplicate_main_command.cr:9:3
 
-     9 | main_command do
-         ^-----------
+     9 | main do
+         ^---
     Error: Main command is already defined.
 
     ERROR
@@ -39,15 +39,15 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/main_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    There was a problem expanding macro 'main_command'
+    There was a problem expanding macro 'main'
 
-    Code in macro 'main'
+    Code in spec/clim/compile_time_error_spec/files/main_command_without_run_block.cr:4:3
 
-     1 | main_command do
+     4 | main do
          ^
-    Called macro defined in src/clim.cr:12:3
+    Called macro defined in src/clim.cr:6:3
 
-     12 | macro main_command(&block)
+     6 | macro main(&block)
 
     Which expanded to:
 
@@ -61,15 +61,15 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/sub_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    There was a problem expanding macro 'sub_command'
+    There was a problem expanding macro 'sub'
 
-    Code in macro 'sub'
+    Code in spec/clim/compile_time_error_spec/files/sub_command_without_run_block.cr:7:3
 
-     1 | sub_command("sub") do
-         ^
-    Called macro defined in src/clim/command.cr:155:5
+     7 | sub "sub" do
+       ^
+    Called macro defined in src/clim/command.cr:145:5
 
-     155 | macro sub_command(name, &block)
+     145 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -83,15 +83,15 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/sub_sub_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    There was a problem expanding macro 'sub_command'
+    There was a problem expanding macro 'sub'
 
-    Code in macro 'sub'
+    Code in spec/clim/compile_time_error_spec/files/sub_sub_command_without_run_block.cr:10:3
 
-     1 | sub_command("sub_sub") do
-         ^
-    Called macro defined in src/clim/command.cr:155:5
+     10 | sub "sub_sub" do
+      ^
+    Called macro defined in src/clim/command.cr:145:5
 
-     155 | macro sub_command(name, &block)
+     145 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -105,15 +105,15 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/sub_2_command_without_run_block.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    There was a problem expanding macro 'sub_command'
+    There was a problem expanding macro 'sub'
 
-    Code in macro 'sub'
+    Code in spec/clim/compile_time_error_spec/files/sub_2_command_without_run_block.cr:15:3
 
-     1 | sub_command("sub2") do
-         ^
-    Called macro defined in src/clim/command.cr:155:5
+     15 | sub "sub2" do
+        ^
+    Called macro defined in src/clim/command.cr:145:5
 
-     155 | macro sub_command(name, &block)
+     145 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -141,8 +141,8 @@ describe "Compile time spec, " do
 
     In spec/clim/compile_time_error_spec/files/duplicate_main_command_in_sub_command.cr:7:3
 
-     7 | main_command do
-       ^-----------
+     7 | main do
+       ^---
     Error: Can not be declared 'main_command' or 'main' as sub command.
 
     ERROR
@@ -253,9 +253,9 @@ describe "Compile time spec, " do
 
      7 | argument "foo" # duplicate
        ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:165:5
 
-     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     165 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -275,9 +275,9 @@ describe "Compile time spec, " do
 
      12 | argument "foo" # duplicate
       ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:165:5
 
-     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     165 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -297,9 +297,9 @@ describe "Compile time spec, " do
 
      17 | argument "foo" # duplicate
     ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:165:5
 
-     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     165 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -319,9 +319,9 @@ describe "Compile time spec, " do
 
      24 | argument "foo" # deplicate
       ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:165:5
 
-     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     165 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 

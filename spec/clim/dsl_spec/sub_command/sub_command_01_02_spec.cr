@@ -6,15 +6,15 @@ macro spec_for_sub_sub_commands(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command do
+      main do
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
-        sub_command "sub_command" do
+        sub "sub_command" do
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
-          sub_command "sub_sub_command" do
+          sub "sub_sub_command" do
             run do |opts, args|
               assert_opts_and_args({{spec_case}})
             end

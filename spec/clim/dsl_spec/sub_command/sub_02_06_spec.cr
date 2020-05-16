@@ -1,7 +1,7 @@
 require "../../dsl_spec"
 
 class SubCommandWhenDuplicateAliasNameCase1 < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
     sub "sub_command" do
@@ -21,7 +21,7 @@ describe "Call the command." do
 end
 
 class SubCommandWhenDuplicateAliasNameCase2 < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
     sub "sub_command1" do
@@ -41,7 +41,7 @@ describe "Call the command." do
 end
 
 class SubCommandWhenDuplicateAliasNameCase3 < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
     sub "sub_command1" do

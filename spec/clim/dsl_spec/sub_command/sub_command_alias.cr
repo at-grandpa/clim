@@ -6,24 +6,24 @@ macro spec_for_alias_name(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command do
+      main do
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
-        sub_command "sub_command_1" do
+        sub "sub_command_1" do
           alias_name "alias_sub_command_1"
           option "-a ARG", "--array=ARG", desc: "Option test.", type: Array(String), default: ["default string"]
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
-          sub_command "sub_sub_command_1" do
+          sub "sub_sub_command_1" do
             option "-b", "--bool", type: Bool, desc: "Bool test."
             run do |opts, args|
               assert_opts_and_args({{spec_case}})
             end
           end
         end
-        sub_command "sub_command_2" do
+        sub "sub_command_2" do
           alias_name "alias_sub_command_2", "alias_sub_command_2_second"
           run do |opts, args|
             assert_opts_and_args({{spec_case}})

@@ -1,10 +1,10 @@
 require "./../../../../src/clim"
 
 class MyCli < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
-    sub_command "sub_command" do
+    sub "sub_command" do
       help_template do |desc, usage, options, sub_commands|
         <<-MY_HELP
 
@@ -24,7 +24,7 @@ class MyCli < Clim
       option "-n NUM", type: Int32, desc: "Number.", default: 0
       run do |opts, args|
       end
-      sub_command "sub_sub_command" do
+      sub "sub_sub_command" do
         desc "sub_sub_comand description."
         option "-p PASSWORD", type: String, desc: "Password.", required: true
         run do |opts, args|

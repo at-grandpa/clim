@@ -1,12 +1,12 @@
 require "./../../../../src/clim"
 
 class MyCli < Clim
-  main_command do
+  main do
     run do |opts, args|
     end
   end
 
-  main_command do
+  main do
   end
 end
 

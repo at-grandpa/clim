@@ -6,25 +6,25 @@ macro spec_for_sub_command(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command do
+      main do
         version "version 1.0.0", short: "-v"
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
-        sub_command "sub_command_1" do
+        sub "sub_command_1" do
           version "version 1.0.0", short: "-v"
           option "-a ARG", "--array=ARG", desc: "Option test.", type: Array(String), default: ["default string"]
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
-          sub_command "sub_sub_command_1" do
+          sub "sub_sub_command_1" do
             option "-b", "--bool", type: Bool, desc: "Bool test."
             run do |opts, args|
               assert_opts_and_args({{spec_case}})
             end
           end
         end
-        sub_command "sub_command_2" do
+        sub "sub_command_2" do
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end

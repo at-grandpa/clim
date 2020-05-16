@@ -6,7 +6,7 @@ macro spec_for_alias_name(spec_class_name, spec_cases)
 
     # define dsl
     class {{class_name}} < Clim
-      main_command do
+      main do
         run do |opts, args|
           assert_opts_and_args({{spec_case}})
         end
