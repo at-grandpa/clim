@@ -11,9 +11,9 @@ describe "Compile time spec, " do
 
      6 | option "-b", type: Bool, desc: "your bool.", required: true
        ^
-    Called macro defined in src/clim/command.cr:165:5
+    Called macro defined in src/clim/command.cr:175:5
 
-     165 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
+     175 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -67,14 +67,14 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub") do
          ^
-    Called macro defined in src/clim/command.cr:155:5
+    Called macro defined in src/clim/command.cr:164:5
 
-     155 | macro sub_command(name, &block)
+     164 | macro sub_command(name, &block)
 
     Which expanded to:
 
-     > 1 | command("sub") do
-           ^
+       1 |       \n > 2 |       command("sub") do
+                 ^
     Error: 'run' block is not defined.
 
     ERROR
@@ -89,14 +89,14 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub_sub") do
          ^
-    Called macro defined in src/clim/command.cr:155:5
+    Called macro defined in src/clim/command.cr:164:5
 
-     155 | macro sub_command(name, &block)
+     164 | macro sub_command(name, &block)
 
     Which expanded to:
 
-     > 1 | command("sub_sub") do
-           ^
+       1 |       \n > 2 |       command("sub_sub") do
+                 ^
     Error: 'run' block is not defined.
 
     ERROR
@@ -111,14 +111,14 @@ describe "Compile time spec, " do
 
      1 | sub_command("sub2") do
          ^
-    Called macro defined in src/clim/command.cr:155:5
+    Called macro defined in src/clim/command.cr:164:5
 
-     155 | macro sub_command(name, &block)
+     164 | macro sub_command(name, &block)
 
     Which expanded to:
 
-     > 1 | command("sub2") do
-           ^
+       1 |       \n > 2 |       command("sub2") do
+                 ^
     Error: 'run' block is not defined.
 
     ERROR
@@ -253,9 +253,9 @@ describe "Compile time spec, " do
 
      7 | argument "foo" # duplicate
        ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:185:5
 
-     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     185 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -275,9 +275,9 @@ describe "Compile time spec, " do
 
      12 | argument "foo" # duplicate
       ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:185:5
 
-     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     185 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -297,9 +297,9 @@ describe "Compile time spec, " do
 
      17 | argument "foo" # duplicate
     ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:185:5
 
-     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     185 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -319,9 +319,9 @@ describe "Compile time spec, " do
 
      24 | argument "foo" # deplicate
       ^
-    Called macro defined in src/clim/command.cr:175:5
+    Called macro defined in src/clim/command.cr:185:5
 
-     175 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     185 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 

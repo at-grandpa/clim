@@ -41,8 +41,8 @@ class Clim
     end
 
     macro help(short = nil)
-      {% raise "Argument type of 'help.short' must be StringLiteral, not #{short.class_name.id}." unless short.is_a?(StringLiteral | Nil) %}
       {% raise "The 'help' directive requires the 'short' argument. (ex 'help short: \"-h\"'" if short == nil %}
+      {% raise "Argument type of 'help.short' must be StringLiteral, not #{short.class_name.id}." unless short.is_a?(StringLiteral) %}
       macro help_macro
         option {{short.id.stringify}}, "--help", type: Bool, desc: "Show this help.", default: false
       end
