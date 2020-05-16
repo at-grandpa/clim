@@ -10,19 +10,27 @@ class Clim
     getter version : String = ""
 
     macro desc(description)
+      {% raise "Argument type of 'desc' must be StringLiteral, not #{description.class_name.id}." unless description.is_a?(StringLiteral) %}
       getter desc : String = {{ description }}
     end
 
     macro usage(usage)
+      {% raise "Argument type of 'usage' must be StringLiteral, not #{usage.class_name.id}." unless usage.is_a?(StringLiteral) %}
       getter usage : String = {{ usage }}
     end
 
     macro alias_name(*names)
+      {% unless names.all?(&.is_a?(StringLiteral)) %}
+        {% unsupported_arguments = names.reject(&.is_a?(StringLiteral)) %}
+        {% raise "All 'alias_name' argument types must be StringLiteral and must not contain #{unsupported_arguments.map(&.class_name).uniq.join(", ").id}." %}
+      {% end %}
       {% raise "'alias_name' is not supported on main command." if @type == Command_Main_command_of_clim_library %}
       getter alias_name : Array(String) = {{ names }}.to_a
     end
 
     macro version(version_str, short = nil)
+      {% raise "Argument type of 'version' must be StringLiteral, not #{version_str.class_name.id}." unless version_str.is_a?(StringLiteral) %}
+      {% raise "Argument type of 'version.short' must be StringLiteral, not #{short.class_name.id}." unless short.is_a?(StringLiteral | Nil) %}
       {% if short == nil %}
         option "--version", type: Bool, desc: "Show version.", default: false
       {% else %}
@@ -33,6 +41,7 @@ class Clim
     end
 
     macro help(short = nil)
+      {% raise "Argument type of 'help.short' must be StringLiteral, not #{short.class_name.id}." unless short.is_a?(StringLiteral | Nil) %}
       {% raise "The 'help' directive requires the 'short' argument. (ex 'help short: \"-h\"'" if short == nil %}
       macro help_macro
         option {{short.id.stringify}}, "--help", type: Bool, desc: "Show this help.", default: false
@@ -153,6 +162,7 @@ class Clim
     end
 
     macro sub_command(name, &block)
+      {% raise "Argument type of 'sub' must be StringLiteral, not #{name.class_name.id}." unless name.is_a?(StringLiteral) %}
       command({{name}}) do
         {{ yield }}
       end

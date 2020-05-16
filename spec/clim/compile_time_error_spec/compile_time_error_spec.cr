@@ -331,4 +331,88 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "the argument type of 'desc' is not correct." do
+    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/desc.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/invalid_type/desc.cr:5:5
+
+     5 | desc 1
+         ^---
+    Error: Argument type of 'desc' must be StringLiteral, not NumberLiteral.
+
+    ERROR
+  end
+  it "the argument type of 'usage' is not correct." do
+    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/usage.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/invalid_type/usage.cr:5:5
+
+     5 | usage true
+         ^----
+    Error: Argument type of 'usage' must be StringLiteral, not BoolLiteral.
+
+    ERROR
+  end
+  it "the argument type of 'alias_name' is not correct." do
+    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/alias_name.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/invalid_type/alias_name.cr:8:7
+
+     8 | alias_name true, "foo", 1, ["bar"], false
+         ^---------
+    Error: All 'alias_name' argument types must be StringLiteral and must not contain BoolLiteral, NumberLiteral, ArrayLiteral.
+
+    ERROR
+  end
+  it "the argument type of 'version' is not correct." do
+    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/version.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/invalid_type/version.cr:5:5
+
+     5 | version true
+         ^------
+    Error: Argument type of 'version' must be StringLiteral, not BoolLiteral.
+
+    ERROR
+  end
+  it "the argument type of 'version.short' is not correct." do
+    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/version_short.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/invalid_type/version_short.cr:5:5
+
+     5 | version "foo", short: 1
+         ^------
+    Error: Argument type of 'version.short' must be StringLiteral, not NumberLiteral.
+
+    ERROR
+  end
+  it "the argument type of 'help.short' is not correct." do
+    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/help_short.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/invalid_type/help_short.cr:5:5
+
+     5 | help short: true
+         ^---
+    Error: Argument type of 'help.short' must be StringLiteral, not BoolLiteral.
+
+    ERROR
+  end
+  it "the argument type of 'sub' is not correct." do
+    `crystal run spec/clim/compile_time_error_spec/files/invalid_type/sub.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+
+    In spec/clim/compile_time_error_spec/files/invalid_type/sub.cr:7:3
+
+     7 | sub 1 do
+       ^
+    Error: Argument type of 'sub' must be StringLiteral, not NumberLiteral.
+
+    ERROR
+  end
 end
