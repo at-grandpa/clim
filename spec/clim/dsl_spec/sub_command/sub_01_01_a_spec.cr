@@ -242,7 +242,7 @@ spec_for_sub(
         {
           "type" => String,
           "method" => "string",
-          "expect_value" => "option-value",
+          "expect_value" => "option-valu",
         },
       ],
       expect_args: [

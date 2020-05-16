@@ -367,7 +367,7 @@ spec_for_sub(
         {
           "type" => Array(String),
           "method" => "argv",
-          "expect_value" => ["111"],
+          "expect_value" => ["11"],
         },
       ],
     },
