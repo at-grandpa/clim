@@ -134,6 +134,8 @@ class Clim
           return RunProc.new { io.puts version }.call(@options, @arguments, io) if opt.version == true
         end
 
+        return RunProc.new { io.puts "bash completion" }.call(@options, @arguments, io) if opt.bash_completion == true
+
         RunProc.new {{ block.id }} .call(@options, @arguments, io)
       end
     end
