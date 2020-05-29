@@ -1,5 +1,6 @@
 require "option_parser"
 require "./command/*"
+require "./completion/*"
 
 class Clim
   abstract class Command
@@ -135,7 +136,7 @@ class Clim
         end
 
         if opt.responds_to?(:bash_completion)
-          return RunProc.new { io.puts "bash completion" }.call(@options, @arguments, io) if opt.bash_completion == true
+          return RunProc.new { io.puts Completion.new(Completion::Bash.new(@options, @sub_commands)).script }.call(@options, @arguments, io) if opt.bash_completion == true
         end
 
         RunProc.new {{ block.id }} .call(@options, @arguments, io)
