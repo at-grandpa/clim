@@ -117,8 +117,8 @@ spec(
     {
       argv:              ["-bool"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException,
-        message:   "Undefined option. \"-bool\"",
+        exception: Clim::ClimInvalidTypeCastException,
+        message:   "Bool arguments accept only \"true\" or \"false\". Input: [ool]",
       }
     },
     {
