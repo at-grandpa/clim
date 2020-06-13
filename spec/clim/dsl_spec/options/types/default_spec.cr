@@ -15,7 +15,7 @@ require "../../../dsl_spec"
                           -d=DEFAULT_TYPE                  Option description. [type:String]
                           --default-type=DEFAULT_TYPE      Option description. [type:String]
                           --default-type-default=DEFAULT_TYPE
-                                                           Option description. [type:String] [default:\"Default String!\"]
+                                                           Option description. [type:String] [default:"Default String!"]
                           --help                           Show this help.
 
 
