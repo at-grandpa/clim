@@ -49,8 +49,8 @@ describe Clim::Command do
 
         Options:
 
-          -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
-          -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
+          -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:"Hello"]
+          -n NAME                          Target name. [type:Array(String)] [default:["Taro"]] [required]
           --help                           Show this help.
 
         Sub Commands:
@@ -72,8 +72,8 @@ describe Clim::Command do
 
         Options:
 
-          -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:\"Hello\"]
-          -n NAME                          Target name. [type:Array(String)] [default:[\"Taro\"]] [required]
+          -g WORDS, --greeting=WORDS       Words of greetings. [type:String] [default:"Hello"]
+          -n NAME                          Target name. [type:Array(String)] [default:["Taro"]] [required]
           --help                           Show this help.
 
 

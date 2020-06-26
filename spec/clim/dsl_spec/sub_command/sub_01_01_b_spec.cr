@@ -12,7 +12,7 @@ require "./sub"
 
                       Options:
 
-                        -s ARG, --string=ARG             Option test. [type:String] [default:\"default string\"]
+                        -s ARG, --string=ARG             Option test. [type:String] [default:"default string"]
                         --help                           Show this help.
                         -v, --version                    Show version.
 
@@ -38,7 +38,7 @@ require "./sub"
 
                       Options:
 
-                        -s ARG, --string=ARG             Option test. [type:String] [default:\"default string\"]
+                        -s ARG, --string=ARG             Option test. [type:String] [default:"default string"]
                         --help                           Show this help.
                         -v, --version                    Show version.
 
@@ -64,7 +64,7 @@ require "./sub"
 
                       Options:
 
-                        -s ARG, --string=ARG             Option test. [type:String] [default:\"default string\"]
+                        -s ARG, --string=ARG             Option test. [type:String] [default:"default string"]
                         --help                           Show this help.
                         -v, --version                    Show version.
 

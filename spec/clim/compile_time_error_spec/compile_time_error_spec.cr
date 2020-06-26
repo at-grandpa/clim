@@ -165,7 +165,7 @@ describe "Compile time spec, " do
 
     In spec/clim/compile_time_error_spec/files/main_with_alias_name.cr:5:5
 
-     5 | alias_name \"main2\"
+     5 | alias_name "main2"
          ^---------
     Error: 'alias_name' is not supported on main command.
 
@@ -177,7 +177,7 @@ describe "Compile time spec, " do
 
     In spec/clim/compile_time_error_spec/files/not_supported_option_type.cr:6:5
 
-     6 | option \"-n\", type: BigInt, desc: \"my big int.\", default: 0
+     6 | option "-n", type: BigInt, desc: "my big int.", default: 0
          ^
     Error: Type [BigInt] is not supported on option.
 
@@ -201,7 +201,7 @@ describe "Compile time spec, " do
 
     In spec/clim/compile_time_error_spec/files/empty_option_name.cr:6:5
 
-     6 | option \"\", type: String, desc: \"empty option name.\"
+     6 | option "", type: String, desc: "empty option name."
          ^
     Error: Empty option name.
 
