@@ -33,7 +33,7 @@ require "./sub_command"
 
                       Options:
 
-                        -a ARG, --array=ARG              Option test. [type:Array(String)] [default:[\"default string\"]]
+                        -a ARG, --array=ARG              Option test. [type:Array(String)] [default:["default string"]]
                         --help                           Show this help.
                         -v, --version                    Show version.
 

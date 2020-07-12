@@ -32,7 +32,7 @@ require "./sub_command_alias"
 
                          Options:
 
-                           -a ARG, --array=ARG              Option test. [type:Array(String)] [default:[\"default string\"]]
+                           -a ARG, --array=ARG              Option test. [type:Array(String)] [default:["default string"]]
                            --help                           Show this help.
 
                          Sub Commands:
