@@ -136,7 +136,7 @@ class Clim
         end
 
         if opt.responds_to?(:bash_completion)
-          return RunProc.new { io.puts Completion.new(Completion::Bash.new(@options, @sub_commands)).script }.call(@options, @arguments, io) if opt.bash_completion == true
+          return RunProc.new { io.puts Completion.new(Completion::Bash.new(self)).script }.call(@options, @arguments, io) if opt.bash_completion == true
         end
 
         RunProc.new {{ block.id }} .call(@options, @arguments, io)
@@ -239,6 +239,17 @@ class Clim
 
         help_macro
 
+        def opts_and_subcommands
+          opts_names = @options.to_a.flat_map do |opt|
+            [opt.short, opt.long]
+          end.compact.map do |opt|
+            opt.gsub(/\=/, " ").split(" ").first
+          end.reject("--bash-completion")
+
+          subcommand_names = @sub_commands.to_a.flat_map(&.names)
+
+          opts_names + subcommand_names
+        end
       end
     end
 

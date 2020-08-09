@@ -12,6 +12,10 @@ class SpecCommand < Clim
       desc "abc command."
       usage "main abc [tool] [arguments]"
       alias_name "def", "ghi"
+      option "-f WORDS", "--foo=WORDS", type: String, desc: "foo"
+      option "--bar", type: Bool, desc: "bar"
+      help short: "-i"
+      version "version 0.1", short: "-v"
       run do |opts, args|
       end
     end
@@ -94,6 +98,26 @@ describe Clim::Command do
     it "returns name and alias_name of sub commands." do
       SpecCommand.command.@sub_commands.to_a[0].names.should eq ["abc", "def", "ghi"]
       SpecCommand.command.@sub_commands.to_a[1].names.should eq ["abcdef", "ghijkl", "mnopqr"]
+    end
+  end
+  describe "#opts_and_subcommands" do
+    it "returns opts and subcommands." do
+      SpecCommand.command.opts_and_subcommands.should eq [
+        "-g", "--greeting",
+        "-n",
+        "--help",
+        "abc", "def", "ghi",
+        "abcdef", "ghijkl", "mnopqr",
+      ]
+      SpecCommand.command.@sub_commands.to_a[0].opts_and_subcommands.should eq [
+        "-f", "--foo",
+        "--bar",
+        "-v", "--version",
+        "-i", "--help",
+      ]
+      SpecCommand.command.@sub_commands.to_a[1].opts_and_subcommands.should eq [
+        "--help",
+      ]
     end
   end
 end
