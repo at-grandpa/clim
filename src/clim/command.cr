@@ -250,6 +250,10 @@ class Clim
 
           opts_names + subcommand_names
         end
+
+        def sub_commands
+          @sub_commands
+        end
       end
     end
 

@@ -8,9 +8,9 @@ class Clim
       def initialize(@command : Command)
       end
 
-      def completion_script : String
+      def completion_script(program_name : String = PROGRAM_NAME) : String
         <<-SCRIPT
-        _#{PROGRAM_NAME}()
+        _#{program_name}()
         {
             local program=${COMP_WORDS[0]}
             local cmd=${COMP_WORDS[1]}
@@ -18,54 +18,58 @@ class Clim
             local prev="${COMP_WORDS[COMP_CWORD-1]}"
             local cword="${COMP_CWORD}"
 
-            commands="asub bsub --aoption-main --boption-main --coption-main --help --version"
-            case "${COMP_WORDS[1]}" in
-                asub)
-                    asub_commands="asubasub asubbsub --aoption-asub --boption-asub --coption-asub --help"
-                    case "${COMP_WORDS[2]}" in
-                        asubasub)
-                            if [[ "${prev}" == "asubasub" ]] ; then
-                                COMPREPLY=( $(compgen -W "--aoption-asub-asub --boption-asub-asub --coption-asub-asub" -- ${cur}) )
-                            else
-                                COMPREPLY=( $(compgen -f ${cur}) )
-                            fi
-                        ;;
-                        asubbsub)
-                            if [[ "${prev}" == "asubbsub" ]] ; then
-                                COMPREPLY=( $(compgen -W "--aoption-asub-bsub --boption-asub-bsub --coption-asub-bsub" -- ${cur}) )
-                            else
-                                COMPREPLY=( $(compgen -f ${cur}) )
-                            fi
-                        ;;
-                        *)
-                            if [[ "${prev}" == "asub" && $(compgen -W "${asub_commands}" -- ${cur})  ]] ; then
-                                COMPREPLY=( $(compgen -W "${asub_commands}" -- ${cur}) )
-                            else
-                                COMPREPLY=( $(compgen -f ${cur}) )
-                            fi
-                        ;;
-                    esac
-                ;;
-                bsub)
-                    if [[ "${prev}" == "bsub" ]] ; then
-                        COMPREPLY=( $(compgen -W "--aoption-bsub --boption-bsub --coption-bsub" -- ${cur}) )
-                    else
-                        COMPREPLY=( $(compgen -f ${cur}) )
-                    fi
-                ;;
-                *)
-                    if [[ "${prev}" == "${program}" && $(compgen -W "${commands}" -- ${cur})  ]] ; then
-                        COMPREPLY=( $(compgen -W "${commands}" -- ${cur}) )
-                    else
-                        COMPREPLY=( $(compgen -f ${cur}) )
-                    fi
-                ;;
-            esac
+            #{recursive_case_directive(@command, program_name)}
+
             return 0
         }
 
-        complete -F _#{PROGRAM_NAME} #{PROGRAM_NAME}
+        complete -F _#{program_name} #{program_name}
         SCRIPT
+      end
+
+      private def recursive_case_directive(
+        command : Command,
+        name : String,
+        count : Int32 = 1
+      )
+        header = if command.sub_commands.to_a.empty?
+                   ""
+                 else
+                   <<-HEADER
+                   case "${COMP_WORDS[#{count}]}" in
+
+                   HEADER
+                 end
+
+        sub_commands_part = command.sub_commands.to_a.map do |sub_command|
+          <<-SUB_COMMANDS_PART
+          #{sub_command.name})
+          #{recursive_case_directive(sub_command, sub_command.name, count + 1)}
+          ;;
+
+          SUB_COMMANDS_PART
+        end
+
+        default_part = <<-DEFAULT_PART
+        #{command.sub_commands.to_a.empty? ? nil : "*)"}
+        if [[ "${prev}" == "#{name}" && $(compgen -W "#{command.opts_and_subcommands.join(" ")}" -- ${cur})  ]] ; then
+            COMPREPLY=( $(compgen -W "#{command.opts_and_subcommands.join(" ")}" -- ${cur}) )
+        else
+            COMPREPLY=( $(compgen -f ${cur}) )
+        fi
+
+        DEFAULT_PART
+
+        footer = if command.sub_commands.to_a.empty?
+                   ""
+                 else
+                   <<-FOOTER
+                   esac
+
+                   FOOTER
+                 end
+
+        header + sub_commands_part.join("\n") + default_part + footer
       end
     end
   end
