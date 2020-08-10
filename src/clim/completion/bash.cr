@@ -41,13 +41,15 @@ class Clim
                    HEADER
                  end
 
-        sub_commands_part = command.sub_commands.to_a.map do |sub_command|
-          <<-SUB_COMMANDS_PART
-          #{sub_command.name})
-          #{recursive_case_directive(sub_command, sub_command.name, count + 1)}
-          ;;
+        sub_commands_part = command.sub_commands.to_a.flat_map do |sub_command|
+          sub_command.names.map do |name|
+            <<-SUB_COMMANDS_PART
+            #{name})
+            #{recursive_case_directive(sub_command, name, count + 1)}
+            ;;
 
-          SUB_COMMANDS_PART
+            SUB_COMMANDS_PART
+          end
         end
 
         default_part = <<-DEFAULT_PART
