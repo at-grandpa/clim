@@ -35,6 +35,7 @@ class MyCli < Clim
         sub "sub1_sub2_sub2" do
           option "-a", "--opt-sub1-sub2-sub2-a", type: Bool
           option "--opt-sub1-sub2-sub2-b", type: Bool
+          help short: "-p"
           run do |opts, args|
           end
         end

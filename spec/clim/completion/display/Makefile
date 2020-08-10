@@ -1,7 +1,8 @@
+FILE_NAME:=sample
 PROGRAM_NAME:=sample
 
 build:
-	crystal build files/$(PROGRAM_NAME).cr -o /usr/local/bin/$(PROGRAM_NAME)
+	crystal build files/$(FILE_NAME).cr -o /usr/local/bin/$(PROGRAM_NAME)
 	$(PROGRAM_NAME) --bash-completion
 	echo 'eval "`$(PROGRAM_NAME) --bash-completion`"' > ~/.bashrc
 	/bin/bash -c 'source ~/.bashrc'

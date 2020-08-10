@@ -17,6 +17,7 @@ class SpecCommandForCompletion < Clim
       option "-a", "--aoption-asub", type: Bool
       option "-b", "--boption-asub", type: Bool
       option "-c", "--coption-asub", type: Bool
+      alias_name "asub1", "asub2"
       run do |opts, args|
         puts "asub"
         pp opts.aoption_asub
@@ -76,28 +77,28 @@ describe Clim::Completion::Bash do
           local cur="${COMP_WORDS[COMP_CWORD]}"
           local prev="${COMP_WORDS[COMP_CWORD-1]}"
           local cword="${COMP_CWORD}"
-
+      
           case "${COMP_WORDS[1]}" in
       asub)
       case "${COMP_WORDS[2]}" in
       asubasub)
-
+      
       if [[ "${prev}" == "asubasub" && $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur})  ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
       fi
-
+      
       ;;
-
+      
       asubbsub)
-
+      
       if [[ "${prev}" == "asubbsub" && $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur})  ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
       fi
-
+      
       ;;
       *)
       if [[ "${prev}" == "asub" && $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur})  ]] ; then
@@ -106,30 +107,92 @@ describe Clim::Completion::Bash do
           COMPREPLY=( $(compgen -f ${cur}) )
       fi
       esac
-
+      
       ;;
-
+      
+      asub1)
+      case "${COMP_WORDS[2]}" in
+      asubasub)
+      
+      if [[ "${prev}" == "asubasub" && $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur})  ]] ; then
+          COMPREPLY=( $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur}) )
+      else
+          COMPREPLY=( $(compgen -f ${cur}) )
+      fi
+      
+      ;;
+      
+      asubbsub)
+      
+      if [[ "${prev}" == "asubbsub" && $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur})  ]] ; then
+          COMPREPLY=( $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur}) )
+      else
+          COMPREPLY=( $(compgen -f ${cur}) )
+      fi
+      
+      ;;
+      *)
+      if [[ "${prev}" == "asub1" && $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur})  ]] ; then
+          COMPREPLY=( $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur}) )
+      else
+          COMPREPLY=( $(compgen -f ${cur}) )
+      fi
+      esac
+      
+      ;;
+      
+      asub2)
+      case "${COMP_WORDS[2]}" in
+      asubasub)
+      
+      if [[ "${prev}" == "asubasub" && $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur})  ]] ; then
+          COMPREPLY=( $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur}) )
+      else
+          COMPREPLY=( $(compgen -f ${cur}) )
+      fi
+      
+      ;;
+      
+      asubbsub)
+      
+      if [[ "${prev}" == "asubbsub" && $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur})  ]] ; then
+          COMPREPLY=( $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur}) )
+      else
+          COMPREPLY=( $(compgen -f ${cur}) )
+      fi
+      
+      ;;
+      *)
+      if [[ "${prev}" == "asub2" && $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur})  ]] ; then
+          COMPREPLY=( $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur}) )
+      else
+          COMPREPLY=( $(compgen -f ${cur}) )
+      fi
+      esac
+      
+      ;;
+      
       bsub)
-
+      
       if [[ "${prev}" == "bsub" && $(compgen -W "-a --aoption-bsub -b --boption-bsub -c --coption-bsub --help" -- ${cur})  ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-bsub -b --boption-bsub -c --coption-bsub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
       fi
-
+      
       ;;
       *)
-      if [[ "${prev}" == "my_program" && $(compgen -W "-a --aoption-main -b --boption-main -c --coption-main --help asub bsub" -- ${cur})  ]] ; then
-          COMPREPLY=( $(compgen -W "-a --aoption-main -b --boption-main -c --coption-main --help asub bsub" -- ${cur}) )
+      if [[ "${prev}" == "my_program" && $(compgen -W "-a --aoption-main -b --boption-main -c --coption-main --help asub asub1 asub2 bsub" -- ${cur})  ]] ; then
+          COMPREPLY=( $(compgen -W "-a --aoption-main -b --boption-main -c --coption-main --help asub asub1 asub2 bsub" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
       fi
       esac
-
-
+      
+      
           return 0
       }
-
+      
       complete -F _my_program my_program
       EXPECTED
     end
