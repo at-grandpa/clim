@@ -1,4 +1,4 @@
-name: clim format-check
+name: clim format-check & spec_completion
 
 on: [push]
 
@@ -8,5 +8,5 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v2
-    - name: format-check
-      run: make format-check
+    - name: format-check & spec_completion
+      run: make format-check spec_completion
