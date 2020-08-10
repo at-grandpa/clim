@@ -18,7 +18,7 @@ class Clim
             local prev="${COMP_WORDS[COMP_CWORD-1]}"
             local cword="${COMP_CWORD}"
 
-            #{recursive_case_directive(@command, program_name)}
+            #{recursive_case_statement(@command, program_name)}
 
             return 0
         }
@@ -27,31 +27,11 @@ class Clim
         SCRIPT
       end
 
-      private def recursive_case_directive(
+      private def recursive_case_statement(
         command : Command,
         name : String,
         count : Int32 = 1
       )
-        header = if command.sub_commands.to_a.empty?
-                   ""
-                 else
-                   <<-HEADER
-                   case "${COMP_WORDS[#{count}]}" in
-
-                   HEADER
-                 end
-
-        sub_commands_part = command.sub_commands.to_a.flat_map do |sub_command|
-          sub_command.names.map do |name|
-            <<-SUB_COMMANDS_PART
-            #{name})
-            #{recursive_case_directive(sub_command, name, count + 1)}
-            ;;
-
-            SUB_COMMANDS_PART
-          end
-        end
-
         default_part = <<-DEFAULT_PART
         #{command.sub_commands.to_a.empty? ? nil : "*)"}
         if [[ "${prev}" == "#{name}" && $(compgen -W "#{command.opts_and_subcommands.join(" ")}" -- ${cur})  ]] ; then
@@ -62,14 +42,28 @@ class Clim
 
         DEFAULT_PART
 
-        footer = if command.sub_commands.to_a.empty?
-                   ""
-                 else
-                   <<-FOOTER
-                   esac
+        return default_part if command.sub_commands.to_a.empty?
 
-                   FOOTER
-                 end
+        header = <<-HEADER
+        case "${COMP_WORDS[#{count}]}" in
+
+        HEADER
+
+        sub_commands_part = command.sub_commands.to_a.flat_map do |sub_command|
+          sub_command.names.map do |name|
+            <<-SUB_COMMANDS_PART
+            #{name})
+            #{recursive_case_statement(sub_command, name, count + 1)}
+            ;;
+
+            SUB_COMMANDS_PART
+          end
+        end
+
+        footer = <<-FOOTER
+        esac
+
+        FOOTER
 
         header + sub_commands_part.join("\n") + default_part + footer
       end
