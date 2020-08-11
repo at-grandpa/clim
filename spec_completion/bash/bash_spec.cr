@@ -84,7 +84,7 @@ describe "bash completion." do
     },
   ].each do |spec_case|
     it "program_name: bash_sample, input: #{spec_case[:input]}" do
-      `docker run --rm -it -v $(PWD):/tmp -w /tmp crystallang/crystal:latest /bin/bash -c "make build -C spec_completion/bash/ FILE_NAME=bash_sample PROGRAM_NAME=bash_sample INPUT='#{spec_case[:input]}'"`
+      `docker run --rm -v $(PWD):/tmp -w /tmp crystallang/crystal:latest /bin/bash -c "make build -C spec_completion/bash/ FILE_NAME=bash_sample PROGRAM_NAME=bash_sample INPUT='#{spec_case[:input]}'"`
       File.read("#{__DIR__}/output").should eq spec_case[:expected]
     end
   end
@@ -172,7 +172,7 @@ describe "bash completion." do
     },
   ].each do |spec_case|
     it "program_name: my_cli, input: #{spec_case[:input]}" do
-      `docker run --rm -it -v $(PWD):/tmp -w /tmp crystallang/crystal:latest /bin/bash -c "make build -C spec_completion/bash/ FILE_NAME=bash_sample PROGRAM_NAME=my_cli INPUT='#{spec_case[:input]}'"`
+      `docker run --rm -v $(PWD):/tmp -w /tmp crystallang/crystal:latest /bin/bash -c "make build -C spec_completion/bash/ FILE_NAME=bash_sample PROGRAM_NAME=my_cli INPUT='#{spec_case[:input]}'"`
       File.read("#{__DIR__}/output").should eq spec_case[:expected]
     end
   end
