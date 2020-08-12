@@ -83,7 +83,7 @@ describe Clim::Completion::Bash do
       case "${COMP_WORDS[2]}" in
       asubasub)
       
-      if [[ "${prev}" == "asubasub" && $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asubasub" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -93,7 +93,7 @@ describe Clim::Completion::Bash do
       
       asubbsub)
       
-      if [[ "${prev}" == "asubbsub" && $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asubbsub" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -101,7 +101,7 @@ describe Clim::Completion::Bash do
       
       ;;
       *)
-      if [[ "${prev}" == "asub" && $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asub" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -114,7 +114,7 @@ describe Clim::Completion::Bash do
       case "${COMP_WORDS[2]}" in
       asubasub)
       
-      if [[ "${prev}" == "asubasub" && $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asubasub" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -124,7 +124,7 @@ describe Clim::Completion::Bash do
       
       asubbsub)
       
-      if [[ "${prev}" == "asubbsub" && $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asubbsub" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -132,7 +132,7 @@ describe Clim::Completion::Bash do
       
       ;;
       *)
-      if [[ "${prev}" == "asub1" && $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asub1" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -145,7 +145,7 @@ describe Clim::Completion::Bash do
       case "${COMP_WORDS[2]}" in
       asubasub)
       
-      if [[ "${prev}" == "asubasub" && $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asubasub" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub-asub -b --boption-asub-asub -c --coption-asub-asub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -155,7 +155,7 @@ describe Clim::Completion::Bash do
       
       asubbsub)
       
-      if [[ "${prev}" == "asubbsub" && $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asubbsub" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub-bsub -b --boption-asub-bsub -c --coption-asub-bsub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -163,7 +163,7 @@ describe Clim::Completion::Bash do
       
       ;;
       *)
-      if [[ "${prev}" == "asub2" && $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "asub2" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-asub -b --boption-asub -c --coption-asub --help asubasub asubbsub" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -174,7 +174,7 @@ describe Clim::Completion::Bash do
       
       bsub)
       
-      if [[ "${prev}" == "bsub" && $(compgen -W "-a --aoption-bsub -b --boption-bsub -c --coption-bsub --help" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "bsub" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-bsub -b --boption-bsub -c --coption-bsub --help" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )
@@ -182,7 +182,7 @@ describe Clim::Completion::Bash do
       
       ;;
       *)
-      if [[ "${prev}" == "my_program" && $(compgen -W "-a --aoption-main -b --boption-main -c --coption-main --help asub asub1 asub2 bsub" -- ${cur})  ]] ; then
+      if [[ "${prev}" == "my_program" ]] ; then
           COMPREPLY=( $(compgen -W "-a --aoption-main -b --boption-main -c --coption-main --help asub asub1 asub2 bsub" -- ${cur}) )
       else
           COMPREPLY=( $(compgen -f ${cur}) )

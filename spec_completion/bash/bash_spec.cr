@@ -82,6 +82,15 @@ describe "bash completion." do
 
       EXPECTED
     },
+    {
+      input:    "bash_sample -invalid-options",
+      expected: <<-EXPECTED
+      ERROR: Undefined option. "-invalid-options"
+      
+      Please see the `--help`.
+
+      EXPECTED
+    },
   ].each do |spec_case|
     it "program_name: bash_sample, input: #{spec_case[:input]}" do
       command = "docker run --rm -v #{__DIR__}/../..:/tmp -w /tmp crystallang/crystal:latest /bin/bash -c \"make build -C spec_completion/bash/ FILE_NAME=bash_sample PROGRAM_NAME=bash_sample INPUT='#{spec_case[:input]}'\""

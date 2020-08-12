@@ -34,7 +34,7 @@ class Clim
       )
         default_part = <<-DEFAULT_PART
         #{command.sub_commands.to_a.empty? ? nil : "*)"}
-        if [[ "${prev}" == "#{name}" && $(compgen -W "#{command.opts_and_subcommands.join(" ")}" -- ${cur})  ]] ; then
+        if [[ "${prev}" == "#{name}" ]] ; then
             COMPREPLY=( $(compgen -W "#{command.opts_and_subcommands.join(" ")}" -- ${cur}) )
         else
             COMPREPLY=( $(compgen -f ${cur}) )
