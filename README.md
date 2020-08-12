@@ -28,6 +28,7 @@ _"clim" = "cli" + "slim"_
     - [help_template](#help_template)
   - [help string](#help-string)
   - [`io` in run block](#io-in-run-block)
+  - [Bash completion](#bash-completion)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
@@ -898,8 +899,72 @@ puts io.to_s # => "in main\n"
 
 ### Bash completion
 
+You can use bash completion.
 
-todo
+*src/sample.cr*
+
+```crystal
+require "clim"
+
+class Cli < Clim
+  main do
+    version "Version 1.0"
+    option "-p PORT", "--port=PORT", type: Int32, desc: "Port number."
+    option "-h HOST", "--host=HOST", type: String, desc: "Host name."
+    run do |opts, args|
+      # ...
+    end
+
+    sub "tool" do
+      option "-v", "--verbose", type: Bool
+      run do |opts, args|
+        # ...
+      end
+    end
+
+    sub "run" do
+      help short: "-h"
+      run do |opts, args|
+        # ...
+      end
+    end
+  end
+end
+
+Cli.start(ARGV)
+```
+
+- Step1: Build your program.
+- Step2: Add ```eval "`{your_program} --bash-completion`"``` to `~/.bashrc`.
+- Step3: Reload `~/.bashrc`.
+- Step4: You can use bash completion for options and subcommands.
+
+```console
+$ crystal build src/sample.cr -o /usr/local/bin/sample
+$ echo 'eval "`sample --bash-completion`"' >> ~/.bashrc
+$ . ~/.bashrc
+$ sample[TAB][TAB]
+--help     --host     --port     --version  -h         -p         run        tool
+$ sample tool -[TAB][TAB]
+--help     --verbose  -v
+$ sample tool --[TAB][TAB]
+--help     --verbose
+$ sample tool --help
+
+  Command Line Interface Tool.
+
+  Usage:
+
+    tool [options] [arguments]
+
+  Options:
+
+    -v, --verbose                    Option description. [type:Bool]
+    --help                           Show this help.
+
+$
+```
+
 
 ## Development
 
