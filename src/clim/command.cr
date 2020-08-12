@@ -135,9 +135,11 @@ class Clim
           return RunProc.new { io.puts version }.call(@options, @arguments, io) if opt.version == true
         end
 
-        if opt.responds_to?(:bash_completion)
-          return RunProc.new { io.puts Completion.new(Completion::Bash.new(self)).script }.call(@options, @arguments, io) if opt.bash_completion == true
-        end
+        {% if @type == Command_Main_of_clim_library %}
+          if opt.responds_to?(:bash_completion)
+            return RunProc.new { io.puts Completion.new(Completion::Bash.new(self)).script }.call(@options, @arguments, io) if opt.bash_completion == true
+          end
+        {% end %}
 
         RunProc.new {{ block.id }} .call(@options, @arguments, io)
       end
@@ -154,12 +156,12 @@ class Clim
     end
 
     macro option(short, long, type = String, desc = "Option description.", default = nil, required = false)
-      {% raise "'--bash-completion' is a reserved option. Do not define it." if short == "--bash-completion" || long == "--bash-completion" %}
+      {% raise "'--bash-completion' is a reserved option. Do not define it." if (short == "--bash-completion" || long == "--bash-completion") && @type == Command_Main_of_clim_library %}
       option_base({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
     macro option(short, type = String, desc = "Option description.", default = nil, required = false)
-      {% raise "'--bash-completion' is a reserved option. Do not define it." if short == "--bash-completion" || long == "--bash-completion" %}
+      {% raise "'--bash-completion' is a reserved option. Do not define it." if short == "--bash-completion" && @type == Command_Main_of_clim_library %}
       option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 

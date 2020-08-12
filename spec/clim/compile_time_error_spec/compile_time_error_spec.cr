@@ -337,4 +337,22 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "'--bash-completion' is allowed within a subcommand." do
+    `crystal run spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case3_allowed_subcommand.cr --no-color 2>&1 -- sub --bash-completion`.should eq <<-ERROR
+    --bash-completion: true
+    -----------help-------------
+
+      main command.
+
+      Usage:
+
+        sub [options] [arguments]
+
+      Options:
+
+        --help                           Show this help.
+
+
+    ERROR
+  end
 end
