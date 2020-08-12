@@ -943,7 +943,7 @@ Cli.start(ARGV)
 $ crystal build src/sample.cr -o /usr/local/bin/sample
 $ echo 'eval "`sample --bash-completion`"' >> ~/.bashrc
 $ . ~/.bashrc
-$ sample[TAB][TAB]
+$ sample [TAB][TAB]
 --help     --host     --port     --version  -h         -p         run        tool
 $ sample tool -[TAB][TAB]
 --help     --verbose  -v
