@@ -47,7 +47,7 @@ describe "bash completion." do
       expected: <<-EXPECTED
       --help            -a                sub1_sub2         
       --opt-sub1-a      -h                sub1_sub2_alias1  
-      --opt-sub1-b      sub1_sub1         sub1_sub2_alias2  
+      --opt-sub1-b      sub1_sub         sub1_sub2_alias2  
 
       EXPECTED
     },
