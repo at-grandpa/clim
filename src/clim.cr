@@ -6,6 +6,13 @@ class Clim
   macro main(&block)
 
     Clim::Command.command "main_of_clim_library" do
+
+      option_base "--bash-completion", nil,
+        type: Bool,
+        desc: "Outputs the source for bash completion.",
+        default: false,
+        required: false
+
       {{ yield }}
     end
 

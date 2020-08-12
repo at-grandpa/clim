@@ -6,7 +6,7 @@ _"clim" = "cli" + "slim"_
 
 [![Build Status](https://travis-ci.org/at-grandpa/clim.svg?branch=master)](https://travis-ci.org/at-grandpa/clim)
 
-## TOC
+## ToC
 
 - [Goals](#goals)
 - [Support](#support)
@@ -28,6 +28,7 @@ _"clim" = "cli" + "slim"_
     - [help_template](#help_template)
   - [help string](#help-string)
   - [`io` in run block](#io-in-run-block)
+  - [Bash completion](#bash-completion)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
@@ -83,6 +84,7 @@ _"clim" = "cli" + "slim"_
 - [x] Customizable help message
 - [x] `version` macro
 - [x] Command name alias
+- [x] Bash completion
 
 
 ## Installation
@@ -93,7 +95,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.13.0
+    version: 0.14.0
 ```
 
 ## Samples
@@ -763,7 +765,7 @@ options:
 # `options` type
 alias HelpOptionsType = Array(NamedTuple(
     names:     Array(String),
-    type:      Int8.class | Int32.class | ... | String.class | Bool.clsss, # => Support Types
+    type:      Int8.class | Int32.class | ... | String.class | Bool.class, # => Support Types
     desc:      String,
     default:   Int8 | Int32 | ... | String | Bool, # => Support Types,
     required:  Bool,
@@ -805,7 +807,7 @@ arguments:
 alias HelpArgumentsType = Array(NamedTuple(
     method_name:     String,
     display_name:    String,
-    type:            Int8.class | Int32.class | ... | String.class | Bool.clsss, # => Support Types
+    type:            Int8.class | Int32.class | ... | String.class | Bool.class, # => Support Types
     desc:            String,
     default:         Int8 | Int32 | ... | String | Bool, # => Support Types,
     required:        Bool,
@@ -894,6 +896,75 @@ io = IO::Memory.new
 IoCommand.start([] of String, io: io)
 puts io.to_s # => "in main\n"
 ```
+
+### Bash completion
+
+You can use bash completion.
+
+*src/sample.cr*
+
+```crystal
+require "clim"
+
+class Cli < Clim
+  main do
+    version "Version 1.0"
+    option "-p PORT", "--port=PORT", type: Int32, desc: "Port number."
+    option "-h HOST", "--host=HOST", type: String, desc: "Host name."
+    run do |opts, args|
+      # ...
+    end
+
+    sub "tool" do
+      option "-v", "--verbose", type: Bool
+      run do |opts, args|
+        # ...
+      end
+    end
+
+    sub "run" do
+      help short: "-h"
+      run do |opts, args|
+        # ...
+      end
+    end
+  end
+end
+
+Cli.start(ARGV)
+```
+
+- Step1: Build your program.
+- Step2: Add ```eval "`{your_program} --bash-completion`"``` to `~/.bashrc`.
+- Step3: Reload `~/.bashrc`.
+- Step4: You can use bash completion for options and subcommands.
+
+```console
+$ crystal build src/sample.cr -o /usr/local/bin/sample
+$ echo 'eval "`sample --bash-completion`"' >> ~/.bashrc
+$ . ~/.bashrc
+$ sample [TAB][TAB]
+--help     --host     --port     --version  -h         -p         run        tool
+$ sample tool -[TAB][TAB]
+--help     --verbose  -v
+$ sample tool --[TAB][TAB]
+--help     --verbose
+$ sample tool --help
+
+  Command Line Interface Tool.
+
+  Usage:
+
+    tool [options] [arguments]
+
+  Options:
+
+    -v, --verbose                    Option description. [type:Bool]
+    --help                           Show this help.
+
+$
+```
+
 
 ## Development
 

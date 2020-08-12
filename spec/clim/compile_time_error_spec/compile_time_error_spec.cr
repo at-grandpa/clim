@@ -7,18 +7,19 @@ describe "Compile time spec, " do
 
     There was a problem expanding macro 'option'
 
-    Code in spec/clim/compile_time_error_spec/files/bool_with_required_true.cr:6:3
+    Code in spec/clim/compile_time_error_spec/files/bool_with_required_true.cr:6:1
 
      6 | option "-b", type: Bool, desc: "your bool.", required: true
-       ^
-    Called macro defined in src/clim/command.cr:155:5
+     ^
+    Called macro defined in src/clim/command.cr:163:5
 
-     155 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
+     163 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
 
     Which expanded to:
 
-     > 1 | option_base("-b", nil, Bool, "your bool.", nil, true)
-           ^
+       1 |       
+     > 2 |       option_base("-b", nil, Bool, "your bool.", nil, true)
+                 ^
     Error: You can not specify 'required: true' for Bool option.
 
     ERROR
@@ -63,13 +64,13 @@ describe "Compile time spec, " do
 
     There was a problem expanding macro 'sub'
 
-    Code in spec/clim/compile_time_error_spec/files/sub_command_without_run_block.cr:7:3
+    Code in spec/clim/compile_time_error_spec/files/sub_command_without_run_block.cr:7:1
 
      7 | sub "sub" do
-       ^
-    Called macro defined in src/clim/command.cr:145:5
+     ^
+    Called macro defined in src/clim/command.cr:152:5
 
-     145 | macro sub(name, &block)
+     152 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -89,9 +90,9 @@ describe "Compile time spec, " do
 
      10 | sub "sub_sub" do
       ^
-    Called macro defined in src/clim/command.cr:145:5
+    Called macro defined in src/clim/command.cr:152:5
 
-     145 | macro sub(name, &block)
+     152 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -107,13 +108,13 @@ describe "Compile time spec, " do
 
     There was a problem expanding macro 'sub'
 
-    Code in spec/clim/compile_time_error_spec/files/sub_2_command_without_run_block.cr:15:3
+    Code in spec/clim/compile_time_error_spec/files/sub_2_command_without_run_block.cr:15:1
 
      15 | sub "sub2" do
-        ^
-    Called macro defined in src/clim/command.cr:145:5
+      ^
+    Called macro defined in src/clim/command.cr:152:5
 
-     145 | macro sub(name, &block)
+     152 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -127,10 +128,10 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_sub_command.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_sub_command.cr:11:3
+    In spec/clim/compile_time_error_spec/files/duplicate_sub_command.cr:11:1
 
      11 | # Duplicate name.
-        ^------
+      ^------
     Error: Command "sub_command" is already defined.
 
     ERROR
@@ -139,10 +140,10 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/duplicate_main_in_sub_command.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/duplicate_main_in_sub_command.cr:7:3
+    In spec/clim/compile_time_error_spec/files/duplicate_main_in_sub_command.cr:7:1
 
      7 | main do
-       ^---
+     ^---
     Error: Can not be declared 'main' as sub command.
 
     ERROR
@@ -163,10 +164,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/main_with_alias_name.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/main_with_alias_name.cr:5:5
-
-     5 | alias_name "main2"
-         ^---------
+    In spec/clim/compile_time_error_spec/files/main_with_alias_name.cr:59:1
     Error: 'alias_name' is not supported on main command.
 
     ERROR
@@ -175,10 +173,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/not_supported_option_type.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/not_supported_option_type.cr:6:5
-
-     6 | option "-n", type: BigInt, desc: "my big int.", default: 0
-         ^
+    In spec/clim/compile_time_error_spec/files/not_supported_option_type.cr:59:1
     Error: Type [BigInt] is not supported on option.
 
     ERROR
@@ -187,10 +182,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/not_supported_argument_type.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/not_supported_argument_type.cr:6:5
-
-     6 | argument "not", type: BigInt, desc: "my big int.", default: 0
-         ^-------
+    In spec/clim/compile_time_error_spec/files/not_supported_argument_type.cr:59:1
     Error: Type [BigInt] is not supported on argument.
 
     ERROR
@@ -199,10 +191,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/empty_option_name.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/empty_option_name.cr:6:5
-
-     6 | option "", type: String, desc: "empty option name."
-         ^
+    In spec/clim/compile_time_error_spec/files/empty_option_name.cr:59:1
     Error: Empty option name.
 
     ERROR
@@ -211,10 +200,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/empty_argument_name.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/empty_argument_name.cr:6:5
-
-     6 | argument "", type: String, desc: "empty option name."
-         ^-------
+    In spec/clim/compile_time_error_spec/files/empty_argument_name.cr:59:1
     Error: Empty argument name.
 
     ERROR
@@ -235,10 +221,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/help_directive_does_not_have_a_short_argument_for_main.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/help_directive_does_not_have_a_short_argument_for_main.cr:5:5
-
-     5 | help
-         ^---
+    In spec/clim/compile_time_error_spec/files/help_directive_does_not_have_a_short_argument_for_main.cr:59:1
     Error: The 'help' directive requires the 'short' argument. (ex 'help short: "-h"'
 
     ERROR
@@ -249,13 +232,13 @@ describe "Compile time spec, " do
 
     There was a problem expanding macro 'argument'
 
-    Code in spec/clim/compile_time_error_spec/files/duplicate_argument_name_main.cr:7:3
+    Code in spec/clim/compile_time_error_spec/files/duplicate_argument_name_main.cr:7:1
 
      7 | argument "foo" # duplicate
-       ^
-    Called macro defined in src/clim/command.cr:165:5
+     ^
+    Called macro defined in src/clim/command.cr:174:5
 
-     165 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     174 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -275,9 +258,9 @@ describe "Compile time spec, " do
 
      12 | argument "foo" # duplicate
       ^
-    Called macro defined in src/clim/command.cr:165:5
+    Called macro defined in src/clim/command.cr:174:5
 
-     165 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     174 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -297,9 +280,9 @@ describe "Compile time spec, " do
 
      17 | argument "foo" # duplicate
     ^
-    Called macro defined in src/clim/command.cr:165:5
+    Called macro defined in src/clim/command.cr:174:5
 
-     165 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     174 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -319,15 +302,57 @@ describe "Compile time spec, " do
 
      24 | argument "foo" # deplicate
       ^
-    Called macro defined in src/clim/command.cr:165:5
+    Called macro defined in src/clim/command.cr:174:5
 
-     165 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     174 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
        1 |       \n   2 |       \n > 3 |       Arguments.define_arguments("foo", String, "Argument description.", nil, false)
                  ^
     Error: Argument "foo" is already defined.
+
+    ERROR
+  end
+  it "'--bash-completion' is a reserved option. Do not define it. case1" do
+    `crystal run spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case1.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+    
+    In spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case1.cr:6:1
+    
+     6 | option "--bash-completion", type: Bool, desc: "my --bash-completion option."
+     ^-----
+    Error: '--bash-completion' is a reserved option. Do not define it.
+
+    ERROR
+  end
+  it "'--bash-completion' is a reserved option. Do not define it. case2" do
+    `crystal run spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case2.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+    
+    In spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case2.cr:6:1
+    
+     6 | option "-b", "--bash-completion", type: Bool, desc: "my --bash-completion option."
+     ^-----
+    Error: '--bash-completion' is a reserved option. Do not define it.
+
+    ERROR
+  end
+  it "'--bash-completion' is allowed within a subcommand." do
+    `crystal run spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case3_allowed_subcommand.cr --no-color 2>&1 -- sub --bash-completion`.should eq <<-ERROR
+    --bash-completion: true
+    -----------help-------------
+
+      main command.
+
+      Usage:
+
+        sub [options] [arguments]
+
+      Options:
+
+        --help                           Show this help.
+
 
     ERROR
   end

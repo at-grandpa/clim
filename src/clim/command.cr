@@ -1,5 +1,6 @@
 require "option_parser"
 require "./command/*"
+require "./completion/*"
 
 class Clim
   abstract class Command
@@ -134,6 +135,12 @@ class Clim
           return RunProc.new { io.puts version }.call(@options, @arguments, io) if opt.version == true
         end
 
+        {% if @type == Command_Main_of_clim_library %}
+          if opt.responds_to?(:bash_completion)
+            return RunProc.new { io.puts Completion.new(Completion::Bash.new(self)).script }.call(@options, @arguments, io) if opt.bash_completion == true
+          end
+        {% end %}
+
         RunProc.new {{ block.id }} .call(@options, @arguments, io)
       end
     end
@@ -149,10 +156,12 @@ class Clim
     end
 
     macro option(short, long, type = String, desc = "Option description.", default = nil, required = false)
+      {% raise "'--bash-completion' is a reserved option. Do not define it." if (short == "--bash-completion" || long == "--bash-completion") && @type == Command_Main_of_clim_library %}
       option_base({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
     macro option(short, type = String, desc = "Option description.", default = nil, required = false)
+      {% raise "'--bash-completion' is a reserved option. Do not define it." if short == "--bash-completion" && @type == Command_Main_of_clim_library %}
       option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
@@ -234,6 +243,21 @@ class Clim
 
         help_macro
 
+        def opts_and_subcommands
+          opts_names = @options.to_a.flat_map do |opt|
+            [opt.short, opt.long]
+          end.compact.map do |opt|
+            opt.gsub(/\=/, " ").split(" ").first
+          end.reject("--bash-completion")
+
+          subcommand_names = @sub_commands.to_a.flat_map(&.names)
+
+          opts_names + subcommand_names
+        end
+
+        def sub_commands
+          @sub_commands
+        end
       end
     end
 
