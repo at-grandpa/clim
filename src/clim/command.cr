@@ -154,10 +154,12 @@ class Clim
     end
 
     macro option(short, long, type = String, desc = "Option description.", default = nil, required = false)
+      {% raise "'--bash-completion' is a reserved option. Do not define it." if short == "--bash-completion" || long == "--bash-completion" %}
       option_base({{short}}, {{long}}, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 
     macro option(short, type = String, desc = "Option description.", default = nil, required = false)
+      {% raise "'--bash-completion' is a reserved option. Do not define it." if short == "--bash-completion" || long == "--bash-completion" %}
       option_base({{short}}, nil, {{type}}, {{desc}}, {{default}}, {{required}})
     end
 

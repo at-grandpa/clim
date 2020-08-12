@@ -313,4 +313,28 @@ describe "Compile time spec, " do
 
     ERROR
   end
+  it "'--bash-completion' is a reserved option. Do not define it. case1" do
+    `crystal run spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case1.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+    
+    In spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case1.cr:6:1
+    
+     6 | option "--bash-completion", type: Bool, desc: "my --bash-completion option."
+     ^-----
+    Error: '--bash-completion' is a reserved option. Do not define it.
+
+    ERROR
+  end
+  it "'--bash-completion' is a reserved option. Do not define it. case2" do
+    `crystal run spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case2.cr --no-color 2>&1`.should eq <<-ERROR
+    Showing last frame. Use --error-trace for full trace.
+    
+    In spec/clim/compile_time_error_spec/files/reserved_option_bash_completion_in_main_case2.cr:6:1
+    
+     6 | option "-b", "--bash-completion", type: Bool, desc: "my --bash-completion option."
+     ^-----
+    Error: '--bash-completion' is a reserved option. Do not define it.
+
+    ERROR
+  end
 end
