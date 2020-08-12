@@ -6,7 +6,7 @@ _"clim" = "cli" + "slim"_
 
 [![Build Status](https://travis-ci.org/at-grandpa/clim.svg?branch=master)](https://travis-ci.org/at-grandpa/clim)
 
-## TOC
+## ToC
 
 - [Goals](#goals)
 - [Support](#support)
@@ -83,6 +83,7 @@ _"clim" = "cli" + "slim"_
 - [x] Customizable help message
 - [x] `version` macro
 - [x] Command name alias
+- [x] Bash completion
 
 
 ## Installation
@@ -763,7 +764,7 @@ options:
 # `options` type
 alias HelpOptionsType = Array(NamedTuple(
     names:     Array(String),
-    type:      Int8.class | Int32.class | ... | String.class | Bool.clsss, # => Support Types
+    type:      Int8.class | Int32.class | ... | String.class | Bool.class, # => Support Types
     desc:      String,
     default:   Int8 | Int32 | ... | String | Bool, # => Support Types,
     required:  Bool,
@@ -805,7 +806,7 @@ arguments:
 alias HelpArgumentsType = Array(NamedTuple(
     method_name:     String,
     display_name:    String,
-    type:            Int8.class | Int32.class | ... | String.class | Bool.clsss, # => Support Types
+    type:            Int8.class | Int32.class | ... | String.class | Bool.class, # => Support Types
     desc:            String,
     default:         Int8 | Int32 | ... | String | Bool, # => Support Types,
     required:        Bool,
@@ -894,6 +895,11 @@ io = IO::Memory.new
 IoCommand.start([] of String, io: io)
 puts io.to_s # => "in main\n"
 ```
+
+### Bash completion
+
+
+todo
 
 ## Development
 
