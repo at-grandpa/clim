@@ -11,14 +11,15 @@ describe "Compile time spec, " do
 
      6 | option "-b", type: Bool, desc: "your bool.", required: true
      ^
-    Called macro defined in src/clim/command.cr:160:5
+    Called macro defined in src/clim/command.cr:163:5
 
-     160 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
+     163 | macro option(short, type = String, desc = "Option description.", default = nil, required = false)
 
     Which expanded to:
 
-     > 1 | option_base("-b", nil, Bool, "your bool.", nil, true)
-           ^
+       1 |       
+     > 2 |       option_base("-b", nil, Bool, "your bool.", nil, true)
+                 ^
     Error: You can not specify 'required: true' for Bool option.
 
     ERROR
@@ -67,9 +68,9 @@ describe "Compile time spec, " do
 
      7 | sub "sub" do
      ^
-    Called macro defined in src/clim/command.cr:150:5
+    Called macro defined in src/clim/command.cr:152:5
 
-     150 | macro sub(name, &block)
+     152 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -89,9 +90,9 @@ describe "Compile time spec, " do
 
      10 | sub "sub_sub" do
       ^
-    Called macro defined in src/clim/command.cr:150:5
+    Called macro defined in src/clim/command.cr:152:5
 
-     150 | macro sub(name, &block)
+     152 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -111,9 +112,9 @@ describe "Compile time spec, " do
 
      15 | sub "sub2" do
       ^
-    Called macro defined in src/clim/command.cr:150:5
+    Called macro defined in src/clim/command.cr:152:5
 
-     150 | macro sub(name, &block)
+     152 | macro sub(name, &block)
 
     Which expanded to:
 
@@ -235,9 +236,9 @@ describe "Compile time spec, " do
 
      7 | argument "foo" # duplicate
      ^
-    Called macro defined in src/clim/command.cr:170:5
+    Called macro defined in src/clim/command.cr:174:5
 
-     170 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     174 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -257,9 +258,9 @@ describe "Compile time spec, " do
 
      12 | argument "foo" # duplicate
       ^
-    Called macro defined in src/clim/command.cr:170:5
+    Called macro defined in src/clim/command.cr:174:5
 
-     170 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     174 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -279,9 +280,9 @@ describe "Compile time spec, " do
 
      17 | argument "foo" # duplicate
     ^
-    Called macro defined in src/clim/command.cr:170:5
+    Called macro defined in src/clim/command.cr:174:5
 
-     170 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     174 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
@@ -301,9 +302,9 @@ describe "Compile time spec, " do
 
      24 | argument "foo" # deplicate
       ^
-    Called macro defined in src/clim/command.cr:170:5
+    Called macro defined in src/clim/command.cr:174:5
 
-     170 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
+     174 | macro argument(name, type = String, desc = "Argument description.", default = nil, required = false)
 
     Which expanded to:
 
