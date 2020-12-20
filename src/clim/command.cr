@@ -178,7 +178,7 @@ class Clim
     end
 
     macro command(name, &block)
-      {% if @type.constants.map(&.id.stringify).includes?("Command_" + name.id.capitalize.stringify) %}
+      {% if @type.constants.map(&.id.stringify).includes?("Command_" + name.gsub(/-/, "_").id.capitalize.stringify) %}
         {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
       {% end %}
 
