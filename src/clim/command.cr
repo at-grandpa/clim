@@ -182,16 +182,16 @@ class Clim
         {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
       {% end %}
 
-      class Command_{{ name.id.capitalize }} < Command
+      class Command_{{ name.gsub(/-/, "_").id.capitalize }} < Command
 
-        class Options_{{ name.id.capitalize }} < Options
+        class Options_{{ name.gsub(/-/, "_").id.capitalize }} < Options
         end
 
-        class Arguments_{{ name.id.capitalize }} < Arguments
+        class Arguments_{{ name.gsub(/-/, "_").id.capitalize }} < Arguments
         end
 
-        alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
-        alias ArgumentsForEachCommand = Arguments_{{ name.id.capitalize }}
+        alias OptionsForEachCommand = Options_{{ name.gsub(/-/, "_").id.capitalize }}
+        alias ArgumentsForEachCommand = Arguments_{{ name.gsub(/-/, "_").id.capitalize }}
         alias RunProc = Proc(OptionsForEachCommand, ArgumentsForEachCommand, IO, Nil)
 
         getter name : String = {{name.id.stringify}}
@@ -239,7 +239,7 @@ class Clim
 
         {{ yield }}
 
-        \{% raise "'run' block is not defined." unless @type.methods.map(&.name.stringify).includes?("run") %}
+        \{% raise "'run' block is not defined." unless @type.methods.map(&.name.gsub(/-/, "_").stringify).includes?("run") %}
 
         help_macro
 
