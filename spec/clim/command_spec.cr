@@ -26,6 +26,13 @@ class SpecCommand < Clim
       run do |opts, args|
       end
     end
+    sub "hyphen-command" do
+      desc "hyphen command."
+      usage "main hyphen-command [options] [files]"
+      alias_name "hyphen-command2", "hyphen-command3"
+      run do |opts, args|
+      end
+    end
   end
 end
 
@@ -59,8 +66,9 @@ describe Clim::Command do
 
         Sub Commands:
 
-          abc, def, ghi            abc command.
-          abcdef, ghijkl, mnopqr   abcdef command.
+          abc, def, ghi                                      abc command.
+          abcdef, ghijkl, mnopqr                             abcdef command.
+          hyphen-command, hyphen-command2, hyphen-command3   hyphen command.
 
 
       OPTIONS
@@ -108,6 +116,7 @@ describe Clim::Command do
         "--help",
         "abc", "def", "ghi",
         "abcdef", "ghijkl", "mnopqr",
+        "hyphen-command", "hyphen-command2", "hyphen-command3",
       ]
       SpecCommand.command.@sub_commands.to_a[0].opts_and_subcommands.should eq [
         "-f", "--foo",
