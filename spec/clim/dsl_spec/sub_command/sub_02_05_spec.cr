@@ -20,8 +20,8 @@ macro spec_for_alias_name(spec_class_name, spec_cases)
             end
           end
         end
-        sub "sub_command_2" do
-          alias_name "alias_sub_command_2", "alias_sub_command_2_second"
+        sub "sub-command-2" do
+          alias_name "alias-sub-command-2", "alias-sub-command-2-second"
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
@@ -55,7 +55,7 @@ end
                         Sub Commands:
 
                           sub_command_1, alias_sub_command_1                               Command Line Interface Tool.
-                          sub_command_2, alias_sub_command_2, alias_sub_command_2_second   Command Line Interface Tool.
+                          sub-command-2, alias-sub-command-2, alias-sub-command-2-second   Command Line Interface Tool.
 
 
                       HELP_MESSAGE
@@ -85,7 +85,7 @@ end
 
                          Usage:
 
-                           sub_command_2 [options] [arguments]
+                           sub-command-2 [options] [arguments]
 
                          Options:
 
@@ -99,39 +99,39 @@ spec_for_alias_name(
   spec_class_name: SubCommandWithAliasName,
   spec_cases: [
     {
-      argv:        ["sub_command_2", "--help"],
+      argv:        ["sub-command-2", "--help"],
       expect_help: {{sub_2_help_message}},
     },
     {
-      argv:        ["alias_sub_command_2", "--help"],
+      argv:        ["alias-sub-command-2", "--help"],
       expect_help: {{sub_2_help_message}},
     },
     {
-      argv:        ["alias_sub_command_2_second", "--help"],
+      argv:        ["alias-sub-command-2-second", "--help"],
       expect_help: {{sub_2_help_message}},
     },
     {
-      argv:        ["sub_command_2", "--help", "ignore-arg"],
+      argv:        ["sub-command-2", "--help", "ignore-arg"],
       expect_help: {{sub_2_help_message}},
     },
     {
-      argv:        ["alias_sub_command_2", "--help", "ignore-arg"],
+      argv:        ["alias-sub-command-2", "--help", "ignore-arg"],
       expect_help: {{sub_2_help_message}},
     },
     {
-      argv:        ["alias_sub_command_2_second", "--help", "ignore-arg"],
+      argv:        ["alias-sub-command-2-second", "--help", "ignore-arg"],
       expect_help: {{sub_2_help_message}},
     },
     {
-      argv:        ["sub_command_2", "ignore-arg", "--help"],
+      argv:        ["sub-command-2", "ignore-arg", "--help"],
       expect_help: {{sub_2_help_message}},
     },
     {
-      argv:        ["alias_sub_command_2", "ignore-arg", "--help"],
+      argv:        ["alias-sub-command-2", "ignore-arg", "--help"],
       expect_help: {{sub_2_help_message}},
     },
     {
-      argv:        ["alias_sub_command_2_second", "ignore-arg", "--help"],
+      argv:        ["alias-sub-command-2-second", "ignore-arg", "--help"],
       expect_help: {{sub_2_help_message}},
     },
   ]
