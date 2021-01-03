@@ -32,16 +32,27 @@ class MyCli < Clim
           puts "sub_sub_1 argv         : #{args.argv}"
         end
       end
+      sub "sub-sub-2" do
+        option "-o ARG", "--option=ARG", type: String
+        argument "arg", type: String
+        run do |opts, args|
+          puts "sub-sub-2 option       : #{opts.option}"
+          puts "sub-sub-2 argument     : #{args.arg}"
+          puts "sub-sub-2 all_args     : #{args.all_args}"
+          puts "sub-sub-2 unknown_args : #{args.unknown_args}"
+          puts "sub-sub-2 argv         : #{args.argv}"
+        end
+      end
     end
-    sub "sub_2" do
+    sub "sub-2" do
       option "-o ARG", "--option=ARG", type: String
       argument "arg", type: String
       run do |opts, args|
-        puts "sub_2 option       : #{opts.option}"
-        puts "sub_2 argument     : #{args.arg}"
-        puts "sub_2 all_args     : #{args.all_args}"
-        puts "sub_2 unknown_args : #{args.unknown_args}"
-        puts "sub_2 argv         : #{args.argv}"
+        puts "sub-2 option       : #{opts.option}"
+        puts "sub-2 argument     : #{args.arg}"
+        puts "sub-2 all_args     : #{args.all_args}"
+        puts "sub-2 unknown_args : #{args.unknown_args}"
+        puts "sub-2 argv         : #{args.argv}"
       end
     end
   end

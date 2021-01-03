@@ -168,13 +168,23 @@ describe "STDOUT spec, " do
 
     DISPLAY
   end
-  it "display STDOUT of the run block execution. (sub_2)" do
-    `crystal run spec/clim/stdout_spec/files/run_block_execution.cr --no-color -- sub_2 --option option_value argument_value unknown_value1 unknown_value2`.should eq <<-DISPLAY
-    sub_2 option       : option_value
-    sub_2 argument     : argument_value
-    sub_2 all_args     : ["argument_value", "unknown_value1", "unknown_value2"]
-    sub_2 unknown_args : ["unknown_value1", "unknown_value2"]
-    sub_2 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
+  it "display STDOUT of the run block execution. (sub-sub-2)" do
+    `crystal run spec/clim/stdout_spec/files/run_block_execution.cr --no-color -- sub_1 sub-sub-2 --option option_value argument_value unknown_value1 unknown_value2`.should eq <<-DISPLAY
+    sub-sub-2 option       : option_value
+    sub-sub-2 argument     : argument_value
+    sub-sub-2 all_args     : ["argument_value", "unknown_value1", "unknown_value2"]
+    sub-sub-2 unknown_args : ["unknown_value1", "unknown_value2"]
+    sub-sub-2 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
+
+    DISPLAY
+  end
+  it "display STDOUT of the run block execution. (sub-2)" do
+    `crystal run spec/clim/stdout_spec/files/run_block_execution.cr --no-color -- sub-2 --option option_value argument_value unknown_value1 unknown_value2`.should eq <<-DISPLAY
+    sub-2 option       : option_value
+    sub-2 argument     : argument_value
+    sub-2 all_args     : ["argument_value", "unknown_value1", "unknown_value2"]
+    sub-2 unknown_args : ["unknown_value1", "unknown_value2"]
+    sub-2 argv         : ["--option", "option_value", "argument_value", "unknown_value1", "unknown_value2"]
 
     DISPLAY
   end
