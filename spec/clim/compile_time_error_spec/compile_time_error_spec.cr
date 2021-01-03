@@ -164,7 +164,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/main_with_alias_name.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/main_with_alias_name.cr:59:1
+    In spec/clim/compile_time_error_spec/files/main_with_alias_name.cr:60:1
     Error: 'alias_name' is not supported on main command.
 
     ERROR
@@ -173,7 +173,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/not_supported_option_type.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/not_supported_option_type.cr:59:1
+    In spec/clim/compile_time_error_spec/files/not_supported_option_type.cr:60:1
     Error: Type [BigInt] is not supported on option.
 
     ERROR
@@ -182,7 +182,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/not_supported_argument_type.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/not_supported_argument_type.cr:59:1
+    In spec/clim/compile_time_error_spec/files/not_supported_argument_type.cr:60:1
     Error: Type [BigInt] is not supported on argument.
 
     ERROR
@@ -191,7 +191,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/empty_option_name.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/empty_option_name.cr:59:1
+    In spec/clim/compile_time_error_spec/files/empty_option_name.cr:60:1
     Error: Empty option name.
 
     ERROR
@@ -200,7 +200,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/empty_argument_name.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/empty_argument_name.cr:59:1
+    In spec/clim/compile_time_error_spec/files/empty_argument_name.cr:60:1
     Error: Empty argument name.
 
     ERROR
@@ -221,7 +221,7 @@ describe "Compile time spec, " do
     `crystal run spec/clim/compile_time_error_spec/files/help_directive_does_not_have_a_short_argument_for_main.cr --no-color 2>&1`.should eq <<-ERROR
     Showing last frame. Use --error-trace for full trace.
 
-    In spec/clim/compile_time_error_spec/files/help_directive_does_not_have_a_short_argument_for_main.cr:59:1
+    In spec/clim/compile_time_error_spec/files/help_directive_does_not_have_a_short_argument_for_main.cr:60:1
     Error: The 'help' directive requires the 'short' argument. (ex 'help short: "-h"'
 
     ERROR
