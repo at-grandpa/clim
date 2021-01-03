@@ -95,7 +95,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.14.0
+    version: 0.15.0
 ```
 
 ## Samples
@@ -550,13 +550,13 @@ end
 
 You can specify multiple arguments for the command.
 
- | Argument        | Description          | Example                         | Required | Default                   |
- | --------------- | -------------------- | ------------------------------- | -------- | ------------------------- |
- | First argument  | name                 | `my_argument`                   | true     | -                         |
- | `type`          | argument type        | `type: String`                  | false    | `String`                  |
- | `desc`          | argument description | `desc: "argument description."` | false    | `"Argument description."` |
- | `default`       | default value        | `default: "default value"`      | false    | `nil`                     |
- | `required`      | required flag        | `required: true`                | false    | `false`                   |
+ | Argument       | Description          | Example                         | Required | Default                   |
+ | -------------- | -------------------- | ------------------------------- | -------- | ------------------------- |
+ | First argument | name                 | `my_argument`                   | true     | -                         |
+ | `type`         | argument type        | `type: String`                  | false    | `String`                  |
+ | `desc`         | argument description | `desc: "argument description."` | false    | `"Argument description."` |
+ | `default`      | default value        | `default: "default value"`      | false    | `nil`                     |
+ | `required`     | required flag        | `required: true`                | false    | `false`                   |
 
 The order of the arguments is related to the order in which they are defined. Also, when calling a method, hyphens in the method name of the argument are converted to underscores. There are also `all_args`, `unknown_args` and `argv` methods.
 

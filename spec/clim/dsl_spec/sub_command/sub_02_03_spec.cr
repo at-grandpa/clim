@@ -20,8 +20,8 @@ macro spec_for_alias_name(spec_class_name, spec_cases)
             end
           end
         end
-        sub "sub_command_2" do
-          alias_name "alias_sub_command_2", "alias_sub_command_2_second"
+        sub "sub-command-2" do
+          alias_name "alias-sub-command-2", "alias-sub-command-2-second"
           run do |opts, args|
             assert_opts_and_args({{spec_case}})
           end
@@ -55,7 +55,7 @@ end
                         Sub Commands:
 
                           sub_command_1, alias_sub_command_1                               Command Line Interface Tool.
-                          sub_command_2, alias_sub_command_2, alias_sub_command_2_second   Command Line Interface Tool.
+                          sub-command-2, alias-sub-command-2, alias-sub-command-2-second   Command Line Interface Tool.
 
 
                       HELP_MESSAGE
@@ -85,7 +85,7 @@ end
 
                          Usage:
 
-                           sub_command_2 [options] [arguments]
+                           sub-command-2 [options] [arguments]
 
                          Options:
 
@@ -123,62 +123,62 @@ spec_for_alias_name(
       expect_help: {{sub_1_help_message}},
     },
     {
-      argv:        ["sub_command_2"],
+      argv:        ["sub-command-2"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: [] of String,
     },
     {
-      argv:        ["alias_sub_command_2"],
+      argv:        ["alias-sub-command-2"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: [] of String,
     },
     {
-      argv:        ["alias_sub_command_2_second"],
+      argv:        ["alias-sub-command-2-second"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: [] of String,
     },
     {
-      argv:        ["sub_command_2", "arg1"],
+      argv:        ["sub-command-2", "arg1"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1"],
     },
     {
-      argv:        ["alias_sub_command_2", "arg1"],
+      argv:        ["alias-sub-command-2", "arg1"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1"],
     },
     {
-      argv:        ["alias_sub_command_2_second", "arg1"],
+      argv:        ["alias-sub-command-2-second", "arg1"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1"],
     },
     {
-      argv:        ["sub_command_2", "arg1", "arg2"],
+      argv:        ["sub-command-2", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1", "arg2"],
     },
     {
-      argv:        ["alias_sub_command_2", "arg1", "arg2"],
+      argv:        ["alias-sub-command-2", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1", "arg2"],
     },
     {
-      argv:        ["alias_sub_command_2_second", "arg1", "arg2"],
+      argv:        ["alias-sub-command-2-second", "arg1", "arg2"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1", "arg2"],
     },
     {
-      argv:        ["sub_command_2", "arg1", "arg2", "arg3"],
+      argv:        ["sub-command-2", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1", "arg2", "arg3"],
     },
     {
-      argv:        ["alias_sub_command_2", "arg1", "arg2", "arg3"],
+      argv:        ["alias-sub-command-2", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1", "arg2", "arg3"],
     },
     {
-      argv:        ["alias_sub_command_2_second", "arg1", "arg2", "arg3"],
+      argv:        ["alias-sub-command-2-second", "arg1", "arg2", "arg3"],
       expect_help: {{sub_2_help_message}},
       expect_args_value: ["arg1", "arg2", "arg3"],
     },

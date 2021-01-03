@@ -178,20 +178,21 @@ class Clim
     end
 
     macro command(name, &block)
-      {% if @type.constants.map(&.id.stringify).includes?("Command_" + name.id.capitalize.stringify) %}
+      {% normalized_name = name.gsub(/-/, "_") %}
+      {% if @type.constants.map(&.id.stringify).includes?("Command_" + normalized_name.id.capitalize.stringify) %}
         {% raise "Command \"" + name.id.stringify + "\" is already defined." %}
       {% end %}
 
-      class Command_{{ name.id.capitalize }} < Command
+      class Command_{{ normalized_name.id.capitalize }} < Command
 
-        class Options_{{ name.id.capitalize }} < Options
+        class Options_{{ normalized_name.id.capitalize }} < Options
         end
 
-        class Arguments_{{ name.id.capitalize }} < Arguments
+        class Arguments_{{ normalized_name.id.capitalize }} < Arguments
         end
 
-        alias OptionsForEachCommand = Options_{{ name.id.capitalize }}
-        alias ArgumentsForEachCommand = Arguments_{{ name.id.capitalize }}
+        alias OptionsForEachCommand = Options_{{ normalized_name.id.capitalize }}
+        alias ArgumentsForEachCommand = Arguments_{{ normalized_name.id.capitalize }}
         alias RunProc = Proc(OptionsForEachCommand, ArgumentsForEachCommand, IO, Nil)
 
         getter name : String = {{name.id.stringify}}
