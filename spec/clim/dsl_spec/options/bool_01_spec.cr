@@ -137,7 +137,7 @@ spec(
     {
       argv:              ["-bool"],
       exception_message: {
-        exception: Clim::ClimInvalidOptionException
+        exception: Clim::ClimInvalidOptionException,
         message:   "Undefined option. \"-bool\"",
       }
     },
