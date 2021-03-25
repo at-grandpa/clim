@@ -33,4 +33,5 @@ spec_completion: $(SPEC_COMPLETION_FILES)
 
 .PHONY: $(SPEC_COMPLETION_FILES)
 $(SPEC_COMPLETION_FILES):
+	crystal -v
 	crystal spec $@
