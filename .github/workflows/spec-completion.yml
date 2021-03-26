@@ -9,6 +9,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v2
     - name: install crystal
-      run: brew install crystal-lang
+      run: curl -fsSL https://crystal-lang.org/install.sh | sudo bash
     - name: spec_completion
       run: make spec_completion
