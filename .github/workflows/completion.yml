@@ -3,7 +3,7 @@ name: completion
 on: [push]
 
 jobs:
-  format-check:
+  spec:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
