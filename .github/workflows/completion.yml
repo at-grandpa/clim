@@ -1,4 +1,4 @@
-name: clim spec_completion
+name: completion
 
 on: [push]
 
