@@ -19,13 +19,8 @@ format-check:
 
 
 spec/%:
-	docker run \
-		--rm \
-		$(DOCKER_OPTIONS) \
-		-v $(PWD):/workdir \
-		-w /workdir \
-		crystallang/crystal:latest \
-		/bin/sh -c "crystal -v; crystal eval 'array = \"$(SPEC_FILES)\".split(\" \"); puts array.map_with_index{|e,i| {index: i, value: e}}.group_by{|e| e[:index] % ($(NUM_OF_JOBS))}[$* - 1].map(&.[](:value)).join(\" \")' | xargs -d \" \" -I{} /bin/sh -c 'echo \"\n\n=========================\n{}\"; crystal spec {}'"
+	crystal -v
+	crystal eval 'array = "$(SPEC_FILES)".split(" "); puts array.map_with_index{|e,i| {index: i, value: e}}.group_by{|e| e[:index] % ($(NUM_OF_JOBS))}[$* - 1].map(&.[](:value)).join(" ")' | xargs -n 1 -I{} /bin/sh -c 'echo "\n\n=========================\n{}"; crystal spec {}'
 
 
 .PHONY: spec_completion
