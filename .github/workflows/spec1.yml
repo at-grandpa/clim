@@ -4,7 +4,9 @@ on: [push]
 
 jobs:
   spec:
-    runs-on: ubuntu-latest
+    runs:
+      using: 'docker'
+      image: 'docker://crystallang/crystal:latest'
     steps:
     - name: checkout
       uses: actions/checkout@v2
