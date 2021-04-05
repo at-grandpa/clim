@@ -3,12 +3,12 @@ name: completion
 on: [push]
 
 jobs:
-  format:
+  completion-spec:
     runs-on: ubuntu-latest
-    container:
-      image: crystallang/crystal:latest
     steps:
-      - name: Download source
+      - name: checkout
         uses: actions/checkout@v2
-      - name: Run conmpetion tests
+      - name: install crystal
+        run: curl -fsSL https://crystal-lang.org/install.sh | sudo bash
+      - name: spec_completion
         run: make spec_completion

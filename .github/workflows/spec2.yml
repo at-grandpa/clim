@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: Download source
         uses: actions/checkout@v2
-      - name: Run tests
+      - name: Run specs
         run: make spec/2 NUM_OF_JOBS=5
