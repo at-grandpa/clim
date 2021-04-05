@@ -18,5 +18,10 @@ spec_completion: $(SPEC_COMPLETION_FILES)
 
 .PHONY: $(SPEC_COMPLETION_FILES)
 $(SPEC_COMPLETION_FILES):
-	crystal -v
-	crystal spec $@
+	docker run \
+		--rm \
+		$(DOCKER_OPTIONS) \
+		-v $(PWD):/workdir \
+		-w /workdir \
+		crystallang/crystal:latest \
+		/bin/sh -c "crystal -v; crystal spec $@" 
