@@ -6,6 +6,7 @@ SPEC_COMPLETION_FILES := $(shell find spec_completion -name '*_spec.cr' -print |
 .PHONY: spec
 spec:
 	$(MAKE) spec/1
+	$(MAKE) spec_completion
 
 spec/%:
 	crystal -v
@@ -18,6 +19,10 @@ spec_completion: $(SPEC_COMPLETION_FILES)
 
 .PHONY: $(SPEC_COMPLETION_FILES)
 $(SPEC_COMPLETION_FILES):
+ifeq ($(GITHUB_ACTIONS),true)
+	crystal -v
+	crystal spec $@
+else
 	docker run \
 		--rm \
 		$(DOCKER_OPTIONS) \
@@ -25,3 +30,4 @@ $(SPEC_COMPLETION_FILES):
 		-w /workdir \
 		crystallang/crystal:latest \
 		/bin/sh -c "crystal -v; crystal spec $@" 
+endif
