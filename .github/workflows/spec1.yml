@@ -3,7 +3,7 @@ name: spec1
 on: [push]
 
 jobs:
-  build:
+  spec:
     runs-on: ubuntu-latest
     container:
       image: crystallang/crystal:latest
