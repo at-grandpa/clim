@@ -9,7 +9,7 @@ _"clim" = "cli" + "slim"_
 ![spec3](https://github.com/at-grandpa/clim/workflows/spec3/badge.svg)
 ![spec4](https://github.com/at-grandpa/clim/workflows/spec4/badge.svg)
 ![spec5](https://github.com/at-grandpa/clim/workflows/spec5/badge.svg)
-![format-check](https://github.com/at-grandpa/clim/workflows/format-check/badge.svg)
+![format-check](https://github.com/at-grandpa/clim/workflows/check-formatting/badge.svg)
 ![completion](https://github.com/at-grandpa/clim/workflows/completion/badge.svg)
 
 ## Goals
