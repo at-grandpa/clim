@@ -1,12 +1,15 @@
-name: format-check
-
-on: [push]
-
+name: check-formatting
+on:
+  push:
+  pull_request:
+    branches: [master]
 jobs:
-  format-check:
+  format:
     runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal:latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: format-check
-      run: make format-check
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Check formatting 
+        run: crystal tool format --check
