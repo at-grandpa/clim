@@ -4,34 +4,13 @@
 
 _"clim" = "cli" + "slim"_
 
-[![Build Status](https://travis-ci.org/at-grandpa/clim.svg?branch=master)](https://travis-ci.org/at-grandpa/clim)
-
-## ToC
-
-- [Goals](#goals)
-- [Support](#support)
-- [Installation](#installation)
-- [Samples](#samples)
-  - [Minimum sample](#minimum-sample)
-  - [Command information sample](#command-information-sample)
-  - [Sub commands sample](#sub-commands-sample)
-- [How to use](#how-to-use)
-  - [require & inherit](#require--inherit)
-  - [Command Informations](#command-informations)
-    - [desc](#desc)
-    - [usage](#usage)
-    - [alias_name](#alias_name)
-    - [version](#version)
-    - [Short option for help](#short-option-for-help)
-    - [option](#option)
-    - [argument](#argument)
-    - [help_template](#help_template)
-  - [help string](#help-string)
-  - [`io` in run block](#io-in-run-block)
-  - [Bash completion](#bash-completion)
-- [Development](#development)
-- [Contributing](#contributing)
-- [Contributors](#contributors)
+![spec1](https://github.com/at-grandpa/clim/workflows/spec1/badge.svg)
+![spec2](https://github.com/at-grandpa/clim/workflows/spec2/badge.svg)
+![spec3](https://github.com/at-grandpa/clim/workflows/spec3/badge.svg)
+![spec4](https://github.com/at-grandpa/clim/workflows/spec4/badge.svg)
+![spec5](https://github.com/at-grandpa/clim/workflows/spec5/badge.svg)
+![format-check](https://github.com/at-grandpa/clim/workflows/check-formatting/badge.svg)
+![completion](https://github.com/at-grandpa/clim/workflows/completion/badge.svg)
 
 ## Goals
 
@@ -95,7 +74,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   clim:
     github: at-grandpa/clim
-    version: 0.16.0
+    version: 0.17.0
 ```
 
 ## Samples

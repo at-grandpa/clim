@@ -1,12 +1,15 @@
-name: clim spec3
-
-on: [push]
-
+name: spec3
+on:
+  push:
+  pull_request:
+    branches: [master]
 jobs:
   spec:
     runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal:latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: spec
-      run: make spec/3 NUM_OF_JOBS=5
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Run specs
+        run: make spec/3 NUM_OF_JOBS=5
