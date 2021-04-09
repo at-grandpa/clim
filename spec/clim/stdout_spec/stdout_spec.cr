@@ -324,4 +324,58 @@ describe "STDOUT spec, " do
 
     DISPLAY
   end
+  it "For --bash-completion, options and arguments are not required." do
+    expected_regex = <<-'DISPLAY'
+    _.*\(\)
+    \{
+    \ \ \ \ local\ program\=\$\{COMP_WORDS\[0\]\}
+    \ \ \ \ local\ cmd\=\$\{COMP_WORDS\[1\]\}
+    \ \ \ \ local\ cur\="\$\{COMP_WORDS\[COMP_CWORD\]\}"
+    \ \ \ \ local\ prev\="\$\{COMP_WORDS\[COMP_CWORD\-1\]\}"
+    \ \ \ \ local\ cword\="\$\{COMP_CWORD\}"
+    
+    \ \ \ \ 
+    if\ \[\[\ "\$\{prev\}"\ \=\=\ ".*"\ \]\]\ ;\ then
+    \ \ \ \ COMPREPLY\=\(\ \$\(compgen\ \-W\ "\-v\ \-\-version\ \-\-prefix\ \-h\ \-\-help"\ \-\-\ \$\{cur\}\)\ \)
+    else
+    \ \ \ \ COMPREPLY\=\(\ \$\(compgen\ \-f\ \$\{cur\}\)\ \)
+    fi
+    
+    
+    \ \ \ \ return\ 0
+    \}
+    
+    complete\ \-F\ _.* .*
+
+    DISPLAY
+
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --bash-completion`.should match(/#{expected_regex}/)
+  end
+  it "If --bash-completion is specified along with options or arguments, a bash completion string will be displayed." do
+    expected_regex = <<-'DISPLAY'
+    _.*\(\)
+    \{
+    \ \ \ \ local\ program\=\$\{COMP_WORDS\[0\]\}
+    \ \ \ \ local\ cmd\=\$\{COMP_WORDS\[1\]\}
+    \ \ \ \ local\ cur\="\$\{COMP_WORDS\[COMP_CWORD\]\}"
+    \ \ \ \ local\ prev\="\$\{COMP_WORDS\[COMP_CWORD\-1\]\}"
+    \ \ \ \ local\ cword\="\$\{COMP_CWORD\}"
+    
+    \ \ \ \ 
+    if\ \[\[\ "\$\{prev\}"\ \=\=\ ".*"\ \]\]\ ;\ then
+    \ \ \ \ COMPREPLY\=\(\ \$\(compgen\ \-W\ "\-v\ \-\-version\ \-\-prefix\ \-h\ \-\-help"\ \-\-\ \$\{cur\}\)\ \)
+    else
+    \ \ \ \ COMPREPLY\=\(\ \$\(compgen\ \-f\ \$\{cur\}\)\ \)
+    fi
+    
+    
+    \ \ \ \ return\ 0
+    \}
+    
+    complete\ \-F\ _.* .*
+
+    DISPLAY
+
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --prefix=foo arg1 --bash-completion`.should match(/#{expected_regex}/)
+  end
 end
