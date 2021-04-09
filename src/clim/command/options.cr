@@ -57,9 +57,9 @@ class Clim
 
       def required_validate!
         opts = self.dup
-        if opts.responds_to?(:help)
-          return if opts.help
-        end
+        return if opts.responds_to?(:help) && opts.help
+        return if opts.responds_to?(:version) && opts.version
+        return if opts.responds_to?(:bash_completion) && opts.bash_completion
         return if invalid_required_names.empty?
         raise ClimInvalidOptionException.new "Required options. \"#{invalid_required_names.join("\", \"")}\""
       end

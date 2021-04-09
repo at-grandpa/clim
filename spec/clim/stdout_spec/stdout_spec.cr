@@ -189,7 +189,7 @@ describe "STDOUT spec, " do
     DISPLAY
   end
   it "exception message. (Required options)" do
-    `crystal run spec/clim/stdout_spec/files/exception_message.cr --no-color -- `.should eq <<-DISPLAY
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- `.should eq <<-DISPLAY
     ERROR: Required options. "--prefix <text>"
 
     Please see the `--help`.
@@ -197,7 +197,7 @@ describe "STDOUT spec, " do
     DISPLAY
   end
   it "exception message. (Option that requires an argument)" do
-    `crystal run spec/clim/stdout_spec/files/exception_message.cr --no-color -- --prefix`.should eq <<-DISPLAY
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --prefix`.should eq <<-DISPLAY
     ERROR: Option that requires an argument. "--prefix"
 
     Please see the `--help`.
@@ -205,11 +205,177 @@ describe "STDOUT spec, " do
     DISPLAY
   end
   it "exception message. (Option that requires an argument)" do
-    `crystal run spec/clim/stdout_spec/files/exception_message.cr --no-color -- --prefix=foo`.should eq <<-DISPLAY
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --prefix=foo`.should eq <<-DISPLAY
     ERROR: Required arguments. "arg1"
 
     Please see the `--help`.
 
     DISPLAY
+  end
+  it "For --help, options and arguments are not required." do
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --help`.should eq <<-DISPLAY
+
+      Command Line Interface Tool.
+  
+      Usage:
+  
+        hello <name>
+  
+      Options:
+  
+        --prefix <text>                  Prefix. [type:String] [required]
+        -h, --help                       Show this help.
+        -v, --version                    Show version.
+  
+      Arguments:
+  
+        01. arg1      argument1 [type:String] [required]
+
+
+    DISPLAY
+  end
+  it "For -h, options and arguments are not required." do
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- -h`.should eq <<-DISPLAY
+
+      Command Line Interface Tool.
+  
+      Usage:
+  
+        hello <name>
+  
+      Options:
+  
+        --prefix <text>                  Prefix. [type:String] [required]
+        -h, --help                       Show this help.
+        -v, --version                    Show version.
+  
+      Arguments:
+  
+        01. arg1      argument1 [type:String] [required]
+
+
+    DISPLAY
+  end
+  it "If --help is specified along with options or arguments, a help message will be displayed." do
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --prefix=foo arg1 --help `.should eq <<-DISPLAY
+
+      Command Line Interface Tool.
+  
+      Usage:
+  
+        hello <name>
+  
+      Options:
+  
+        --prefix <text>                  Prefix. [type:String] [required]
+        -h, --help                       Show this help.
+        -v, --version                    Show version.
+  
+      Arguments:
+  
+        01. arg1      argument1 [type:String] [required]
+
+
+    DISPLAY
+  end
+  it "If -h is specified along with options or arguments, a help message will be displayed." do
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --prefix=foo arg1 -h `.should eq <<-DISPLAY
+
+      Command Line Interface Tool.
+  
+      Usage:
+  
+        hello <name>
+  
+      Options:
+  
+        --prefix <text>                  Prefix. [type:String] [required]
+        -h, --help                       Show this help.
+        -v, --version                    Show version.
+  
+      Arguments:
+  
+        01. arg1      argument1 [type:String] [required]
+
+
+    DISPLAY
+  end
+  it "For --version, options and arguments are not required." do
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --version`.should eq <<-DISPLAY
+    Version 0.1.0
+
+    DISPLAY
+  end
+  it "For -v, options and arguments are not required." do
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- -v`.should eq <<-DISPLAY
+    Version 0.1.0
+
+    DISPLAY
+  end
+  it "If --version is specified along with options or arguments, a version message will be displayed." do
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --prefix=foo arg1 --version `.should eq <<-DISPLAY
+    Version 0.1.0
+
+    DISPLAY
+  end
+  it "If -v is specified along with options or arguments, a version message will be displayed." do
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --prefix=foo arg1 -v `.should eq <<-DISPLAY
+    Version 0.1.0
+
+    DISPLAY
+  end
+  it "For --bash-completion, options and arguments are not required." do
+    expected_regex = <<-'DISPLAY'
+    _.*\(\)
+    \{
+    \ \ \ \ local\ program\=\$\{COMP_WORDS\[0\]\}
+    \ \ \ \ local\ cmd\=\$\{COMP_WORDS\[1\]\}
+    \ \ \ \ local\ cur\="\$\{COMP_WORDS\[COMP_CWORD\]\}"
+    \ \ \ \ local\ prev\="\$\{COMP_WORDS\[COMP_CWORD\-1\]\}"
+    \ \ \ \ local\ cword\="\$\{COMP_CWORD\}"
+    
+    \ \ \ \ 
+    if\ \[\[\ "\$\{prev\}"\ \=\=\ ".*"\ \]\]\ ;\ then
+    \ \ \ \ COMPREPLY\=\(\ \$\(compgen\ \-W\ "\-v\ \-\-version\ \-\-prefix\ \-h\ \-\-help"\ \-\-\ \$\{cur\}\)\ \)
+    else
+    \ \ \ \ COMPREPLY\=\(\ \$\(compgen\ \-f\ \$\{cur\}\)\ \)
+    fi
+    
+    
+    \ \ \ \ return\ 0
+    \}
+    
+    complete\ \-F\ _.* .*
+
+    DISPLAY
+
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --bash-completion`.should match(/#{expected_regex}/)
+  end
+  it "If --bash-completion is specified along with options or arguments, a bash completion string will be displayed." do
+    expected_regex = <<-'DISPLAY'
+    _.*\(\)
+    \{
+    \ \ \ \ local\ program\=\$\{COMP_WORDS\[0\]\}
+    \ \ \ \ local\ cmd\=\$\{COMP_WORDS\[1\]\}
+    \ \ \ \ local\ cur\="\$\{COMP_WORDS\[COMP_CWORD\]\}"
+    \ \ \ \ local\ prev\="\$\{COMP_WORDS\[COMP_CWORD\-1\]\}"
+    \ \ \ \ local\ cword\="\$\{COMP_CWORD\}"
+    
+    \ \ \ \ 
+    if\ \[\[\ "\$\{prev\}"\ \=\=\ ".*"\ \]\]\ ;\ then
+    \ \ \ \ COMPREPLY\=\(\ \$\(compgen\ \-W\ "\-v\ \-\-version\ \-\-prefix\ \-h\ \-\-help"\ \-\-\ \$\{cur\}\)\ \)
+    else
+    \ \ \ \ COMPREPLY\=\(\ \$\(compgen\ \-f\ \$\{cur\}\)\ \)
+    fi
+    
+    
+    \ \ \ \ return\ 0
+    \}
+    
+    complete\ \-F\ _.* .*
+
+    DISPLAY
+
+    `crystal run spec/clim/stdout_spec/files/required.cr --no-color -- --prefix=foo arg1 --bash-completion`.should match(/#{expected_regex}/)
   end
 end
