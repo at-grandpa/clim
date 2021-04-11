@@ -1,5 +1,5 @@
 name: clim
-version: 0.17.0
+version: 0.17.1
 
 authors:
   - at-grandpa <@at_grandpa>
@@ -8,6 +8,6 @@ targets:
   clim:
     main: src/clim.cr
 
-crystal: ">= 0.36.1, < 2.0.0"
+crystal: ">= 1.0.0, < 2.0.0"
 
 license: MIT
